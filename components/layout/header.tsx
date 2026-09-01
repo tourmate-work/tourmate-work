@@ -22,7 +22,7 @@ export function Header() {
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
           <Link
             href="/"
-            className="text-slate-950 font-semibold hover:text-emerald-600 transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-emerald-500"
+            className="text-slate-950 font-semibold hover:text-black transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black"
           >
             Home
           </Link>

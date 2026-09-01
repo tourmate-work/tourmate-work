@@ -113,7 +113,7 @@ export function FleetSection() {
                 onClick={() => handleCategorySelect(cat.id)}
                 className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 shadow-sm ${
                   isActive
-                    ? "bg-[#22c55e] text-white shadow-emerald-500/20 hover:bg-[#16a34a]"
+                    ? "bg-black text-white shadow-slate-900/20 hover:bg-slate-800"
                     : "bg-slate-100/90 text-slate-700 hover:bg-slate-200/90 hover:text-slate-900"
                 }`}
               >
@@ -151,7 +151,7 @@ export function FleetSection() {
                     </p>
                   </div>
                   <div className="text-right">
-                    <span className="text-lg font-bold text-[#22c55e] block leading-tight">
+                    <span className="text-lg font-bold text-slate-950 block leading-tight">
                       {car.pricePerDay}
                     </span>
                     <span className="text-xs text-slate-400">per day</span>
@@ -174,10 +174,10 @@ export function FleetSection() {
                   </div>
                 </div>
 
-                {/* View Details Green Action Button */}
+                {/* View Details Black Action Button */}
                 <button
                   onClick={() => handleCarBooking(car)}
-                  className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-white font-semibold text-sm py-3.5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] text-center"
+                  className="w-full bg-black hover:bg-slate-800 text-white font-semibold text-sm py-3.5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] text-center"
                 >
                   View Details
                 </button>

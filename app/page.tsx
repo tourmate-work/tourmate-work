@@ -8,7 +8,7 @@ import { StatsSection } from "@/components/home/stats-section";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans selection:bg-emerald-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans selection:bg-slate-900 selection:text-white">
       {/* Top Header Navigation */}
       <Header />
 
