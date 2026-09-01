@@ -36,6 +36,22 @@ function YoutubeIcon({ className }: { className?: string }) {
   );
 }
 
+function AppleLogoIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.63 1.35-.57.65-1.07 1.72-.94 2.74 1.01.08 2.03-.49 2.64-1.24z" />
+    </svg>
+  );
+}
+
+function GooglePlayIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+      <path d="M3.609 1.814L13.792 12 3.61 22.186c-.365-.366-.61-.884-.61-1.464V3.278c0-.58.245-1.098.61-1.464zm11.235 11.238l2.586 2.586-12.012 6.95 9.426-9.536zm0-2.104L5.418 1.412l12.012 6.95-2.586 2.586zm1.485 1.052l4.062 2.35c1.17.677 1.17 1.782 0 2.458l-4.062 2.35-2.67-2.67 2.67-2.488z" />
+    </svg>
+  );
+}
+
 export function Footer() {
   return (
     <footer id="contact" className="bg-[#050505] text-white pt-14 pb-8 border-t border-neutral-900">
@@ -98,25 +114,21 @@ export function Footer() {
             <div>
               <p className="text-xs text-neutral-400 leading-tight">Phone</p>
               <a
-                href="tel:+5375476401"
+                href="tel:+94772973530"
                 className="text-sm font-bold text-white hover:text-amber-400 transition-colors mt-0.5 block"
               >
-                +537 547-6401
+                +94 (77) 297 3530
               </a>
             </div>
           </div>
         </div>
 
-        {/* Main Content: Description, Links, Vehicles */}
-        <div className="pt-8 pb-12 grid grid-cols-1 lg:grid-cols-12 gap-10">
+        {/* Main Content: Description, Links, Vehicles, Download App */}
+        <div className="pt-8 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
           {/* Description & Socials */}
-          <div className="lg:col-span-6 space-y-8 pr-0 lg:pr-8">
-            <p className="text-neutral-300 text-sm md:text-[15px] leading-relaxed">
-              A range of features and services designed to meet your needs. A strong
-              and reliable solution that brings everything together in one place.
-              Simple, efficient, and easy to use. Designed to provide you with a smooth
-              experience while giving you the flexibility and support you need. Built
-              with quality, reliability, and convenience in mind.
+          <div className="lg:col-span-4 space-y-6">
+            <p className="text-neutral-300 text-sm leading-relaxed">
+              Tourmate Rentals provides premier self-drive and chauffeur-driven car hire services across Sri Lanka. Enjoy reliable vehicles, transparent pricing, and 24/7 road support.
             </p>
 
             {/* Social Icons */}
@@ -143,7 +155,7 @@ export function Footer() {
                 href="https://x.com"
                 target="_blank"
                 rel="noreferrer"
-                aria-label="X (formerly Twitter)"
+                aria-label="X"
                 className="text-white hover:text-amber-400 transition-colors"
               >
                 <XIcon className="h-4 w-4" />
@@ -161,8 +173,8 @@ export function Footer() {
           </div>
 
           {/* Useful Links */}
-          <div className="lg:col-span-3">
-            <h4 className="text-white font-bold text-base md:text-lg mb-5">
+          <div className="lg:col-span-2">
+            <h4 className="text-white font-bold text-base mb-5">
               Useful links
             </h4>
             <ul className="space-y-3 text-sm text-neutral-300">
@@ -195,8 +207,8 @@ export function Footer() {
           </div>
 
           {/* Vehicles */}
-          <div className="lg:col-span-3">
-            <h4 className="text-white font-bold text-base md:text-lg mb-5">
+          <div className="lg:col-span-2">
+            <h4 className="text-white font-bold text-base mb-5">
               Vehicles
             </h4>
             <ul className="space-y-3 text-sm text-neutral-300">
@@ -226,6 +238,46 @@ export function Footer() {
                 </Link>
               </li>
             </ul>
+          </div>
+
+          {/* Download App */}
+          <div className="lg:col-span-4 space-y-4">
+            <h4 className="text-white font-bold text-base mb-5">
+              Download App
+            </h4>
+            <div className="flex flex-col sm:flex-row lg:flex-col gap-3">
+              {/* App Store Button */}
+              <a
+                href="#"
+                className="flex items-center gap-3 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 px-4 py-2.5 rounded-xl transition-all w-fit"
+              >
+                <AppleLogoIcon className="h-6 w-6 text-white" />
+                <div className="text-left">
+                  <span className="text-[10px] text-neutral-400 block leading-tight">
+                    Download on the
+                  </span>
+                  <span className="text-xs font-bold text-white block leading-tight">
+                    App Store
+                  </span>
+                </div>
+              </a>
+
+              {/* Google Play Button */}
+              <a
+                href="#"
+                className="flex items-center gap-3 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 px-4 py-2.5 rounded-xl transition-all w-fit"
+              >
+                <GooglePlayIcon className="h-6 w-6 text-white" />
+                <div className="text-left">
+                  <span className="text-[10px] text-neutral-400 block leading-tight">
+                    GET IT ON
+                  </span>
+                  <span className="text-xs font-bold text-white block leading-tight">
+                    Google Play
+                  </span>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
 
