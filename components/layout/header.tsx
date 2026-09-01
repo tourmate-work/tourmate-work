@@ -55,7 +55,7 @@ export function Header() {
         {/* Support Phone Pill */}
         <div className="flex items-center gap-3">
           <a
-            href="tel:+94703236834"
+            href="tel:+94772973530"
             className="flex items-center gap-3 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 px-3.5 py-2 rounded-full transition-all group shadow-sm"
           >
             <div className="h-8 w-8 rounded-full bg-violet-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
@@ -66,7 +66,7 @@ export function Header() {
                 Need help?
               </span>
               <span className="text-xs font-bold text-slate-900 leading-tight">
-                +94 70 323 6834
+                +94 (77) 297 3530
               </span>
             </div>
           </a>
