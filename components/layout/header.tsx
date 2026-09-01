@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Phone } from "lucide-react";
 
@@ -6,15 +7,15 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur border-b border-slate-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="flex items-center gap-1.5 font-extrabold text-2xl tracking-tight text-slate-900">
-            <div className="h-8 w-8 rounded-full bg-emerald-500 flex items-center justify-center text-white shadow-sm group-hover:scale-105 transition-transform">
-              <span className="font-black text-sm">T</span>
-            </div>
-            <span>
-              tour<span className="text-emerald-500">mate</span>
-            </span>
-          </div>
+        <Link href="/" className="flex items-center gap-2 group py-1">
+          <Image
+            src="/images/logo-transparent.png"
+            alt="Tourmate Rentals"
+            width={160}
+            height={52}
+            className="h-11 w-auto object-contain group-hover:scale-105 transition-transform duration-200"
+            priority
+          />
         </Link>
 
         {/* Navigation */}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Phone, Mail, MapPin } from "lucide-react";
 
@@ -8,14 +9,15 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand Info */}
           <div className="space-y-4">
-            <div className="flex items-center gap-1.5 font-extrabold text-2xl tracking-tight text-white">
-              <div className="h-8 w-8 rounded-full bg-emerald-500 flex items-center justify-center text-white">
-                <span className="font-black text-sm">T</span>
-              </div>
-              <span>
-                tour<span className="text-emerald-400">mate</span>
-              </span>
-            </div>
+            <Link href="/" className="inline-block">
+              <Image
+                src="/images/logo-white-text.png"
+                alt="Tourmate Rentals"
+                width={150}
+                height={48}
+                className="h-10 w-auto object-contain"
+              />
+            </Link>
             <p className="text-xs text-slate-400 leading-relaxed">
               Your premier car rental companion across Sri Lanka. Providing
               reliable, transparent, and luxury vehicle solutions for airport
