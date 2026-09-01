@@ -27,25 +27,25 @@ export function Header() {
             Home
           </Link>
           <Link
-            href="#vehicles"
+            href="/vehicles"
             className="hover:text-slate-950 transition-colors"
           >
             Vehicles
           </Link>
           <Link
-            href="#details"
+            href="/#details"
             className="hover:text-slate-950 transition-colors"
           >
             Details
           </Link>
           <Link
-            href="#about"
+            href="/#about"
             className="hover:text-slate-950 transition-colors"
           >
             About Us
           </Link>
           <Link
-            href="#contact"
+            href="/#contact"
             className="hover:text-slate-950 transition-colors"
           >
             Contact Us

@@ -167,27 +167,27 @@ export function Footer() {
             </h4>
             <ul className="space-y-3 text-sm text-neutral-300">
               <li>
-                <Link href="#about" className="hover:text-amber-400 transition-colors">
+                <Link href="/#about" className="hover:text-amber-400 transition-colors">
                   About us
                 </Link>
               </li>
               <li>
-                <Link href="#contact" className="hover:text-amber-400 transition-colors">
+                <Link href="/#contact" className="hover:text-amber-400 transition-colors">
                   Contact us
                 </Link>
               </li>
               <li>
-                <Link href="#vehicles" className="hover:text-amber-400 transition-colors">
+                <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
                   Gallery
                 </Link>
               </li>
               <li>
-                <Link href="#blog" className="hover:text-amber-400 transition-colors">
+                <Link href="/#about" className="hover:text-amber-400 transition-colors">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href="#faq" className="hover:text-amber-400 transition-colors">
+                <Link href="/#about" className="hover:text-amber-400 transition-colors">
                   F.A.Q
                 </Link>
               </li>
@@ -201,27 +201,27 @@ export function Footer() {
             </h4>
             <ul className="space-y-3 text-sm text-neutral-300">
               <li>
-                <Link href="#vehicles" className="hover:text-amber-400 transition-colors">
+                <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
                   Sedan
                 </Link>
               </li>
               <li>
-                <Link href="#vehicles" className="hover:text-amber-400 transition-colors">
+                <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
                   Cabriolet
                 </Link>
               </li>
               <li>
-                <Link href="#vehicles" className="hover:text-amber-400 transition-colors">
+                <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
                   Pickup
                 </Link>
               </li>
               <li>
-                <Link href="#vehicles" className="hover:text-amber-400 transition-colors">
+                <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
                   Minivan
                 </Link>
               </li>
               <li>
-                <Link href="#vehicles" className="hover:text-amber-400 transition-colors">
+                <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
                   SUV
                 </Link>
               </li>
