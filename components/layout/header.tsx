@@ -11,6 +11,7 @@ export function Header() {
   const isVehicles = pathname.startsWith("/vehicles");
   const isDetails = pathname.startsWith("/details");
   const isAbout = pathname.startsWith("/about");
+  const isContact = pathname.startsWith("/contact");
 
   const activeNavClass =
     "text-slate-950 font-semibold relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black";
@@ -59,8 +60,8 @@ export function Header() {
             About Us
           </Link>
           <Link
-            href="/#contact"
-            className={inactiveNavClass}
+            href="/contact"
+            className={isContact ? activeNavClass : inactiveNavClass}
           >
             Contact Us
           </Link>
