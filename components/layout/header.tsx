@@ -1,8 +1,20 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Phone } from "lucide-react";
 
 export function Header() {
+  const pathname = usePathname();
+  const isVehicles = pathname.startsWith("/vehicles");
+  const isHome = pathname === "/";
+
+  const activeNavClass =
+    "text-slate-950 font-semibold relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black";
+  const inactiveNavClass =
+    "text-slate-600 hover:text-slate-950 transition-colors py-1";
+
   return (
     <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur border-b border-slate-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
@@ -19,34 +31,34 @@ export function Header() {
         </Link>
 
         {/* Navigation */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
           <Link
             href="/"
-            className="text-slate-950 font-semibold hover:text-black transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black"
+            className={isHome ? activeNavClass : inactiveNavClass}
           >
             Home
           </Link>
           <Link
             href="/vehicles"
-            className="hover:text-slate-950 transition-colors"
+            className={isVehicles ? activeNavClass : inactiveNavClass}
           >
             Vehicles
           </Link>
           <Link
             href="/#details"
-            className="hover:text-slate-950 transition-colors"
+            className={inactiveNavClass}
           >
             Details
           </Link>
           <Link
             href="/#about"
-            className="hover:text-slate-950 transition-colors"
+            className={inactiveNavClass}
           >
             About Us
           </Link>
           <Link
             href="/#contact"
-            className="hover:text-slate-950 transition-colors"
+            className={inactiveNavClass}
           >
             Contact Us
           </Link>

@@ -48,7 +48,7 @@ const CATEGORIES = [
 const ALL_VEHICLES: VehicleDetail[] = [
   {
     id: "bmw-3",
-    name: "BMW 3 Series M Sport",
+    name: "BMW",
     brand: "BMW",
     category: "Sedan",
     price: "$25",
@@ -79,8 +79,8 @@ const ALL_VEHICLES: VehicleDetail[] = [
     ],
   },
   {
-    id: "mercedes-c200",
-    name: "Mercedes Benz C-Class",
+    id: "mercedes-sedan",
+    name: "Mercedes",
     brand: "Mercedes",
     category: "Sedan",
     price: "$25",
@@ -111,10 +111,10 @@ const ALL_VEHICLES: VehicleDetail[] = [
     ],
   },
   {
-    id: "mercedes-amg-sport",
-    name: "Mercedes AMG Coupe",
+    id: "mercedes-sport",
+    name: "Mercedes",
     brand: "Mercedes",
-    category: "Cabriolet",
+    category: "Sport",
     price: "$50",
     priceNum: 50,
     period: "per day",
@@ -144,7 +144,7 @@ const ALL_VEHICLES: VehicleDetail[] = [
   },
   {
     id: "mercedes-e-class",
-    name: "Mercedes Benz E-Class",
+    name: "Mercedes",
     brand: "Mercedes",
     category: "Sedan",
     price: "$45",
@@ -176,7 +176,7 @@ const ALL_VEHICLES: VehicleDetail[] = [
   },
   {
     id: "porsche-macan",
-    name: "Porsche Macan GTS",
+    name: "Porsche",
     brand: "Porsche",
     category: "SUV",
     price: "$40",
@@ -208,7 +208,7 @@ const ALL_VEHICLES: VehicleDetail[] = [
   },
   {
     id: "toyota-premio",
-    name: "Toyota Premio Executive",
+    name: "Toyota",
     brand: "Toyota",
     category: "Sedan",
     price: "$35",
@@ -240,7 +240,7 @@ const ALL_VEHICLES: VehicleDetail[] = [
   },
   {
     id: "porsche-cayenne",
-    name: "Porsche Cayenne Turbo",
+    name: "Porsche",
     brand: "Porsche",
     category: "SUV",
     price: "$50",
@@ -272,7 +272,7 @@ const ALL_VEHICLES: VehicleDetail[] = [
   },
   {
     id: "toyota-hilux",
-    name: "Toyota Hilux 4x4 Double Cab",
+    name: "Toyota",
     brand: "Toyota",
     category: "Pickup",
     price: "$40",
@@ -304,7 +304,7 @@ const ALL_VEHICLES: VehicleDetail[] = [
   },
   {
     id: "toyota-kdh",
-    name: "Toyota KDH Super GL Luxury",
+    name: "Toyota",
     brand: "Toyota",
     category: "Minivan",
     price: "$45",
@@ -559,227 +559,263 @@ export function VehiclesCatalog() {
 
       {/* ANIMATED VEHICLE DETAIL SPECIFICATION MODAL */}
       {activeModalCar && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-8 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 md:p-6 overflow-hidden">
           {/* Backdrop with Blur Fade-in */}
           <div
             onClick={handleCloseModal}
-            className="fixed inset-0 bg-slate-950/70 backdrop-blur-md transition-opacity duration-300 animate-in fade-in"
+            className="fixed inset-0 bg-slate-950/75 backdrop-blur-md transition-opacity duration-300 animate-in fade-in"
             aria-hidden="true"
           />
 
-          {/* Animated Detail Card Window */}
-          <div className="relative w-full max-w-5xl bg-white rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl border border-slate-100 p-6 sm:p-10 my-auto z-10 max-h-[92vh] overflow-y-auto transform transition-all duration-300 ease-out animate-in zoom-in-95 fade-in slide-in-from-bottom-6">
-            {/* Close Button Header */}
-            <button
-              onClick={handleCloseModal}
-              aria-label="Close vehicle details"
-              className="absolute top-5 right-5 sm:top-6 sm:right-6 h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-950 flex items-center justify-center transition-all duration-200 hover:rotate-90 shadow-sm"
-            >
-              <X className="h-5 w-5 sm:h-6 sm:w-6" />
-            </button>
-
-            {/* Modal Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start pt-2">
-              {/* Left Column: Title, Price, Large Silhouette Graphic, Thumbnail Gallery */}
-              <div className="lg:col-span-6 space-y-6">
-                <div>
-                  <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight leading-tight">
-                    {activeModalCar.name}
-                  </h2>
-                  <div className="mt-2 flex items-baseline gap-1.5">
-                    <span className="text-2xl sm:text-3xl font-bold text-violet-600">
-                      {activeModalCar.price}
-                    </span>
-                    <span className="text-sm font-medium text-slate-400">
-                      {activeModalCar.period}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Main Silhouette Card */}
-                <div className="relative aspect-[16/9] w-full rounded-3xl bg-slate-50 border border-slate-100/90 flex items-center justify-center p-8 overflow-hidden shadow-inner">
-                  <VehicleVectorGraphic type={activeModalCar.type} />
-                </div>
-
-                {/* 3 Thumbnail Previews */}
-                <div className="flex items-center gap-3.5 sm:gap-4">
-                  {activeModalCar.thumbnails.map((thumb, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setActiveThumbnailIndex(idx)}
-                      className={`relative h-20 w-24 sm:h-24 sm:w-28 rounded-2xl overflow-hidden border-2 transition-all ${
-                        activeThumbnailIndex === idx
-                          ? "border-violet-600 ring-2 ring-violet-600/30 scale-105 shadow-md"
-                          : "border-slate-200 opacity-70 hover:opacity-100"
-                      }`}
-                    >
-                      <Image
-                        src={thumb}
-                        alt={`${activeModalCar.name} preview thumbnail ${idx + 1}`}
-                        fill
-                        className="object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
+          {/* Modal Container: cleanly rounded and overflow-hidden to prevent scrollbar cut */}
+          <div className="relative w-full max-w-5xl bg-white rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl border border-slate-100/80 my-auto z-10 max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 ease-out animate-in zoom-in-95 fade-in slide-in-from-bottom-6">
+            {/* Modal Header Bar */}
+            <div className="flex items-center justify-between px-6 sm:px-10 py-5 sm:py-6 border-b border-slate-100 bg-white/95 backdrop-blur-sm sticky top-0 z-30 flex-shrink-0">
+              <div className="flex items-baseline gap-3">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">
+                  {activeModalCar.name}
+                </h2>
+                <span className="text-xl sm:text-2xl font-bold text-violet-600">
+                  {activeModalCar.price}
+                  <span className="text-xs sm:text-sm font-medium text-slate-400 ml-1">
+                    {activeModalCar.period}
+                  </span>
+                </span>
               </div>
 
-              {/* Right Column: Technical Specification & Equipment */}
-              <div className="lg:col-span-6 space-y-8">
-                {/* Technical Specification Heading */}
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-5">
-                    Technical Specification
-                  </h3>
+              {/* Close Button */}
+              <button
+                onClick={handleCloseModal}
+                aria-label="Close vehicle details"
+                className="h-10 w-10 sm:h-11 sm:w-11 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-950 flex items-center justify-center transition-all duration-200 hover:rotate-90 shadow-sm"
+              >
+                <X className="h-5 w-5 sm:h-6 sm:w-6" />
+              </button>
+            </div>
 
-                  {/* 2x3 Spec Cards Grid */}
-                  <div className="grid grid-cols-3 gap-3 sm:gap-3.5">
-                    {/* 1. Gear Box */}
-                    <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-4 border border-slate-100 transition-all flex flex-col justify-between">
-                      <div className="text-slate-800 mb-2">
-                        <SlidersHorizontal className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <span className="text-xs font-bold text-slate-900 block">
-                          Gear Box
-                        </span>
-                        <span className="text-[11px] text-slate-500 font-medium truncate block">
-                          {activeModalCar.specs.gearBox}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* 2. Fuel */}
-                    <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-4 border border-slate-100 transition-all flex flex-col justify-between">
-                      <div className="text-slate-800 mb-2">
-                        <Fuel className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <span className="text-xs font-bold text-slate-900 block">
-                          Fuel
-                        </span>
-                        <span className="text-[11px] text-slate-500 font-medium truncate block">
-                          {activeModalCar.specs.fuel}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* 3. Doors */}
-                    <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-4 border border-slate-100 transition-all flex flex-col justify-between">
-                      <div className="text-slate-800 mb-2">
-                        <DoorOpen className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <span className="text-xs font-bold text-slate-900 block">
-                          Doors
-                        </span>
-                        <span className="text-[11px] text-slate-500 font-medium truncate block">
-                          {activeModalCar.specs.doors}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* 4. Air Conditioner */}
-                    <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-4 border border-slate-100 transition-all flex flex-col justify-between">
-                      <div className="text-slate-800 mb-2">
-                        <Snowflake className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <span className="text-xs font-bold text-slate-900 block leading-tight">
-                          Air Conditioner
-                        </span>
-                        <span className="text-[11px] text-slate-500 font-medium truncate block">
-                          {activeModalCar.specs.ac}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* 5. Seats */}
-                    <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-4 border border-slate-100 transition-all flex flex-col justify-between">
-                      <div className="text-slate-800 mb-2">
-                        <Users className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <span className="text-xs font-bold text-slate-900 block">
-                          Seats
-                        </span>
-                        <span className="text-[11px] text-slate-500 font-medium truncate block">
-                          {activeModalCar.specs.seats}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* 6. Distance */}
-                    <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-4 border border-slate-100 transition-all flex flex-col justify-between">
-                      <div className="text-slate-800 mb-2">
-                        <Gauge className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <span className="text-xs font-bold text-slate-900 block">
-                          Distance
-                        </span>
-                        <span className="text-[11px] text-slate-500 font-medium truncate block">
-                          {activeModalCar.specs.distance}
-                        </span>
-                      </div>
-                    </div>
+            {/* Scrollable Content inside Rounded Box */}
+            <div className="overflow-y-auto px-6 sm:px-10 py-6 space-y-8 flex-1">
+              {/* Main 2-Column Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                {/* Left Column: Silhouette Graphic & Gallery Thumbnails */}
+                <div className="lg:col-span-6 space-y-5">
+                  {/* Silhouette Card */}
+                  <div className="relative aspect-[16/9] w-full rounded-3xl bg-slate-50 border border-slate-100/90 flex items-center justify-center p-6 overflow-hidden shadow-inner">
+                    <VehicleVectorGraphic type={activeModalCar.type} />
                   </div>
-                </div>
 
-                {/* Rent A Car CTA Button */}
-                <div>
-                  <button
-                    onClick={() => handleBookNow(activeModalCar)}
-                    className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-3.5 rounded-2xl shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2"
-                  >
-                    Rent a car
-                  </button>
-                </div>
-
-                {/* Car Equipment Checklist */}
-                <div className="pt-1">
-                  <h4 className="text-lg font-bold text-slate-900 mb-3.5">
-                    Car Equipment
-                  </h4>
-                  <div className="grid grid-cols-2 gap-y-3 gap-x-6">
-                    {activeModalCar.equipment.map((item, idx) => (
-                      <div key={idx} className="flex items-center gap-2.5">
-                        <CheckCircle2 className="h-4 w-4 text-violet-600 fill-violet-100 flex-shrink-0" />
-                        <span className="text-xs sm:text-sm font-medium text-slate-700">
-                          {item}
-                        </span>
-                      </div>
+                  {/* 3 Thumbnail Gallery Previews */}
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    {activeModalCar.thumbnails.map((thumb, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setActiveThumbnailIndex(idx)}
+                        className={`relative h-20 w-24 sm:h-24 sm:w-28 rounded-2xl overflow-hidden border-2 transition-all ${
+                          activeThumbnailIndex === idx
+                            ? "border-violet-600 ring-2 ring-violet-600/30 scale-105 shadow-md"
+                            : "border-slate-200 opacity-70 hover:opacity-100"
+                        }`}
+                      >
+                        <Image
+                          src={thumb}
+                          alt={`${activeModalCar.name} preview thumbnail ${idx + 1}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </button>
                     ))}
                   </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Quick-Switch Other Cars Row at bottom of modal */}
-            <div className="mt-12 pt-8 border-t border-slate-100">
-              <h4 className="text-sm font-bold text-slate-900 mb-4">
-                Other popular options
-              </h4>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {ALL_VEHICLES.filter((v) => v.id !== activeModalCar.id)
-                  .slice(0, 4)
-                  .map((other) => (
+                {/* Right Column: Technical Specification & Equipment */}
+                <div className="lg:col-span-6 space-y-7">
+                  {/* Technical Specification Heading */}
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-4">
+                      Technical Specification
+                    </h3>
+
+                    {/* 2x3 Spec Cards Grid */}
+                    <div className="grid grid-cols-3 gap-3">
+                      {/* 1. Gear Box */}
+                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
+                        <div className="text-slate-800 mb-2">
+                          <SlidersHorizontal className="h-4 w-4 sm:h-5 sm:w-5" />
+                        </div>
+                        <div>
+                          <span className="text-xs font-bold text-slate-900 block">
+                            Gear Box
+                          </span>
+                          <span className="text-[11px] text-slate-500 font-medium truncate block">
+                            {activeModalCar.specs.gearBox}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* 2. Fuel */}
+                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
+                        <div className="text-slate-800 mb-2">
+                          <Fuel className="h-4 w-4 sm:h-5 sm:w-5" />
+                        </div>
+                        <div>
+                          <span className="text-xs font-bold text-slate-900 block">
+                            Fuel
+                          </span>
+                          <span className="text-[11px] text-slate-500 font-medium truncate block">
+                            {activeModalCar.specs.fuel}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* 3. Doors */}
+                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
+                        <div className="text-slate-800 mb-2">
+                          <DoorOpen className="h-4 w-4 sm:h-5 sm:w-5" />
+                        </div>
+                        <div>
+                          <span className="text-xs font-bold text-slate-900 block">
+                            Doors
+                          </span>
+                          <span className="text-[11px] text-slate-500 font-medium truncate block">
+                            {activeModalCar.specs.doors}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* 4. Air Conditioner */}
+                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
+                        <div className="text-slate-800 mb-2">
+                          <Snowflake className="h-4 w-4 sm:h-5 sm:w-5" />
+                        </div>
+                        <div>
+                          <span className="text-xs font-bold text-slate-900 block leading-tight">
+                            Air Conditioner
+                          </span>
+                          <span className="text-[11px] text-slate-500 font-medium truncate block">
+                            {activeModalCar.specs.ac}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* 5. Seats */}
+                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
+                        <div className="text-slate-800 mb-2">
+                          <Users className="h-4 w-4 sm:h-5 sm:w-5" />
+                        </div>
+                        <div>
+                          <span className="text-xs font-bold text-slate-900 block">
+                            Seats
+                          </span>
+                          <span className="text-[11px] text-slate-500 font-medium truncate block">
+                            {activeModalCar.specs.seats}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* 6. Distance */}
+                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
+                        <div className="text-slate-800 mb-2">
+                          <Gauge className="h-4 w-4 sm:h-5 sm:w-5" />
+                        </div>
+                        <div>
+                          <span className="text-xs font-bold text-slate-900 block">
+                            Distance
+                          </span>
+                          <span className="text-[11px] text-slate-500 font-medium truncate block">
+                            {activeModalCar.specs.distance}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Rent A Car CTA Button */}
+                  <div>
                     <button
-                      key={other.id}
-                      onClick={() => {
-                        setActiveModalCar(other);
-                        setActiveThumbnailIndex(0);
-                      }}
-                      className="text-left p-3 rounded-2xl bg-slate-50 hover:bg-violet-50/50 border border-slate-100 hover:border-violet-200 transition-all flex flex-col justify-between"
+                      onClick={() => handleBookNow(activeModalCar)}
+                      className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-3.5 rounded-2xl shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2"
                     >
-                      <span className="text-xs font-bold text-slate-900 block truncate">
-                        {other.name}
-                      </span>
-                      <span className="text-[11px] font-semibold text-violet-600 mt-1">
-                        {other.price} {other.period}
-                      </span>
+                      Rent a car
                     </button>
-                  ))}
+                  </div>
+
+                  {/* Car Equipment Checklist */}
+                  <div>
+                    <h4 className="text-base font-bold text-slate-900 mb-3">
+                      Car Equipment
+                    </h4>
+                    <div className="grid grid-cols-2 gap-y-2.5 gap-x-6">
+                      {activeModalCar.equipment.map((item, idx) => (
+                        <div key={idx} className="flex items-center gap-2.5">
+                          <CheckCircle2 className="h-4 w-4 text-violet-600 fill-violet-100 flex-shrink-0" />
+                          <span className="text-xs sm:text-sm font-medium text-slate-700">
+                            {item}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* BOTTOM: "Other popular options" - Visual Car Cards Grid */}
+              <div className="pt-6 border-t border-slate-100">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-lg font-bold text-slate-900">
+                    Other popular options
+                  </h4>
+                  <span className="text-xs text-slate-400">
+                    Click any car to view details
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {ALL_VEHICLES.filter((v) => v.id !== activeModalCar.id)
+                    .slice(0, 4)
+                    .map((other) => (
+                      <button
+                        key={other.id}
+                        onClick={() => {
+                          setActiveModalCar(other);
+                          setActiveThumbnailIndex(0);
+                        }}
+                        className="text-left p-4 rounded-2xl bg-slate-50/90 hover:bg-white border border-slate-100 hover:border-violet-200 hover:shadow-lg transition-all duration-200 flex flex-col justify-between group"
+                      >
+                        {/* Mini Silhouette Image */}
+                        <div className="relative aspect-[16/10] w-full rounded-xl bg-white border border-slate-100 mb-3 flex items-center justify-center overflow-hidden p-2">
+                          <VehicleVectorGraphic type={other.type} />
+                        </div>
+
+                        <div>
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <span className="text-sm font-bold text-slate-900 block leading-snug group-hover:text-violet-600 transition-colors">
+                                {other.name}
+                              </span>
+                              <span className="text-[11px] text-slate-400 font-medium">
+                                {other.category}
+                              </span>
+                            </div>
+                            <div className="text-right">
+                              <span className="text-xs font-bold text-violet-600 block">
+                                {other.price}
+                              </span>
+                              <span className="text-[10px] text-slate-400">
+                                {other.period}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Mini specs preview */}
+                          <div className="mt-2.5 pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-500">
+                            <span>{other.specs.gearBox}</span>
+                            <span>{other.fuelCapacity}</span>
+                            <span>AC</span>
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                </div>
               </div>
             </div>
           </div>
