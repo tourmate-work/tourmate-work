@@ -477,10 +477,10 @@ export function VehiclesCatalog() {
             <div
               key={car.id}
               style={{ animationDelay: `${index * 60}ms` }}
-              className="card-hover-lift bg-[#f8fafc] hover:bg-white rounded-3xl p-6 border border-slate-100/90 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group animate-fade-in-up"
+              className="card-hover-lift bg-[#f8fafc] hover:bg-white rounded-[30px] p-6 border border-slate-100/90 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group animate-fade-in-up"
             >
               {/* Silhouette Container */}
-              <div className="relative aspect-[16/9] w-full rounded-2xl bg-white border border-slate-100 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-50/50 transition-colors">
+              <div className="relative aspect-[16/9] w-full rounded-[24px] bg-white border border-slate-100 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-50/50 transition-colors">
                 <VehicleVectorGraphic type={car.type} />
               </div>
 
@@ -523,7 +523,7 @@ export function VehiclesCatalog() {
                 {/* View Details Animated Opener Button */}
                 <button
                   onClick={() => handleOpenDetails(car)}
-                  className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm py-3.5 rounded-2xl shadow-md shadow-violet-500/15 hover:shadow-lg hover:shadow-violet-500/25 transition-all duration-300 active:scale-[0.98] text-center flex items-center justify-center gap-2 group-hover:bg-violet-700"
+                  className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm py-3.5 rounded-[30px] shadow-md shadow-violet-500/15 hover:shadow-lg hover:shadow-violet-500/25 transition-all duration-300 active:scale-[0.98] text-center flex items-center justify-center gap-2 group-hover:bg-violet-700"
                 >
                   <span className="tracking-wide">View Details</span>
                   <Sparkles className="h-4 w-4 opacity-70 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-300" />
@@ -568,8 +568,8 @@ export function VehiclesCatalog() {
             aria-hidden="true"
           />
 
-          {/* Modal Container: cleanly rounded and overflow-hidden to prevent scrollbar cut */}
-          <div className="relative w-full max-w-5xl bg-white rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl border border-slate-100/80 my-auto z-10 max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 ease-out animate-in zoom-in-95 fade-in slide-in-from-bottom-6">
+          {/* Modal Container: cleanly rounded to 30px and overflow-hidden */}
+          <div className="relative w-full max-w-5xl bg-white rounded-[30px] shadow-2xl border border-slate-100/80 my-auto z-10 max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 ease-out animate-in zoom-in-95 fade-in slide-in-from-bottom-6">
             {/* Modal Header Bar */}
             <div className="flex items-center justify-between px-6 sm:px-10 py-5 sm:py-6 border-b border-slate-100 bg-white/95 backdrop-blur-sm sticky top-0 z-30 flex-shrink-0">
               <div className="flex items-baseline gap-3">
@@ -601,7 +601,7 @@ export function VehiclesCatalog() {
                 {/* Left Column: Silhouette Graphic & Gallery Thumbnails */}
                 <div className="lg:col-span-6 space-y-5">
                   {/* Silhouette Card */}
-                  <div className="relative aspect-[16/9] w-full rounded-3xl bg-slate-50 border border-slate-100/90 flex items-center justify-center p-6 overflow-hidden shadow-inner">
+                  <div className="relative aspect-[16/9] w-full rounded-[30px] bg-slate-50 border border-slate-100/90 flex items-center justify-center p-6 overflow-hidden shadow-inner">
                     <VehicleVectorGraphic type={activeModalCar.type} />
                   </div>
 
@@ -611,7 +611,7 @@ export function VehiclesCatalog() {
                       <button
                         key={idx}
                         onClick={() => setActiveThumbnailIndex(idx)}
-                        className={`relative h-20 w-24 sm:h-24 sm:w-28 rounded-2xl overflow-hidden border-2 transition-all ${
+                        className={`relative h-20 w-24 sm:h-24 sm:w-28 rounded-[20px] overflow-hidden border-2 transition-all ${
                           activeThumbnailIndex === idx
                             ? "border-violet-600 ring-2 ring-violet-600/30 scale-105 shadow-md"
                             : "border-slate-200 opacity-70 hover:opacity-100"
@@ -639,7 +639,7 @@ export function VehiclesCatalog() {
                     {/* 2x3 Spec Cards Grid */}
                     <div className="grid grid-cols-3 gap-3">
                       {/* 1. Gear Box */}
-                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
+                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-[20px] p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
                         <div className="text-slate-800 mb-2">
                           <SlidersHorizontal className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
@@ -654,7 +654,7 @@ export function VehiclesCatalog() {
                       </div>
 
                       {/* 2. Fuel */}
-                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
+                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-[20px] p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
                         <div className="text-slate-800 mb-2">
                           <Fuel className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
@@ -669,7 +669,7 @@ export function VehiclesCatalog() {
                       </div>
 
                       {/* 3. Doors */}
-                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
+                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-[20px] p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
                         <div className="text-slate-800 mb-2">
                           <DoorOpen className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
@@ -684,7 +684,7 @@ export function VehiclesCatalog() {
                       </div>
 
                       {/* 4. Air Conditioner */}
-                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
+                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-[20px] p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
                         <div className="text-slate-800 mb-2">
                           <Snowflake className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
@@ -699,7 +699,7 @@ export function VehiclesCatalog() {
                       </div>
 
                       {/* 5. Seats */}
-                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
+                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-[20px] p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
                         <div className="text-slate-800 mb-2">
                           <Users className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
@@ -714,7 +714,7 @@ export function VehiclesCatalog() {
                       </div>
 
                       {/* 6. Distance */}
-                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-2xl p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
+                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-[20px] p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
                         <div className="text-slate-800 mb-2">
                           <Gauge className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
@@ -734,7 +734,7 @@ export function VehiclesCatalog() {
                   <div>
                     <button
                       onClick={() => handleBookNow(activeModalCar)}
-                      className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-3.5 rounded-2xl shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2"
+                      className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2"
                     >
                       Rent a car
                     </button>
@@ -780,7 +780,7 @@ export function VehiclesCatalog() {
                           setActiveModalCar(other);
                           setActiveThumbnailIndex(0);
                         }}
-                        className="text-left p-4 rounded-2xl bg-slate-50/90 hover:bg-white border border-slate-100 hover:border-violet-200 hover:shadow-lg transition-all duration-200 flex flex-col justify-between group"
+                        className="text-left p-4 rounded-[24px] bg-slate-50/90 hover:bg-white border border-slate-100 hover:border-violet-200 hover:shadow-lg transition-all duration-200 flex flex-col justify-between group"
                       >
                         {/* Mini Silhouette Image */}
                         <div className="relative aspect-[16/10] w-full rounded-xl bg-white border border-slate-100 mb-3 flex items-center justify-center overflow-hidden p-2">

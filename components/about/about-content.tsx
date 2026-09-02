@@ -174,7 +174,7 @@ export function AboutContent() {
       {/* 3. HERO VIDEO BANNER WITH PLAY BUTTON */}
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative aspect-[21/9] sm:aspect-[2.4/1] w-full rounded-[2.5rem] overflow-hidden shadow-2xl group border border-slate-100">
+          <div className="relative aspect-[21/9] sm:aspect-[2.4/1] w-full rounded-[30px] overflow-hidden shadow-2xl group border border-slate-100">
             <Image
               src="/images/hero-sri-lanka.jpg"
               alt="Tourmate scenic road trip video preview in Sri Lanka"
@@ -279,7 +279,7 @@ export function AboutContent() {
 
             {/* Right Photo */}
             <div className="lg:col-span-6">
-              <div className="relative aspect-[4/3] w-full rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-100 group">
+              <div className="relative aspect-[4/3] w-full rounded-[30px] overflow-hidden shadow-2xl border border-slate-100 group">
                 <Image
                   src="/images/car-fleet.jpg"
                   alt="Tourmate rental fleet travelers exploring Sri Lanka"
@@ -295,10 +295,10 @@ export function AboutContent() {
       {/* 6. DOWNLOAD OUR APP BANNER */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-[2.5rem] overflow-hidden bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-700 text-white p-8 sm:p-12 lg:p-16 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-10">
+          <div className="relative rounded-[30px] overflow-hidden bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-700 text-white p-8 sm:p-12 lg:p-16 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-10">
             {/* Left Phone Mockup Illustration */}
             <div className="flex-shrink-0 flex justify-center animate-float">
-              <div className="relative w-48 h-80 sm:w-56 sm:h-96 rounded-[2.5rem] border-4 border-slate-900 bg-white shadow-2xl overflow-hidden p-2 flex flex-col justify-between">
+              <div className="relative w-48 h-80 sm:w-56 sm:h-96 rounded-[30px] border-4 border-slate-900 bg-white shadow-2xl overflow-hidden p-2 flex flex-col justify-between">
                 {/* Dynamic Island Notch */}
                 <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mt-1" />
                 <div className="flex-1 flex flex-col items-center justify-center p-4 text-center">
@@ -379,7 +379,7 @@ export function AboutContent() {
               <div
                 key={idx}
                 style={{ animationDelay: `${idx * 100}ms` }}
-                className="card-hover-lift bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between animate-fade-in-up"
+                className="card-hover-lift bg-slate-50 rounded-[30px] overflow-hidden border border-slate-100 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between animate-fade-in-up"
               >
                 {/* Top Quote Content */}
                 <div className="p-8 space-y-4">
@@ -421,7 +421,7 @@ export function AboutContent() {
               return (
                 <div
                   key={idx}
-                  className="rounded-2xl border border-slate-200/90 overflow-hidden transition-all duration-200"
+                  className="rounded-[20px] border border-slate-200/90 overflow-hidden transition-all duration-200"
                 >
                   <button
                     onClick={() => toggleFaq(idx)}
@@ -450,7 +450,7 @@ export function AboutContent() {
       {/* 9. LOOKING FOR A CAR CTA BANNER */}
       <section className="pt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-[2.5rem] overflow-hidden bg-gradient-to-r from-violet-700 via-purple-700 to-indigo-800 text-white p-8 sm:p-12 lg:p-16 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="relative rounded-[30px] overflow-hidden bg-gradient-to-r from-violet-700 via-purple-700 to-indigo-800 text-white p-8 sm:p-12 lg:p-16 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
             {/* Left Phone / CTA Details */}
             <div className="space-y-4 max-w-xl text-center md:text-left z-10">
               <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
@@ -470,7 +470,7 @@ export function AboutContent() {
               <div className="pt-2">
                 <button
                   onClick={handleBookingClick}
-                  className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-8 py-3.5 rounded-full text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95"
+                  className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-8 py-3.5 rounded-[30px] text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95"
                 >
                   Book now
                 </button>

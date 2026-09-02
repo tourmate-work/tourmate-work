@@ -133,10 +133,10 @@ export function ContactContent() {
       {/* 2. HERO BOOKING CARD & CAR IMAGE BANNER */}
       <section className="py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-slate-50/70 border border-slate-200/80 rounded-[2.5rem] p-4 sm:p-6 lg:p-8 shadow-sm">
+          <div className="bg-slate-50/70 border border-slate-200/80 rounded-[30px] p-4 sm:p-6 lg:p-8 shadow-sm">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
               {/* Left Purple Booking Box */}
-              <div className="lg:col-span-4 bg-violet-600 text-white rounded-3xl p-6 sm:p-7 shadow-xl flex flex-col justify-between">
+              <div className="lg:col-span-4 bg-violet-600 text-white rounded-[30px] p-6 sm:p-7 shadow-xl flex flex-col justify-between">
                 <div>
                   <h2 className="text-xl font-bold text-center text-white mb-5">
                     Book your car
@@ -148,7 +148,7 @@ export function ContactContent() {
                       <select
                         value={carType}
                         onChange={(e) => setCarType(e.target.value)}
-                        className="w-full appearance-none bg-violet-700/80 hover:bg-violet-700 border border-violet-500/60 text-white text-xs sm:text-sm font-medium rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-white/40 cursor-pointer"
+                        className="w-full appearance-none bg-violet-700/80 hover:bg-violet-700 border border-violet-500/60 text-white text-xs sm:text-sm font-medium rounded-[20px] px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-white/40 cursor-pointer"
                       >
                         <option value="Sedan" className="text-slate-900">
                           Sedan (Axio, Premio, Mercedes)
@@ -174,7 +174,7 @@ export function ContactContent() {
                       <select
                         value={pickupPlace}
                         onChange={(e) => setPickupPlace(e.target.value)}
-                        className="w-full appearance-none bg-violet-700/80 hover:bg-violet-700 border border-violet-500/60 text-white text-xs sm:text-sm font-medium rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-white/40 cursor-pointer"
+                        className="w-full appearance-none bg-violet-700/80 hover:bg-violet-700 border border-violet-500/60 text-white text-xs sm:text-sm font-medium rounded-[20px] px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-white/40 cursor-pointer"
                       >
                         <option value="Bandaranaike Airport (CMB)" className="text-slate-900">
                           CMB International Airport
@@ -203,7 +203,7 @@ export function ContactContent() {
                       <select
                         value={returnPlace}
                         onChange={(e) => setReturnPlace(e.target.value)}
-                        className="w-full appearance-none bg-violet-700/80 hover:bg-violet-700 border border-violet-500/60 text-white text-xs sm:text-sm font-medium rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-white/40 cursor-pointer"
+                        className="w-full appearance-none bg-violet-700/80 hover:bg-violet-700 border border-violet-500/60 text-white text-xs sm:text-sm font-medium rounded-[20px] px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-white/40 cursor-pointer"
                       >
                         <option value="Same as pickup" className="text-slate-900">
                           Place of return: Same as pickup
@@ -227,7 +227,7 @@ export function ContactContent() {
                         type="date"
                         value={rentalDate}
                         onChange={(e) => setRentalDate(e.target.value)}
-                        className="w-full bg-violet-700/80 hover:bg-violet-700 border border-violet-500/60 text-white text-xs sm:text-sm font-medium rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/40 cursor-pointer"
+                        className="w-full bg-violet-700/80 hover:bg-violet-700 border border-violet-500/60 text-white text-xs sm:text-sm font-medium rounded-[20px] px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/40 cursor-pointer"
                       />
                     </div>
 
@@ -237,14 +237,14 @@ export function ContactContent() {
                         type="date"
                         value={returnDate}
                         onChange={(e) => setReturnDate(e.target.value)}
-                        className="w-full bg-violet-700/80 hover:bg-violet-700 border border-violet-500/60 text-white text-xs sm:text-sm font-medium rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/40 cursor-pointer"
+                        className="w-full bg-violet-700/80 hover:bg-violet-700 border border-violet-500/60 text-white text-xs sm:text-sm font-medium rounded-[20px] px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/40 cursor-pointer"
                       />
                     </div>
 
                     {/* Yellow CTA Button */}
                     <button
                       type="submit"
-                      className="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold text-sm sm:text-base py-3.5 rounded-2xl shadow-lg transition-all duration-200 transform active:scale-95 mt-2"
+                      className="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg transition-all duration-200 transform active:scale-95 mt-2"
                     >
                       Book now
                     </button>
@@ -253,7 +253,7 @@ export function ContactContent() {
               </div>
 
               {/* Right Hero Road Image */}
-              <div className="lg:col-span-8 relative min-h-[360px] sm:min-h-[420px] rounded-3xl overflow-hidden border border-slate-200/60">
+              <div className="lg:col-span-8 relative min-h-[360px] sm:min-h-[420px] rounded-[30px] overflow-hidden border border-slate-200/60">
                 <Image
                   src="/images/hero-sri-lanka.jpg"
                   alt="Tourmate rental fleet in Sri Lanka"
@@ -273,7 +273,7 @@ export function ContactContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Address */}
-            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
+            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-[30px] bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
               <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
                 <MapPin className="h-6 w-6 fill-white text-[#f39c12]" />
               </div>
@@ -288,7 +288,7 @@ export function ContactContent() {
             </div>
 
             {/* Email */}
-            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
+            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-[30px] bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
               <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
                 <Mail className="h-6 w-6 fill-white text-[#f39c12]" />
               </div>
@@ -306,7 +306,7 @@ export function ContactContent() {
             </div>
 
             {/* Phone */}
-            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
+            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-[30px] bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
               <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
                 <Phone className="h-6 w-6 fill-white text-[#f39c12]" />
               </div>
@@ -324,7 +324,7 @@ export function ContactContent() {
             </div>
 
             {/* Opening Hours */}
-            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
+            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-[30px] bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
               <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
                 <Clock className="h-6 w-6 text-white" />
               </div>
@@ -355,10 +355,10 @@ export function ContactContent() {
               <div
                 key={post.id}
                 style={{ animationDelay: `${idx * 100}ms` }}
-                className="card-hover-lift bg-slate-50/80 hover:bg-white rounded-3xl p-5 border border-slate-100 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group animate-fade-in-up"
+                className="card-hover-lift bg-slate-50/80 hover:bg-white rounded-[30px] p-5 border border-slate-100 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group animate-fade-in-up"
               >
                 {/* Image */}
-                <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-white mb-5 border border-slate-100">
+                <div className="relative aspect-[16/10] w-full rounded-[24px] overflow-hidden bg-white mb-5 border border-slate-100">
                   <Image
                     src={post.image}
                     alt={post.title}

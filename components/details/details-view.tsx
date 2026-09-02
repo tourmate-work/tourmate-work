@@ -349,7 +349,7 @@ function DetailsContentInner() {
             </div>
 
             {/* Main Silhouette View */}
-            <div className="relative aspect-[16/9] w-full rounded-3xl bg-slate-50 border border-slate-100/90 flex items-center justify-center p-8 overflow-hidden shadow-inner">
+            <div className="relative aspect-[16/9] w-full rounded-[30px] bg-slate-50 border border-slate-100/90 flex items-center justify-center p-8 overflow-hidden shadow-inner">
               <VehicleVectorGraphic type={selectedVehicle.type} />
             </div>
 
@@ -359,7 +359,7 @@ function DetailsContentInner() {
                 <button
                   key={idx}
                   onClick={() => setActiveThumbnailIndex(idx)}
-                  className={`relative h-20 w-24 sm:h-24 sm:w-28 rounded-2xl overflow-hidden border-2 transition-all ${
+                  className={`relative h-20 w-24 sm:h-24 sm:w-28 rounded-[20px] overflow-hidden border-2 transition-all ${
                     activeThumbnailIndex === idx
                       ? "border-violet-600 ring-2 ring-violet-600/30 scale-105 shadow-md"
                       : "border-slate-200 opacity-70 hover:opacity-100"
@@ -387,7 +387,7 @@ function DetailsContentInner() {
               {/* 2x3 Spec Cards Grid */}
               <div className="grid grid-cols-3 gap-3.5 sm:gap-4">
                 {/* 1. Gear Box */}
-                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-2xl p-4 border border-slate-100 transition-all flex flex-col justify-between">
+                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-[20px] p-4 border border-slate-100 transition-all flex flex-col justify-between">
                   <div className="text-slate-800 mb-2">
                     <SlidersHorizontal className="h-5 w-5" />
                   </div>
@@ -402,7 +402,7 @@ function DetailsContentInner() {
                 </div>
 
                 {/* 2. Fuel */}
-                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-2xl p-4 border border-slate-100 transition-all flex flex-col justify-between">
+                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-[20px] p-4 border border-slate-100 transition-all flex flex-col justify-between">
                   <div className="text-slate-800 mb-2">
                     <Fuel className="h-5 w-5" />
                   </div>
@@ -417,7 +417,7 @@ function DetailsContentInner() {
                 </div>
 
                 {/* 3. Doors */}
-                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-2xl p-4 border border-slate-100 transition-all flex flex-col justify-between">
+                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-[20px] p-4 border border-slate-100 transition-all flex flex-col justify-between">
                   <div className="text-slate-800 mb-2">
                     <DoorOpen className="h-5 w-5" />
                   </div>
@@ -432,7 +432,7 @@ function DetailsContentInner() {
                 </div>
 
                 {/* 4. Air Conditioner */}
-                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-2xl p-4 border border-slate-100 transition-all flex flex-col justify-between">
+                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-[20px] p-4 border border-slate-100 transition-all flex flex-col justify-between">
                   <div className="text-slate-800 mb-2">
                     <Snowflake className="h-5 w-5" />
                   </div>
@@ -447,7 +447,7 @@ function DetailsContentInner() {
                 </div>
 
                 {/* 5. Seats */}
-                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-2xl p-4 border border-slate-100 transition-all flex flex-col justify-between">
+                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-[20px] p-4 border border-slate-100 transition-all flex flex-col justify-between">
                   <div className="text-slate-800 mb-2">
                     <Users className="h-5 w-5" />
                   </div>
@@ -462,7 +462,7 @@ function DetailsContentInner() {
                 </div>
 
                 {/* 6. Distance */}
-                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-2xl p-4 border border-slate-100 transition-all flex flex-col justify-between">
+                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-[20px] p-4 border border-slate-100 transition-all flex flex-col justify-between">
                   <div className="text-slate-800 mb-2">
                     <Gauge className="h-5 w-5" />
                   </div>
@@ -482,7 +482,7 @@ function DetailsContentInner() {
             <div>
               <button
                 onClick={handleBookNow}
-                className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-3.5 rounded-2xl shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2"
+                className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2"
               >
                 Rent a car
               </button>
@@ -529,10 +529,10 @@ function DetailsContentInner() {
               <div
                 key={car.id}
                 style={{ animationDelay: `${index * 60}ms` }}
-                className="card-hover-lift bg-[#f8fafc] hover:bg-white rounded-3xl p-6 border border-slate-100/90 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group animate-fade-in-up"
+                className="card-hover-lift bg-[#f8fafc] hover:bg-white rounded-[30px] p-6 border border-slate-100/90 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group animate-fade-in-up"
               >
                 {/* Silhouette Container */}
-                <div className="relative aspect-[16/9] w-full rounded-2xl bg-white border border-slate-100 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-50/50 transition-colors">
+                <div className="relative aspect-[16/9] w-full rounded-[24px] bg-white border border-slate-100 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-50/50 transition-colors">
                   <VehicleVectorGraphic type={car.type} />
                 </div>
 
@@ -575,7 +575,7 @@ function DetailsContentInner() {
                   {/* View Details Button */}
                   <button
                     onClick={() => handleSelectCar(car)}
-                    className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm py-3.5 rounded-2xl shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-center"
+                    className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm py-3.5 rounded-[30px] shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-center"
                   >
                     View Details
                   </button>
