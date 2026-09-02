@@ -297,7 +297,7 @@ export function AboutContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-[2.5rem] overflow-hidden bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-700 text-white p-8 sm:p-12 lg:p-16 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-10">
             {/* Left Phone Mockup Illustration */}
-            <div className="flex-shrink-0 flex justify-center">
+            <div className="flex-shrink-0 flex justify-center animate-float">
               <div className="relative w-48 h-80 sm:w-56 sm:h-96 rounded-[2.5rem] border-4 border-slate-900 bg-white shadow-2xl overflow-hidden p-2 flex flex-col justify-between">
                 {/* Dynamic Island Notch */}
                 <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mt-1" />
@@ -321,7 +321,7 @@ export function AboutContent() {
               <span className="inline-block uppercase tracking-widest text-[11px] font-bold text-violet-200 bg-white/15 px-3.5 py-1 rounded-full backdrop-blur-sm">
                 Download Our App
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+              <h2 className="title-hover-glow text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
                 Download our app
               </h2>
               <p className="text-sm sm:text-base text-violet-100/90 leading-relaxed font-normal">
@@ -369,7 +369,7 @@ export function AboutContent() {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight">
+            <h2 className="title-hover-glow text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight">
               Reviews from our customers
             </h2>
           </div>
@@ -378,7 +378,8 @@ export function AboutContent() {
             {TESTIMONIALS.map((item, idx) => (
               <div
                 key={idx}
-                className="bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+                style={{ animationDelay: `${idx * 100}ms` }}
+                className="card-hover-lift bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between animate-fade-in-up"
               >
                 {/* Top Quote Content */}
                 <div className="p-8 space-y-4">

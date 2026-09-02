@@ -473,13 +473,14 @@ export function VehiclesCatalog() {
 
         {/* Vehicle Cards Grid (3x3) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredVehicles.map((car) => (
+          {filteredVehicles.map((car, index) => (
             <div
               key={car.id}
-              className="bg-[#f8fafc] hover:bg-white rounded-3xl p-6 border border-slate-100/90 shadow-sm hover:shadow-2xl hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group"
+              style={{ animationDelay: `${index * 60}ms` }}
+              className="card-hover-lift bg-[#f8fafc] hover:bg-white rounded-3xl p-6 border border-slate-100/90 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group animate-fade-in-up"
             >
               {/* Silhouette Container */}
-              <div className="relative aspect-[16/9] w-full rounded-2xl bg-white border border-slate-100 mb-6 flex items-center justify-center overflow-hidden p-4">
+              <div className="relative aspect-[16/9] w-full rounded-2xl bg-white border border-slate-100 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-50/50 transition-colors">
                 <VehicleVectorGraphic type={car.type} />
               </div>
 
@@ -488,7 +489,7 @@ export function VehiclesCatalog() {
                 {/* Header: Name + Price */}
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="text-xl font-bold text-slate-900 leading-snug group-hover:text-violet-600 transition-colors">
+                    <h3 className="title-hover-glow text-xl font-bold text-slate-900 leading-snug group-hover:text-violet-600 transition-colors">
                       {car.name}
                     </h3>
                     <p className="text-xs text-slate-400 font-medium">
@@ -522,10 +523,10 @@ export function VehiclesCatalog() {
                 {/* View Details Animated Opener Button */}
                 <button
                   onClick={() => handleOpenDetails(car)}
-                  className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm py-3.5 rounded-2xl shadow-md shadow-violet-500/15 hover:shadow-lg hover:shadow-violet-500/25 transition-all duration-200 active:scale-[0.98] text-center flex items-center justify-center gap-2 group-hover:bg-violet-700"
+                  className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm py-3.5 rounded-2xl shadow-md shadow-violet-500/15 hover:shadow-lg hover:shadow-violet-500/25 transition-all duration-300 active:scale-[0.98] text-center flex items-center justify-center gap-2 group-hover:bg-violet-700"
                 >
-                  <span>View Details</span>
-                  <Sparkles className="h-4 w-4 opacity-70 group-hover:opacity-100 transition-opacity" />
+                  <span className="tracking-wide">View Details</span>
+                  <Sparkles className="h-4 w-4 opacity-70 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-300" />
                 </button>
               </div>
             </div>

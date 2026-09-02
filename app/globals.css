@@ -13,11 +13,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    /* Tourmate Primary Brand: Deep Vibrant Blue */
+    /* Tourmate Primary Brand */
     --primary: 221 83% 53%;
     --primary-foreground: 210 40% 98%;
 
-    /* Tourmate Secondary: Crisp Slate */
     --secondary: 210 40% 96%;
     --secondary-foreground: 222 47% 11%;
 
@@ -72,7 +71,94 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
+  html {
+    scroll-behavior: smooth;
   }
+  body {
+    @apply bg-background text-foreground font-sans antialiased selection:bg-slate-900 selection:text-white;
+  }
+}
+
+/* Custom Smooth Animation Utilities */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes pulseSubtle {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.03);
+    opacity: 0.95;
+  }
+}
+
+@keyframes textGlow {
+  0%, 100% {
+    letter-spacing: -0.025em;
+  }
+  50% {
+    letter-spacing: -0.015em;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float {
+  animation: floatSlow 4s ease-in-out infinite;
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 3s ease-in-out infinite;
+}
+
+/* Smooth Card Hover Interactions */
+.card-hover-lift {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s ease;
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.08), 0 10px 15px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Typography hover transitions */
+.title-hover-glow {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.3s ease,
+              letter-spacing 0.3s ease;
+}
+
+.title-hover-glow:hover {
+  letter-spacing: -0.01em;
+}
+
+.badge-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.badge-hover:hover {
+  transform: scale(1.05);
 }

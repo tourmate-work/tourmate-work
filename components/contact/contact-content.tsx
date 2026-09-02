@@ -273,7 +273,7 @@ export function ContactContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Address */}
-            <div className="flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all">
+            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
               <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
                 <MapPin className="h-6 w-6 fill-white text-[#f39c12]" />
               </div>
@@ -288,7 +288,7 @@ export function ContactContent() {
             </div>
 
             {/* Email */}
-            <div className="flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all">
+            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
               <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
                 <Mail className="h-6 w-6 fill-white text-[#f39c12]" />
               </div>
@@ -306,7 +306,7 @@ export function ContactContent() {
             </div>
 
             {/* Phone */}
-            <div className="flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all">
+            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
               <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
                 <Phone className="h-6 w-6 fill-white text-[#f39c12]" />
               </div>
@@ -324,7 +324,7 @@ export function ContactContent() {
             </div>
 
             {/* Opening Hours */}
-            <div className="flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all">
+            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
               <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
                 <Clock className="h-6 w-6 text-white" />
               </div>
@@ -345,16 +345,17 @@ export function ContactContent() {
       <section className="py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight">
+            <h2 className="title-hover-glow text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight">
               Latest blog posts & news
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {BLOG_POSTS.map((post) => (
+            {BLOG_POSTS.map((post, idx) => (
               <div
                 key={post.id}
-                className="bg-slate-50/80 hover:bg-white rounded-3xl p-5 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+                style={{ animationDelay: `${idx * 100}ms` }}
+                className="card-hover-lift bg-slate-50/80 hover:bg-white rounded-3xl p-5 border border-slate-100 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group animate-fade-in-up"
               >
                 {/* Image */}
                 <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-white mb-5 border border-slate-100">
@@ -368,7 +369,7 @@ export function ContactContent() {
 
                 {/* Content */}
                 <div className="space-y-3">
-                  <h3 className="text-lg font-bold text-slate-900 leading-snug group-hover:text-violet-600 transition-colors">
+                  <h3 className="title-hover-glow text-lg font-bold text-slate-900 leading-snug group-hover:text-violet-600 transition-colors">
                     {post.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">

@@ -525,13 +525,14 @@ function DetailsContentInner() {
 
           {/* 6 Car Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {otherCars.map((car) => (
+            {otherCars.map((car, index) => (
               <div
                 key={car.id}
-                className="bg-[#f8fafc] hover:bg-white rounded-3xl p-6 border border-slate-100/90 shadow-sm hover:shadow-xl hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group"
+                style={{ animationDelay: `${index * 60}ms` }}
+                className="card-hover-lift bg-[#f8fafc] hover:bg-white rounded-3xl p-6 border border-slate-100/90 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group animate-fade-in-up"
               >
                 {/* Silhouette Container */}
-                <div className="relative aspect-[16/9] w-full rounded-2xl bg-white border border-slate-100 mb-6 flex items-center justify-center overflow-hidden p-4">
+                <div className="relative aspect-[16/9] w-full rounded-2xl bg-white border border-slate-100 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-50/50 transition-colors">
                   <VehicleVectorGraphic type={car.type} />
                 </div>
 
@@ -540,7 +541,7 @@ function DetailsContentInner() {
                   {/* Name and Price */}
                   <div className="flex items-start justify-between">
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900 leading-snug">
+                      <h3 className="title-hover-glow text-lg font-bold text-slate-900 leading-snug group-hover:text-violet-600 transition-colors">
                         {car.name}
                       </h3>
                       <p className="text-xs text-slate-400 font-medium">
