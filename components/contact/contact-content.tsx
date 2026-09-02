@@ -10,6 +10,7 @@ import {
   Clock,
   ChevronDown,
 } from "lucide-react";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 const BLOG_POSTS = [
   {
@@ -273,70 +274,78 @@ export function ContactContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Address */}
-            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-[30px] bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
-              <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
-                <MapPin className="h-6 w-6 fill-white text-[#f39c12]" />
+            <ScrollReveal delay={0} direction="up">
+              <div className="card-hover-lift flex items-center gap-4 p-5 rounded-[30px] bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all h-full">
+                <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
+                  <MapPin className="h-6 w-6 fill-white text-[#f39c12]" />
+                </div>
+                <div>
+                  <span className="text-xs text-slate-400 font-medium block">
+                    Address
+                  </span>
+                  <span className="text-sm font-bold text-slate-900 block mt-0.5">
+                    Wennapuwa, Sri Lanka
+                  </span>
+                </div>
               </div>
-              <div>
-                <span className="text-xs text-slate-400 font-medium block">
-                  Address
-                </span>
-                <span className="text-sm font-bold text-slate-900 block mt-0.5">
-                  Wennapuwa, Sri Lanka
-                </span>
-              </div>
-            </div>
+            </ScrollReveal>
 
             {/* Email */}
-            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-[30px] bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
-              <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
-                <Mail className="h-6 w-6 fill-white text-[#f39c12]" />
+            <ScrollReveal delay={100} direction="up">
+              <div className="card-hover-lift flex items-center gap-4 p-5 rounded-[30px] bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all h-full">
+                <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
+                  <Mail className="h-6 w-6 fill-white text-[#f39c12]" />
+                </div>
+                <div>
+                  <span className="text-xs text-slate-400 font-medium block">
+                    Email
+                  </span>
+                  <a
+                    href="mailto:tourmaterentals@gmail.com"
+                    className="text-sm font-bold text-slate-900 hover:text-amber-600 transition-colors block mt-0.5 break-all"
+                  >
+                    tourmaterentals@gmail.com
+                  </a>
+                </div>
               </div>
-              <div>
-                <span className="text-xs text-slate-400 font-medium block">
-                  Email
-                </span>
-                <a
-                  href="mailto:tourmaterentals@gmail.com"
-                  className="text-sm font-bold text-slate-900 hover:text-amber-600 transition-colors block mt-0.5 break-all"
-                >
-                  tourmaterentals@gmail.com
-                </a>
-              </div>
-            </div>
+            </ScrollReveal>
 
             {/* Phone */}
-            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-[30px] bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
-              <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
-                <Phone className="h-6 w-6 fill-white text-[#f39c12]" />
+            <ScrollReveal delay={200} direction="up">
+              <div className="card-hover-lift flex items-center gap-4 p-5 rounded-[30px] bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all h-full">
+                <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
+                  <Phone className="h-6 w-6 fill-white text-[#f39c12]" />
+                </div>
+                <div>
+                  <span className="text-xs text-slate-400 font-medium block">
+                    Phone
+                  </span>
+                  <a
+                    href="tel:+94772973530"
+                    className="text-sm font-bold text-slate-900 hover:text-amber-600 transition-colors block mt-0.5"
+                  >
+                    +94 (77) 297 3530
+                  </a>
+                </div>
               </div>
-              <div>
-                <span className="text-xs text-slate-400 font-medium block">
-                  Phone
-                </span>
-                <a
-                  href="tel:+94772973530"
-                  className="text-sm font-bold text-slate-900 hover:text-amber-600 transition-colors block mt-0.5"
-                >
-                  +94 (77) 297 3530
-                </a>
-              </div>
-            </div>
+            </ScrollReveal>
 
             {/* Opening Hours */}
-            <div className="card-hover-lift flex items-center gap-4 p-5 rounded-[30px] bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all">
-              <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
-                <Clock className="h-6 w-6 text-white" />
+            <ScrollReveal delay={300} direction="up">
+              <div className="card-hover-lift flex items-center gap-4 p-5 rounded-[30px] bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all h-full">
+                <div className="h-12 w-12 rounded-full bg-[#f39c12] text-white flex items-center justify-center flex-shrink-0 shadow-md">
+                  <Clock className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <span className="text-xs text-slate-400 font-medium block">
+                    Opening hours
+                  </span>
+                  <span className="text-sm font-bold text-slate-900 block mt-0.5">
+                    Sun-Mon: 8:00am - 10:00pm
+                  </span>
+                </div>
               </div>
-              <div>
-                <span className="text-xs text-slate-400 font-medium block">
-                  Opening hours
-                </span>
-                <span className="text-sm font-bold text-slate-900 block mt-0.5">
-                  Sun-Mon: 8:00am - 10:00pm
-                </span>
-              </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -352,37 +361,40 @@ export function ContactContent() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {BLOG_POSTS.map((post, idx) => (
-              <div
+              <ScrollReveal
                 key={post.id}
-                style={{ animationDelay: `${idx * 100}ms` }}
-                className="card-hover-lift bg-slate-50/80 hover:bg-white rounded-[30px] p-5 border border-slate-100 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group animate-fade-in-up"
+                delay={idx * 120}
+                direction="up"
+                distance={28}
               >
-                {/* Image */}
-                <div className="relative aspect-[16/10] w-full rounded-[24px] overflow-hidden bg-white mb-5 border border-slate-100">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
+                <div className="card-hover-lift bg-slate-50/80 hover:bg-white rounded-[30px] p-5 border border-slate-100 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between h-full group">
+                  {/* Image */}
+                  <div className="relative aspect-[16/10] w-full rounded-[24px] overflow-hidden bg-white mb-5 border border-slate-100">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
 
-                {/* Content */}
-                <div className="space-y-3">
-                  <h3 className="title-hover-glow text-lg font-bold text-slate-900 leading-snug group-hover:text-violet-600 transition-colors">
-                    {post.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-                    {post.excerpt}
-                  </p>
-                  <div className="pt-2 flex items-center justify-between text-xs text-slate-400 border-t border-slate-200/60">
-                    <span className="font-semibold text-slate-600">
-                      {post.category}
-                    </span>
-                    <span>{post.date}</span>
+                  {/* Content */}
+                  <div className="space-y-3">
+                    <h3 className="title-hover-glow text-lg font-bold text-slate-900 leading-snug group-hover:text-violet-600 transition-colors">
+                      {post.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                      {post.excerpt}
+                    </p>
+                    <div className="pt-2 flex items-center justify-between text-xs text-slate-400 border-t border-slate-200/60">
+                      <span className="font-semibold text-slate-600">
+                        {post.category}
+                      </span>
+                      <span>{post.date}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>

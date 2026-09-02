@@ -13,6 +13,7 @@ import {
   X,
   Sparkles,
 } from "lucide-react";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export interface VehicleDetail {
   id: string;
@@ -474,62 +475,65 @@ export function VehiclesCatalog() {
         {/* Vehicle Cards Grid (3x3) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filteredVehicles.map((car, index) => (
-            <div
+            <ScrollReveal
               key={car.id}
-              style={{ animationDelay: `${index * 60}ms` }}
-              className="card-hover-lift bg-[#f8fafc] hover:bg-white rounded-[30px] p-6 border border-slate-100/90 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group animate-fade-in-up"
+              delay={(index % 3) * 100}
+              direction="up"
+              distance={28}
             >
-              {/* Silhouette Container */}
-              <div className="relative aspect-[16/9] w-full rounded-[24px] bg-white border border-slate-100 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-50/50 transition-colors">
-                <VehicleVectorGraphic type={car.type} />
-              </div>
-
-              {/* Specs & Info */}
-              <div className="space-y-4">
-                {/* Header: Name + Price */}
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="title-hover-glow text-xl font-bold text-slate-900 leading-snug group-hover:text-violet-600 transition-colors">
-                      {car.name}
-                    </h3>
-                    <p className="text-xs text-slate-400 font-medium">
-                      {car.category}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-lg font-bold text-violet-600 block leading-tight">
-                      {car.price}
-                    </span>
-                    <span className="text-xs text-slate-400">{car.period}</span>
-                  </div>
+              <div className="card-hover-lift bg-[#f8fafc] hover:bg-white rounded-[30px] p-6 border border-slate-100/90 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group h-full">
+                {/* Silhouette Container */}
+                <div className="relative aspect-[16/9] w-full rounded-[24px] bg-white border border-slate-100 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-50/50 transition-colors">
+                  <VehicleVectorGraphic type={car.type} />
                 </div>
 
-                {/* 3 Quick Specs Pills */}
-                <div className="grid grid-cols-3 gap-1.5 py-3 border-t border-slate-200/70 text-[11px] text-slate-500">
-                  <div className="flex items-center gap-1">
-                    <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400" />
-                    <span className="truncate">{car.specs.gearBox}</span>
+                {/* Specs & Info */}
+                <div className="space-y-4">
+                  {/* Header: Name + Price */}
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="title-hover-glow text-xl font-bold text-slate-900 leading-snug group-hover:text-violet-600 transition-colors">
+                        {car.name}
+                      </h3>
+                      <p className="text-xs text-slate-400 font-medium">
+                        {car.category}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-lg font-bold text-violet-600 block leading-tight">
+                        {car.price}
+                      </span>
+                      <span className="text-xs text-slate-400">{car.period}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Fuel className="h-3.5 w-3.5 text-slate-400" />
-                    <span className="truncate">{car.fuelCapacity}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Snowflake className="h-3.5 w-3.5 text-slate-400" />
-                    <span className="truncate">Air Conditioner</span>
-                  </div>
-                </div>
 
-                {/* View Details Animated Opener Button */}
-                <button
-                  onClick={() => handleOpenDetails(car)}
-                  className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm py-3.5 rounded-[30px] shadow-md shadow-violet-500/15 hover:shadow-lg hover:shadow-violet-500/25 transition-all duration-300 active:scale-[0.98] text-center flex items-center justify-center gap-2 group-hover:bg-violet-700"
-                >
-                  <span className="tracking-wide">View Details</span>
-                  <Sparkles className="h-4 w-4 opacity-70 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-300" />
-                </button>
+                  {/* 3 Quick Specs Pills */}
+                  <div className="grid grid-cols-3 gap-1.5 py-3 border-t border-slate-200/70 text-[11px] text-slate-500">
+                    <div className="flex items-center gap-1">
+                      <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400" />
+                      <span className="truncate">{car.specs.gearBox}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Fuel className="h-3.5 w-3.5 text-slate-400" />
+                      <span className="truncate">{car.fuelCapacity}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Snowflake className="h-3.5 w-3.5 text-slate-400" />
+                      <span className="truncate">Air Conditioner</span>
+                    </div>
+                  </div>
+
+                  {/* View Details Animated Opener Button */}
+                  <button
+                    onClick={() => handleOpenDetails(car)}
+                    className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm py-3.5 rounded-[30px] shadow-md shadow-violet-500/15 hover:shadow-lg hover:shadow-violet-500/25 transition-all duration-300 active:scale-[0.98] text-center flex items-center justify-center gap-2 group-hover:bg-violet-700"
+                  >
+                    <span className="tracking-wide">View Details</span>
+                    <Sparkles className="h-4 w-4 opacity-70 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-300" />
+                  </button>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
 

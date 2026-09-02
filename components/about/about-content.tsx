@@ -10,6 +10,7 @@ import {
   Quote,
   Phone,
 } from "lucide-react";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 function AppleLogoIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
@@ -376,31 +377,34 @@ export function AboutContent() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {TESTIMONIALS.map((item, idx) => (
-              <div
+              <ScrollReveal
                 key={idx}
-                style={{ animationDelay: `${idx * 100}ms` }}
-                className="card-hover-lift bg-slate-50 rounded-[30px] overflow-hidden border border-slate-100 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between animate-fade-in-up"
+                delay={idx * 120}
+                direction="up"
+                distance={28}
               >
-                {/* Top Quote Content */}
-                <div className="p-8 space-y-4">
-                  <Quote className="h-8 w-8 text-violet-600 fill-violet-600/10" />
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                    &ldquo;{item.quote}&rdquo;
-                  </p>
-                </div>
+                <div className="card-hover-lift bg-slate-50 rounded-[30px] overflow-hidden border border-slate-100 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between h-full">
+                  {/* Top Quote Content */}
+                  <div className="p-8 space-y-4">
+                    <Quote className="h-8 w-8 text-violet-600 fill-violet-600/10" />
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                      &ldquo;{item.quote}&rdquo;
+                    </p>
+                  </div>
 
-                {/* Bottom Purple Ribbon with Author */}
-                <div className="bg-violet-600 text-white p-4 px-6 flex items-center justify-center gap-3 text-center">
-                  <div>
-                    <span className="text-sm font-bold block leading-tight">
-                      {item.author}
-                    </span>
-                    <span className="text-[11px] text-violet-200 block">
-                      {item.role}
-                    </span>
+                  {/* Bottom Purple Ribbon with Author */}
+                  <div className="bg-violet-600 text-white p-4 px-6 flex items-center justify-center gap-3 text-center">
+                    <div>
+                      <span className="text-sm font-bold block leading-tight">
+                        {item.author}
+                      </span>
+                      <span className="text-[11px] text-violet-200 block">
+                        {item.role}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
