@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Phone } from "lucide-react";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export function Header() {
   const pathname = usePathname();
@@ -14,12 +15,12 @@ export function Header() {
   const isContact = pathname.startsWith("/contact");
 
   const activeNavClass =
-    "text-slate-950 font-semibold relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black";
+    "text-slate-950 dark:text-white font-semibold relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black dark:after:bg-white";
   const inactiveNavClass =
-    "text-slate-600 hover:text-slate-950 transition-colors py-1";
+    "text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white transition-colors py-1";
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur border-b border-slate-100 shadow-sm">
+    <header className="sticky top-0 z-50 w-full bg-white/95 dark:bg-black/95 backdrop-blur border-b border-slate-100 dark:border-white/10 shadow-sm transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group py-1">
@@ -28,7 +29,7 @@ export function Header() {
             alt="Tourmate Rentals"
             width={160}
             height={52}
-            className="h-11 w-auto object-contain group-hover:scale-105 transition-transform duration-200"
+            className="h-11 w-auto object-contain group-hover:scale-105 transition-transform duration-200 dark:brightness-110"
             priority
           />
         </Link>
@@ -67,20 +68,23 @@ export function Header() {
           </Link>
         </nav>
 
-        {/* Support Phone Pill */}
+        {/* Support Phone Pill + Dark Mode Switcher */}
         <div className="flex items-center gap-3">
+          {/* Dark Mode Toggle */}
+          <ThemeToggle />
+
           <a
             href="tel:+94772973530"
-            className="flex items-center gap-3 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 px-3.5 py-2 rounded-full transition-all group shadow-sm"
+            className="flex items-center gap-3 bg-slate-50 dark:bg-[#16161a] hover:bg-slate-100 dark:hover:bg-[#202026] border border-slate-200/80 dark:border-white/15 px-3.5 py-2 rounded-full transition-all group shadow-sm"
           >
             <div className="h-8 w-8 rounded-full bg-violet-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
               <Phone className="h-4 w-4" />
             </div>
             <div className="flex flex-col text-left pr-2">
-              <span className="text-[11px] font-medium text-slate-500 leading-tight">
+              <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 leading-tight">
                 Need help?
               </span>
-              <span className="text-xs font-bold text-slate-900 leading-tight">
+              <span className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
                 +94 (77) 297 3530
               </span>
             </div>
