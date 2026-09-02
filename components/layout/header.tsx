@@ -7,8 +7,9 @@ import { Phone } from "lucide-react";
 
 export function Header() {
   const pathname = usePathname();
-  const isVehicles = pathname.startsWith("/vehicles");
   const isHome = pathname === "/";
+  const isVehicles = pathname.startsWith("/vehicles");
+  const isAbout = pathname.startsWith("/about");
 
   const activeNavClass =
     "text-slate-950 font-semibold relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black";
@@ -51,8 +52,8 @@ export function Header() {
             Details
           </Link>
           <Link
-            href="/#about"
-            className={inactiveNavClass}
+            href="/about"
+            className={isAbout ? activeNavClass : inactiveNavClass}
           >
             About Us
           </Link>
