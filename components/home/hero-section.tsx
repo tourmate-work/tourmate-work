@@ -2,7 +2,36 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ChevronDown } from "lucide-react";
+import { CustomDropdown } from "@/components/ui/custom-dropdown";
+import { CustomDatePicker } from "@/components/ui/custom-datepicker";
+
+const CAR_TYPE_OPTIONS = [
+  { value: "Sedan", label: "Sedan (Axio, Premio, Allion)" },
+  { value: "SUV", label: "SUV (Vezel, RAV4, CR-V)" },
+  { value: "Luxury", label: "Luxury (Mercedes, BMW, Audi)" },
+  { value: "Van", label: "Van (KDH Super GL, Caravan)" },
+  { value: "Hatchback", label: "Hatchback (WagonR, Aqua, Vitz)" },
+  { value: "Electric", label: "Electric / Hybrid" },
+];
+
+const PICKUP_OPTIONS = [
+  { value: "Bandaranaike Airport (CMB)", label: "Place of rental: CMB Airport" },
+  { value: "Colombo City / Fort", label: "Colombo City / Fort" },
+  { value: "Wennapuwa / Negombo Beach", label: "Wennapuwa / Negombo Beach" },
+  { value: "Kandy City", label: "Kandy City" },
+  { value: "Galle / Mirissa / South", label: "Galle / Mirissa / South" },
+  { value: "Ella / Hill Country", label: "Ella / Hill Country" },
+  { value: "Sigiriya / Dambulla", label: "Sigiriya / Dambulla" },
+];
+
+const RETURN_OPTIONS = [
+  { value: "Same as pickup", label: "Place of return: Same as pickup" },
+  { value: "Bandaranaike Airport (CMB)", label: "Bandaranaike Airport (CMB)" },
+  { value: "Colombo City / Fort", label: "Colombo City / Fort" },
+  { value: "Wennapuwa / Negombo Beach", label: "Wennapuwa / Negombo Beach" },
+  { value: "Kandy City", label: "Kandy City" },
+  { value: "Galle / South Coast", label: "Galle / South Coast" },
+];
 
 export function HeroSection() {
   const [carType, setCarType] = useState("Sedan");
@@ -20,7 +49,7 @@ export function HeroSection() {
   return (
     <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-10">
       {/* Hero Container with Rounded corners */}
-      <div className="relative rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden bg-gradient-to-r from-violet-950 via-purple-900 to-indigo-950 text-white min-h-[560px] lg:min-h-[600px] flex items-center shadow-2xl">
+      <div className="relative rounded-[30px] overflow-hidden bg-gradient-to-r from-violet-950 via-purple-900 to-indigo-950 text-white min-h-[560px] lg:min-h-[600px] flex items-center shadow-2xl">
         {/* Background Image with Sri Lanka landmarks & cars */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -52,90 +81,56 @@ export function HeroSection() {
 
           {/* Right Floating Booking Card */}
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
-            <div className="w-full max-w-sm sm:max-w-md bg-white text-slate-900 rounded-3xl p-6 sm:p-7 shadow-2xl border border-white/20 backdrop-blur-md">
+            <div className="w-full max-w-sm sm:max-w-md bg-white text-slate-900 rounded-[30px] p-6 sm:p-7 shadow-2xl border border-white/20 backdrop-blur-md">
               <h2 className="text-xl font-bold text-center text-slate-900 mb-5">
                 Book your car
               </h2>
 
               <form onSubmit={handleBookNow} className="space-y-3.5">
-                {/* Car type */}
-                <div className="relative">
-                  <select
-                    value={carType}
-                    onChange={(e) => setCarType(e.target.value)}
-                    className="w-full appearance-none bg-slate-100/90 hover:bg-slate-100 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all cursor-pointer"
-                  >
-                    <option value="Sedan">Sedan (Axio, Premio, Allion)</option>
-                    <option value="SUV">SUV (Vezel, RAV4, CR-V)</option>
-                    <option value="Luxury">Luxury (Mercedes, BMW, Audi)</option>
-                    <option value="Van">Van (KDH Super GL, Caravan)</option>
-                    <option value="Hatchback">Hatchback (WagonR, Aqua, Vitz)</option>
-                    <option value="Electric">Electric / Hybrid</option>
-                  </select>
-                  <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-                </div>
+                {/* Custom Car Type Dropdown */}
+                <CustomDropdown
+                  options={CAR_TYPE_OPTIONS}
+                  value={carType}
+                  onChange={setCarType}
+                  variant="light"
+                />
 
-                {/* Place of rental */}
-                <div className="relative">
-                  <select
-                    value={pickupPlace}
-                    onChange={(e) => setPickupPlace(e.target.value)}
-                    className="w-full appearance-none bg-slate-100/90 hover:bg-slate-100 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all cursor-pointer"
-                  >
-                    <option value="Bandaranaike Airport (CMB)">Place of rental: CMB Airport</option>
-                    <option value="Colombo City / Fort">Colombo City / Fort</option>
-                    <option value="Negombo Beach">Negombo Beach</option>
-                    <option value="Kandy City">Kandy City</option>
-                    <option value="Galle / Mirissa / South">Galle / Mirissa / South</option>
-                    <option value="Ella / Hill Country">Ella / Hill Country</option>
-                    <option value="Sigiriya / Dambulla">Sigiriya / Dambulla</option>
-                  </select>
-                  <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-                </div>
+                {/* Custom Place of Rental Dropdown */}
+                <CustomDropdown
+                  options={PICKUP_OPTIONS}
+                  value={pickupPlace}
+                  onChange={setPickupPlace}
+                  variant="light"
+                />
 
-                {/* Place of return */}
-                <div className="relative">
-                  <select
-                    value={returnPlace}
-                    onChange={(e) => setReturnPlace(e.target.value)}
-                    className="w-full appearance-none bg-slate-100/90 hover:bg-slate-100 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all cursor-pointer"
-                  >
-                    <option value="Same as pickup">Place of return: Same as pickup</option>
-                    <option value="Bandaranaike Airport (CMB)">Bandaranaike Airport (CMB)</option>
-                    <option value="Colombo City / Fort">Colombo City / Fort</option>
-                    <option value="Negombo Beach">Negombo Beach</option>
-                    <option value="Kandy City">Kandy City</option>
-                    <option value="Galle / South Coast">Galle / South Coast</option>
-                  </select>
-                  <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-                </div>
+                {/* Custom Place of Return Dropdown */}
+                <CustomDropdown
+                  options={RETURN_OPTIONS}
+                  value={returnPlace}
+                  onChange={setReturnPlace}
+                  variant="light"
+                />
 
-                {/* Rental Date */}
-                <div className="relative">
-                  <input
-                    type="date"
-                    value={rentalDate}
-                    onChange={(e) => setRentalDate(e.target.value)}
-                    placeholder="Rental Date"
-                    className="w-full bg-slate-100/90 hover:bg-slate-100 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-                  />
-                </div>
+                {/* Custom Rental Datepicker */}
+                <CustomDatePicker
+                  value={rentalDate}
+                  onChange={setRentalDate}
+                  placeholder="Rental Date"
+                  variant="light"
+                />
 
-                {/* Return Date */}
-                <div className="relative">
-                  <input
-                    type="date"
-                    value={returnDate}
-                    onChange={(e) => setReturnDate(e.target.value)}
-                    placeholder="Return Date"
-                    className="w-full bg-slate-100/90 hover:bg-slate-100 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-                  />
-                </div>
+                {/* Custom Return Datepicker */}
+                <CustomDatePicker
+                  value={returnDate}
+                  onChange={setReturnDate}
+                  placeholder="Return Date"
+                  variant="light"
+                />
 
                 {/* CTA Yellow Button */}
                 <button
                   type="submit"
-                  className="w-full bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-bold text-sm sm:text-base py-3.5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 transform active:scale-[0.98] mt-2 flex items-center justify-center gap-2"
+                  className="w-full bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg hover:shadow-xl transition-all duration-200 transform active:scale-[0.98] mt-2 flex items-center justify-center gap-2"
                 >
                   Book now
                 </button>
