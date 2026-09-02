@@ -9,6 +9,7 @@ export function Header() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const isVehicles = pathname.startsWith("/vehicles");
+  const isDetails = pathname.startsWith("/details");
   const isAbout = pathname.startsWith("/about");
 
   const activeNavClass =
@@ -46,8 +47,8 @@ export function Header() {
             Vehicles
           </Link>
           <Link
-            href="/#details"
-            className={inactiveNavClass}
+            href="/details"
+            className={isDetails ? activeNavClass : inactiveNavClass}
           >
             Details
           </Link>
