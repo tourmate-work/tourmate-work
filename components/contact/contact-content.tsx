@@ -185,6 +185,7 @@ export function ContactContent() {
                       value={returnPlace}
                       onChange={setReturnPlace}
                       variant="purple"
+                      position="auto"
                     />
 
                     {/* Rental Date */}
@@ -193,6 +194,7 @@ export function ContactContent() {
                       onChange={setRentalDate}
                       placeholder="Rental Date"
                       variant="purple"
+                      position="auto"
                     />
 
                     {/* Return Date */}
@@ -201,6 +203,7 @@ export function ContactContent() {
                       onChange={setReturnDate}
                       placeholder="Return Date"
                       variant="purple"
+                      position="top"
                     />
 
                     {/* Yellow CTA Button */}

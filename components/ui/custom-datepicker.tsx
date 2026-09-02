@@ -8,6 +8,7 @@ interface CustomDatePickerProps {
   onChange: (value: string) => void;
   placeholder?: string;
   variant?: "light" | "purple";
+  position?: "top" | "bottom" | "auto";
   className?: string;
 }
 
@@ -33,9 +34,13 @@ export function CustomDatePicker({
   onChange,
   placeholder = "Select date",
   variant = "light",
+  position = "bottom",
   className = "",
 }: CustomDatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [effectivePosition, setEffectivePosition] = useState<"top" | "bottom">(
+    position === "top" ? "top" : "bottom"
+  );
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Parse initial date or fallback to current
@@ -46,6 +51,22 @@ export function CustomDatePicker({
   const [viewMonth, setViewMonth] = useState(
     isNaN(parsedDate.getTime()) ? 8 : parsedDate.getMonth()
   );
+
+  useEffect(() => {
+    if (isOpen) {
+      if (position === "auto" && containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        if (spaceBelow < 320 && rect.top > 320) {
+          setEffectivePosition("top");
+        } else {
+          setEffectivePosition("bottom");
+        }
+      } else {
+        setEffectivePosition(position === "top" ? "top" : "bottom");
+      }
+    }
+  }, [isOpen, position]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -182,7 +203,11 @@ export function CustomDatePicker({
 
       {/* Calendar Dropdown Popover */}
       {isOpen && (
-        <div className="absolute left-0 right-0 top-full mt-1.5 z-50 bg-white rounded-[24px] shadow-2xl border border-slate-100 p-4 w-full sm:min-w-[280px] max-w-[320px] animate-in fade-in-0 zoom-in-95 duration-150">
+        <div
+          className={`absolute left-0 right-0 z-50 bg-white rounded-[24px] shadow-2xl border border-slate-100 p-4 w-full sm:min-w-[280px] max-w-[320px] animate-in fade-in-0 zoom-in-95 duration-150 ${
+            effectivePosition === "top" ? "bottom-full mb-2" : "top-full mt-2"
+          }`}
+        >
           {/* Calendar Header: Month/Year + Navigation */}
           <div className="flex items-center justify-between mb-3 px-1">
             <span className="text-sm font-bold text-slate-900">

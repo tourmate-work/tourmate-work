@@ -48,10 +48,10 @@ export function HeroSection() {
 
   return (
     <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-10">
-      {/* Hero Container with Rounded corners */}
-      <div className="relative rounded-[30px] overflow-hidden bg-gradient-to-r from-violet-950 via-purple-900 to-indigo-950 text-white min-h-[560px] lg:min-h-[600px] flex items-center shadow-2xl">
+      {/* Hero Container with Rounded corners - overflow visible so popovers are never clipped */}
+      <div className="relative rounded-[30px] bg-gradient-to-r from-violet-950 via-purple-900 to-indigo-950 text-white min-h-[560px] lg:min-h-[600px] flex items-center shadow-2xl">
         {/* Background Image with Sri Lanka landmarks & cars */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 rounded-[30px] overflow-hidden z-0 pointer-events-none">
           <Image
             src="/images/hero-sri-lanka.jpg"
             alt="Sri Lanka scenic landmarks and Tourmate rental fleet"
@@ -93,6 +93,7 @@ export function HeroSection() {
                   value={carType}
                   onChange={setCarType}
                   variant="light"
+                  position="bottom"
                 />
 
                 {/* Custom Place of Rental Dropdown */}
@@ -101,6 +102,7 @@ export function HeroSection() {
                   value={pickupPlace}
                   onChange={setPickupPlace}
                   variant="light"
+                  position="bottom"
                 />
 
                 {/* Custom Place of Return Dropdown */}
@@ -109,6 +111,7 @@ export function HeroSection() {
                   value={returnPlace}
                   onChange={setReturnPlace}
                   variant="light"
+                  position="auto"
                 />
 
                 {/* Custom Rental Datepicker */}
@@ -117,14 +120,16 @@ export function HeroSection() {
                   onChange={setRentalDate}
                   placeholder="Rental Date"
                   variant="light"
+                  position="auto"
                 />
 
-                {/* Custom Return Datepicker */}
+                {/* Custom Return Datepicker (Pops Upwards to avoid card bottom clipping) */}
                 <CustomDatePicker
                   value={returnDate}
                   onChange={setReturnDate}
                   placeholder="Return Date"
                   variant="light"
+                  position="top"
                 />
 
                 {/* CTA Yellow Button */}

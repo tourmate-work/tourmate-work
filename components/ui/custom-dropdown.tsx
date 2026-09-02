@@ -14,6 +14,7 @@ interface CustomDropdownProps {
   onChange: (value: string) => void;
   placeholder?: string;
   variant?: "light" | "purple";
+  position?: "top" | "bottom" | "auto";
   className?: string;
 }
 
@@ -23,9 +24,13 @@ export function CustomDropdown({
   onChange,
   placeholder = "Select option",
   variant = "light",
+  position = "bottom",
   className = "",
 }: CustomDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [effectivePosition, setEffectivePosition] = useState<"top" | "bottom">(
+    position === "top" ? "top" : "bottom"
+  );
   const containerRef = useRef<HTMLDivElement>(null);
 
   const normalizedOptions: DropdownOption[] = options.map((opt) =>
@@ -33,6 +38,22 @@ export function CustomDropdown({
   );
 
   const selectedOption = normalizedOptions.find((opt) => opt.value === value);
+
+  useEffect(() => {
+    if (isOpen) {
+      if (position === "auto" && containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        if (spaceBelow < 260 && rect.top > 260) {
+          setEffectivePosition("top");
+        } else {
+          setEffectivePosition("bottom");
+        }
+      } else {
+        setEffectivePosition(position === "top" ? "top" : "bottom");
+      }
+    }
+  }, [isOpen, position]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -74,7 +95,11 @@ export function CustomDropdown({
 
       {/* Dropdown Menu Popover */}
       {isOpen && (
-        <div className="absolute left-0 right-0 top-full mt-1.5 z-50 bg-white rounded-[20px] shadow-2xl border border-slate-100 overflow-hidden py-1.5 max-h-60 overflow-y-auto animate-in fade-in-0 zoom-in-95 duration-150">
+        <div
+          className={`absolute left-0 right-0 z-50 bg-white rounded-[20px] shadow-2xl border border-slate-100 overflow-hidden py-1.5 max-h-60 overflow-y-auto animate-in fade-in-0 zoom-in-95 duration-150 ${
+            effectivePosition === "top" ? "bottom-full mb-2" : "top-full mt-2"
+          }`}
+        >
           {normalizedOptions.map((opt) => {
             const isSelected = opt.value === value;
             return (
