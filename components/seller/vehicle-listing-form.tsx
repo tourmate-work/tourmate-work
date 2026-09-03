@@ -17,6 +17,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { SellerVehicle } from "./add-vehicle-modal";
+import { CustomDropdown, DropdownOption } from "@/components/ui/custom-dropdown";
 
 export interface VehicleListingFormProps {
   onSuccess?: (vehicle: SellerVehicle) => void;
@@ -347,6 +348,54 @@ const VEHICLE_CATEGORIES = [
   { id: "Hatchback", label: "Hatchback", desc: "Wagon R, Alto, Vitz, Aqua", type: "sedan" },
   { id: "Pickup", label: "Pickup 4x4", desc: "Toyota Hilux, Isuzu D-Max", type: "suv" },
   { id: "Cabriolet", label: "Cabriolet / Sport", desc: "Mustang, Coupe, Open-top", type: "sport" },
+];
+
+// Custom Animated Dropdown Option Datasets
+const COUNTRY_CODES: DropdownOption[] = [
+  { value: "+94", label: "Sri Lanka (+94)", icon: <span className="text-base leading-none">🇱🇰</span>, sublabel: "LK • Primary" },
+  { value: "+1", label: "United States (+1)", icon: <span className="text-base leading-none">🇺🇸</span>, sublabel: "US / Canada" },
+  { value: "+44", label: "United Kingdom (+44)", icon: <span className="text-base leading-none">🇬🇧</span>, sublabel: "UK / Europe" },
+  { value: "+971", label: "United Arab Emirates (+971)", icon: <span className="text-base leading-none">🇦🇪</span>, sublabel: "UAE / Middle East" },
+  { value: "+61", label: "Australia (+61)", icon: <span className="text-base leading-none">🇦🇺</span>, sublabel: "AUS / Oceania" },
+  { value: "+91", label: "India (+91)", icon: <span className="text-base leading-none">🇮🇳</span>, sublabel: "IND • South Asia" },
+  { value: "+49", label: "Germany (+49)", icon: <span className="text-base leading-none">🇩🇪</span>, sublabel: "DE • European Union" },
+];
+
+const FUEL_OPTIONS: DropdownOption[] = [
+  { value: "Hybrid", label: "Hybrid (Petrol + Electric)", icon: <span className="text-sm">⚡</span>, sublabel: "High fuel economy (18-24 km/l)" },
+  { value: "Petrol", label: "Petrol", icon: <span className="text-sm">⛽</span>, sublabel: "Standard 92 / 95 Octane" },
+  { value: "Diesel", label: "Diesel", icon: <span className="text-sm">🛢️</span>, sublabel: "Auto / Super Diesel" },
+  { value: "Electric", label: "Pure Electric (EV)", icon: <span className="text-sm">🔋</span>, sublabel: "Zero emission battery power" },
+];
+
+const SEATING_OPTIONS: DropdownOption[] = [
+  { value: "4", label: "4 Passengers", sublabel: "Compact or Coupe" },
+  { value: "5", label: "5 Passengers", sublabel: "Standard Sedan / Compact SUV" },
+  { value: "7", label: "7 Passengers", sublabel: "3-Row Large SUV / MPV" },
+  { value: "10", label: "10+ Passengers", sublabel: "Tour Group Van (KDH / HiAce)" },
+];
+
+const DOORS_OPTIONS: DropdownOption[] = [
+  { value: "2", label: "2 Doors", sublabel: "Sport Coupe / Convertible" },
+  { value: "4", label: "4 Doors", sublabel: "Standard 4-Door Saloon" },
+  { value: "5", label: "5 Doors", sublabel: "Hatchback or SUV with Tailgate" },
+];
+
+const LOCATION_OPTIONS: DropdownOption[] = POPULAR_LOCATIONS.map((loc) => ({
+  value: loc,
+  label: loc,
+  icon: <span className="text-sm">📍</span>,
+}));
+
+const FUEL_POLICY_OPTIONS: DropdownOption[] = [
+  { value: "Full-to-Full (Recommended)", label: "Full-to-Full", badge: "Recommended", sublabel: "Renter receives full tank, returns full tank" },
+  { value: "Same-as-Received", label: "Same-as-Received", sublabel: "Return with exact gauge level provided at pickup" },
+];
+
+const MILEAGE_OPTIONS: DropdownOption[] = [
+  { value: "100 km/day included (LKR 55/km excess)", label: "100 km / day (Standard)", sublabel: "LKR 55/km excess mileage rate" },
+  { value: "150 km/day included", label: "150 km / day (Extended)", sublabel: "Best for island-wide touring" },
+  { value: "Unlimited Mileage", label: "Unlimited Mileage", badge: "Popular", sublabel: "Zero mileage caps or extra km fees" },
 ];
 
 export function VehicleListingForm({
@@ -996,47 +1045,39 @@ export function VehicleListingForm({
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
                 Fuel Type
               </label>
-              <select
+              <CustomDropdown
+                options={FUEL_OPTIONS}
                 value={fuel}
-                onChange={(e) => setFuel(e.target.value as SellerVehicle["fuel"])}
-                className="w-full bg-slate-50 dark:bg-[#15151a] border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-3 text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-violet-500"
-              >
-                <option value="Hybrid">Hybrid (Petrol + Electric)</option>
-                <option value="Petrol">Petrol</option>
-                <option value="Diesel">Diesel</option>
-                <option value="Electric">Pure Electric (EV)</option>
-              </select>
+                onChange={(val) => setFuel(val as SellerVehicle["fuel"])}
+                variant="seller"
+                position="auto"
+              />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
                 Passenger Seating
               </label>
-              <select
-                value={seats}
-                onChange={(e) => setSeats(Number(e.target.value))}
-                className="w-full bg-slate-50 dark:bg-[#15151a] border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-3 text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-violet-500"
-              >
-                <option value={4}>4 Passengers</option>
-                <option value={5}>5 Passengers</option>
-                <option value={7}>7 Passengers (3-Row)</option>
-                <option value={10}>10+ Passengers (Tour Van)</option>
-              </select>
+              <CustomDropdown
+                options={SEATING_OPTIONS}
+                value={String(seats)}
+                onChange={(val) => setSeats(Number(val))}
+                variant="seller"
+                position="auto"
+              />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
                 Doors Count
               </label>
-              <select
-                value={doors}
-                onChange={(e) => setDoors(Number(e.target.value))}
-                className="w-full bg-slate-50 dark:bg-[#15151a] border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-3 text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-violet-500"
-              >
-                <option value={2}>2 Doors (Coupe)</option>
-                <option value={4}>4 Doors (Standard)</option>
-                <option value={5}>5 Doors (Hatchback/SUV)</option>
-              </select>
+              <CustomDropdown
+                options={DOORS_OPTIONS}
+                value={String(doors)}
+                onChange={(val) => setDoors(Number(val))}
+                variant="seller"
+                position="auto"
+              />
             </div>
           </div>
         </div>
@@ -1117,17 +1158,13 @@ export function VehicleListingForm({
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="sm:col-span-1">
-                <select
+                <CustomDropdown
+                  options={COUNTRY_CODES}
                   value={phoneCountryCode}
-                  onChange={(e) => setPhoneCountryCode(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-[#15151a] border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-3 text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-violet-500"
-                >
-                  <option value="+94">🇱🇰 Sri Lanka (+94)</option>
-                  <option value="+1">🇺🇸 United States (+1)</option>
-                  <option value="+44">🇬🇧 United Kingdom (+44)</option>
-                  <option value="+971">🇦🇪 United Arab Emirates (+971)</option>
-                  <option value="+61">🇦🇺 Australia (+61)</option>
-                </select>
+                  onChange={setPhoneCountryCode}
+                  variant="seller"
+                  position="auto"
+                />
               </div>
 
               <div className="sm:col-span-2 relative">
@@ -1184,20 +1221,13 @@ export function VehicleListingForm({
             <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
               Primary Handover Hub *
             </label>
-            <div className="relative">
-              <select
-                value={pickupLocation}
-                onChange={(e) => setPickupLocation(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-[#15151a] border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-3 pl-10 text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer"
-              >
-                {POPULAR_LOCATIONS.map((loc) => (
-                  <option key={loc} value={loc}>
-                    📍 {loc}
-                  </option>
-                ))}
-              </select>
-              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-            </div>
+            <CustomDropdown
+              options={LOCATION_OPTIONS}
+              value={pickupLocation}
+              onChange={setPickupLocation}
+              variant="seller"
+              position="auto"
+            />
           </div>
 
           {/* Detailed Street / Meeting Landmark */}
@@ -1340,14 +1370,13 @@ export function VehicleListingForm({
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
                 Fuel Policy
               </label>
-              <select
+              <CustomDropdown
+                options={FUEL_POLICY_OPTIONS}
                 value={fuelPolicy}
-                onChange={(e) => setFuelPolicy(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-[#15151a] border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-3 text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-violet-500"
-              >
-                <option value="Full-to-Full (Recommended)">Full-to-Full (Recommended)</option>
-                <option value="Same-as-Received">Same-as-Received</option>
-              </select>
+                onChange={setFuelPolicy}
+                variant="seller"
+                position="auto"
+              />
             </div>
 
             {/* Mileage Allowance */}
@@ -1355,15 +1384,13 @@ export function VehicleListingForm({
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
                 Daily Mileage Allowance
               </label>
-              <select
+              <CustomDropdown
+                options={MILEAGE_OPTIONS}
                 value={mileageAllowance}
-                onChange={(e) => setMileageAllowance(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-[#15151a] border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-3 text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-violet-500"
-              >
-                <option value="100 km/day included (LKR 55/km excess)">100 km / day (Standard)</option>
-                <option value="150 km/day included">150 km / day</option>
-                <option value="Unlimited Mileage">Unlimited Mileage</option>
-              </select>
+                onChange={setMileageAllowance}
+                variant="seller"
+                position="auto"
+              />
             </div>
 
             {/* Refundable Deposit */}
