@@ -458,49 +458,7 @@ export function SellerPortalContent() {
         </div>
       </section>
 
-      {/* 3. TAB NAVIGATION BAR */}
-      <section className="pt-2 pb-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="stripe-glass rounded-[30px] p-2 shadow-sm flex items-center justify-between gap-3">
-            {/* Tabs with Horizontal Touch Scroll */}
-            <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar flex-nowrap w-full sm:w-auto px-1 py-0.5">
-              {[
-                { id: "overview", label: "Dashboard Overview" },
-                { id: "fleet", label: `My Fleet (${fleet.length})` },
-                { id: "bookings", label: `Bookings (${bookings.length})` },
-                { id: "earnings", label: "Earnings & Payouts" },
-                { id: "list-vehicle", label: "List a Vehicle ✦" },
-              ].map((tab) => {
-                const isActive = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => handleTabChange(tab.id)}
-                    className={`px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all flex-shrink-0 cursor-pointer ${
-                      isActive
-                        ? "bg-violet-600 text-white shadow-md shadow-violet-500/25 scale-[1.02]"
-                        : "text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5"
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Quick List Car Button */}
-            <button
-              onClick={() => handleTabChange("list-vehicle")}
-              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-violet-600 dark:text-violet-400 hover:text-violet-700 px-3 py-1.5 flex-shrink-0 cursor-pointer"
-            >
-              <Plus className="h-4 w-4" />
-              <span>Add Vehicle</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. TAB CONTENTS */}
+      {/* 3. TAB CONTENTS */}
       <section className="pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* TAB 1: OVERVIEW */}

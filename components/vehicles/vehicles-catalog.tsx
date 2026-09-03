@@ -12,8 +12,12 @@ import {
   DoorOpen,
   X,
   Sparkles,
+  ArrowUp,
+  ArrowDown,
+  ArrowUpDown,
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { CustomDropdown } from "@/components/ui/custom-dropdown";
 
 export interface VehicleDetail {
   id: string;
@@ -384,6 +388,7 @@ function CarPillIcon({ className = "h-4 w-4" }: { className?: string }) {
 
 export function VehiclesCatalog() {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "name-asc">("featured");
   const [currentPage, setCurrentPage] = useState(1);
   const [activeModalCar, setActiveModalCar] = useState<VehicleDetail | null>(null);
   const [activeThumbnailIndex, setActiveThumbnailIndex] = useState(0);
@@ -409,10 +414,21 @@ export function VehiclesCatalog() {
     };
   }, [activeModalCar]);
 
-  const filteredVehicles =
-    selectedCategory === "all"
-      ? ALL_VEHICLES
-      : ALL_VEHICLES.filter((v) => v.category === selectedCategory);
+  const filteredVehicles = ALL_VEHICLES.filter((v) => {
+    if (selectedCategory === "all") return true;
+    return v.category === selectedCategory;
+  }).sort((a, b) => {
+    if (sortBy === "price-asc") {
+      return a.priceNum - b.priceNum;
+    }
+    if (sortBy === "price-desc") {
+      return b.priceNum - a.priceNum;
+    }
+    if (sortBy === "name-asc") {
+      return a.name.localeCompare(b.name);
+    }
+    return 0; // featured default
+  });
 
   const handleOpenDetails = (car: VehicleDetail) => {
     setActiveModalCar(car);
@@ -432,20 +448,20 @@ export function VehiclesCatalog() {
   };
 
   return (
-    <div className="w-full bg-white text-slate-900 pb-20">
+    <div className="w-full bg-white dark:bg-black text-slate-900 dark:text-white pb-20 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         {/* Section Heading */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-950 tracking-tight mb-3">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-950 dark:text-white tracking-tight mb-3">
             Select a vehicle group
           </h1>
-          <p className="text-slate-500 text-sm sm:text-base max-w-xl mx-auto">
+          <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base max-w-xl mx-auto">
             Explore our diverse rental fleet across Sri Lanka. Choose from premium sedans, rugged SUVs, luxury convertibles, and spacious minivans.
           </p>
         </div>
 
         {/* Category Filter Tabs with Mobile Swipe */}
-        <div className="flex items-center overflow-x-auto no-scrollbar gap-2 sm:gap-3 mb-10 sm:mb-12 pb-2 justify-start sm:justify-center px-1">
+        <div className="flex items-center overflow-x-auto no-scrollbar gap-2 sm:gap-3 mb-6 pb-2 justify-start sm:justify-center px-1">
           {CATEGORIES.map((cat) => {
             const isActive = selectedCategory === cat.id;
             return (
@@ -455,10 +471,10 @@ export function VehiclesCatalog() {
                   setSelectedCategory(cat.id);
                   setCurrentPage(1);
                 }}
-                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 flex-shrink-0 shadow-sm ${
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 flex-shrink-0 shadow-sm cursor-pointer ${
                   isActive
                     ? "bg-slate-950 dark:bg-white text-white dark:text-slate-950 shadow-slate-900/20 scale-105"
-                    : "bg-slate-100/90 dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:bg-slate-200/90 dark:hover:bg-white/10 hover:text-slate-900"
+                    : "bg-slate-100/90 dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:bg-slate-200/90 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
                 {cat.hasIcon && (
@@ -470,6 +486,87 @@ export function VehiclesCatalog() {
               </button>
             );
           })}
+        </div>
+
+        {/* Sorting & Filter Controls Toolbar */}
+        <div className="mb-10 p-3 sm:p-4 rounded-[26px] bg-slate-50 dark:bg-[#0f0f13] border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
+          {/* Quick Price Sort Buttons */}
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1.5 flex-shrink-0 mr-1">
+              <ArrowUpDown className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
+              <span>Sort Price:</span>
+            </span>
+
+            <button
+              type="button"
+              onClick={() => {
+                setSortBy(sortBy === "price-asc" ? "featured" : "price-asc");
+                setCurrentPage(1);
+              }}
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all flex-shrink-0 cursor-pointer ${
+                sortBy === "price-asc"
+                  ? "bg-violet-600 text-white shadow-md shadow-violet-500/25 scale-[1.02]"
+                  : "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:border-violet-400 hover:text-violet-600 dark:hover:text-white"
+              }`}
+            >
+              <ArrowUp className="h-3.5 w-3.5" />
+              <span>Price: Low to High</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setSortBy(sortBy === "price-desc" ? "featured" : "price-desc");
+                setCurrentPage(1);
+              }}
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all flex-shrink-0 cursor-pointer ${
+                sortBy === "price-desc"
+                  ? "bg-violet-600 text-white shadow-md shadow-violet-500/25 scale-[1.02]"
+                  : "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:border-violet-400 hover:text-violet-600 dark:hover:text-white"
+              }`}
+            >
+              <ArrowDown className="h-3.5 w-3.5" />
+              <span>Price: High to Low</span>
+            </button>
+
+            {sortBy !== "featured" && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSortBy("featured");
+                  setCurrentPage(1);
+                }}
+                className="text-[11px] font-semibold text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 px-2 underline cursor-pointer"
+              >
+                Reset
+              </button>
+            )}
+          </div>
+
+          {/* Results Count & Dropdown */}
+          <div className="flex items-center justify-between md:justify-end gap-3 flex-shrink-0">
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+              Showing <span className="font-extrabold text-slate-900 dark:text-white">{filteredVehicles.length}</span> vehicles
+            </span>
+
+            <div className="w-48 sm:w-56">
+              <CustomDropdown
+                options={[
+                  { value: "featured", label: "Featured Showcase", icon: <Sparkles className="h-3.5 w-3.5 text-violet-500" /> },
+                  { value: "price-asc", label: "Price: Low to High", icon: <ArrowUp className="h-3.5 w-3.5 text-emerald-500" />, badge: "Budget" },
+                  { value: "price-desc", label: "Price: High to Low", icon: <ArrowDown className="h-3.5 w-3.5 text-amber-500" />, badge: "Luxury" },
+                  { value: "name-asc", label: "Name: A to Z" },
+                ]}
+                value={sortBy}
+                onChange={(val) => {
+                  setSortBy(val as "featured" | "price-asc" | "price-desc" | "name-asc");
+                  setCurrentPage(1);
+                }}
+                variant="seller"
+                position="auto"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Vehicle Cards Grid (3x3) */}
