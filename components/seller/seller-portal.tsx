@@ -23,6 +23,7 @@ import {
   Filter,
 } from "lucide-react";
 import { AddVehicleModal, SellerVehicle } from "./add-vehicle-modal";
+import { VehicleListingForm } from "./vehicle-listing-form";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 const INITIAL_SELLER_FLEET: SellerVehicle[] = [
@@ -316,7 +317,7 @@ export function SellerPortalContent() {
               <div className="flex items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => setIsAddModalOpen(true)}
+                  onClick={() => handleTabChange("list-vehicle")}
                   className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-slate-950 px-5 py-3.5 rounded-[30px] text-sm font-bold shadow-lg transition-all active:scale-95 cursor-pointer"
                 >
                   <Plus className="h-4 w-4" />
@@ -445,6 +446,7 @@ export function SellerPortalContent() {
                 { id: "fleet", label: `My Fleet (${fleet.length})` },
                 { id: "bookings", label: `Bookings (${bookings.length})` },
                 { id: "earnings", label: "Earnings & Payouts" },
+                { id: "list-vehicle", label: "List a Vehicle ✦" },
               ].map((tab) => {
                 const isActive = activeTab === tab.id;
                 return (
@@ -465,7 +467,7 @@ export function SellerPortalContent() {
 
             {/* Quick List Car Button */}
             <button
-              onClick={() => setIsAddModalOpen(true)}
+              onClick={() => handleTabChange("list-vehicle")}
               className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-violet-600 dark:text-violet-400 hover:text-violet-700 px-3 py-1.5 flex-shrink-0 cursor-pointer"
             >
               <Plus className="h-4 w-4" />
@@ -909,6 +911,16 @@ export function SellerPortalContent() {
                   ))}
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* TAB 5: LIST A VEHICLE FORM */}
+          {activeTab === "list-vehicle" && (
+            <div className="bg-white dark:bg-[#0b0b0e] rounded-[32px] p-6 sm:p-10 border border-slate-200/80 dark:border-white/10 shadow-sm">
+              <VehicleListingForm
+                onSuccess={handleAddVehicle}
+                onCancel={() => handleTabChange("overview")}
+              />
             </div>
           )}
         </div>
