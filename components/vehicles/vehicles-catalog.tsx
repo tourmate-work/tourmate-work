@@ -444,8 +444,8 @@ export function VehiclesCatalog() {
           </p>
         </div>
 
-        {/* Category Filter Tabs */}
-        <div className="flex items-center justify-center flex-wrap gap-2.5 sm:gap-3.5 mb-12">
+        {/* Category Filter Tabs with Mobile Swipe */}
+        <div className="flex items-center overflow-x-auto no-scrollbar gap-2 sm:gap-3 mb-10 sm:mb-12 pb-2 justify-start sm:justify-center px-1">
           {CATEGORIES.map((cat) => {
             const isActive = selectedCategory === cat.id;
             return (
@@ -455,15 +455,15 @@ export function VehiclesCatalog() {
                   setSelectedCategory(cat.id);
                   setCurrentPage(1);
                 }}
-                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 shadow-sm ${
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 flex-shrink-0 shadow-sm ${
                   isActive
-                    ? "bg-black text-white shadow-slate-900/20 hover:bg-slate-800"
-                    : "bg-slate-100/90 text-slate-700 hover:bg-slate-200/90 hover:text-slate-900"
+                    ? "bg-slate-950 dark:bg-white text-white dark:text-slate-950 shadow-slate-900/20 scale-105"
+                    : "bg-slate-100/90 dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:bg-slate-200/90 dark:hover:bg-white/10 hover:text-slate-900"
                 }`}
               >
                 {cat.hasIcon && (
                   <CarPillIcon
-                    className={`h-4 w-4 ${isActive ? "text-white" : "text-slate-600"}`}
+                    className={`h-4 w-4 ${isActive ? "text-white dark:text-slate-950" : "text-slate-600 dark:text-slate-400"}`}
                   />
                 )}
                 <span>{cat.label}</span>
@@ -481,55 +481,74 @@ export function VehiclesCatalog() {
               direction="up"
               distance={28}
             >
-              <div className="card-hover-lift bg-[#f8fafc] hover:bg-white rounded-[30px] p-6 border border-slate-100/90 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group h-full">
-                {/* Silhouette Container */}
-                <div className="relative aspect-[16/9] w-full rounded-[24px] bg-white border border-slate-100 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-50/50 transition-colors">
-                  <VehicleVectorGraphic type={car.type} />
+              <div className="stripe-card rounded-[30px] p-6 shadow-sm hover:shadow-2xl flex flex-col justify-between group h-full">
+                {/* Silhouette & Top Badge */}
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-500/10 px-2.5 py-0.5 rounded-full">
+                      Instant Booking
+                    </span>
+                    <span className="text-xs text-slate-400 font-bold">
+                      {car.specs.distance}
+                    </span>
+                  </div>
+
+                  <div className="relative aspect-[16/9] w-full rounded-[24px] bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-100/60 dark:group-hover:bg-white/[0.06] transition-colors">
+                    <VehicleVectorGraphic type={car.type} />
+                  </div>
+
+                  {/* Specs & Info */}
+                  <div className="space-y-4">
+                    {/* Header: Name + Price */}
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="title-hover-glow text-xl font-bold text-slate-900 dark:text-white leading-snug group-hover:text-violet-600 transition-colors">
+                          {car.name}
+                        </h3>
+                        <p className="text-xs text-slate-400 font-medium mt-0.5">
+                          {car.category} • Fully Insured
+                        </p>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <span className="text-lg font-bold text-violet-600 dark:text-violet-400 block leading-tight">
+                          {car.price}
+                        </span>
+                        <span className="text-xs text-slate-400">{car.period}</span>
+                      </div>
+                    </div>
+
+                    {/* 3 Quick Specs Pills */}
+                    <div className="grid grid-cols-3 gap-1.5 py-3 border-t border-slate-100 dark:border-white/10 text-[11px] text-slate-500 dark:text-slate-400">
+                      <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
+                        <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+                        <span className="truncate">{car.specs.gearBox}</span>
+                      </div>
+                      <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
+                        <Fuel className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+                        <span className="truncate">{car.fuelCapacity}</span>
+                      </div>
+                      <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
+                        <Snowflake className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+                        <span className="truncate">AC</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Specs & Info */}
-                <div className="space-y-4">
-                  {/* Header: Name + Price */}
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="title-hover-glow text-xl font-bold text-slate-900 leading-snug group-hover:text-violet-600 transition-colors">
-                        {car.name}
-                      </h3>
-                      <p className="text-xs text-slate-400 font-medium">
-                        {car.category}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-lg font-bold text-violet-600 block leading-tight">
-                        {car.price}
-                      </span>
-                      <span className="text-xs text-slate-400">{car.period}</span>
-                    </div>
-                  </div>
-
-                  {/* 3 Quick Specs Pills */}
-                  <div className="grid grid-cols-3 gap-1.5 py-3 border-t border-slate-200/70 text-[11px] text-slate-500">
-                    <div className="flex items-center gap-1">
-                      <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400" />
-                      <span className="truncate">{car.specs.gearBox}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Fuel className="h-3.5 w-3.5 text-slate-400" />
-                      <span className="truncate">{car.fuelCapacity}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Snowflake className="h-3.5 w-3.5 text-slate-400" />
-                      <span className="truncate">Air Conditioner</span>
-                    </div>
-                  </div>
-
-                  {/* View Details Animated Opener Button */}
+                {/* Action Buttons: View Details & Reserve */}
+                <div className="pt-4 grid grid-cols-2 gap-2">
                   <button
                     onClick={() => handleOpenDetails(car)}
-                    className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm py-3.5 rounded-[30px] shadow-md shadow-violet-500/15 hover:shadow-lg hover:shadow-violet-500/25 transition-all duration-300 active:scale-[0.98] text-center flex items-center justify-center gap-2 group-hover:bg-violet-700"
+                    className="w-full py-3 rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-xs transition-colors text-center cursor-pointer"
                   >
-                    <span className="tracking-wide">View Details</span>
-                    <Sparkles className="h-4 w-4 opacity-70 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-300" />
+                    Specifications
+                  </button>
+                  <button
+                    onClick={() => handleOpenDetails(car)}
+                    className="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs py-3 rounded-[30px] shadow-sm shadow-violet-500/20 hover:shadow-md transition-all active:scale-95 text-center flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <span>View Details</span>
+                    <Sparkles className="h-3.5 w-3.5" />
                   </button>
                 </div>
               </div>
@@ -573,14 +592,14 @@ export function VehiclesCatalog() {
           />
 
           {/* Modal Container: cleanly rounded to 30px and overflow-hidden */}
-          <div className="relative w-full max-w-5xl bg-white rounded-[30px] shadow-2xl border border-slate-100/80 my-auto z-10 max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 ease-out animate-in zoom-in-95 fade-in slide-in-from-bottom-6">
+          <div className="relative w-full max-w-5xl bg-white dark:bg-[#0b0b0e] rounded-[30px] shadow-2xl border border-slate-100/80 dark:border-white/10 my-auto z-10 max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 ease-out animate-in zoom-in-95 fade-in slide-in-from-bottom-6">
             {/* Modal Header Bar */}
-            <div className="flex items-center justify-between px-6 sm:px-10 py-5 sm:py-6 border-b border-slate-100 bg-white/95 backdrop-blur-sm sticky top-0 z-30 flex-shrink-0">
+            <div className="flex items-center justify-between px-6 sm:px-10 py-5 sm:py-6 border-b border-slate-100 dark:border-white/10 bg-white/95 dark:bg-[#0b0b0e]/95 backdrop-blur-sm sticky top-0 z-30 flex-shrink-0">
               <div className="flex items-baseline gap-3">
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
                   {activeModalCar.name}
                 </h2>
-                <span className="text-xl sm:text-2xl font-bold text-violet-600">
+                <span className="text-xl sm:text-2xl font-bold text-violet-600 dark:text-violet-400">
                   {activeModalCar.price}
                   <span className="text-xs sm:text-sm font-medium text-slate-400 ml-1">
                     {activeModalCar.period}
@@ -592,7 +611,7 @@ export function VehiclesCatalog() {
               <button
                 onClick={handleCloseModal}
                 aria-label="Close vehicle details"
-                className="h-10 w-10 sm:h-11 sm:w-11 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-950 flex items-center justify-center transition-all duration-200 hover:rotate-90 shadow-sm"
+                className="h-10 w-10 sm:h-11 sm:w-11 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 flex items-center justify-center transition-all duration-200 hover:rotate-90 shadow-sm cursor-pointer"
               >
                 <X className="h-5 w-5 sm:h-6 sm:w-6" />
               </button>
@@ -605,7 +624,7 @@ export function VehiclesCatalog() {
                 {/* Left Column: Silhouette Graphic & Gallery Thumbnails */}
                 <div className="lg:col-span-6 space-y-5">
                   {/* Silhouette Card */}
-                  <div className="relative aspect-[16/9] w-full rounded-[30px] bg-slate-50 border border-slate-100/90 flex items-center justify-center p-6 overflow-hidden shadow-inner">
+                  <div className="relative aspect-[16/9] w-full rounded-[30px] bg-slate-50 dark:bg-[#15151a] border border-slate-100/90 dark:border-white/5 flex items-center justify-center p-6 overflow-hidden shadow-inner">
                     <VehicleVectorGraphic type={activeModalCar.type} />
                   </div>
 
@@ -618,7 +637,7 @@ export function VehiclesCatalog() {
                         className={`relative h-20 w-24 sm:h-24 sm:w-28 rounded-[20px] overflow-hidden border-2 transition-all ${
                           activeThumbnailIndex === idx
                             ? "border-violet-600 ring-2 ring-violet-600/30 scale-105 shadow-md"
-                            : "border-slate-200 opacity-70 hover:opacity-100"
+                            : "border-slate-200 dark:border-white/10 opacity-70 hover:opacity-100"
                         }`}
                       >
                         <Image
@@ -636,97 +655,97 @@ export function VehiclesCatalog() {
                 <div className="lg:col-span-6 space-y-7">
                   {/* Technical Specification Heading */}
                   <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-4">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-4">
                       Technical Specification
                     </h3>
 
                     {/* 2x3 Spec Cards Grid */}
                     <div className="grid grid-cols-3 gap-3">
                       {/* 1. Gear Box */}
-                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-[20px] p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
-                        <div className="text-slate-800 mb-2">
+                      <div className="bg-slate-50 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1a1a22] rounded-[20px] p-3.5 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                        <div className="text-slate-800 dark:text-slate-200 mb-2">
                           <SlidersHorizontal className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
                         <div>
-                          <span className="text-xs font-bold text-slate-900 block">
+                          <span className="text-xs font-bold text-slate-900 dark:text-white block">
                             Gear Box
                           </span>
-                          <span className="text-[11px] text-slate-500 font-medium truncate block">
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                             {activeModalCar.specs.gearBox}
                           </span>
                         </div>
                       </div>
 
                       {/* 2. Fuel */}
-                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-[20px] p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
-                        <div className="text-slate-800 mb-2">
+                      <div className="bg-slate-50 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1a1a22] rounded-[20px] p-3.5 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                        <div className="text-slate-800 dark:text-slate-200 mb-2">
                           <Fuel className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
                         <div>
-                          <span className="text-xs font-bold text-slate-900 block">
+                          <span className="text-xs font-bold text-slate-900 dark:text-white block">
                             Fuel
                           </span>
-                          <span className="text-[11px] text-slate-500 font-medium truncate block">
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                             {activeModalCar.specs.fuel}
                           </span>
                         </div>
                       </div>
 
                       {/* 3. Doors */}
-                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-[20px] p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
-                        <div className="text-slate-800 mb-2">
+                      <div className="bg-slate-50 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1a1a22] rounded-[20px] p-3.5 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                        <div className="text-slate-800 dark:text-slate-200 mb-2">
                           <DoorOpen className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
                         <div>
-                          <span className="text-xs font-bold text-slate-900 block">
+                          <span className="text-xs font-bold text-slate-900 dark:text-white block">
                             Doors
                           </span>
-                          <span className="text-[11px] text-slate-500 font-medium truncate block">
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                             {activeModalCar.specs.doors}
                           </span>
                         </div>
                       </div>
 
                       {/* 4. Air Conditioner */}
-                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-[20px] p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
-                        <div className="text-slate-800 mb-2">
+                      <div className="bg-slate-50 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1a1a22] rounded-[20px] p-3.5 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                        <div className="text-slate-800 dark:text-slate-200 mb-2">
                           <Snowflake className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
                         <div>
-                          <span className="text-xs font-bold text-slate-900 block leading-tight">
+                          <span className="text-xs font-bold text-slate-900 dark:text-white block leading-tight">
                             Air Conditioner
                           </span>
-                          <span className="text-[11px] text-slate-500 font-medium truncate block">
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                             {activeModalCar.specs.ac}
                           </span>
                         </div>
                       </div>
 
                       {/* 5. Seats */}
-                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-[20px] p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
-                        <div className="text-slate-800 mb-2">
+                      <div className="bg-slate-50 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1a1a22] rounded-[20px] p-3.5 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                        <div className="text-slate-800 dark:text-slate-200 mb-2">
                           <Users className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
                         <div>
-                          <span className="text-xs font-bold text-slate-900 block">
+                          <span className="text-xs font-bold text-slate-900 dark:text-white block">
                             Seats
                           </span>
-                          <span className="text-[11px] text-slate-500 font-medium truncate block">
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                             {activeModalCar.specs.seats}
                           </span>
                         </div>
                       </div>
 
                       {/* 6. Distance */}
-                      <div className="bg-slate-50 hover:bg-slate-100/80 rounded-[20px] p-3.5 border border-slate-100 transition-all flex flex-col justify-between">
-                        <div className="text-slate-800 mb-2">
+                      <div className="bg-slate-50 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1a1a22] rounded-[20px] p-3.5 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                        <div className="text-slate-800 dark:text-slate-200 mb-2">
                           <Gauge className="h-4 w-4 sm:h-5 sm:w-5" />
                         </div>
                         <div>
-                          <span className="text-xs font-bold text-slate-900 block">
+                          <span className="text-xs font-bold text-slate-900 dark:text-white block">
                             Distance
                           </span>
-                          <span className="text-[11px] text-slate-500 font-medium truncate block">
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                             {activeModalCar.specs.distance}
                           </span>
                         </div>
@@ -738,7 +757,7 @@ export function VehiclesCatalog() {
                   <div>
                     <button
                       onClick={() => handleBookNow(activeModalCar)}
-                      className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2"
+                      className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
                     >
                       Rent a car
                     </button>
@@ -746,14 +765,14 @@ export function VehiclesCatalog() {
 
                   {/* Car Equipment Checklist */}
                   <div>
-                    <h4 className="text-base font-bold text-slate-900 mb-3">
+                    <h4 className="text-base font-bold text-slate-900 dark:text-white mb-3">
                       Car Equipment
                     </h4>
                     <div className="grid grid-cols-2 gap-y-2.5 gap-x-6">
                       {activeModalCar.equipment.map((item, idx) => (
                         <div key={idx} className="flex items-center gap-2.5">
-                          <CheckCircle2 className="h-4 w-4 text-violet-600 fill-violet-100 flex-shrink-0" />
-                          <span className="text-xs sm:text-sm font-medium text-slate-700">
+                          <CheckCircle2 className="h-4 w-4 text-violet-600 dark:text-violet-400 fill-violet-100 dark:fill-violet-900/30 flex-shrink-0" />
+                          <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">
                             {item}
                           </span>
                         </div>
@@ -764,9 +783,9 @@ export function VehiclesCatalog() {
               </div>
 
               {/* BOTTOM: "Other popular options" - Visual Car Cards Grid */}
-              <div className="pt-6 border-t border-slate-100">
+              <div className="pt-6 border-t border-slate-100 dark:border-white/10">
                 <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-lg font-bold text-slate-900">
+                  <h4 className="text-lg font-bold text-slate-900 dark:text-white">
                     Other popular options
                   </h4>
                   <span className="text-xs text-slate-400">
@@ -784,17 +803,17 @@ export function VehiclesCatalog() {
                           setActiveModalCar(other);
                           setActiveThumbnailIndex(0);
                         }}
-                        className="text-left p-4 rounded-[24px] bg-slate-50/90 hover:bg-white border border-slate-100 hover:border-violet-200 hover:shadow-lg transition-all duration-200 flex flex-col justify-between group"
+                        className="text-left p-4 rounded-[24px] bg-slate-50/90 dark:bg-[#15151a] hover:bg-white dark:hover:bg-[#1c1c24] border border-slate-100 dark:border-white/10 hover:border-violet-200 dark:hover:border-violet-500/30 hover:shadow-lg transition-all duration-200 flex flex-col justify-between group cursor-pointer"
                       >
                         {/* Mini Silhouette Image */}
-                        <div className="relative aspect-[16/10] w-full rounded-xl bg-white border border-slate-100 mb-3 flex items-center justify-center overflow-hidden p-2">
+                        <div className="relative aspect-[16/10] w-full rounded-xl bg-white dark:bg-black/40 border border-slate-100 dark:border-white/5 mb-3 flex items-center justify-center overflow-hidden p-2">
                           <VehicleVectorGraphic type={other.type} />
                         </div>
 
                         <div>
                           <div className="flex items-start justify-between">
                             <div>
-                              <span className="text-sm font-bold text-slate-900 block leading-snug group-hover:text-violet-600 transition-colors">
+                              <span className="text-sm font-bold text-slate-900 dark:text-white block leading-snug group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
                                 {other.name}
                               </span>
                               <span className="text-[11px] text-slate-400 font-medium">
@@ -802,7 +821,7 @@ export function VehiclesCatalog() {
                               </span>
                             </div>
                             <div className="text-right">
-                              <span className="text-xs font-bold text-violet-600 block">
+                              <span className="text-xs font-bold text-violet-600 dark:text-violet-400 block">
                                 {other.price}
                               </span>
                               <span className="text-[10px] text-slate-400">
@@ -812,7 +831,7 @@ export function VehiclesCatalog() {
                           </div>
 
                           {/* Mini specs preview */}
-                          <div className="mt-2.5 pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-500">
+                          <div className="mt-2.5 pt-2 border-t border-slate-200/60 dark:border-white/10 flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400">
                             <span>{other.specs.gearBox}</span>
                             <span>{other.fuelCapacity}</span>
                             <span>AC</span>

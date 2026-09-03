@@ -217,3 +217,79 @@ html.dark .card-hover-lift:hover {
 .badge-hover:hover {
   transform: scale(1.05);
 }
+
+/* Stripe-Tier Design Utilities */
+.stripe-glass {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+html.dark .stripe-glass {
+  background: rgba(9, 9, 13, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.stripe-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.dark .stripe-card {
+  background: #0b0b0f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stripe-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 20px 35px -10px rgba(139, 92, 246, 0.12), 0 10px 20px -5px rgba(0, 0, 0, 0.04);
+}
+
+html.dark .stripe-card:hover {
+  border-color: rgba(167, 139, 250, 0.4);
+  box-shadow: 0 20px 35px -10px rgba(139, 92, 246, 0.25), 0 10px 20px -5px rgba(0, 0, 0, 0.6);
+}
+
+/* Atmospheric Ambient Mesh Glow */
+.mesh-glow-violet {
+  background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0) 70%);
+}
+
+.mesh-glow-amber {
+  background: radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0) 60%);
+}
+
+/* Hide scrollbar for touch swiping */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Subtle Global Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 9999px;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+

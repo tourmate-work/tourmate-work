@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { MobileBottomBar } from "@/components/layout/mobile-bottom-bar";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -38,8 +39,11 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-violet-600 selection:text-white transition-colors duration-300">
-        <ThemeProvider>{children}</ThemeProvider>
+      <body className="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-violet-600 selection:text-white transition-colors duration-300 pb-16 md:pb-0">
+        <ThemeProvider>
+          {children}
+          <MobileBottomBar />
+        </ThemeProvider>
       </body>
     </html>
   );
