@@ -78,9 +78,9 @@ const ALL_VEHICLES: VehicleDetail[] = [
       "Air Conditioner",
     ],
     thumbnails: [
-      "/images/car-side.jpg",
-      "/images/hero-sri-lanka.jpg",
-      "/images/car-fleet.jpg",
+      "/images/mock/axio-sedan.jpg",
+      "/images/mock/cockpit.jpg",
+      "/images/mock/rear-cabin.jpg",
     ],
   },
   {
@@ -110,9 +110,9 @@ const ALL_VEHICLES: VehicleDetail[] = [
       "Air Conditioner",
     ],
     thumbnails: [
-      "/images/car-side.jpg",
-      "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
+      "/images/mock/mercedes-amg.jpg",
+      "/images/mock/cockpit.jpg",
+      "/images/mock/rear-cabin.jpg",
     ],
   },
   {
@@ -142,9 +142,9 @@ const ALL_VEHICLES: VehicleDetail[] = [
       "Climate Control",
     ],
     thumbnails: [
-      "/images/car-side.jpg",
-      "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
+      "/images/mock/mercedes-amg.jpg",
+      "/images/mock/cockpit.jpg",
+      "/images/mock/rear-cabin.jpg",
     ],
   },
   {
@@ -174,9 +174,9 @@ const ALL_VEHICLES: VehicleDetail[] = [
       "Air Conditioner",
     ],
     thumbnails: [
-      "/images/car-side.jpg",
-      "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
+      "/images/mock/mercedes-amg.jpg",
+      "/images/mock/rear-cabin.jpg",
+      "/images/mock/cockpit.jpg",
     ],
   },
   {
@@ -206,9 +206,9 @@ const ALL_VEHICLES: VehicleDetail[] = [
       "Air Conditioner",
     ],
     thumbnails: [
-      "/images/car-fleet.jpg",
-      "/images/car-side.jpg",
-      "/images/hero-sri-lanka.jpg",
+      "/images/mock/vezel-suv.jpg",
+      "/images/mock/cockpit.jpg",
+      "/images/mock/rear-cabin.jpg",
     ],
   },
   {
@@ -238,9 +238,9 @@ const ALL_VEHICLES: VehicleDetail[] = [
       "Air Conditioner",
     ],
     thumbnails: [
-      "/images/car-side.jpg",
-      "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
+      "/images/mock/premio-sedan.jpg",
+      "/images/mock/cockpit.jpg",
+      "/images/mock/rear-cabin.jpg",
     ],
   },
   {
@@ -270,9 +270,9 @@ const ALL_VEHICLES: VehicleDetail[] = [
       "Air Conditioner",
     ],
     thumbnails: [
-      "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
-      "/images/car-side.jpg",
+      "/images/mock/prado-4x4.jpg",
+      "/images/mock/rear-cabin.jpg",
+      "/images/mock/cockpit.jpg",
     ],
   },
   {
@@ -302,9 +302,9 @@ const ALL_VEHICLES: VehicleDetail[] = [
       "Air Conditioner",
     ],
     thumbnails: [
-      "/images/car-fleet.jpg",
-      "/images/car-side.jpg",
-      "/images/hero-sri-lanka.jpg",
+      "/images/mock/prado-4x4.jpg",
+      "/images/mock/cockpit.jpg",
+      "/images/mock/rear-cabin.jpg",
     ],
   },
   {
@@ -334,9 +334,9 @@ const ALL_VEHICLES: VehicleDetail[] = [
       "Bluetooth System",
     ],
     thumbnails: [
-      "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
-      "/images/car-side.jpg",
+      "/images/mock/kdh-van.jpg",
+      "/images/mock/rear-cabin.jpg",
+      "/images/mock/cockpit.jpg",
     ],
   },
 ];
@@ -590,8 +590,19 @@ export function VehiclesCatalog() {
                     </span>
                   </div>
 
-                  <div className="relative aspect-[16/9] w-full rounded-[24px] bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-100/60 dark:group-hover:bg-white/[0.06] transition-colors">
-                    <VehicleVectorGraphic type={car.type} />
+                  {/* Vehicle Mock Photo Container */}
+                  <div className="relative aspect-[16/10] w-full rounded-[24px] overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-100 dark:border-white/10 mb-6 group-hover:shadow-lg transition-all">
+                    <Image
+                      src={car.thumbnails[0]}
+                      alt={car.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
+                    <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-black/60 backdrop-blur-md text-white border border-white/20">
+                      {car.specs.gearBox} • {car.specs.fuel}
+                    </div>
                   </div>
 
                   {/* Specs & Info */}
@@ -720,9 +731,15 @@ export function VehiclesCatalog() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                 {/* Left Column: Silhouette Graphic & Gallery Thumbnails */}
                 <div className="lg:col-span-6 space-y-5">
-                  {/* Silhouette Card */}
-                  <div className="relative aspect-[16/9] w-full rounded-[30px] bg-slate-50 dark:bg-[#15151a] border border-slate-100/90 dark:border-white/5 flex items-center justify-center p-6 overflow-hidden shadow-inner">
-                    <VehicleVectorGraphic type={activeModalCar.type} />
+                  {/* Main Selected Hero Photo */}
+                  <div className="relative aspect-[16/10] w-full rounded-[30px] overflow-hidden border border-slate-100/90 dark:border-white/5 shadow-inner">
+                    <Image
+                      src={activeModalCar.thumbnails[activeThumbnailIndex] || activeModalCar.thumbnails[0]}
+                      alt={activeModalCar.name}
+                      fill
+                      className="object-cover transition-all duration-300"
+                      priority
+                    />
                   </div>
 
                   {/* 3 Thumbnail Gallery Previews */}

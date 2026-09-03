@@ -28,6 +28,7 @@ export interface SellerVehicle {
   fuelPolicy?: string;
   mileageAllowance?: string;
   securityDeposit?: number;
+  image?: string;
   exteriorPhotos?: string[];
   interiorPhotos?: string[];
 }

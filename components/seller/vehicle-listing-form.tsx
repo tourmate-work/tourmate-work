@@ -49,7 +49,7 @@ const PHOTO_GUIDES: PhotoGuideSlot[] = [
     badge: "Cover Photo",
     angleInstructions:
       "Park at 45° angle showing front grille, headlights, hood, and driver side alloy wheels. Daylight, car centered.",
-    sampleUrl: "/images/car-side.jpg",
+    sampleUrl: "/images/mock/axio-sedan.jpg",
     svgIcon: (active) => (
       <svg
         viewBox="0 0 120 70"
@@ -91,7 +91,7 @@ const PHOTO_GUIDES: PhotoGuideSlot[] = [
     badge: "Angle 2",
     angleInstructions:
       "Park at 45° angle from rear passenger corner. Show taillights, trunk/boot line, exhaust tips, and side body contours.",
-    sampleUrl: "/images/car-fleet.jpg",
+    sampleUrl: "/images/mock/premio-sedan.jpg",
     svgIcon: (active) => (
       <svg
         viewBox="0 0 120 70"
@@ -168,7 +168,7 @@ const PHOTO_GUIDES: PhotoGuideSlot[] = [
     badge: "Angle 4",
     angleInstructions:
       "Dead center straight shot facing front bumper. Ensure clean headlights, emblem, and number plate are clearly legible.",
-    sampleUrl: "/images/car-fleet.jpg",
+    sampleUrl: "/images/mock/prado-4x4.jpg",
     svgIcon: (active) => (
       <svg
         viewBox="0 0 120 70"
@@ -208,7 +208,7 @@ const PHOTO_GUIDES: PhotoGuideSlot[] = [
     badge: "Inside 1",
     angleInstructions:
       "Shoot from open driver door looking forward at the steering wheel, digital speedometer cluster, and air vents.",
-    sampleUrl: "/images/car-side.jpg",
+    sampleUrl: "/images/mock/mercedes-amg.jpg",
     svgIcon: (active) => (
       <svg
         viewBox="0 0 120 70"
@@ -241,7 +241,7 @@ const PHOTO_GUIDES: PhotoGuideSlot[] = [
     badge: "Inside 2",
     angleInstructions:
       "Shoot from between front headrests showing infotainment screen, AC controls, gear selector, and seat upholstery.",
-    sampleUrl: "/images/car-fleet.jpg",
+    sampleUrl: "/images/mock/rear-cabin.jpg",
     svgIcon: (active) => (
       <svg
         viewBox="0 0 120 70"
@@ -272,7 +272,7 @@ const PHOTO_GUIDES: PhotoGuideSlot[] = [
     badge: "Inside 3",
     angleInstructions:
       "Show clean rear passenger legroom and second-row seats, or wide view of trunk/boot showing luggage capacity.",
-    sampleUrl: "/images/car-side.jpg",
+    sampleUrl: "/images/mock/kdh-van.jpg",
     svgIcon: (active) => (
       <svg
         viewBox="0 0 120 70"

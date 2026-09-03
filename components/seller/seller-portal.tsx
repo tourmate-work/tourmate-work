@@ -44,6 +44,7 @@ const INITIAL_SELLER_FLEET: SellerVehicle[] = [
     totalEarnings: 279000,
     rating: 4.9,
     type: "sedan",
+    image: "/images/mock/axio-sedan.jpg",
     features: ["Air Conditioner", "Bluetooth Audio", "Reverse Camera", "GPS"],
   },
   {
@@ -63,6 +64,7 @@ const INITIAL_SELLER_FLEET: SellerVehicle[] = [
     totalEarnings: 264000,
     rating: 5.0,
     type: "suv",
+    image: "/images/mock/vezel-suv.jpg",
     features: ["Air Conditioner", "Cruise Control", "Leather Seats", "Dashcam"],
   },
   {
@@ -82,6 +84,7 @@ const INITIAL_SELLER_FLEET: SellerVehicle[] = [
     totalEarnings: 336000,
     rating: 4.9,
     type: "sedan",
+    image: "/images/mock/mercedes-amg.jpg",
     features: ["Sunroof", "Burmester Audio", "Executive Leather", "Chauffeur Option"],
   },
   {
@@ -101,6 +104,7 @@ const INITIAL_SELLER_FLEET: SellerVehicle[] = [
     totalEarnings: 420000,
     rating: 4.8,
     type: "van",
+    image: "/images/mock/kdh-van.jpg",
     features: ["Dual AC", "Reclining Seats", "Luggage Carrier", "Curtains"],
   },
   {
@@ -120,6 +124,7 @@ const INITIAL_SELLER_FLEET: SellerVehicle[] = [
     totalEarnings: 363000,
     rating: 4.9,
     type: "sedan",
+    image: "/images/mock/premio-sedan.jpg",
     features: ["Air Conditioner", "Touch Display", "Keyless Entry"],
   },
   {
@@ -139,6 +144,7 @@ const INITIAL_SELLER_FLEET: SellerVehicle[] = [
     totalEarnings: 495000,
     rating: 5.0,
     type: "suv",
+    image: "/images/mock/prado-4x4.jpg",
     features: ["4x4 Drive", "Sunroof", "360 Camera", "Cool Box"],
   },
 ];
@@ -492,21 +498,39 @@ export function SellerPortalContent() {
                         key={item.id}
                         className="bg-slate-50 dark:bg-[#111115] border border-slate-200/60 dark:border-white/10 rounded-2xl p-5 flex flex-col justify-between"
                       >
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <span className="text-[10px] font-extrabold uppercase tracking-wider bg-violet-500/10 text-violet-600 dark:text-violet-400 px-2 py-0.5 rounded-md">
-                              {item.id} • On Road
-                            </span>
-                            <h4 className="text-base font-bold text-slate-900 dark:text-white mt-1.5">
-                              {item.vehicleName}
-                            </h4>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                              Client: <span className="font-semibold text-slate-800 dark:text-slate-200">{item.renterName}</span> ({item.renterPhone})
-                            </p>
+                        <div className="flex items-start gap-4">
+                          <div className="relative h-16 w-24 rounded-xl overflow-hidden flex-shrink-0 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                            <Image
+                              src={
+                                item.vehicleName.includes("Axio")
+                                  ? "/images/mock/axio-sedan.jpg"
+                                  : item.vehicleName.includes("Vezel")
+                                  ? "/images/mock/vezel-suv.jpg"
+                                  : "/images/mock/mercedes-amg.jpg"
+                              }
+                              alt={item.vehicleName}
+                              fill
+                              className="object-cover"
+                            />
                           </div>
-                          <span className="text-sm font-extrabold text-slate-900 dark:text-white">
-                            LKR {item.totalAmount.toLocaleString()}
-                          </span>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-2">
+                              <div>
+                                <span className="text-[10px] font-extrabold uppercase tracking-wider bg-violet-500/10 text-violet-600 dark:text-violet-400 px-2 py-0.5 rounded-md">
+                                  {item.id} • On Road
+                                </span>
+                                <h4 className="text-base font-bold text-slate-900 dark:text-white mt-1.5 truncate">
+                                  {item.vehicleName}
+                                </h4>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
+                                  Client: <span className="font-semibold text-slate-800 dark:text-slate-200">{item.renterName}</span> ({item.renterPhone})
+                                </p>
+                              </div>
+                              <span className="text-sm font-extrabold text-slate-900 dark:text-white flex-shrink-0">
+                                LKR {item.totalAmount.toLocaleString()}
+                              </span>
+                            </div>
+                          </div>
                         </div>
 
                         <div className="mt-4 pt-3 border-t border-slate-200/60 dark:border-white/10 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
@@ -640,6 +664,20 @@ export function SellerPortalContent() {
                           >
                             {car.status}
                           </span>
+                        </div>
+
+                        {/* Vehicle Mock Photo */}
+                        <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-slate-100 dark:bg-white/5 mb-4 border border-slate-100 dark:border-white/10 group-hover:shadow-md transition-all">
+                          <Image
+                            src={car.image || "/images/mock/axio-sedan.jpg"}
+                            alt={car.name}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                          <div className="absolute top-2 left-2 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-black/60 backdrop-blur-md text-white border border-white/20">
+                            {car.transmission} • {car.fuel}
+                          </div>
                         </div>
 
                         {/* Title & Rate */}
