@@ -179,6 +179,12 @@ export function Footer() {
             </h4>
             <ul className="space-y-3 text-sm text-neutral-300">
               <li>
+                <Link href="/seller" className="text-amber-400 hover:text-amber-300 font-semibold transition-colors flex items-center gap-1.5">
+                  <span>Seller Portal</span>
+                  <span className="text-[10px] bg-amber-400/20 text-amber-300 border border-amber-400/40 px-1.5 py-0.2 rounded-full">Host</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/#about" className="hover:text-amber-400 transition-colors">
                   About us
                 </Link>
