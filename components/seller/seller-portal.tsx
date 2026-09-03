@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -227,7 +227,24 @@ export function SellerPortalContent() {
   const [bookings, setBookings] = useState<BookingRecord[]>(INITIAL_BOOKINGS);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [fleetFilter, setFleetFilter] = useState("all");
+  const [bookingStatusFilter, setBookingStatusFilter] = useState("all");
   const [bookingSearch, setBookingSearch] = useState("");
+
+  // Sync state when URL query parameters change
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab) {
+      setActiveTab(tab);
+    }
+    const filter = searchParams.get("filter");
+    if (filter) {
+      if (tab === "fleet") {
+        setFleetFilter(filter);
+      } else if (tab === "bookings") {
+        setBookingStatusFilter(filter);
+      }
+    }
+  }, [searchParams]);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -275,6 +292,12 @@ export function SellerPortalContent() {
   });
 
   const filteredBookings = bookings.filter((b) => {
+    if (bookingStatusFilter !== "all") {
+      if (bookingStatusFilter === "pending" && b.status !== "Pending") return false;
+      if (bookingStatusFilter === "upcoming" && b.status !== "Upcoming") return false;
+      if (bookingStatusFilter === "active" && b.status !== "Active") return false;
+      if (bookingStatusFilter === "completed" && b.status !== "Completed") return false;
+    }
     if (!bookingSearch.trim()) return true;
     const q = bookingSearch.toLowerCase();
     return (
@@ -749,13 +772,32 @@ export function SellerPortalContent() {
 
               {/* Bookings Table / Cards */}
               <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] border border-slate-200/80 dark:border-white/10 shadow-sm overflow-hidden">
-                <div className="p-6 border-b border-slate-100 dark:border-white/10 flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-slate-950 dark:text-white">
-                    Client Reservations Ledger
-                  </h3>
-                  <span className="text-xs text-slate-400 font-medium">
-                    Showing {filteredBookings.length} records
-                  </span>
+                <div className="p-6 border-b border-slate-100 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-950 dark:text-white">
+                      Client Reservations Ledger
+                    </h3>
+                    <span className="text-xs text-slate-400 font-medium">
+                      Showing {filteredBookings.length} records
+                    </span>
+                  </div>
+
+                  {/* Booking Status Filter Pills */}
+                  <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                    {["all", "pending", "upcoming", "active", "completed"].map((status) => (
+                      <button
+                        key={status}
+                        onClick={() => setBookingStatusFilter(status)}
+                        className={`px-3 py-1 rounded-full text-xs font-semibold capitalize transition-all cursor-pointer ${
+                          bookingStatusFilter === status
+                            ? "bg-violet-600 text-white shadow-sm"
+                            : "bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10"
+                        }`}
+                      >
+                        {status}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="divide-y divide-slate-100 dark:divide-white/10">
