@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -13,6 +13,7 @@ import {
   SlidersHorizontal,
   DoorOpen,
   ArrowRight,
+  MessageCircle,
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
@@ -40,189 +41,157 @@ export interface VehicleDetail {
 
 const VEHICLES: VehicleDetail[] = [
   {
-    id: "bmw-3",
-    name: "BMW",
-    brand: "BMW",
-    category: "Sedan",
-    price: "$25",
-    priceNum: 25,
-    period: "/ day",
-    type: "sedan",
-    fuelCapacity: "65 Ltr",
-    specs: {
-      gearBox: "Automatic",
-      fuel: "Petrol",
-      doors: 5,
-      ac: "Yes",
-      seats: 5,
-      distance: "500 KM",
-    },
-    equipment: [
-      "ABS",
-      "Air Bags",
-      "Cruise control",
-      "GPS Navigation",
-      "Bluetooth & CarPlay",
-      "Air Conditioner",
-    ],
-    thumbnails: [
-      "/images/car-side.jpg",
-      "/images/hero-sri-lanka.jpg",
-      "/images/car-fleet.jpg",
-    ],
-  },
-  {
     id: "mercedes-sedan",
-    name: "Mercedes",
-    brand: "Mercedes",
+    name: "Mercedes Benz C-Class",
+    brand: "Mercedes-Benz",
     category: "Sedan",
-    price: "$25",
-    priceNum: 25,
+    price: "LKR 25,000",
+    priceNum: 25000,
     period: "per day",
     type: "sedan",
-    fuelCapacity: "70 Ltr",
+    fuelCapacity: "66 Ltr",
     specs: {
       gearBox: "Automatic",
       fuel: "Petrol",
       doors: 4,
-      ac: "Yes",
+      ac: "Dual Climate",
       seats: 5,
-      distance: "500 KM",
-    },
-    equipment: [
-      "ABS",
-      "Air Bags",
-      "Cruise control",
-      "Reverse Camera",
-      "Heated Seats",
-      "Air Conditioner",
-    ],
-    thumbnails: [
-      "/images/car-side.jpg",
-      "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
-    ],
-  },
-  {
-    id: "mercedes-sport",
-    name: "Mercedes",
-    brand: "Mercedes",
-    category: "Sport",
-    price: "$50",
-    priceNum: 50,
-    period: "per day",
-    type: "sport",
-    fuelCapacity: "65 Ltr",
-    specs: {
-      gearBox: "Automatic",
-      fuel: "Petrol",
-      doors: 2,
-      ac: "Yes",
-      seats: 2,
       distance: "Unlimited",
     },
     equipment: [
-      "ABS",
-      "Dual Air Bags",
-      "Sport Suspension",
-      "Launch Control",
-      "Premium Audio",
-      "Climate Control",
+      "Full Comprehensive Insurance",
+      "Burmester Surround Sound",
+      "Executive Leather Seats",
+      "Reverse Camera & Sensors",
+      "Blind Spot Assist",
+      "Dual Zone Air Conditioning",
     ],
     thumbnails: [
       "/images/car-side.jpg",
       "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
-    ],
-  },
-  {
-    id: "mercedes-e-class",
-    name: "Mercedes",
-    brand: "Mercedes",
-    category: "Sedan",
-    price: "$45",
-    priceNum: 45,
-    period: "per day",
-    type: "sedan",
-    fuelCapacity: "75 Ltr",
-    specs: {
-      gearBox: "Automatic",
-      fuel: "Petrol",
-      doors: 4,
-      ac: "Yes",
-      seats: 5,
-      distance: "500 KM",
-    },
-    equipment: [
-      "ABS",
-      "Air Bags",
-      "Lane Assist",
-      "Adaptive Cruise",
-      "Leather Interior",
-      "Air Conditioner",
-    ],
-    thumbnails: [
-      "/images/car-side.jpg",
-      "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
-    ],
-  },
-  {
-    id: "porsche-macan",
-    name: "Porsche",
-    brand: "Porsche",
-    category: "SUV",
-    price: "$40",
-    priceNum: 40,
-    period: "per day",
-    type: "suv",
-    fuelCapacity: "75 Ltr",
-    specs: {
-      gearBox: "Automatic",
-      fuel: "Petrol",
-      doors: 5,
-      ac: "Yes",
-      seats: 5,
-      distance: "600 KM",
-    },
-    equipment: [
-      "ABS",
-      "All-Wheel Drive",
-      "Air Bags",
-      "Panoramic Sunroof",
-      "Parking Sensors",
-      "Air Conditioner",
-    ],
-    thumbnails: [
-      "/images/car-fleet.jpg",
-      "/images/car-side.jpg",
       "/images/hero-sri-lanka.jpg",
     ],
   },
   {
     id: "toyota-premio",
-    name: "Toyota",
+    name: "Toyota Premio G-Superior",
     brand: "Toyota",
     category: "Sedan",
-    price: "$35",
-    priceNum: 35,
+    price: "LKR 16,500",
+    priceNum: 16500,
     period: "per day",
     type: "sedan",
     fuelCapacity: "60 Ltr",
     specs: {
       gearBox: "Automatic",
-      fuel: "Hybrid",
+      fuel: "Petrol / Hybrid",
       doors: 4,
       ac: "Yes",
       seats: 5,
-      distance: "700 KM",
+      distance: "Unlimited",
     },
     equipment: [
-      "ABS",
-      "Eco Mode",
-      "Air Bags",
-      "Touch Screen Audio",
-      "Smart Key Entry",
+      "Full Comprehensive Insurance",
+      "Power Seats & Teak Finish",
+      "Smart Key & Push Start",
+      "Touch Audio & Bluetooth",
+      "Reverse Camera & Park Assist",
+      "Climate Control AC",
+    ],
+    thumbnails: [
+      "/images/car-side.jpg",
+      "/images/car-fleet.jpg",
+      "/images/hero-sri-lanka.jpg",
+    ],
+  },
+  {
+    id: "honda-vezel",
+    name: "Honda Vezel Hybrid Sensing",
+    brand: "Honda",
+    category: "SUV",
+    price: "LKR 22,000",
+    priceNum: 22000,
+    period: "per day",
+    type: "suv",
+    fuelCapacity: "50 Ltr",
+    specs: {
+      gearBox: "Automatic (e-CVT)",
+      fuel: "Hybrid (18 km/l)",
+      doors: 5,
+      ac: "Yes",
+      seats: 5,
+      distance: "Unlimited",
+    },
+    equipment: [
+      "Full Comprehensive Insurance",
+      "Honda Sensing Safety Suite",
+      "High Ground Clearance",
+      "Adaptive Cruise Control",
+      "Roof Rails & Large Boot",
+      "Dual Air Conditioning",
+    ],
+    thumbnails: [
+      "/images/car-fleet.jpg",
+      "/images/car-side.jpg",
+      "/images/hero-sri-lanka.jpg",
+    ],
+  },
+  {
+    id: "toyota-kdh",
+    name: "Toyota KDH Super GL Luxury",
+    brand: "Toyota",
+    category: "Minivan",
+    price: "LKR 28,000",
+    priceNum: 28000,
+    period: "per day",
+    type: "van",
+    fuelCapacity: "70 Ltr",
+    specs: {
+      gearBox: "Automatic",
+      fuel: "Diesel",
+      doors: 5,
+      ac: "Dual AC Line",
+      seats: 10,
+      distance: "Unlimited",
+    },
+    equipment: [
+      "Full Comprehensive Insurance",
+      "Dual Line AC for all rows",
+      "Reclining Velvet Captain Seats",
+      "Extra Large Luggage Area",
+      "Chauffeur Option Available",
+      "High-Roof Comfort",
+    ],
+    thumbnails: [
+      "/images/car-fleet.jpg",
+      "/images/hero-sri-lanka.jpg",
+      "/images/car-side.jpg",
+    ],
+  },
+  {
+    id: "ford-mustang",
+    name: "Ford Mustang Convertible",
+    brand: "Ford",
+    category: "Cabriolet",
+    price: "LKR 45,000",
+    priceNum: 45000,
+    period: "per day",
+    type: "sport",
+    fuelCapacity: "61 Ltr",
+    specs: {
+      gearBox: "10-Speed Auto",
+      fuel: "Petrol EcoBoost",
+      doors: 2,
+      ac: "Yes",
+      seats: 4,
+      distance: "Unlimited",
+    },
+    equipment: [
+      "Power Soft-Top Convertible",
+      "Shaker Pro Audio System",
+      "Brembo Brakes",
+      "Track Apps & Drive Modes",
+      "Wedding & Celebration Shoot Ready",
       "Air Conditioner",
     ],
     thumbnails: [
@@ -232,29 +201,93 @@ const VEHICLES: VehicleDetail[] = [
     ],
   },
   {
-    id: "porsche-cayenne",
-    name: "Porsche",
-    brand: "Porsche",
-    category: "SUV",
-    price: "$50",
-    priceNum: 50,
+    id: "toyota-hilux",
+    name: "Toyota Hilux 4x4 Offroad",
+    brand: "Toyota",
+    category: "Pickup",
+    price: "LKR 32,000",
+    priceNum: 32000,
     period: "per day",
     type: "suv",
-    fuelCapacity: "90 Ltr",
+    fuelCapacity: "80 Ltr",
     specs: {
-      gearBox: "Automatic",
-      fuel: "Petrol",
-      doors: 5,
+      gearBox: "Automatic 4WD",
+      fuel: "Diesel Turbo",
+      doors: 4,
       ac: "Yes",
       seats: 5,
       distance: "Unlimited",
     },
     equipment: [
-      "ABS",
-      "AWD System",
-      "Surround Air Bags",
-      "360 Camera",
-      "Bose Sound System",
+      "Full 4x4 High & Low Range",
+      "Heavy-Duty Suspension",
+      "Bed Liner & Cargo Hooks",
+      "Hill Assist & Diff Lock",
+      "Islandwide Mountain Trail Ready",
+      "Air Conditioner",
+    ],
+    thumbnails: [
+      "/images/car-fleet.jpg",
+      "/images/car-side.jpg",
+      "/images/hero-sri-lanka.jpg",
+    ],
+  },
+  {
+    id: "bmw-3",
+    name: "BMW 3 Series M-Sport",
+    brand: "BMW",
+    category: "Sedan",
+    price: "LKR 26,000",
+    priceNum: 26000,
+    period: "per day",
+    type: "sedan",
+    fuelCapacity: "65 Ltr",
+    specs: {
+      gearBox: "Steptronic Auto",
+      fuel: "Petrol",
+      doors: 4,
+      ac: "Yes",
+      seats: 5,
+      distance: "Unlimited",
+    },
+    equipment: [
+      "M-Sport Aerodynamics Package",
+      "Harman Kardon Sound",
+      "Sunroof & Ambient Lighting",
+      "Parking Assistant Plus",
+      "Wireless Apple CarPlay",
+      "Air Conditioner",
+    ],
+    thumbnails: [
+      "/images/car-side.jpg",
+      "/images/hero-sri-lanka.jpg",
+      "/images/car-fleet.jpg",
+    ],
+  },
+  {
+    id: "porsche-cayenne",
+    name: "Porsche Cayenne Turbo",
+    brand: "Porsche",
+    category: "SUV",
+    price: "LKR 55,000",
+    priceNum: 55000,
+    period: "per day",
+    type: "suv",
+    fuelCapacity: "90 Ltr",
+    specs: {
+      gearBox: "Tiptronic S",
+      fuel: "Petrol V6 Turbo",
+      doors: 5,
+      ac: "4-Zone Climate",
+      seats: 5,
+      distance: "Unlimited",
+    },
+    equipment: [
+      "Adaptive Air Suspension",
+      "Bose Surround Sound System",
+      "Panoramic Glass Roof",
+      "Sport Chrono Package",
+      "360 Degree Surround View",
       "Air Conditioner",
     ],
     thumbnails: [
@@ -304,13 +337,25 @@ function VehicleVectorGraphic({ type }: { type: string }) {
 
 function DetailsContentInner() {
   const searchParams = useSearchParams();
-  const initialCarId = searchParams.get("car") || "bmw-3";
+  const requestedCarId = searchParams.get("car") || searchParams.get("id") || "mercedes-sedan";
 
   const foundCar =
-    VEHICLES.find((v) => v.id === initialCarId) || VEHICLES[0];
+    VEHICLES.find((v) => v.id === requestedCarId) || VEHICLES[0];
 
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleDetail>(foundCar);
   const [activeThumbnailIndex, setActiveThumbnailIndex] = useState(0);
+
+  // Sync state whenever URL query params change
+  useEffect(() => {
+    const id = searchParams.get("car") || searchParams.get("id");
+    if (id) {
+      const match = VEHICLES.find((v) => v.id === id);
+      if (match) {
+        setSelectedVehicle(match);
+        setActiveThumbnailIndex(0);
+      }
+    }
+  }, [searchParams]);
 
   const handleSelectCar = (car: VehicleDetail) => {
     setSelectedVehicle(car);
@@ -319,7 +364,7 @@ function DetailsContentInner() {
   };
 
   const handleBookNow = () => {
-    const msg = `Hello Tourmate! I would like to rent the ${selectedVehicle.name} (${selectedVehicle.category}) at ${selectedVehicle.price} ${selectedVehicle.period}.`;
+    const msg = `Hello Tourmate! I would like to reserve the ${selectedVehicle.name} (${selectedVehicle.category}) at ${selectedVehicle.price} ${selectedVehicle.period}.`;
     window.open(
       `https://wa.me/94703236834?text=${encodeURIComponent(msg)}`,
       "_blank"
@@ -329,28 +374,31 @@ function DetailsContentInner() {
   const otherCars = VEHICLES.filter((v) => v.id !== selectedVehicle.id).slice(0, 6);
 
   return (
-    <div className="w-full bg-white text-slate-900 pb-20">
+    <div className="w-full bg-white dark:bg-black text-slate-900 dark:text-white pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         {/* TOP SECTION: Featured Car Details + Tech Specs */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start pb-20 pt-4">
           {/* Left Column: Title, Price, Silhouette, Thumbnails */}
           <div className="lg:col-span-6 space-y-6">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight">
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-500/10 px-3 py-1 rounded-full mb-3">
+                <span>{selectedVehicle.category} Category</span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-950 dark:text-white tracking-tight">
                 {selectedVehicle.name}
               </h1>
               <div className="mt-1 flex items-baseline gap-1">
-                <span className="text-2xl sm:text-3xl font-bold text-violet-600">
+                <span className="text-2xl sm:text-3xl font-bold text-violet-600 dark:text-violet-400">
                   {selectedVehicle.price}
                 </span>
-                <span className="text-sm font-medium text-slate-400">
+                <span className="text-sm font-medium text-slate-400 ml-1">
                   {selectedVehicle.period}
                 </span>
               </div>
             </div>
 
             {/* Main Silhouette View */}
-            <div className="relative aspect-[16/9] w-full rounded-[30px] bg-slate-50 border border-slate-100/90 flex items-center justify-center p-8 overflow-hidden shadow-inner">
+            <div className="relative aspect-[16/9] w-full rounded-[30px] bg-slate-50 dark:bg-[#111116] border border-slate-100/90 dark:border-white/10 flex items-center justify-center p-8 overflow-hidden shadow-inner">
               <VehicleVectorGraphic type={selectedVehicle.type} />
             </div>
 
@@ -360,10 +408,10 @@ function DetailsContentInner() {
                 <button
                   key={idx}
                   onClick={() => setActiveThumbnailIndex(idx)}
-                  className={`relative h-20 w-24 sm:h-24 sm:w-28 rounded-[20px] overflow-hidden border-2 transition-all ${
+                  className={`relative h-20 w-24 sm:h-24 sm:w-28 rounded-[20px] overflow-hidden border-2 transition-all cursor-pointer ${
                     activeThumbnailIndex === idx
                       ? "border-violet-600 ring-2 ring-violet-600/30 scale-105 shadow-md"
-                      : "border-slate-200 opacity-70 hover:opacity-100"
+                      : "border-slate-200 dark:border-white/10 opacity-70 hover:opacity-100"
                   }`}
                 >
                   <Image
@@ -381,97 +429,97 @@ function DetailsContentInner() {
           <div className="lg:col-span-6 space-y-8">
             {/* Technical Specification Heading */}
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-6">
                 Technical Specification
               </h2>
 
               {/* 2x3 Spec Cards Grid */}
               <div className="grid grid-cols-3 gap-3.5 sm:gap-4">
                 {/* 1. Gear Box */}
-                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-[20px] p-4 border border-slate-100 transition-all flex flex-col justify-between">
-                  <div className="text-slate-800 mb-2">
+                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[20px] p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                  <div className="text-slate-800 dark:text-slate-200 mb-2">
                     <SlidersHorizontal className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold text-slate-900 block">
+                    <span className="text-xs font-bold text-slate-900 dark:text-white block">
                       Gear Box
                     </span>
-                    <span className="text-[11px] text-slate-500 font-medium truncate block">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                       {selectedVehicle.specs.gearBox}
                     </span>
                   </div>
                 </div>
 
                 {/* 2. Fuel */}
-                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-[20px] p-4 border border-slate-100 transition-all flex flex-col justify-between">
-                  <div className="text-slate-800 mb-2">
+                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[20px] p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                  <div className="text-slate-800 dark:text-slate-200 mb-2">
                     <Fuel className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold text-slate-900 block">
+                    <span className="text-xs font-bold text-slate-900 dark:text-white block">
                       Fuel
                     </span>
-                    <span className="text-[11px] text-slate-500 font-medium truncate block">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                       {selectedVehicle.specs.fuel}
                     </span>
                   </div>
                 </div>
 
                 {/* 3. Doors */}
-                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-[20px] p-4 border border-slate-100 transition-all flex flex-col justify-between">
-                  <div className="text-slate-800 mb-2">
+                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[20px] p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                  <div className="text-slate-800 dark:text-slate-200 mb-2">
                     <DoorOpen className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold text-slate-900 block">
+                    <span className="text-xs font-bold text-slate-900 dark:text-white block">
                       Doors
                     </span>
-                    <span className="text-[11px] text-slate-500 font-medium truncate block">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                       {selectedVehicle.specs.doors}
                     </span>
                   </div>
                 </div>
 
                 {/* 4. Air Conditioner */}
-                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-[20px] p-4 border border-slate-100 transition-all flex flex-col justify-between">
-                  <div className="text-slate-800 mb-2">
+                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[20px] p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                  <div className="text-slate-800 dark:text-slate-200 mb-2">
                     <Snowflake className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold text-slate-900 block leading-tight">
+                    <span className="text-xs font-bold text-slate-900 dark:text-white block leading-tight">
                       Air Conditioner
                     </span>
-                    <span className="text-[11px] text-slate-500 font-medium truncate block">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                       {selectedVehicle.specs.ac}
                     </span>
                   </div>
                 </div>
 
                 {/* 5. Seats */}
-                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-[20px] p-4 border border-slate-100 transition-all flex flex-col justify-between">
-                  <div className="text-slate-800 mb-2">
+                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[20px] p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                  <div className="text-slate-800 dark:text-slate-200 mb-2">
                     <Users className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold text-slate-900 block">
+                    <span className="text-xs font-bold text-slate-900 dark:text-white block">
                       Seats
                     </span>
-                    <span className="text-[11px] text-slate-500 font-medium truncate block">
-                      {selectedVehicle.specs.seats}
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
+                      {selectedVehicle.specs.seats} Seats
                     </span>
                   </div>
                 </div>
 
                 {/* 6. Distance */}
-                <div className="bg-slate-50/90 hover:bg-slate-100/80 rounded-[20px] p-4 border border-slate-100 transition-all flex flex-col justify-between">
-                  <div className="text-slate-800 mb-2">
+                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[20px] p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                  <div className="text-slate-800 dark:text-slate-200 mb-2">
                     <Gauge className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold text-slate-900 block">
+                    <span className="text-xs font-bold text-slate-900 dark:text-white block">
                       Distance
                     </span>
-                    <span className="text-[11px] text-slate-500 font-medium truncate block">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                       {selectedVehicle.specs.distance}
                     </span>
                   </div>
@@ -483,22 +531,23 @@ function DetailsContentInner() {
             <div>
               <button
                 onClick={handleBookNow}
-                className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2"
+                className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-4 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
               >
-                Rent a car
+                <MessageCircle className="h-5 w-5" />
+                <span>Reserve via WhatsApp</span>
               </button>
             </div>
 
             {/* Car Equipment Checklist */}
             <div className="pt-2">
-              <h3 className="text-lg font-bold text-slate-900 mb-4">
-                Car Equipment
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">
+                Car Equipment & Protection Included
               </h3>
               <div className="grid grid-cols-2 gap-y-3.5 gap-x-6">
                 {selectedVehicle.equipment.map((item, idx) => (
                   <div key={idx} className="flex items-center gap-2.5">
-                    <CheckCircle2 className="h-4 w-4 text-violet-600 fill-violet-100 flex-shrink-0" />
-                    <span className="text-xs sm:text-sm font-medium text-slate-700">
+                    <CheckCircle2 className="h-4 w-4 text-violet-600 dark:text-violet-400 fill-violet-100 dark:fill-violet-900/30 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">
                       {item}
                     </span>
                   </div>
@@ -509,15 +558,15 @@ function DetailsContentInner() {
         </div>
 
         {/* BOTTOM SECTION: Other Cars Grid */}
-        <div className="pt-10 border-t border-slate-200">
+        <div className="pt-10 border-t border-slate-200 dark:border-white/10">
           {/* Section Heading */}
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
               Other cars
             </h2>
             <Link
               href="/vehicles"
-              className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-950 hover:text-violet-600 transition-colors group"
+              className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-950 dark:text-white hover:text-violet-600 dark:hover:text-violet-400 transition-colors group"
             >
               <span>View All</span>
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -533,9 +582,9 @@ function DetailsContentInner() {
                 direction="up"
                 distance={28}
               >
-                <div className="card-hover-lift bg-[#f8fafc] hover:bg-white rounded-[30px] p-6 border border-slate-100/90 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between group h-full">
+                <div className="card-hover-lift bg-[#f8fafc] dark:bg-[#111116] hover:bg-white dark:hover:bg-[#16161d] rounded-[30px] p-6 border border-slate-100/90 dark:border-white/10 shadow-sm hover:border-slate-200 dark:hover:border-white/20 transition-all duration-300 flex flex-col justify-between group h-full">
                   {/* Silhouette Container */}
-                  <div className="relative aspect-[16/9] w-full rounded-[24px] bg-white border border-slate-100 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-50/50 transition-colors">
+                  <div className="relative aspect-[16/9] w-full rounded-[24px] bg-white dark:bg-black/40 border border-slate-100 dark:border-white/5 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-50/50 dark:group-hover:bg-black/60 transition-colors">
                     <VehicleVectorGraphic type={car.type} />
                   </div>
 
@@ -544,7 +593,7 @@ function DetailsContentInner() {
                     {/* Name and Price */}
                     <div className="flex items-start justify-between">
                       <div>
-                        <h3 className="title-hover-glow text-lg font-bold text-slate-900 leading-snug group-hover:text-violet-600 transition-colors">
+                        <h3 className="title-hover-glow text-lg font-bold text-slate-900 dark:text-white leading-snug group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
                           {car.name}
                         </h3>
                         <p className="text-xs text-slate-400 font-medium">
@@ -552,7 +601,7 @@ function DetailsContentInner() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <span className="text-lg font-bold text-violet-600 block leading-tight">
+                        <span className="text-lg font-bold text-violet-600 dark:text-violet-400 block leading-tight">
                           {car.price}
                         </span>
                         <span className="text-xs text-slate-400">{car.period}</span>
@@ -560,7 +609,7 @@ function DetailsContentInner() {
                     </div>
 
                     {/* 3 Specs: Automatic, Fuel / 70 Ltr, AC */}
-                    <div className="grid grid-cols-3 gap-1.5 py-3 border-t border-slate-200/70 text-[11px] text-slate-500">
+                    <div className="grid grid-cols-3 gap-1.5 py-3 border-t border-slate-200/70 dark:border-white/10 text-[11px] text-slate-500 dark:text-slate-400">
                       <div className="flex items-center gap-1">
                         <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400" />
                         <span className="truncate">{car.specs.gearBox}</span>
@@ -578,7 +627,7 @@ function DetailsContentInner() {
                     {/* View Details Button */}
                     <button
                       onClick={() => handleSelectCar(car)}
-                      className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm py-3.5 rounded-[30px] shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-center"
+                      className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm py-3.5 rounded-[30px] shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-center cursor-pointer"
                     >
                       View Details
                     </button>

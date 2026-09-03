@@ -21,7 +21,7 @@ interface CarItem {
 export function FleetSection() {
   const featuredCars: CarItem[] = [
     {
-      id: "1",
+      id: "mercedes-sedan",
       name: "Mercedes Benz C-Class",
       category: "Sedan",
       pricePerDay: "LKR 25,000",
@@ -33,7 +33,7 @@ export function FleetSection() {
       rating: "4.9",
     },
     {
-      id: "2",
+      id: "toyota-premio",
       name: "Toyota Premio G-Superior",
       category: "Sedan",
       pricePerDay: "LKR 16,500",
@@ -45,7 +45,7 @@ export function FleetSection() {
       rating: "4.9",
     },
     {
-      id: "3",
+      id: "honda-vezel",
       name: "Honda Vezel Hybrid Sensing",
       category: "SUV",
       pricePerDay: "LKR 22,000",
@@ -57,7 +57,7 @@ export function FleetSection() {
       rating: "5.0",
     },
     {
-      id: "4",
+      id: "toyota-kdh",
       name: "Toyota KDH Super GL Luxury",
       category: "Minivan",
       pricePerDay: "LKR 28,000",
@@ -69,7 +69,7 @@ export function FleetSection() {
       rating: "4.8",
     },
     {
-      id: "5",
+      id: "ford-mustang",
       name: "Ford Mustang Convertible",
       category: "Cabriolet",
       pricePerDay: "LKR 45,000",
@@ -81,7 +81,7 @@ export function FleetSection() {
       rating: "5.0",
     },
     {
-      id: "6",
+      id: "toyota-hilux",
       name: "Toyota Hilux 4x4 Offroad",
       category: "Pickup",
       pricePerDay: "LKR 32,000",
@@ -93,11 +93,6 @@ export function FleetSection() {
       rating: "4.9",
     },
   ];
-
-  const handleCarBooking = (car: CarItem) => {
-    const msg = `Hello Tourmate! I would like to check availability and reserve the ${car.name} (${car.category}) at ${car.pricePerDay} per day.`;
-    window.open(`https://wa.me/94703236834?text=${encodeURIComponent(msg)}`, "_blank");
-  };
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
@@ -197,17 +192,17 @@ export function FleetSection() {
               {/* Action Buttons: Details + Direct Reserve */}
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <Link
-                  href={`/details?id=${car.id}`}
+                  href={`/details?car=${car.id}`}
                   className="w-full py-3 rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-xs transition-colors text-center"
                 >
                   View Details
                 </Link>
-                <button
-                  onClick={() => handleCarBooking(car)}
-                  className="w-full bg-slate-950 hover:bg-violet-700 dark:bg-white dark:text-slate-950 dark:hover:bg-violet-400 dark:hover:text-white text-white font-bold text-xs py-3 rounded-[30px] shadow-sm transition-all active:scale-95 text-center cursor-pointer"
+                <Link
+                  href={`/details?car=${car.id}`}
+                  className="w-full bg-slate-950 hover:bg-violet-700 dark:bg-white dark:text-slate-950 dark:hover:bg-violet-400 dark:hover:text-white text-white font-bold text-xs py-3 rounded-[30px] shadow-sm transition-all active:scale-95 text-center cursor-pointer flex items-center justify-center gap-1.5"
                 >
-                  Reserve Now
-                </button>
+                  <span>Reserve Now</span>
+                </Link>
               </div>
             </div>
           </ScrollReveal>
