@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -291,10 +291,64 @@ export function Header() {
     }, 180);
   };
 
-  const activeNavClass =
-    "text-slate-950 dark:text-white font-bold relative py-1.5 px-3.5 rounded-full bg-slate-100/90 dark:bg-white/10 transition-all shadow-xs";
-  const inactiveNavClass =
-    "text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white transition-all py-1.5 px-3.5 rounded-full hover:bg-slate-100/60 dark:hover:bg-white/5";
+  const buyerNavRef = useRef<HTMLDivElement>(null);
+  const [hoveredNavHref, setHoveredNavHref] = useState<string | null>(null);
+  const [pillStyle, setPillStyle] = useState<{ left: number; width: number; opacity: number }>({
+    left: 0,
+    width: 0,
+    opacity: 0,
+  });
+
+  const BUYER_NAV_LINKS = useMemo(
+    () => [
+      { href: "/", label: "Home", isActive: isHome },
+      { href: "/vehicles", label: "Vehicles", isActive: isVehicles },
+      { href: "/details", label: "Details", isActive: isDetails },
+      { href: "/about", label: "About Us", isActive: isAbout },
+      { href: "/contact", label: "Contact Us", isActive: isContact },
+    ],
+    [isHome, isVehicles, isDetails, isAbout, isContact]
+  );
+
+  const updatePillPosition = useCallback(
+    (targetHref?: string | null) => {
+      if (!buyerNavRef.current) return;
+      const container = buyerNavRef.current;
+
+      const effectiveHref =
+        targetHref !== undefined
+          ? targetHref
+          : BUYER_NAV_LINKS.find((l) => l.isActive)?.href || null;
+
+      if (!effectiveHref) {
+        setPillStyle((prev) => ({ ...prev, opacity: 0 }));
+        return;
+      }
+
+      const targetLink = container.querySelector<HTMLAnchorElement>(
+        `a[data-nav-href="${effectiveHref}"]`
+      );
+      if (targetLink) {
+        setPillStyle({
+          left: targetLink.offsetLeft,
+          width: targetLink.offsetWidth,
+          opacity: 1,
+        });
+      }
+    },
+    [BUYER_NAV_LINKS]
+  );
+
+  useEffect(() => {
+    updatePillPosition(hoveredNavHref);
+  }, [hoveredNavHref, updatePillPosition]);
+
+  useEffect(() => {
+    updatePillPosition();
+    const handleResize = () => updatePillPosition(hoveredNavHref);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [updatePillPosition, pathname, hoveredNavHref]);
 
   return (
     <header className="sticky top-0 z-50 w-full stripe-glass border-b border-slate-200/80 dark:border-white/10 transition-colors duration-300">
@@ -444,23 +498,44 @@ export function Header() {
               })}
             </div>
           ) : (
-            <>
-              <Link href="/" className={isHome ? activeNavClass : inactiveNavClass}>
-                Home
-              </Link>
-              <Link href="/vehicles" className={isVehicles ? activeNavClass : inactiveNavClass}>
-                Vehicles
-              </Link>
-              <Link href="/details" className={isDetails ? activeNavClass : inactiveNavClass}>
-                Details
-              </Link>
-              <Link href="/about" className={isAbout ? activeNavClass : inactiveNavClass}>
-                About Us
-              </Link>
-              <Link href="/contact" className={isContact ? activeNavClass : inactiveNavClass}>
-                Contact Us
-              </Link>
-            </>
+            <div
+              ref={buyerNavRef}
+              onMouseLeave={() => setHoveredNavHref(null)}
+              className="relative flex items-center gap-1 select-none"
+            >
+              {/* Sliding Animated Pill Indicator */}
+              <span
+                aria-hidden="true"
+                style={{
+                  transform: `translateX(${pillStyle.left}px)`,
+                  width: `${pillStyle.width}px`,
+                  opacity: pillStyle.opacity,
+                }}
+                className="absolute top-0 bottom-0 left-0 rounded-full bg-slate-100/90 dark:bg-white/10 shadow-xs border border-slate-200/50 dark:border-white/5 transition-all duration-300 [transition-timing-function:cubic-bezier(0.25,1,0.5,1)] pointer-events-none"
+              />
+
+              {BUYER_NAV_LINKS.map((link) => {
+                const isSelected = hoveredNavHref
+                  ? hoveredNavHref === link.href
+                  : link.isActive;
+
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    data-nav-href={link.href}
+                    onMouseEnter={() => setHoveredNavHref(link.href)}
+                    className={`relative z-10 py-1.5 px-3.5 rounded-full text-sm transition-all duration-200 active:scale-95 cursor-pointer ${
+                      isSelected
+                        ? "text-slate-950 dark:text-white font-bold"
+                        : "text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white font-medium"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </div>
           )}
         </nav>
 
