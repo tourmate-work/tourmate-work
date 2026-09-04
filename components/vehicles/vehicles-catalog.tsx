@@ -643,7 +643,7 @@ export function VehiclesCatalog() {
                   </div>
                 </div>
 
-                {/* Action Buttons: View Details & Reserve */}
+                {/* Action Buttons: Specifications & Book Now */}
                 <div className="pt-4 grid grid-cols-2 gap-2">
                   <button
                     onClick={() => handleOpenDetails(car)}
@@ -652,11 +652,10 @@ export function VehiclesCatalog() {
                     Specifications
                   </button>
                   <button
-                    onClick={() => handleOpenDetails(car)}
-                    className="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs py-3 rounded-[30px] shadow-sm shadow-violet-500/20 hover:shadow-md transition-all active:scale-95 text-center flex items-center justify-center gap-1.5 cursor-pointer"
+                    onClick={() => handleBookNow(car)}
+                    className="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs py-3 rounded-[30px] shadow-sm shadow-violet-500/20 hover:shadow-md transition-all active:scale-95 text-center flex items-center justify-center cursor-pointer"
                   >
-                    <span>View Details</span>
-                    <Sparkles className="h-3.5 w-3.5" />
+                    <span>Book Now</span>
                   </button>
                 </div>
               </div>
