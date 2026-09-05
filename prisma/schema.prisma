@@ -1,0 +1,109 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  passwordHash String
+  phone        String?
+  avatarUrl    String?
+  role         String    @default("CUSTOMER") // "CUSTOMER", "SELLER", "ADMIN"
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  vehicles     Vehicle[]
+  bookings     Booking[]
+  reviews      Review[]
+}
+
+model Vehicle {
+  id               String    @id @default(cuid())
+  name             String
+  brand            String
+  model            String
+  year             Int
+  category         String    // "Sedan", "SUV", "Luxury", "Hatchback", "Van", "Electric", "Convertible"
+  transmission     String    // "Automatic", "Manual", "Tiptronic"
+  fuelType         String    // "Petrol", "Diesel", "Hybrid", "Electric"
+  seats            Int       @default(5)
+  doors            Int       @default(4)
+  luggageCapacity  Int       @default(2)
+  mileageLimit     String    @default("Unlimited")
+  pricePerDay      Float
+  depositAmount    Float     @default(0)
+  currency         String    @default("LKR")
+  imageUrl         String
+  galleryImages    String    @default("[]") // JSON string of array
+  features         String    @default("[]") // JSON string of array
+  rating           Float     @default(5.0)
+  reviewsCount     Int       @default(0)
+  isFeatured       Boolean   @default(false)
+  isAvailable      Boolean   @default(true)
+  status           String    @default("Available") // "Available", "On Rental", "Maintenance"
+  location         String
+  licensePlate     String?
+  fuelPolicy       String?   @default("Same to Same")
+  mileageAllowance String?   @default("Unlimited")
+  sellerId         String?
+  seller           User?     @relation(fields: [sellerId], references: [id], onDelete: SetNull)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  bookings         Booking[]
+  reviews          Review[]
+}
+
+model Booking {
+  id              String    @id @default(cuid())
+  carId           String
+  car             Vehicle   @relation(fields: [carId], references: [id], onDelete: Cascade)
+  userId          String?
+  user            User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  pickupDate      DateTime
+  returnDate      DateTime
+  pickupLocation  String
+  returnLocation  String
+  totalDays       Int
+  dailyRate       Float
+  totalPrice      Float
+  status          String    @default("CONFIRMED") // "PENDING", "CONFIRMED", "ACTIVE", "COMPLETED", "CANCELLED"
+  paymentStatus   String    @default("UNPAID") // "UNPAID", "PAID", "PARTIALLY_PAID", "REFUNDED"
+  specialRequests String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  carId     String
+  car       Vehicle  @relation(fields: [carId], references: [id], onDelete: Cascade)
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userName  String
+  rating    Float
+  comment   String
+  createdAt DateTime @default(now())
+}
+
+model Inquiry {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String
+  date      String?
+  carModel  String?
+  status    String   @default("PENDING") // "PENDING", "REPLIED"
+  createdAt DateTime @default(now())
+}

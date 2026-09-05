@@ -104,14 +104,34 @@ export function ContactContent() {
   const [returnPlace, setReturnPlace] = useState("Same as pickup");
   const [rentalDate, setRentalDate] = useState("2026-09-02");
   const [returnDate, setReturnDate] = useState("2026-09-08");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleBookNow = (e: React.FormEvent) => {
+  const handleBookNow = async (e: React.FormEvent) => {
     e.preventDefault();
-    const msg = `Hello Tourmate! I would like to book a ${carType} from ${pickupPlace} (${rentalDate}) to ${returnPlace} (${returnDate}).`;
-    window.open(
-      `https://wa.me/94703236834?text=${encodeURIComponent(msg)}`,
-      "_blank"
-    );
+    setIsSubmitting(true);
+    try {
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: "Guest Traveler",
+          email: "traveler@tourmate.lk",
+          subject: `Rental Booking Request - ${carType}`,
+          message: `Booking Request: ${carType} from ${pickupPlace} to ${returnPlace}. Dates: ${rentalDate} to ${returnDate}`,
+          date: `${rentalDate} to ${returnDate}`,
+          carModel: carType,
+        }),
+      });
+    } catch (err) {
+      console.error("Failed to log inquiry:", err);
+    } finally {
+      setIsSubmitting(false);
+      const msg = `Hello Tourmate! I would like to book a ${carType} from ${pickupPlace} (${rentalDate}) to ${returnPlace} (${returnDate}).`;
+      window.open(
+        `https://wa.me/94703236834?text=${encodeURIComponent(msg)}`,
+        "_blank"
+      );
+    }
   };
 
   return (
@@ -209,9 +229,10 @@ export function ContactContent() {
                     {/* Yellow CTA Button */}
                     <button
                       type="submit"
-                      className="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg transition-all duration-200 transform active:scale-95 mt-2"
+                      disabled={isSubmitting}
+                      className="w-full bg-amber-400 hover:bg-amber-500 disabled:opacity-75 text-slate-950 font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg transition-all duration-200 transform active:scale-95 mt-2"
                     >
-                      Book now
+                      {isSubmitting ? "Submitting..." : "Book now"}
                     </button>
                   </form>
                 </div>

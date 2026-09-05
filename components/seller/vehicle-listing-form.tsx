@@ -513,7 +513,7 @@ export function VehicleListingForm({
   };
 
   // Form Submit Validation
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setValidationError(null);
 
@@ -542,43 +542,112 @@ export function VehicleListingForm({
       (g) => uploadedPhotos[g.id] || g.sampleUrl
     );
 
-    const newVehicle: SellerVehicle = {
-      id: `sv-${Date.now()}`,
-      name: vehicleName.trim(),
-      category,
-      year: Number(modelYear) || 2023,
-      dailyRate: Number(dailyRate) || 16500,
-      currency: "LKR",
-      transmission: transmission === "Tiptronic" ? "Automatic" : transmission,
-      fuel,
-      seats: Number(seats) || 5,
-      doors: Number(doors) || 4,
-      location: customAddress.trim() ? `${pickupLocation} (${customAddress.trim()})` : pickupLocation,
-      status: "Available",
-      totalTrips: 0,
-      totalEarnings: 0,
-      rating: 5.0,
-      type: vehicleType,
-      features: selectedFeatures,
-      registrationDate,
-      phoneNumber: `${phoneCountryCode} ${phoneNumber}`,
-      messageCategory,
-      licensePlate,
-      fuelPolicy,
-      mileageAllowance,
-      securityDeposit,
-      exteriorPhotos: exteriorPhotosList,
-      interiorPhotos: interiorPhotosList,
-    };
+    const allGallery = [...exteriorPhotosList, ...interiorPhotosList];
+    const heroImage = exteriorPhotosList[0] || "/images/mock/axio-sedan.jpg";
 
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/vehicles", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: vehicleName.trim(),
+          brand: vehicleName.trim().split(" ")[0] || "Toyota",
+          model: vehicleName.trim(),
+          year: Number(modelYear) || 2023,
+          category,
+          transmission: transmission === "Tiptronic" ? "Automatic" : transmission,
+          fuelType: fuel,
+          seats: Number(seats) || 5,
+          doors: Number(doors) || 4,
+          luggageCapacity: 3,
+          pricePerDay: Number(dailyRate) || 16500,
+          depositAmount: securityDeposit || 25000,
+          imageUrl: heroImage,
+          galleryImages: allGallery,
+          features: selectedFeatures,
+          location: customAddress.trim() ? `${pickupLocation} (${customAddress.trim()})` : pickupLocation,
+          licensePlate,
+          fuelPolicy,
+          mileageAllowance,
+          isAvailable: true,
+          status: "Available",
+        }),
+      });
+
+      const data = await res.json();
+
+      const createdVehicle: SellerVehicle = {
+        id: data.vehicle?.id || `sv-${Date.now()}`,
+        name: vehicleName.trim(),
+        category,
+        year: Number(modelYear) || 2023,
+        dailyRate: Number(dailyRate) || 16500,
+        currency: "LKR",
+        transmission: transmission === "Tiptronic" ? "Automatic" : transmission,
+        fuel,
+        seats: Number(seats) || 5,
+        doors: Number(doors) || 4,
+        location: customAddress.trim() ? `${pickupLocation} (${customAddress.trim()})` : pickupLocation,
+        status: "Available",
+        totalTrips: 0,
+        totalEarnings: 0,
+        rating: 5.0,
+        type: vehicleType,
+        features: selectedFeatures,
+        registrationDate,
+        phoneNumber: `${phoneCountryCode} ${phoneNumber}`,
+        messageCategory,
+        licensePlate,
+        fuelPolicy,
+        mileageAllowance,
+        securityDeposit,
+        image: heroImage,
+        exteriorPhotos: exteriorPhotosList,
+        interiorPhotos: interiorPhotosList,
+      };
+
       setIsSubmitting(false);
       setShowSuccessBanner(true);
 
       if (onSuccess) {
-        onSuccess(newVehicle);
+        onSuccess(createdVehicle);
       }
-    }, 600);
+    } catch (err) {
+      console.error("Failed to save vehicle to backend:", err);
+      // Fallback local creation
+      const fallbackVehicle: SellerVehicle = {
+        id: `sv-${Date.now()}`,
+        name: vehicleName.trim(),
+        category,
+        year: Number(modelYear) || 2023,
+        dailyRate: Number(dailyRate) || 16500,
+        currency: "LKR",
+        transmission: transmission === "Tiptronic" ? "Automatic" : transmission,
+        fuel,
+        seats: Number(seats) || 5,
+        doors: Number(doors) || 4,
+        location: customAddress.trim() ? `${pickupLocation} (${customAddress.trim()})` : pickupLocation,
+        status: "Available",
+        totalTrips: 0,
+        totalEarnings: 0,
+        rating: 5.0,
+        type: vehicleType,
+        features: selectedFeatures,
+        registrationDate,
+        phoneNumber: `${phoneCountryCode} ${phoneNumber}`,
+        messageCategory,
+        licensePlate,
+        fuelPolicy,
+        mileageAllowance,
+        securityDeposit,
+        image: heroImage,
+        exteriorPhotos: exteriorPhotosList,
+        interiorPhotos: interiorPhotosList,
+      };
+      setIsSubmitting(false);
+      setShowSuccessBanner(true);
+      if (onSuccess) onSuccess(fallbackVehicle);
+    }
   };
 
   const exteriorSlots = PHOTO_GUIDES.filter((g) => g.type === "exterior");

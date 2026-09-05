@@ -252,16 +252,33 @@ export function SellerPortalContent() {
     }
   }, [searchParams]);
 
+  // Fetch live fleet from backend on mount
+  useEffect(() => {
+    async function loadBackendData() {
+      try {
+        const res = await fetch("/api/seller/vehicles");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.fleet) && data.fleet.length > 0) {
+          setFleet(data.fleet);
+        }
+      } catch (e) {
+        console.error("Failed to load seller vehicles from API:", e);
+      }
+    }
+    loadBackendData();
+  }, []);
+
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
     router.replace(`/seller?tab=${tab}`, { scroll: false });
   };
 
-  const handleToggleStatus = (vehicleId: string) => {
+  const handleToggleStatus = async (vehicleId: string) => {
+    let nextStatus: SellerVehicle["status"] = "Available";
     setFleet((prev) =>
       prev.map((v) => {
         if (v.id === vehicleId) {
-          const nextStatus: SellerVehicle["status"] =
+          nextStatus =
             v.status === "Available"
               ? "Maintenance"
               : v.status === "Maintenance"
@@ -272,6 +289,16 @@ export function SellerPortalContent() {
         return v;
       })
     );
+
+    try {
+      await fetch(`/api/seller/vehicles/${vehicleId}/status`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: nextStatus }),
+      });
+    } catch (e) {
+      console.error("Failed to sync vehicle status with backend:", e);
+    }
   };
 
   const handleApproveBooking = (bookingId: string) => {
