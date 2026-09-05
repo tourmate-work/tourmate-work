@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { MobileBottomBar } from "@/components/layout/mobile-bottom-bar";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
+const sansFont = localFont({
+  src: "./fonts/GeistVF.woff",
   variable: "--font-sans",
   display: "swap",
 });
@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={plusJakartaSans.variable} suppressHydrationWarning>
+    <html lang="en" className={sansFont.variable} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
