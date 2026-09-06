@@ -3,7 +3,10 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { prisma } from "./prisma";
 
-const JWT_SECRET = process.env.JWT_SECRET || "tourmate-super-secret-jwt-key-2026-sri-lanka";
+const JWT_SECRET =
+  process.env.JWT_SECRET ||
+  process.env.SUPABASE_SECRET_KEY ||
+  "tourmate-super-secret-jwt-key-2026-sri-lanka";
 const JWT_EXPIRES_IN = "7d";
 
 export interface TokenPayload {
