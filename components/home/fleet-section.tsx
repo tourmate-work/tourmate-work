@@ -1,8 +1,9 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Gauge, Fuel, Snowflake, ArrowRight, Star } from "lucide-react";
+import { Gauge, Fuel, Snowflake, ArrowRight, Star, Car } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 interface CarItem {
@@ -19,80 +20,40 @@ interface CarItem {
 }
 
 export function FleetSection() {
-  const featuredCars: CarItem[] = [
-    {
-      id: "mercedes-c200",
-      name: "Mercedes-Benz C-Class AMG",
-      category: "Luxury",
-      pricePerDay: "LKR 48,000",
-      transmission: "Automatic",
-      fuelEfficiency: "14 km/l",
-      ac: true,
-      image: "/images/mock/mercedes-amg.jpg",
-      badge: "Luxury Favorite",
-      rating: "4.9",
-    },
-    {
-      id: "toyota-premio",
-      name: "Toyota Premio G-Superior",
-      category: "Sedan",
-      pricePerDay: "LKR 16,500",
-      transmission: "Automatic",
-      fuelEfficiency: "16 km/l",
-      ac: true,
-      image: "/images/mock/premio-sedan.jpg",
-      badge: "Best Value",
-      rating: "4.9",
-    },
-    {
-      id: "honda-vezel",
-      name: "Honda Vezel Hybrid Sensing",
-      category: "SUV",
-      pricePerDay: "LKR 22,000",
-      transmission: "Automatic",
-      fuelEfficiency: "18 km/l",
-      ac: true,
-      image: "/images/mock/vezel-suv.jpg",
-      badge: "Top Rated",
-      rating: "5.0",
-    },
-    {
-      id: "toyota-kdh",
-      name: "Toyota KDH Super GL Luxury",
-      category: "Minivan",
-      pricePerDay: "LKR 28,000",
-      transmission: "Automatic",
-      fuelEfficiency: "12 km/l",
-      ac: true,
-      image: "/images/mock/kdh-van.jpg",
-      badge: "Family & Tour",
-      rating: "4.8",
-    },
-    {
-      id: "ford-mustang",
-      name: "Toyota Axio WXB Hybrid",
-      category: "Sedan",
-      pricePerDay: "LKR 15,500",
-      transmission: "Automatic",
-      fuelEfficiency: "22 km/l",
-      ac: true,
-      image: "/images/mock/axio-sedan.jpg",
-      badge: "Top Efficiency",
-      rating: "4.9",
-    },
-    {
-      id: "toyota-hilux",
-      name: "Toyota Land Cruiser Prado TX",
-      category: "SUV",
-      pricePerDay: "LKR 55,000",
-      transmission: "Automatic",
-      fuelEfficiency: "11 km/l",
-      ac: true,
-      image: "/images/mock/prado-4x4.jpg",
-      badge: "Rugged 4WD",
-      rating: "5.0",
-    },
-  ];
+  const [featuredCars, setFeaturedCars] = useState<CarItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadCars() {
+      try {
+        const res = await fetch("/api/vehicles?limit=6");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.vehicles)) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const mapped: CarItem[] = data.vehicles.map((v: any) => ({
+            id: v.id,
+            name: v.name,
+            category: v.category,
+            pricePerDay: `LKR ${Number(v.pricePerDay).toLocaleString()}`,
+            transmission: v.transmission,
+            fuelEfficiency: "16 km/l",
+            ac: true,
+            image: v.imageUrl || "/images/mock/axio-sedan.jpg",
+            badge: v.isFeatured ? "Featured" : v.category,
+            rating: String(v.rating || "5.0"),
+          }));
+          setFeaturedCars(mapped);
+        } else {
+          setFeaturedCars([]);
+        }
+      } catch {
+        setFeaturedCars([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadCars();
+  }, []);
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
@@ -117,8 +78,29 @@ export function FleetSection() {
         </Link>
       </div>
 
-      {/* 6 Featured Car Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      {/* Empty State when Database has 0 vehicles */}
+      {!loading && featuredCars.length === 0 ? (
+        <div className="text-center py-16 px-4 bg-slate-50 dark:bg-white/5 rounded-[30px] border border-dashed border-slate-200 dark:border-white/10">
+          <div className="h-16 w-16 mx-auto mb-4 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+            <Car className="h-8 w-8" />
+          </div>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+            No Vehicles Currently Listed
+          </h3>
+          <p className="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto mb-6">
+            All test data has been cleared. Any vehicles you add through the Seller Portal will appear here in real time.
+          </p>
+          <Link
+            href="/seller?tab=add"
+            className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-bold px-6 py-3 rounded-full text-sm shadow-md transition-all active:scale-95"
+          >
+            <span>List a Vehicle Now</span>
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      ) : (
+        /* Dynamic Car Cards Grid */
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {featuredCars.map((car, index) => (
           <ScrollReveal key={car.id} delay={index * 60} direction="up">
             <div className="stripe-card rounded-[30px] p-6 shadow-sm hover:shadow-2xl flex flex-col justify-between h-full group">
@@ -207,7 +189,8 @@ export function FleetSection() {
             </div>
           </ScrollReveal>
         ))}
-      </div>
+        </div>
+      )}
 
       {/* Bottom CTA to Vehicles Catalog */}
       <div className="mt-14 text-center">

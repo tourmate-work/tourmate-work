@@ -344,18 +344,89 @@ function DetailsContentInner() {
 
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleDetail>(foundCar);
   const [activeThumbnailIndex, setActiveThumbnailIndex] = useState(0);
+  const [liveVehicles, setLiveVehicles] = useState<VehicleDetail[]>([]);
+
+  // Fetch all live vehicles for the fleet carousel
+  useEffect(() => {
+    async function loadLiveVehicles() {
+      try {
+        const res = await fetch("/api/vehicles");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.vehicles) && data.vehicles.length > 0) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const mapped: VehicleDetail[] = data.vehicles.map((v: any) => ({
+            id: v.id,
+            name: v.name,
+            brand: v.brand || v.name.split(" ")[0] || "Toyota",
+            category: v.category,
+            price: `LKR ${Number(v.pricePerDay).toLocaleString()}`,
+            priceNum: v.pricePerDay,
+            period: "per day",
+            type: (v.category.toLowerCase() === "suv" || v.category.toLowerCase() === "van") ? v.category.toLowerCase() : "sedan",
+            fuelCapacity: "60 Ltr",
+            specs: {
+              gearBox: v.transmission,
+              fuel: v.fuelType,
+              doors: v.doors || 4,
+              ac: "Yes",
+              seats: v.seats || 5,
+              distance: v.mileageLimit || "Unlimited",
+            },
+            equipment: Array.isArray(v.features) && v.features.length > 0 ? v.features : ["Air Conditioner", "Reverse Camera", "Bluetooth"],
+            thumbnails: Array.isArray(v.galleryImages) && v.galleryImages.length > 0 ? v.galleryImages : [v.imageUrl || "/images/mock/axio-sedan.jpg"],
+          }));
+          setLiveVehicles(mapped);
+        }
+      } catch {
+        // Fallback silently to static list
+      }
+    }
+    loadLiveVehicles();
+  }, []);
 
   // Sync state whenever URL query params change
   useEffect(() => {
     const id = searchParams.get("car") || searchParams.get("id");
     if (id) {
-      const match = VEHICLES.find((v) => v.id === id);
+      const match = VEHICLES.find((v) => v.id === id) || liveVehicles.find((v) => v.id === id);
       if (match) {
         setSelectedVehicle(match);
         setActiveThumbnailIndex(0);
+      } else {
+        // Fetch from API in case direct link or database vehicle
+        fetch(`/api/vehicles/${id}`)
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.success && data.vehicle) {
+              const v = data.vehicle;
+              setSelectedVehicle({
+                id: v.id,
+                name: v.name,
+                brand: v.brand || v.name.split(" ")[0] || "Toyota",
+                category: v.category,
+                price: `LKR ${Number(v.pricePerDay).toLocaleString()}`,
+                priceNum: v.pricePerDay,
+                period: "per day",
+                type: (v.category.toLowerCase() === "suv" || v.category.toLowerCase() === "van") ? v.category.toLowerCase() : "sedan",
+                fuelCapacity: "60 Ltr",
+                specs: {
+                  gearBox: v.transmission,
+                  fuel: v.fuelType,
+                  doors: v.doors || 4,
+                  ac: "Yes",
+                  seats: v.seats || 5,
+                  distance: v.mileageLimit || "Unlimited",
+                },
+                equipment: Array.isArray(v.features) && v.features.length > 0 ? v.features : ["Air Conditioner", "Reverse Camera", "Bluetooth"],
+                thumbnails: Array.isArray(v.galleryImages) && v.galleryImages.length > 0 ? v.galleryImages : [v.imageUrl || "/images/mock/axio-sedan.jpg"],
+              });
+              setActiveThumbnailIndex(0);
+            }
+          })
+          .catch(() => {});
       }
     }
-  }, [searchParams]);
+  }, [searchParams, liveVehicles]);
 
   const handleSelectCar = (car: VehicleDetail) => {
     setSelectedVehicle(car);
@@ -371,7 +442,8 @@ function DetailsContentInner() {
     );
   };
 
-  const otherCars = VEHICLES.filter((v) => v.id !== selectedVehicle.id).slice(0, 6);
+  const pool = liveVehicles.length > 0 ? liveVehicles : VEHICLES;
+  const otherCars = pool.filter((v) => v.id !== selectedVehicle.id).slice(0, 6);
 
   return (
     <div className="w-full bg-white dark:bg-black text-slate-900 dark:text-white pb-20">

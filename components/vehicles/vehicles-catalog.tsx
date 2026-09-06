@@ -392,6 +392,50 @@ export function VehiclesCatalog() {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeModalCar, setActiveModalCar] = useState<VehicleDetail | null>(null);
   const [activeThumbnailIndex, setActiveThumbnailIndex] = useState(0);
+  const [vehiclesList, setVehiclesList] = useState<VehicleDetail[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch live vehicles from backend API
+  useEffect(() => {
+    async function loadVehicles() {
+      try {
+        const res = await fetch("/api/vehicles");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.vehicles)) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const mapped: VehicleDetail[] = data.vehicles.map((v: any) => ({
+            id: v.id,
+            name: v.name,
+            brand: v.brand || v.name.split(" ")[0] || "Toyota",
+            category: v.category,
+            price: `LKR ${Number(v.pricePerDay).toLocaleString()}`,
+            priceNum: v.pricePerDay,
+            period: "per day",
+            type: (v.category.toLowerCase() === "suv" || v.category.toLowerCase() === "van") ? v.category.toLowerCase() : "sedan",
+            fuelCapacity: "60 Ltr",
+            specs: {
+              gearBox: v.transmission,
+              fuel: v.fuelType,
+              doors: v.doors || 4,
+              ac: "Yes",
+              seats: v.seats || 5,
+              distance: v.mileageLimit || "Unlimited",
+            },
+            equipment: Array.isArray(v.features) ? v.features : ["Air Conditioner", "Reverse Camera", "Bluetooth"],
+            thumbnails: Array.isArray(v.galleryImages) && v.galleryImages.length > 0 ? v.galleryImages : [v.imageUrl || "/images/mock/axio-sedan.jpg"],
+          }));
+          setVehiclesList(mapped);
+        } else {
+          setVehiclesList([]);
+        }
+      } catch {
+        setVehiclesList([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadVehicles();
+  }, []);
 
   // Lock body scroll when modal is open and handle ESC key
   useEffect(() => {
@@ -414,7 +458,7 @@ export function VehiclesCatalog() {
     };
   }, [activeModalCar]);
 
-  const filteredVehicles = ALL_VEHICLES.filter((v) => {
+  const filteredVehicles = vehiclesList.filter((v) => {
     if (selectedCategory === "all") return true;
     return v.category === selectedCategory;
   }).sort((a, b) => {
@@ -569,7 +613,26 @@ export function VehiclesCatalog() {
           </div>
         </div>
 
-        {/* Vehicle Cards Grid (3x3) */}
+        {/* Vehicle Cards Grid (3x3) or Empty State */}
+        {!loading && filteredVehicles.length === 0 ? (
+          <div className="text-center py-20 px-4 bg-slate-50 dark:bg-white/5 rounded-[32px] border border-dashed border-slate-200 dark:border-white/10 mb-12">
+            <div className="h-16 w-16 mx-auto mb-4 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+              <CarPillIcon className="h-8 w-8 text-violet-600 dark:text-violet-400" />
+            </div>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+              No Vehicles Found
+            </h3>
+            <p className="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto mb-6">
+              There are currently no vehicles listed in the fleet. When vehicles are added in the Seller Portal, they will appear here immediately.
+            </p>
+            <a
+              href="/seller?tab=add"
+              className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-bold px-6 py-3 rounded-full text-sm shadow-md transition-all active:scale-95"
+            >
+              <span>Add Vehicle via Seller Portal</span>
+            </a>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filteredVehicles.map((car, index) => (
             <ScrollReveal
@@ -662,30 +725,33 @@ export function VehiclesCatalog() {
             </ScrollReveal>
           ))}
         </div>
+      )}
 
-        {/* Pagination: 1 2 3 4 5 6 */}
-        <div className="mt-14 flex items-center justify-center gap-3 sm:gap-4">
-          {[1, 2, 3, 4, 5, 6].map((page) => {
-            const isCurrent = currentPage === page;
-            return (
-              <button
-                key={page}
-                onClick={() => {
-                  setCurrentPage(page);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-                className={`w-11 h-11 sm:w-12 sm:h-12 rounded-full font-bold text-sm sm:text-base flex items-center justify-center transition-all duration-200 ${
-                  isCurrent
-                    ? "bg-black text-white shadow-md scale-105"
-                    : "bg-[#e2e8f0] text-slate-800 hover:bg-slate-300"
-                }`}
-                aria-label={`Go to page ${page}`}
-              >
-                {page}
-              </button>
-            );
-          })}
-        </div>
+        {/* Pagination only if vehicles exist */}
+        {!loading && filteredVehicles.length > 0 && (
+          <div className="mt-14 flex items-center justify-center gap-3 sm:gap-4">
+            {[1, 2, 3, 4, 5, 6].map((page) => {
+              const isCurrent = currentPage === page;
+              return (
+                <button
+                  key={page}
+                  onClick={() => {
+                    setCurrentPage(page);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className={`w-11 h-11 sm:w-12 sm:h-12 rounded-full font-bold text-sm sm:text-base flex items-center justify-center transition-all duration-200 ${
+                    isCurrent
+                      ? "bg-black text-white shadow-md scale-105"
+                      : "bg-[#e2e8f0] text-slate-800 hover:bg-slate-300"
+                  }`}
+                  aria-label={`Go to page ${page}`}
+                >
+                  {page}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* ANIMATED VEHICLE DETAIL SPECIFICATION MODAL */}
