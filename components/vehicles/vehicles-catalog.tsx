@@ -403,27 +403,51 @@ export function VehiclesCatalog() {
         const data = await res.json();
         if (data.success && Array.isArray(data.vehicles)) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const mapped: VehicleDetail[] = data.vehicles.map((v: any) => ({
-            id: v.id,
-            name: v.name,
-            brand: v.brand || v.name.split(" ")[0] || "Toyota",
-            category: v.category,
-            price: `LKR ${Number(v.pricePerDay).toLocaleString()}`,
-            priceNum: v.pricePerDay,
-            period: "per day",
-            type: (v.category.toLowerCase() === "suv" || v.category.toLowerCase() === "van") ? v.category.toLowerCase() : "sedan",
-            fuelCapacity: "60 Ltr",
-            specs: {
-              gearBox: v.transmission,
-              fuel: v.fuelType,
-              doors: v.doors || 4,
-              ac: "Yes",
-              seats: v.seats || 5,
-              distance: v.mileageLimit || "Unlimited",
-            },
-            equipment: Array.isArray(v.features) ? v.features : ["Air Conditioner", "Reverse Camera", "Bluetooth"],
-            thumbnails: Array.isArray(v.galleryImages) && v.galleryImages.length > 0 ? v.galleryImages : [v.imageUrl || "/images/mock/axio-sedan.jpg"],
-          }));
+          const mapped: VehicleDetail[] = data.vehicles.map((v: any) => {
+            const fallbackImg =
+              v.category === "Van"
+                ? "/images/mock/kdh-van.jpg"
+                : v.category === "SUV" || v.category === "4x4"
+                ? "/images/mock/prado-4x4.jpg"
+                : "/images/mock/premio-sedan.jpg";
+
+            const validHero =
+              v.imageUrl && !v.imageUrl.startsWith("blob:") ? v.imageUrl : fallbackImg;
+
+            const validGallery =
+              Array.isArray(v.galleryImages) && v.galleryImages.length > 0
+                ? v.galleryImages.map((img: string) =>
+                    img && !img.startsWith("blob:") ? img : fallbackImg
+                  )
+                : [validHero];
+
+            return {
+              id: v.id,
+              name: v.name,
+              brand: v.brand || v.name.split(" ")[0] || "Toyota",
+              category: v.category,
+              price: `LKR ${Number(v.pricePerDay).toLocaleString()}`,
+              priceNum: v.pricePerDay,
+              period: "per day",
+              type:
+                v.category.toLowerCase() === "suv" || v.category.toLowerCase() === "van"
+                  ? v.category.toLowerCase()
+                  : "sedan",
+              fuelCapacity: "60 Ltr",
+              specs: {
+                gearBox: v.transmission,
+                fuel: v.fuelType,
+                doors: v.doors || 4,
+                ac: "Yes",
+                seats: v.seats || 5,
+                distance: v.mileageLimit || "Unlimited",
+              },
+              equipment: Array.isArray(v.features)
+                ? v.features
+                : ["Air Conditioner", "Reverse Camera", "Bluetooth"],
+              thumbnails: validGallery,
+            };
+          });
           setVehiclesList(mapped);
         } else {
           setVehiclesList([]);

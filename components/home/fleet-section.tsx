@@ -30,18 +30,30 @@ export function FleetSection() {
         const data = await res.json();
         if (data.success && Array.isArray(data.vehicles)) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const mapped: CarItem[] = data.vehicles.map((v: any) => ({
-            id: v.id,
-            name: v.name,
-            category: v.category,
-            pricePerDay: `LKR ${Number(v.pricePerDay).toLocaleString()}`,
-            transmission: v.transmission,
-            fuelEfficiency: "16 km/l",
-            ac: true,
-            image: v.imageUrl || "/images/mock/axio-sedan.jpg",
-            badge: v.isFeatured ? "Featured" : v.category,
-            rating: String(v.rating || "5.0"),
-          }));
+          const mapped: CarItem[] = data.vehicles.map((v: any) => {
+            const fallbackImg =
+              v.category === "Van"
+                ? "/images/mock/kdh-van.jpg"
+                : v.category === "SUV" || v.category === "4x4"
+                ? "/images/mock/prado-4x4.jpg"
+                : "/images/mock/premio-sedan.jpg";
+
+            const validImage =
+              v.imageUrl && !v.imageUrl.startsWith("blob:") ? v.imageUrl : fallbackImg;
+
+            return {
+              id: v.id,
+              name: v.name,
+              category: v.category,
+              pricePerDay: `LKR ${Number(v.pricePerDay).toLocaleString()}`,
+              transmission: v.transmission,
+              fuelEfficiency: "16 km/l",
+              ac: true,
+              image: validImage,
+              badge: v.isFeatured ? "Featured" : v.category,
+              rating: String(v.rating || "5.0"),
+            };
+          });
           setFeaturedCars(mapped);
         } else {
           setFeaturedCars([]);

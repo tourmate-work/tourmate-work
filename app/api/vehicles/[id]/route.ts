@@ -48,11 +48,42 @@ export async function GET(
       parsedFeatures = [];
     }
 
+    const fallbackCategoryImg: { [cat: string]: string } = {
+      Sedan: "/images/mock/premio-sedan.jpg",
+      SUV: "/images/mock/vezel-suv.jpg",
+      "4x4": "/images/mock/prado-4x4.jpg",
+      Van: "/images/mock/kdh-van.jpg",
+      Luxury: "/images/mock/mercedes-amg.jpg",
+    };
+
+    const defaultGallery = [
+      "/images/mock/premio-sedan.jpg",
+      "/images/mock/axio-sedan.jpg",
+      "/images/car-side.jpg",
+      "/images/mock/prado-4x4.jpg",
+      "/images/mock/mercedes-amg.jpg",
+      "/images/mock/cockpit.jpg",
+      "/images/mock/rear-cabin.jpg",
+    ];
+
+    let cleanImageUrl = vehicle.imageUrl;
+    if (!cleanImageUrl || cleanImageUrl.startsWith("blob:")) {
+      cleanImageUrl = fallbackCategoryImg[vehicle.category] || "/images/mock/premio-sedan.jpg";
+    }
+
+    const cleanGallery = (parsedGallery.length > 0 ? parsedGallery : defaultGallery).map((img, idx) => {
+      if (typeof img === "string" && !img.startsWith("blob:") && img.trim() !== "") {
+        return img;
+      }
+      return defaultGallery[idx % defaultGallery.length];
+    });
+
     return NextResponse.json({
       success: true,
       vehicle: {
         ...vehicle,
-        galleryImages: parsedGallery,
+        imageUrl: cleanImageUrl,
+        galleryImages: cleanGallery,
         features: parsedFeatures,
       },
     });

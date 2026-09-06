@@ -437,6 +437,8 @@ export function VehicleListingForm({
 
   // 5. Photos Upload State (holds uploaded file data/preview URLs for the 7 slots)
   const [uploadedPhotos, setUploadedPhotos] = useState<{ [slotId: string]: string }>({});
+  const [uploadedFiles, setUploadedFiles] = useState<{ [slotId: string]: File }>({});
+  const [uploadStatusText, setUploadStatusText] = useState<string>("");
   const fileInputRefs = useRef<{ [slotId: string]: HTMLInputElement | null }>({});
 
   // 6. Terms and Conditions
@@ -457,11 +459,17 @@ export function VehicleListingForm({
   const handlePhotoFileChange = (slotId: string, file: File) => {
     const objectUrl = URL.createObjectURL(file);
     setUploadedPhotos((prev) => ({ ...prev, [slotId]: objectUrl }));
+    setUploadedFiles((prev) => ({ ...prev, [slotId]: file }));
     setValidationError(null);
   };
 
   const handleRemovePhoto = (slotId: string) => {
     setUploadedPhotos((prev) => {
+      const copy = { ...prev };
+      delete copy[slotId];
+      return copy;
+    });
+    setUploadedFiles((prev) => {
       const copy = { ...prev };
       delete copy[slotId];
       return copy;
@@ -501,6 +509,7 @@ export function VehicleListingForm({
       samples[guide.id] = guide.sampleUrl;
     });
     setUploadedPhotos(samples);
+    setUploadedFiles({});
     setAgreeTerms(true);
   };
 
@@ -533,13 +542,52 @@ export function VehicleListingForm({
     }
 
     setIsSubmitting(true);
+    setUploadStatusText("Uploading vehicle photos...");
+
+    // Upload real files to Supabase Storage if any
+    const uploadedUrls: { [slotId: string]: string } = {};
+    const fileEntries = Object.entries(uploadedFiles);
+
+    if (fileEntries.length > 0) {
+      let idx = 0;
+      for (const [slotId, file] of fileEntries) {
+        idx++;
+        setUploadStatusText(`Uploading photo ${idx} of ${fileEntries.length}...`);
+        try {
+          const formData = new FormData();
+          formData.append("file", file);
+          const uploadRes = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          });
+          const uploadData = await uploadRes.json();
+          if (uploadData.success && uploadData.url) {
+            uploadedUrls[slotId] = uploadData.url;
+          }
+        } catch (err) {
+          console.error(`Failed to upload photo for slot ${slotId}:`, err);
+        }
+      }
+    }
+
+    setUploadStatusText("Publishing vehicle listing...");
 
     const exteriorPhotosList = PHOTO_GUIDES.filter((g) => g.type === "exterior").map(
-      (g) => uploadedPhotos[g.id] || g.sampleUrl
+      (g) => {
+        if (uploadedUrls[g.id]) return uploadedUrls[g.id];
+        const current = uploadedPhotos[g.id];
+        if (current && !current.startsWith("blob:")) return current;
+        return g.sampleUrl;
+      }
     );
 
     const interiorPhotosList = PHOTO_GUIDES.filter((g) => g.type === "interior").map(
-      (g) => uploadedPhotos[g.id] || g.sampleUrl
+      (g) => {
+        if (uploadedUrls[g.id]) return uploadedUrls[g.id];
+        const current = uploadedPhotos[g.id];
+        if (current && !current.startsWith("blob:")) return current;
+        return g.sampleUrl;
+      }
     );
 
     const allGallery = [...exteriorPhotosList, ...interiorPhotosList];
@@ -1555,7 +1603,7 @@ export function VehicleListingForm({
               disabled={isSubmitting}
               className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm shadow-xl shadow-violet-500/25 transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer disabled:opacity-50"
             >
-              <span>{isSubmitting ? "Publishing Listing..." : "Publish Vehicle Listing"}</span>
+              <span>{isSubmitting ? (uploadStatusText || "Publishing Listing...") : "Publish Vehicle Listing"}</span>
               <Sparkles className="h-4 w-4" />
             </button>
           </div>

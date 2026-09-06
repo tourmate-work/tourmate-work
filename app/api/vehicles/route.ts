@@ -4,6 +4,24 @@ import { getAuthUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
+const fallbackCategoryImg: { [cat: string]: string } = {
+  Sedan: "/images/mock/premio-sedan.jpg",
+  SUV: "/images/mock/vezel-suv.jpg",
+  "4x4": "/images/mock/prado-4x4.jpg",
+  Van: "/images/mock/kdh-van.jpg",
+  Luxury: "/images/mock/mercedes-amg.jpg",
+};
+
+const defaultGallery = [
+  "/images/mock/premio-sedan.jpg",
+  "/images/mock/axio-sedan.jpg",
+  "/images/car-side.jpg",
+  "/images/mock/prado-4x4.jpg",
+  "/images/mock/mercedes-amg.jpg",
+  "/images/mock/cockpit.jpg",
+  "/images/mock/rear-cabin.jpg",
+];
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -110,7 +128,7 @@ export async function GET(req: NextRequest) {
       }),
     ]);
 
-    // Parse JSON fields (galleryImages, features)
+    // Parse JSON fields (galleryImages, features) and sanitize image URLs
     const vehicles = rawVehicles.map((v) => {
       let parsedGallery: string[] = [];
       let parsedFeatures: string[] = [];
@@ -125,9 +143,24 @@ export async function GET(req: NextRequest) {
         parsedFeatures = [];
       }
 
+      // Sanitize imageUrl (replace temporary/dead blob URLs)
+      let cleanImageUrl = v.imageUrl;
+      if (!cleanImageUrl || cleanImageUrl.startsWith("blob:")) {
+        cleanImageUrl = fallbackCategoryImg[v.category] || "/images/mock/premio-sedan.jpg";
+      }
+
+      // Sanitize galleryImages (replace dead blob URLs with stable gallery images)
+      const cleanGallery = (parsedGallery.length > 0 ? parsedGallery : defaultGallery).map((img, idx) => {
+        if (typeof img === "string" && !img.startsWith("blob:") && img.trim() !== "") {
+          return img;
+        }
+        return defaultGallery[idx % defaultGallery.length];
+      });
+
       return {
         ...v,
-        galleryImages: parsedGallery,
+        imageUrl: cleanImageUrl,
+        galleryImages: cleanGallery,
         features: parsedFeatures,
       };
     });
@@ -197,6 +230,23 @@ export async function POST(req: NextRequest) {
       sellerId = defaultSeller?.id;
     }
 
+    // Clean imageUrl and galleryImages to guarantee no blob URLs enter database
+    let cleanHeroImage = imageUrl;
+    if (!cleanHeroImage || cleanHeroImage.startsWith("blob:")) {
+      cleanHeroImage = fallbackCategoryImg[category] || "/images/mock/axio-sedan.jpg";
+    }
+
+    const cleanGalleryList = (Array.isArray(galleryImages) ? galleryImages : []).map(
+      (img: string, idx: number) => {
+        if (typeof img === "string" && !img.startsWith("blob:") && img.trim() !== "") {
+          return img;
+        }
+        return defaultGallery[idx % defaultGallery.length];
+      }
+    );
+
+    const finalGallery = cleanGalleryList.length > 0 ? cleanGalleryList : [cleanHeroImage];
+
     const vehicle = await prisma.vehicle.create({
       data: {
         name: name.trim(),
@@ -212,8 +262,8 @@ export async function POST(req: NextRequest) {
         mileageLimit: mileageLimit || "Unlimited",
         pricePerDay: parseFloat(pricePerDay),
         depositAmount: depositAmount ? parseFloat(depositAmount) : 0,
-        imageUrl: imageUrl || "/images/mock/axio-sedan.jpg",
-        galleryImages: Array.isArray(galleryImages) ? JSON.stringify(galleryImages) : "[]",
+        imageUrl: cleanHeroImage,
+        galleryImages: JSON.stringify(finalGallery),
         features: Array.isArray(features) ? JSON.stringify(features) : "[]",
         location: location || "Colombo, Sri Lanka",
         licensePlate: licensePlate || null,
