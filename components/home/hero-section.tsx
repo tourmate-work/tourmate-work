@@ -9,8 +9,8 @@ import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { ShieldCheck, Sparkles, MessageCircle, UserCheck, KeyRound, Search } from "lucide-react";
 
 const CAR_TYPE_OPTIONS = [
-  { value: "All", label: "All Vehicle Categories" },
-  { value: "Sedan", label: "Sedan (Axio, Premio, Allion)" },
+  { value: "All", label: "All Vehicle Types" },
+  { value: "Sedan", label: "Sedan (Premio, Axio, Allion)" },
   { value: "SUV", label: "SUV (Vezel, RAV4, CR-V, Prado)" },
   { value: "Luxury", label: "Luxury (Mercedes, BMW, Audi)" },
   { value: "Van", label: "Van (KDH Super GL, Caravan)" },
@@ -21,7 +21,6 @@ const CAR_TYPE_OPTIONS = [
 export function HeroSection() {
   const router = useRouter();
   const [rentalMode, setRentalMode] = useState<"self" | "driver">("self");
-  const [searchQuery, setSearchQuery] = useState("");
   const [carType, setCarType] = useState("All");
   const [pickupPlace, setPickupPlace] = useState("Bandaranaike Int'l Airport (CMB) / Katunayake");
   const [rentalDate, setRentalDate] = useState("2026-09-01");
@@ -30,9 +29,10 @@ export function HeroSection() {
   const handleSearchVehicles = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
-    if (searchQuery.trim()) params.set("search", searchQuery.trim());
-    if (pickupPlace.trim()) params.set("location", pickupPlace.trim());
     if (carType && carType !== "All") params.set("category", carType);
+    if (pickupPlace.trim()) params.set("location", pickupPlace.trim());
+    if (rentalDate) params.set("pickupDate", rentalDate);
+    if (returnDate) params.set("returnDate", returnDate);
     params.set("available", "true");
     if (rentalMode) params.set("mode", rentalMode);
     router.push(`/vehicles?${params.toString()}`);
@@ -40,9 +40,9 @@ export function HeroSection() {
 
   const handleWhatsAppBooking = () => {
     const modeText = rentalMode === "self" ? "Self-Drive" : "With Driver";
-    const vehicleText = searchQuery.trim() ? searchQuery.trim() : carType !== "All" ? carType : "Rental Vehicle";
+    const typeText = carType !== "All" ? carType : "Vehicle";
     const locText = pickupPlace.trim() || "Sri Lanka";
-    const message = `Hello Tourmate! I would like to check available ${modeText} vehicles (${vehicleText}) for delivery in ${locText} from ${rentalDate} to ${returnDate}.`;
+    const message = `Hello Tourmate! I would like to check available ${modeText} ${typeText} rentals for delivery at ${locText}, pickup on ${rentalDate} and return on ${returnDate}.`;
     window.open(`https://wa.me/94703236834?text=${encodeURIComponent(message)}`, "_blank");
   };
 
@@ -158,39 +158,11 @@ export function HeroSection() {
                 </span>
               </h2>
 
-              <form onSubmit={handleSearchVehicles} className="space-y-3">
-                {/* Search Vehicle by Name / Model */}
+              <form onSubmit={handleSearchVehicles} className="space-y-3.5">
+                {/* 1. Vehicle Type (Top) */}
                 <div>
                   <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
-                    Search Vehicle / Model
-                  </label>
-                  <div className="relative flex items-center">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="e.g. Premio, Axio, Vezel, Prado, Sedan..."
-                      className="w-full pl-10 pr-4 py-2.5 text-xs font-semibold rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-violet-600/30 focus:border-violet-600 transition-all"
-                    />
-                  </div>
-                </div>
-
-                {/* Sri Lanka City / Place / Address Search */}
-                <div>
-                  <LocationSearchInput
-                    value={pickupPlace}
-                    onChange={setPickupPlace}
-                    label="City, Place, or Address in Sri Lanka"
-                    placeholder="Search any city, airport, or hotel address..."
-                    variant="light"
-                  />
-                </div>
-
-                {/* Vehicle Category Dropdown */}
-                <div>
-                  <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
-                    Vehicle Category
+                    Vehicle Type
                   </label>
                   <CustomDropdown
                     options={CAR_TYPE_OPTIONS}
@@ -201,23 +173,36 @@ export function HeroSection() {
                   />
                 </div>
 
-                {/* Dates: Pick & Return */}
-                <div className="grid grid-cols-2 gap-2">
+                {/* 2. Pickup Location */}
+                <div>
+                  <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
+                    Pickup Location
+                  </label>
+                  <LocationSearchInput
+                    value={pickupPlace}
+                    onChange={setPickupPlace}
+                    placeholder="Search any city, airport, hotel, or address in Sri Lanka..."
+                    variant="light"
+                  />
+                </div>
+
+                {/* 3 & 4. Pickup Date and Return Date */}
+                <div className="grid grid-cols-2 gap-2.5">
                   <div>
                     <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
-                      Start Date
+                      Pickup Date
                     </label>
                     <CustomDatePicker
                       value={rentalDate}
                       onChange={setRentalDate}
-                      placeholder="Rental Date"
+                      placeholder="Pickup Date"
                       variant="light"
                       position="auto"
                     />
                   </div>
                   <div>
                     <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
-                      End Date
+                      Return Date
                     </label>
                     <CustomDatePicker
                       value={returnDate}
