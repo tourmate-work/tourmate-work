@@ -5,6 +5,7 @@ import { FeaturePillars } from "@/components/home/feature-pillars";
 import { WhyChooseUs } from "@/components/home/why-choose-us";
 import { FleetSection } from "@/components/home/fleet-section";
 import { StatsSection } from "@/components/home/stats-section";
+import { VehicleOwnerSection } from "@/components/home/vehicle-owner-cta";
 
 export default function Home() {
   return (
@@ -20,7 +21,7 @@ export default function Home() {
         {/* 2. Three Feature Pillars (Availability, Comfort, Savings) */}
         <FeaturePillars />
 
-        {/* 3. Why Choose Us (Fleet Photo & 4 Step Highlights) */}
+        {/* 3. How It Works (3 Steps) */}
         <WhyChooseUs />
 
         {/* 4. Car Selection Grid (Choose the car that suits you) */}
@@ -28,6 +29,9 @@ export default function Home() {
 
         {/* 5. Facts In Numbers Stats */}
         <StatsSection />
+
+        {/* 6. Vehicle Owner Section (Have a Vehicle You Want to Rent Out?) */}
+        <VehicleOwnerSection />
       </main>
 
       {/* Footer */}

@@ -1,6 +1,10 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Mail, Phone } from "lucide-react";
+import { MapPin, Mail, Phone, MessageCircle } from "lucide-react";
+import { PolicyModal, PolicyType } from "./policy-modal";
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -53,6 +57,8 @@ function GooglePlayIcon({ className = "h-5 w-5" }: { className?: string }) {
 }
 
 export function Footer() {
+  const [activePolicy, setActivePolicy] = useState<PolicyType>(null);
+
   return (
     <footer id="contact" className="bg-[#050505] text-white pt-14 pb-8 border-t border-neutral-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -173,11 +179,16 @@ export function Footer() {
           </div>
 
           {/* Useful Links */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-3">
             <h4 className="text-white font-bold text-base mb-5">
               Useful links
             </h4>
-            <ul className="space-y-3 text-sm text-neutral-300">
+            <ul className="space-y-2.5 text-sm text-neutral-300">
+              <li>
+                <Link href="/vehicles" className="hover:text-amber-400 font-semibold transition-colors">
+                  Browse Vehicles
+                </Link>
+              </li>
               <li>
                 <a
                   href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
@@ -190,29 +201,52 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <Link href="/#about" className="hover:text-amber-400 transition-colors">
-                  About us
+                <Link href="/about" className="hover:text-amber-400 transition-colors">
+                  About
                 </Link>
               </li>
               <li>
-                <Link href="/#contact" className="hover:text-amber-400 transition-colors">
-                  Contact us
+                <Link href="/contact" className="hover:text-amber-400 transition-colors">
+                  Contact
                 </Link>
               </li>
               <li>
-                <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
-                  Gallery
-                </Link>
+                <button
+                  type="button"
+                  onClick={() => setActivePolicy("terms")}
+                  className="hover:text-amber-400 transition-colors text-left cursor-pointer"
+                >
+                  Terms & Conditions
+                </button>
               </li>
               <li>
-                <Link href="/#about" className="hover:text-amber-400 transition-colors">
-                  Blog
-                </Link>
+                <button
+                  type="button"
+                  onClick={() => setActivePolicy("privacy")}
+                  className="hover:text-amber-400 transition-colors text-left cursor-pointer"
+                >
+                  Privacy Policy
+                </button>
               </li>
               <li>
-                <Link href="/#about" className="hover:text-amber-400 transition-colors">
-                  F.A.Q
-                </Link>
+                <button
+                  type="button"
+                  onClick={() => setActivePolicy("cancellation")}
+                  className="hover:text-amber-400 transition-colors text-left cursor-pointer"
+                >
+                  Cancellation Policy
+                </button>
+              </li>
+              <li>
+                <a
+                  href="https://wa.me/94703236834?text=Hello%20Tourmate!%20I%20have%20an%20inquiry."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-emerald-400 transition-colors flex items-center gap-1.5 text-emerald-400"
+                >
+                  <MessageCircle className="h-3.5 w-3.5" />
+                  <span>WhatsApp (+94 70 323 6834)</span>
+                </a>
               </li>
             </ul>
           </div>
@@ -295,10 +329,13 @@ export function Footer() {
         {/* Bottom Copyright */}
         <div className="pt-8 border-t border-neutral-900 text-center">
           <p className="text-xs text-neutral-500">
-            © Copyright Tourmate rentals 2026. Design by . MSP Solutions
+            © Copyright Tourmate rentals 2026. Design by MSP Solutions
           </p>
         </div>
       </div>
+
+      {/* Interactive Policy Modal */}
+      <PolicyModal policy={activePolicy} onClose={() => setActivePolicy(null)} />
     </footer>
   );
 }

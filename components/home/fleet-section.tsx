@@ -3,15 +3,19 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Gauge, Fuel, Snowflake, ArrowRight, Star, Car } from "lucide-react";
+import { Gauge, Snowflake, ArrowRight, Star, Car, Users, MapPin } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { BookingInquiryModal, BookingVehicleInfo } from "@/components/booking/booking-inquiry-modal";
 
 interface CarItem {
   id: string;
   name: string;
   category: string;
   pricePerDay: string;
+  priceNum: number;
   transmission: string;
+  seats: number;
+  location: string;
   fuelEfficiency: string;
   ac: boolean;
   image: string;
@@ -22,6 +26,7 @@ interface CarItem {
 export function FleetSection() {
   const [featuredCars, setFeaturedCars] = useState<CarItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedBookingCar, setSelectedBookingCar] = useState<BookingVehicleInfo | null>(null);
 
   useEffect(() => {
     async function loadCars() {
@@ -46,7 +51,10 @@ export function FleetSection() {
               name: v.name,
               category: v.category,
               pricePerDay: `LKR ${Number(v.pricePerDay).toLocaleString()}`,
-              transmission: v.transmission,
+              priceNum: Number(v.pricePerDay),
+              transmission: v.transmission || "Automatic",
+              seats: v.seats || 5,
+              location: v.location || "Colombo / CMB Airport",
               fuelEfficiency: "16 km/l",
               ac: true,
               image: validImage,
@@ -140,17 +148,22 @@ export function FleetSection() {
                 </div>
 
                 {/* Car Image Container */}
-                <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-slate-50 dark:bg-white/[0.03] mb-5 flex items-center justify-center p-4 border border-slate-100 dark:border-white/5">
+                <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-slate-50 dark:bg-white/[0.03] mb-4 flex items-center justify-center p-4 border border-slate-100 dark:border-white/5">
                   <Image
                     src={car.image}
                     alt={`${car.name} ${car.category}`}
                     fill
                     className="object-contain object-center group-hover:scale-105 transition-transform duration-300"
                   />
+                  {/* Location Badge on Image */}
+                  <div className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-black/70 backdrop-blur-md text-white border border-white/20 flex items-center gap-1">
+                    <MapPin className="h-3 w-3 text-violet-400" />
+                    <span className="truncate max-w-[150px]">{car.location}</span>
+                  </div>
                 </div>
 
                 {/* Name and Price Header */}
-                <div className="flex items-start justify-between gap-2 mb-4">
+                <div className="flex items-start justify-between gap-2 mb-3">
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-snug">
                       {car.name}
@@ -168,15 +181,15 @@ export function FleetSection() {
                   </div>
                 </div>
 
-                {/* 3 Specs Capsules */}
-                <div className="grid grid-cols-3 gap-2 py-3 border-t border-slate-100 dark:border-white/10 text-[11px] text-slate-600 dark:text-slate-400 mb-5">
+                {/* 3 Specs Capsules: Transmission, Seats, AC */}
+                <div className="grid grid-cols-3 gap-2 py-2.5 border-t border-slate-100 dark:border-white/10 text-[11px] text-slate-600 dark:text-slate-400 mb-4">
                   <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
                     <Gauge className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
                     <span className="truncate">{car.transmission}</span>
                   </div>
                   <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
-                    <Fuel className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
-                    <span className="truncate">{car.fuelEfficiency}</span>
+                    <Users className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+                    <span className="truncate">{car.seats} Seats</span>
                   </div>
                   <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
                     <Snowflake className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
@@ -185,20 +198,32 @@ export function FleetSection() {
                 </div>
               </div>
 
-              {/* Action Buttons: Details + Direct Reserve */}
+              {/* Action Buttons: View Vehicle + Request to Book */}
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <Link
                   href={`/details?car=${car.id}`}
                   className="w-full py-3 rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-xs transition-colors text-center"
                 >
-                  View Details
+                  View Vehicle
                 </Link>
-                <Link
-                  href={`/details?car=${car.id}`}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setSelectedBookingCar({
+                      id: car.id,
+                      name: car.name,
+                      category: car.category,
+                      pricePerDay: car.pricePerDay,
+                      imageUrl: car.image,
+                      location: car.location,
+                      transmission: car.transmission,
+                      seats: car.seats,
+                    })
+                  }
                   className="w-full bg-slate-950 hover:bg-violet-700 dark:bg-white dark:text-slate-950 dark:hover:bg-violet-400 dark:hover:text-white text-white font-bold text-xs py-3 rounded-[30px] shadow-sm transition-all active:scale-95 text-center cursor-pointer flex items-center justify-center gap-1.5"
                 >
-                  <span>Reserve Now</span>
-                </Link>
+                  <span>Request to Book</span>
+                </button>
               </div>
             </div>
           </ScrollReveal>
@@ -216,6 +241,15 @@ export function FleetSection() {
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
+
+      {/* Booking Inquiry Modal */}
+      {selectedBookingCar && (
+        <BookingInquiryModal
+          isOpen={Boolean(selectedBookingCar)}
+          onClose={() => setSelectedBookingCar(null)}
+          vehicle={selectedBookingCar}
+        />
+      )}
     </section>
   );
 }

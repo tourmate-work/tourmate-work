@@ -1,0 +1,88 @@
+"use client";
+
+import { MessageCircle, ShieldCheck, DollarSign, CalendarCheck, ArrowRight } from "lucide-react";
+
+export function VehicleOwnerSection() {
+  const benefits = [
+    {
+      icon: DollarSign,
+      title: "Guaranteed Rental Income",
+      description: "Earn consistent, high-yield revenue on your idle car with prompt settlements.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Full Protection & Insurance",
+      description: "Every trip includes verified client identity verification and comprehensive coverage.",
+    },
+    {
+      icon: CalendarCheck,
+      title: "Flexible Scheduling",
+      description: "You decide when your car is available. Block out personal dates anytime.",
+    },
+  ];
+
+  return (
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+      <div className="relative rounded-[36px] bg-gradient-to-br from-slate-950 via-slate-900 to-violet-950 text-white p-8 sm:p-12 lg:p-16 shadow-2xl overflow-hidden border border-white/10">
+        {/* Subtle background glow */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-600/15 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          {/* Left Column: Heading, Explanation & CTA */}
+          <div className="lg:col-span-7 space-y-6 text-left">
+            <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3.5 py-1 rounded-full text-xs font-bold">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Host & Partner With TourMate</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.12] text-white">
+              Have a Vehicle You Want to Rent Out?
+            </h2>
+
+            <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal max-w-xl">
+              Turn your vehicle into a reliable monthly income. Register your car, SUV, van, or jeep with TourMate Rentals. We connect vehicle owners with verified tourists and corporate travelers across Sri Lanka with guaranteed security and maintenance standards.
+            </p>
+
+            <div className="pt-2">
+              <a
+                href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm sm:text-base px-8 py-4 rounded-full shadow-xl shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
+              >
+                <MessageCircle className="h-5 w-5 fill-white stroke-none" />
+                <span>List Your Vehicle</span>
+                <ArrowRight className="h-4 w-4" />
+              </a>
+              <span className="block text-xs text-slate-400 mt-2 font-medium">
+                Connects instantly with our partner management concierge on WhatsApp
+              </span>
+            </div>
+          </div>
+
+          {/* Right Column: 3 Benefit Cards */}
+          <div className="lg:col-span-5 space-y-3.5">
+            {benefits.map((b, idx) => {
+              const Icon = b.icon;
+              return (
+                <div
+                  key={idx}
+                  className="flex items-start gap-4 p-4.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all group"
+                >
+                  <div className="h-10 w-10 rounded-xl bg-violet-500/20 text-violet-400 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-white mb-0.5">{b.title}</h3>
+                    <p className="text-xs text-slate-400 leading-relaxed">{b.description}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

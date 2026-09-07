@@ -302,7 +302,7 @@ export function Header() {
   const BUYER_NAV_LINKS = useMemo(
     () => [
       { href: "/", label: "Home", isActive: isHome },
-      { href: "/vehicles", label: "Vehicles", isActive: isVehicles },
+      { href: "/vehicles", label: "Browse Vehicles", isActive: isVehicles },
       { href: "/details", label: "Details", isActive: isDetails },
       { href: "/about", label: "About Us", isActive: isAbout },
       { href: "/contact", label: "Contact Us", isActive: isContact },

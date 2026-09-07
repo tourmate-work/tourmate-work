@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { CustomDatePicker } from "@/components/ui/custom-datepicker";
 import { LocationSearchInput } from "@/components/ui/location-search-input";
-import { ShieldCheck, Sparkles, MessageCircle, UserCheck, KeyRound, Search } from "lucide-react";
+import { ShieldCheck, Sparkles, MessageCircle, UserCheck, KeyRound, Search, ArrowRight } from "lucide-react";
 
 const CAR_TYPE_OPTIONS = [
   { value: "All", label: "All Vehicle Types" },
@@ -73,14 +74,34 @@ export function HeroSection() {
               <span>Sri Lanka&apos;s #1 Verified Car Rental Network</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-black tracking-tight leading-[1.12] text-white drop-shadow-md">
-              Experience the road <br className="hidden sm:inline" />
-              like never before.
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-black tracking-tight leading-[1.14] text-white drop-shadow-md">
+              Find Your Perfect Vehicle <br className="hidden sm:inline" />
+              in Sri Lanka
             </h1>
 
             <p className="max-w-xl text-sm sm:text-base text-slate-200/90 leading-relaxed font-normal">
-              Tourmate provides luxury self-drive cars, family SUVs, and driver-driven vans across Colombo, CMB Airport, Kandy, and the Southern Coast with guaranteed transparent rates.
+              Browse reliable cars and vehicles available for rent across Sri Lanka.
             </p>
+
+            {/* Hero Main Action Buttons */}
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              <Link
+                href="/vehicles"
+                className="inline-flex items-center gap-2 bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-extrabold text-sm px-6 py-3.5 rounded-full shadow-lg shadow-amber-500/25 transition-all duration-200 active:scale-95 cursor-pointer"
+              >
+                <span>Browse Vehicles</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <a
+                href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold text-sm px-6 py-3.5 rounded-full border border-white/25 backdrop-blur-md transition-all duration-200 active:scale-95 cursor-pointer"
+              >
+                <MessageCircle className="h-4 w-4 text-emerald-400" />
+                <span>List Your Vehicle</span>
+              </a>
+            </div>
 
             {/* Quick Guarantees Pill Strip */}
             <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-200">
@@ -220,7 +241,7 @@ export function HeroSection() {
                   className="w-full bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-extrabold text-sm py-3.5 rounded-[30px] shadow-lg shadow-amber-500/20 hover:shadow-xl transition-all duration-200 transform active:scale-[0.98] mt-2 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Search className="h-4 w-4" />
-                  <span>Search Available Vehicles</span>
+                  <span>Search Vehicles</span>
                 </button>
 
                 {/* Secondary Option: Direct WhatsApp Concierge */}

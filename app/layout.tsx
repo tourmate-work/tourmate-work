@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { MobileBottomBar } from "@/components/layout/mobile-bottom-bar";
+import { FloatingWhatsAppButton } from "@/components/ui/floating-whatsapp-button";
 
 const sansFont = localFont({
   src: "./fonts/GeistVF.woff",
@@ -42,6 +43,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-violet-600 selection:text-white transition-colors duration-300 pb-16 md:pb-0">
         <ThemeProvider>
           {children}
+          <FloatingWhatsAppButton />
           <MobileBottomBar />
         </ThemeProvider>
       </body>

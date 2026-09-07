@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { LocationSearchInput } from "@/components/ui/location-search-input";
+import { BookingInquiryModal } from "@/components/booking/booking-inquiry-modal";
 
 export interface VehicleDetail {
   id: string;
@@ -348,6 +349,7 @@ function DetailsContentInner() {
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleDetail>(foundCar);
   const [activeThumbnailIndex, setActiveThumbnailIndex] = useState(0);
   const [liveVehicles, setLiveVehicles] = useState<VehicleDetail[]>([]);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
   // Fetch all live vehicles for the fleet carousel
   useEffect(() => {
@@ -683,14 +685,22 @@ function DetailsContentInner() {
               </p>
             </div>
 
-            {/* Rent A Car CTA Button */}
-            <div>
+            {/* Main Action Buttons: Request to Book + Direct WhatsApp */}
+            <div className="flex flex-col sm:flex-row items-center gap-3">
               <button
-                onClick={handleBookNow}
-                className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-4 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
+                onClick={() => setIsBookingModalOpen(true)}
+                className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-black text-sm sm:text-base py-4 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
               >
                 <MessageCircle className="h-5 w-5" />
-                <span>Reserve via WhatsApp</span>
+                <span>Request to Book</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleBookNow}
+                className="w-full sm:w-auto px-6 py-4 rounded-full border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>Direct WhatsApp</span>
               </button>
             </div>
 
@@ -794,6 +804,26 @@ function DetailsContentInner() {
           </div>
         </div>
       </div>
+
+      {/* Booking Inquiry Modal */}
+      {selectedVehicle && (
+        <BookingInquiryModal
+          isOpen={isBookingModalOpen}
+          onClose={() => setIsBookingModalOpen(false)}
+          vehicle={{
+            id: selectedVehicle.id,
+            name: selectedVehicle.name,
+            brand: selectedVehicle.brand,
+            category: selectedVehicle.category,
+            pricePerDay: selectedVehicle.price,
+            imageUrl: selectedVehicle.thumbnails[0],
+            location: pickupLocation.trim() || selectedVehicle.location,
+            transmission: selectedVehicle.specs.gearBox,
+            seats: selectedVehicle.specs.seats,
+          }}
+          initialPickupLocation={pickupLocation}
+        />
+      )}
     </div>
   );
 }

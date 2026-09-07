@@ -20,10 +20,12 @@ import {
   MapPin,
   RotateCcw,
   Check,
+  MessageCircle,
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { LocationSearchInput } from "@/components/ui/location-search-input";
+import { BookingInquiryModal, BookingVehicleInfo } from "@/components/booking/booking-inquiry-modal";
 
 export interface VehicleDetail {
   id: string;
@@ -53,9 +55,10 @@ export interface VehicleDetail {
 
 const CATEGORIES = [
   { id: "all", label: "All Vehicles", hasIcon: false },
-  { id: "Sedan", label: "Sedan", hasIcon: true },
-  { id: "SUV", label: "SUV", hasIcon: true },
-  { id: "Van", label: "Van", hasIcon: true },
+  { id: "Sedan", label: "Cars / Sedan", hasIcon: true },
+  { id: "SUV", label: "SUVs", hasIcon: true },
+  { id: "Van", label: "Vans", hasIcon: true },
+  { id: "Jeep", label: "Jeeps / 4x4", hasIcon: true },
   { id: "Luxury", label: "Luxury", hasIcon: true },
   { id: "Hatchback", label: "Hatchback", hasIcon: true },
   { id: "Electric", label: "Electric / Hybrid", hasIcon: true },
@@ -127,6 +130,7 @@ export function VehiclesCatalog() {
   const [modalPickupLocation, setModalPickupLocation] = useState(initialLocation);
   const [vehiclesList, setVehiclesList] = useState<VehicleDetail[]>([]);
   const [loading, setLoading] = useState(true);
+  const [inquiryVehicle, setInquiryVehicle] = useState<BookingVehicleInfo | null>(null);
 
   // Sync state if URL query params change
   useEffect(() => {
@@ -337,22 +341,6 @@ export function VehiclesCatalog() {
 
   const handleCloseModal = () => {
     setActiveModalCar(null);
-  };
-
-  const handleBookNow = (car: VehicleDetail, customPickup?: string) => {
-    // Priority: custom explicitly passed pickup -> modal pickup location -> catalog locationQuery -> vehicle default location
-    const chosenLocation =
-      (customPickup && customPickup.trim()) ||
-      (modalPickupLocation && modalPickupLocation.trim()) ||
-      (locationQuery && locationQuery.trim()) ||
-      car.location ||
-      "Sri Lanka";
-
-    const msg = `Hello Tourmate! I would like to book the ${car.name} (${car.category}) at ${car.price} ${car.period}, pickup at ${chosenLocation}.`;
-    window.open(
-      `https://wa.me/94703236834?text=${encodeURIComponent(msg)}`,
-      "_blank"
-    );
   };
 
   return (
@@ -722,15 +710,15 @@ export function VehiclesCatalog() {
                         </div>
                       </div>
 
-                      {/* 3 Quick Specs Pills */}
+                      {/* 3 Quick Specs Pills: Transmission, Seats, AC */}
                       <div className="grid grid-cols-3 gap-1.5 py-2.5 border-t border-slate-100 dark:border-white/10 text-[11px] text-slate-500 dark:text-slate-400">
                         <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
                           <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
                           <span className="truncate">{car.specs.gearBox}</span>
                         </div>
                         <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
-                          <Fuel className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
-                          <span className="truncate">{car.fuelCapacity}</span>
+                          <Users className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+                          <span className="truncate">{car.specs.seats} Seats</span>
                         </div>
                         <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
                           <Snowflake className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
@@ -740,19 +728,31 @@ export function VehiclesCatalog() {
                     </div>
                   </div>
 
-                  {/* Action Buttons: Specifications & Book Now */}
+                  {/* Action Buttons: View Details & Request to Book */}
                   <div className="pt-4 grid grid-cols-2 gap-2">
                     <button
                       onClick={() => handleOpenDetails(car)}
                       className="w-full py-3 rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-xs transition-colors text-center cursor-pointer"
                     >
-                      Specifications
+                      View Details
                     </button>
                     <button
-                      onClick={() => handleBookNow(car, locationQuery)}
+                      onClick={() =>
+                        setInquiryVehicle({
+                          id: car.id,
+                          name: car.name,
+                          brand: car.brand,
+                          category: car.category,
+                          pricePerDay: car.price,
+                          imageUrl: car.thumbnails[0],
+                          location: locationQuery.trim() || car.location,
+                          transmission: car.specs.gearBox,
+                          seats: car.specs.seats,
+                        })
+                      }
                       className="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs py-3 rounded-[30px] shadow-sm shadow-violet-500/20 hover:shadow-md transition-all active:scale-95 text-center flex items-center justify-center cursor-pointer"
                     >
-                      <span>Book Now</span>
+                      <span>Request to Book</span>
                     </button>
                   </div>
                 </div>
@@ -1005,13 +1005,26 @@ export function VehiclesCatalog() {
                     </p>
                   </div>
 
-                  {/* Rent A Car CTA Button */}
+                  {/* Main Action Button: Request to Book */}
                   <div>
                     <button
-                      onClick={() => handleBookNow(activeModalCar, modalPickupLocation)}
+                      onClick={() => {
+                        setInquiryVehicle({
+                          id: activeModalCar.id,
+                          name: activeModalCar.name,
+                          brand: activeModalCar.brand,
+                          category: activeModalCar.category,
+                          pricePerDay: activeModalCar.price,
+                          imageUrl: activeModalCar.thumbnails[0],
+                          location: modalPickupLocation.trim() || activeModalCar.location,
+                          transmission: activeModalCar.specs.gearBox,
+                          seats: activeModalCar.specs.seats,
+                        });
+                      }}
                       className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      Rent a car
+                      <MessageCircle className="h-5 w-5" />
+                      <span>Request to Book</span>
                     </button>
                   </div>
 
@@ -1106,6 +1119,16 @@ export function VehiclesCatalog() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Customer Booking Inquiry Modal */}
+      {inquiryVehicle && (
+        <BookingInquiryModal
+          isOpen={Boolean(inquiryVehicle)}
+          onClose={() => setInquiryVehicle(null)}
+          vehicle={inquiryVehicle}
+          initialPickupLocation={modalPickupLocation || locationQuery}
+        />
       )}
     </div>
   );
