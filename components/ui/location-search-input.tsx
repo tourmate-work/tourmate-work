@@ -1,12 +1,24 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { MapPin, X, ChevronDown, Check, Navigation } from "lucide-react";
+import { MapPin, X, ChevronDown, Check, Navigation, Loader2, Globe } from "lucide-react";
 
 export interface SriLankaLocation {
   name: string;
   category: "Airports & Transit" | "Colombo & Suburbs" | "Western Province" | "Central & Hill Country" | "Southern Coast" | "Cultural & North/East";
   subtext?: string;
+}
+
+export interface LiveLocationItem {
+  id: string;
+  name: string;
+  displayName: string;
+  subtext: string;
+  city?: string;
+  district?: string;
+  province?: string;
+  lat?: string;
+  lon?: string;
 }
 
 export const POPULAR_SRI_LANKA_LOCATIONS: SriLankaLocation[] = [
@@ -76,6 +88,8 @@ export function LocationSearchInput({
 }: LocationSearchInputProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState(value);
+  const [liveResults, setLiveResults] = useState<LiveLocationItem[]>([]);
+  const [isLoadingLive, setIsLoadingLive] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -83,6 +97,38 @@ export function LocationSearchInput({
   useEffect(() => {
     setQuery(value);
   }, [value]);
+
+  // Live OpenStreetMap debounced search
+  useEffect(() => {
+    const trimmed = query.trim();
+    if (trimmed.length < 2) {
+      setLiveResults([]);
+      setIsLoadingLive(false);
+      return;
+    }
+
+    setIsLoadingLive(true);
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `/api/locations/search?q=${encodeURIComponent(trimmed)}`
+        );
+        const data = await res.json();
+        if (data.success && Array.isArray(data.locations)) {
+          setLiveResults(data.locations);
+        } else {
+          setLiveResults([]);
+        }
+      } catch (err) {
+        console.warn("Failed to fetch live locations:", err);
+        setLiveResults([]);
+      } finally {
+        setIsLoadingLive(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -108,13 +154,23 @@ export function LocationSearchInput({
     setIsOpen(false);
   };
 
+  const handleSelectLiveLocation = (item: LiveLocationItem) => {
+    const cleanName = item.subtext
+      ? `${item.name} (${item.subtext})`
+      : item.displayName;
+    setQuery(cleanName);
+    onChange(cleanName);
+    setIsOpen(false);
+  };
+
   const handleClear = () => {
     setQuery("");
     onChange("");
+    setLiveResults([]);
     if (inputRef.current) inputRef.current.focus();
   };
 
-  // Filter suggestion list based on user query
+  // Filter preset suggestions based on user query
   const filteredSuggestions = POPULAR_SRI_LANKA_LOCATIONS.filter((loc) => {
     if (!query.trim()) return true;
     const q = query.toLowerCase();
@@ -160,7 +216,11 @@ export function LocationSearchInput({
           }`}
         />
 
-        {query ? (
+        {isLoadingLive ? (
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-violet-600 dark:text-violet-400 pointer-events-none">
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          </div>
+        ) : query ? (
           <button
             type="button"
             onClick={handleClear}
@@ -178,8 +238,8 @@ export function LocationSearchInput({
 
       {/* Autocomplete Dropdown List */}
       {isOpen && (
-        <div className="absolute left-0 right-0 top-full mt-2 max-h-80 overflow-y-auto bg-white dark:bg-[#111116] border border-slate-200 dark:border-white/15 rounded-2xl shadow-2xl z-50 p-2 animate-in fade-in slide-in-from-top-2 duration-150 divide-y divide-slate-100 dark:divide-white/5">
-          {/* Custom typed address quick selection */}
+        <div className="absolute left-0 right-0 top-full mt-2 max-h-84 overflow-y-auto bg-white dark:bg-[#111116] border border-slate-200 dark:border-white/15 rounded-2xl shadow-2xl z-50 p-2 animate-in fade-in slide-in-from-top-2 duration-150 divide-y divide-slate-100 dark:divide-white/5">
+          {/* 1. Custom typed address quick selection */}
           {query.trim() && (
             <div className="pb-2">
               <button
@@ -187,7 +247,7 @@ export function LocationSearchInput({
                 onClick={() => handleSelectLocation(query.trim())}
                 className="w-full flex items-start gap-2.5 p-2 rounded-xl text-left bg-violet-50/80 dark:bg-violet-950/30 hover:bg-violet-100 dark:hover:bg-violet-950/50 transition-colors cursor-pointer"
               >
-                <div className="p-1 rounded-lg bg-violet-600 text-white flex-shrink-0 mt-0.5">
+                <div className="p-1.5 rounded-lg bg-violet-600 text-white flex-shrink-0 mt-0.5 shadow-sm">
                   <Navigation className="h-3.5 w-3.5" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -195,27 +255,91 @@ export function LocationSearchInput({
                     &quot;{query.trim()}&quot;
                   </span>
                   <span className="text-[10px] text-violet-600 dark:text-violet-400 block">
-                    Use this custom address or city in Sri Lanka
+                    Use this custom address or place in Sri Lanka
                   </span>
                 </div>
               </button>
             </div>
           )}
 
-          {/* Popular Sri Lanka Hubs and Filtered Results */}
+          {/* 2. Live OpenStreetMap Real-Time Results */}
+          {liveResults.length > 0 && (
+            <div className="py-2 space-y-1">
+              <div className="px-2 py-1 flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                <span className="flex items-center gap-1">
+                  <Globe className="h-3 w-3 text-emerald-500" />
+                  <span>Live Sri Lanka Map Results</span>
+                </span>
+                <span className="text-[9px] font-medium text-emerald-600 dark:text-emerald-400">
+                  OpenStreetMap
+                </span>
+              </div>
+
+              {liveResults.map((item) => {
+                const isSelected =
+                  value.toLowerCase() === item.name.toLowerCase() ||
+                  value.toLowerCase() === item.displayName.toLowerCase();
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => handleSelectLiveLocation(item)}
+                    className={`w-full flex items-center justify-between p-2 rounded-xl text-left transition-colors cursor-pointer ${
+                      isSelected
+                        ? "bg-violet-600 text-white"
+                        : "hover:bg-slate-100 dark:hover:bg-white/5 text-slate-800 dark:text-slate-200"
+                    }`}
+                  >
+                    <div className="flex items-start gap-2.5 min-w-0 flex-1 pr-2">
+                      <MapPin
+                        className={`h-4 w-4 flex-shrink-0 mt-0.5 ${
+                          isSelected ? "text-white" : "text-emerald-500"
+                        }`}
+                      />
+                      <div className="truncate">
+                        <span className="text-xs font-bold block truncate">
+                          {item.name}
+                        </span>
+                        <span
+                          className={`text-[10px] block truncate ${
+                            isSelected ? "text-violet-200" : "text-slate-400"
+                          }`}
+                        >
+                          {item.subtext}
+                        </span>
+                      </div>
+                    </div>
+                    {isSelected && (
+                      <Check className="h-4 w-4 text-white flex-shrink-0" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {/* 3. Popular Sri Lanka Presets (or fallback) */}
           <div className="pt-2 space-y-1">
             <div className="px-2 py-1 flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
-              <span>{query.trim() ? "Matching Places in Sri Lanka" : "Popular Sri Lanka Delivery Hubs"}</span>
-              <span className="text-[9px] font-medium">{filteredSuggestions.length} found</span>
+              <span>
+                {query.trim().length >= 2
+                  ? "Popular Hubs Matching Search"
+                  : "Popular Sri Lanka Delivery Hubs"}
+              </span>
+              <span className="text-[9px] font-medium">
+                {filteredSuggestions.length} presets
+              </span>
             </div>
 
-            {filteredSuggestions.length === 0 ? (
+            {filteredSuggestions.length === 0 && liveResults.length === 0 && !isLoadingLive ? (
               <div className="py-4 text-center text-xs text-slate-500 dark:text-slate-400">
                 <p className="font-semibold">No exact matching preset city</p>
-                <p className="text-[10px] mt-0.5">You can still type any custom street address, hotel, or city in Sri Lanka above!</p>
+                <p className="text-[10px] mt-0.5">
+                  Click the button above to use your custom typed address!
+                </p>
               </div>
             ) : (
-              filteredSuggestions.map((loc) => {
+              filteredSuggestions.slice(0, query.trim().length >= 2 ? 4 : 20).map((loc) => {
                 const isSelected = value.toLowerCase() === loc.name.toLowerCase();
                 return (
                   <button
@@ -249,7 +373,9 @@ export function LocationSearchInput({
                         )}
                       </div>
                     </div>
-                    {isSelected && <Check className="h-4 w-4 text-white flex-shrink-0" />}
+                    {isSelected && (
+                      <Check className="h-4 w-4 text-white flex-shrink-0" />
+                    )}
                   </button>
                 );
               })
@@ -260,3 +386,4 @@ export function LocationSearchInput({
     </div>
   );
 }
+
