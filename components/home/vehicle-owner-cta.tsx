@@ -68,14 +68,14 @@ export function VehicleOwnerSection() {
               return (
                 <div
                   key={idx}
-                  className="flex items-start gap-4 p-4.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all group"
+                  className="flex items-center gap-4 p-5 rounded-2xl bg-white/[0.05] hover:bg-white/[0.08] border border-white/10 transition-all group"
                 >
-                  <div className="h-10 w-10 rounded-xl bg-violet-500/20 text-violet-400 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                  <div className="h-11 w-11 rounded-2xl bg-violet-500/20 border border-violet-500/30 text-violet-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
                     <Icon className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white mb-0.5">{b.title}</h3>
-                    <p className="text-xs text-slate-400 leading-relaxed">{b.description}</p>
+                    <h3 className="text-sm sm:text-base font-bold text-white mb-1">{b.title}</h3>
+                    <p className="text-xs text-slate-300 leading-relaxed">{b.description}</p>
                   </div>
                 </div>
               );
