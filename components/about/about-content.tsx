@@ -11,6 +11,7 @@ import {
   Phone,
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 function AppleLogoIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
@@ -81,6 +82,7 @@ const TESTIMONIALS = [
 ];
 
 export function AboutContent() {
+  const { t, language } = useLanguage();
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
 
@@ -103,14 +105,14 @@ export function AboutContent() {
       <section className="pt-10 pb-8 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-950 tracking-tight mb-2">
-            About Us
+            {t("nav_about_us")}
           </h1>
           <div className="flex items-center justify-center gap-2 text-xs font-semibold text-slate-400">
             <Link href="/" className="hover:text-slate-900 transition-colors">
-              Home
+              {t("nav_home")}
             </Link>
             <span>/</span>
-            <span className="text-slate-800">About Us</span>
+            <span className="text-slate-800">{t("nav_about_us")}</span>
           </div>
         </div>
       </section>
@@ -208,7 +210,7 @@ export function AboutContent() {
                 20k+
               </span>
               <span className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider block">
-                Happy customers
+                {language === "si" ? "තෘප්තිමත් පාරිභෝගිකයින්" : "Happy customers"}
               </span>
             </div>
 
@@ -218,7 +220,7 @@ export function AboutContent() {
                 540+
               </span>
               <span className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider block">
-                Count of cars
+                {language === "si" ? "ලියාපදිංචි වාහන" : "Count of cars"}
               </span>
             </div>
 
@@ -228,7 +230,7 @@ export function AboutContent() {
                 25+
               </span>
               <span className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider block">
-                Years of experience
+                {language === "si" ? "වසර ගණනාවක පළපුරුද්ද" : "Years of experience"}
               </span>
             </div>
           </div>
@@ -415,7 +417,7 @@ export function AboutContent() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight">
-              Top Car Rental Questions
+              {language === "si" ? "නිතර අසන ප්‍රශ්න" : "Top Car Rental Questions"}
             </h2>
           </div>
 
@@ -458,7 +460,7 @@ export function AboutContent() {
             {/* Left Phone / CTA Details */}
             <div className="space-y-4 max-w-xl text-center md:text-left z-10">
               <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
-                Looking for a car?
+                {language === "si" ? "ඔබට වාහනයක් අවශ්‍යද?" : "Looking for a car?"}
               </h2>
               <a
                 href="tel:+94772973530"
@@ -468,7 +470,9 @@ export function AboutContent() {
                 <span>+94 (77) 297 3530</span>
               </a>
               <p className="text-xs sm:text-sm text-violet-100/90 leading-relaxed font-normal">
-                Reserve your dream car today in Colombo, CMB Airport, Kandy, Galle, or anywhere across Sri Lanka with instant WhatsApp confirmation.
+                {language === "si"
+                  ? "කොළඹ, ගුවන් තොටුපළ, නුවර, ගාල්ල හෝ ශ්‍රී ලංකාවේ ඕනෑම තැනකදී ක්ෂණික WhatsApp තහවුරු කිරීම සමඟින් ඔබේ සිහින වාහනය අදම වෙන්කරවා ගන්න."
+                  : "Reserve your dream car today in Colombo, CMB Airport, Kandy, Galle, or anywhere across Sri Lanka with instant WhatsApp confirmation."}
               </p>
 
               <div className="pt-2">
@@ -476,7 +480,7 @@ export function AboutContent() {
                   onClick={handleBookingClick}
                   className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-8 py-3.5 rounded-[30px] text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95"
                 >
-                  Book now
+                  {language === "si" ? "දැන්ම වෙන්කරන්න" : "Book now"}
                 </button>
               </div>
             </div>

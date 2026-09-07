@@ -19,6 +19,7 @@ import {
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { BookingInquiryModal } from "@/components/booking/booking-inquiry-modal";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 export interface VehicleDetail {
   id: string;
@@ -340,6 +341,7 @@ function VehicleVectorGraphic({ type }: { type: string }) {
 }
 
 function DetailsContentInner() {
+  const { t, language } = useLanguage();
   const searchParams = useSearchParams();
   const requestedCarId = searchParams.get("car") || searchParams.get("id") || "mercedes-sedan";
 
@@ -518,7 +520,7 @@ function DetailsContentInner() {
           <div className="lg:col-span-6 space-y-6">
             <div>
               <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-500/10 px-3 py-1 rounded-full mb-3">
-                <span>{selectedVehicle.category} Category</span>
+                <span>{selectedVehicle.category} {t("details_category_suffix")}</span>
               </div>
               <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-950 dark:text-white tracking-tight">
                 {selectedVehicle.name}
@@ -528,7 +530,7 @@ function DetailsContentInner() {
                   {selectedVehicle.price}
                 </span>
                 <span className="text-sm font-medium text-slate-400 ml-1">
-                  {selectedVehicle.period}
+                  {language === "si" ? t("fleet_per_day") : selectedVehicle.period}
                 </span>
               </div>
             </div>
@@ -566,7 +568,7 @@ function DetailsContentInner() {
             {/* Technical Specification Heading */}
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-6">
-                Technical Specification
+                {t("details_tech_spec")}
               </h2>
 
               {/* 2x3 Spec Cards Grid */}
@@ -578,7 +580,7 @@ function DetailsContentInner() {
                   </div>
                   <div>
                     <span className="text-xs font-bold text-slate-900 dark:text-white block">
-                      Gear Box
+                      {t("details_gearbox")}
                     </span>
                     <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                       {selectedVehicle.specs.gearBox}
@@ -593,7 +595,7 @@ function DetailsContentInner() {
                   </div>
                   <div>
                     <span className="text-xs font-bold text-slate-900 dark:text-white block">
-                      Fuel
+                      {t("details_fuel")}
                     </span>
                     <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                       {selectedVehicle.specs.fuel}
@@ -608,7 +610,7 @@ function DetailsContentInner() {
                   </div>
                   <div>
                     <span className="text-xs font-bold text-slate-900 dark:text-white block">
-                      Doors
+                      {t("details_doors")}
                     </span>
                     <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                       {selectedVehicle.specs.doors}
@@ -623,7 +625,7 @@ function DetailsContentInner() {
                   </div>
                   <div>
                     <span className="text-xs font-bold text-slate-900 dark:text-white block leading-tight">
-                      Air Conditioner
+                      {t("details_ac")}
                     </span>
                     <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                       {selectedVehicle.specs.ac}
@@ -638,10 +640,10 @@ function DetailsContentInner() {
                   </div>
                   <div>
                     <span className="text-xs font-bold text-slate-900 dark:text-white block">
-                      Seats
+                      {t("details_seats")}
                     </span>
                     <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
-                      {selectedVehicle.specs.seats} Seats
+                      {selectedVehicle.specs.seats} {language === "si" ? "ආසන" : "Seats"}
                     </span>
                   </div>
                 </div>
@@ -653,7 +655,7 @@ function DetailsContentInner() {
                   </div>
                   <div>
                     <span className="text-xs font-bold text-slate-900 dark:text-white block">
-                      Distance
+                      {t("details_distance")}
                     </span>
                     <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate block">
                       {selectedVehicle.specs.distance}
@@ -668,20 +670,20 @@ function DetailsContentInner() {
               <div className="flex items-center justify-between">
                 <label className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
                   <MapPin className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
-                  <span>Pickup Location / Delivery Address:</span>
+                  <span>{t("details_pickup_label")}</span>
                 </label>
                 <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">
-                  Live Map Search
+                  {t("details_live_search")}
                 </span>
               </div>
               <LocationSearchInput
                 value={pickupLocation}
                 onChange={setPickupLocation}
-                placeholder="Type or select pickup hotel, street address, or city in Sri Lanka..."
+                placeholder={t("details_pickup_placeholder")}
                 variant="catalog"
               />
               <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                Tourmate delivers directly to your location anywhere across Sri Lanka.
+                {t("details_delivery_guarantee")}
               </p>
             </div>
 
@@ -692,7 +694,7 @@ function DetailsContentInner() {
                 className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-black text-sm sm:text-base py-4 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
               >
                 <MessageCircle className="h-5 w-5" />
-                <span>Request to Book</span>
+                <span>{t("details_btn_request")}</span>
               </button>
 
               <button
@@ -700,14 +702,14 @@ function DetailsContentInner() {
                 onClick={handleBookNow}
                 className="w-full sm:w-auto px-6 py-4 rounded-full border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
-                <span>Direct WhatsApp</span>
+                <span>{t("details_btn_whatsapp")}</span>
               </button>
             </div>
 
             {/* Car Equipment Checklist */}
             <div className="pt-2">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">
-                Car Equipment & Protection Included
+                {t("details_equipment_title")}
               </h3>
               <div className="grid grid-cols-2 gap-y-3.5 gap-x-6">
                 {selectedVehicle.equipment.map((item, idx) => (
@@ -728,13 +730,13 @@ function DetailsContentInner() {
           {/* Section Heading */}
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
-              Other cars
+              {t("details_other_cars")}
             </h2>
             <Link
               href="/vehicles"
               className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-950 dark:text-white hover:text-violet-600 dark:hover:text-violet-400 transition-colors group"
             >
-              <span>View All</span>
+              <span>{t("details_view_all")}</span>
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
@@ -770,7 +772,7 @@ function DetailsContentInner() {
                         <span className="text-lg font-bold text-violet-600 dark:text-violet-400 block leading-tight">
                           {car.price}
                         </span>
-                        <span className="text-xs text-slate-400">{car.period}</span>
+                        <span className="text-xs text-slate-400">{language === "si" ? t("fleet_per_day") : car.period}</span>
                       </div>
                     </div>
 
@@ -786,7 +788,7 @@ function DetailsContentInner() {
                       </div>
                       <div className="flex items-center gap-1">
                         <Snowflake className="h-3.5 w-3.5 text-slate-400" />
-                        <span className="truncate">Air Conditioner</span>
+                        <span className="truncate">{t("details_ac")}</span>
                       </div>
                     </div>
 
@@ -795,7 +797,7 @@ function DetailsContentInner() {
                       onClick={() => handleSelectCar(car)}
                       className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm py-3.5 rounded-[30px] shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-center cursor-pointer"
                     >
-                      View Details
+                      {t("details_view_details")}
                     </button>
                   </div>
                 </div>

@@ -33,6 +33,8 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { useLanguage } from "@/lib/i18n/language-context";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 
 interface SubMenuItem {
   title: string;
@@ -230,6 +232,7 @@ const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
 
 export function Header() {
   const pathname = usePathname();
+  const { t, language } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [activeAdminTab, setActiveAdminTab] = useState("overview");
@@ -301,13 +304,13 @@ export function Header() {
 
   const BUYER_NAV_LINKS = useMemo(
     () => [
-      { href: "/", label: "Home", isActive: isHome },
-      { href: "/vehicles", label: "Browse Vehicles", isActive: isVehicles },
-      { href: "/details", label: "Details", isActive: isDetails },
-      { href: "/about", label: "About Us", isActive: isAbout },
-      { href: "/contact", label: "Contact Us", isActive: isContact },
+      { href: "/", label: t("nav_home"), isActive: isHome },
+      { href: "/vehicles", label: t("nav_browse_vehicles"), isActive: isVehicles },
+      { href: "/details", label: t("nav_details"), isActive: isDetails },
+      { href: "/about", label: t("nav_about_us"), isActive: isAbout },
+      { href: "/contact", label: t("nav_contact_us"), isActive: isContact },
     ],
-    [isHome, isVehicles, isDetails, isAbout, isContact]
+    [isHome, isVehicles, isDetails, isAbout, isContact, t]
   );
 
   const updatePillPosition = useCallback(
@@ -539,8 +542,11 @@ export function Header() {
           )}
         </nav>
 
-        {/* Right Actions: Portal Switcher + Theme Toggle + Phone + Mobile Hamburger */}
+        {/* Right Actions: Language Switcher + Portal Switcher + Theme Toggle + Phone + Mobile Hamburger */}
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* Language Switcher */}
+          <LanguageSwitcher />
+
           {/* Portal Switcher Button */}
           {/* Action Button: Admin Mode View Public Site / Visitor Mode WhatsApp List Your Vehicle */}
           {isAdmin ? (
@@ -549,8 +555,8 @@ export function Header() {
               className="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-[#16161a] dark:hover:bg-[#202026] text-slate-900 dark:text-white border border-slate-200 dark:border-white/15 px-3 sm:px-4 py-2 rounded-full text-xs font-bold transition-all shadow-sm group active:scale-95 cursor-pointer"
             >
               <ArrowLeft className="h-3.5 w-3.5 text-slate-500 group-hover:-translate-x-0.5 transition-transform" />
-              <span className="hidden sm:inline">View Public Site</span>
-              <span className="sm:hidden">Public</span>
+              <span className="hidden sm:inline">{t("nav_public_site")}</span>
+              <span className="sm:hidden">{language === "si" ? "ප්‍රධාන" : "Public"}</span>
             </Link>
           ) : (
             <a
@@ -560,8 +566,8 @@ export function Header() {
               className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold transition-all shadow-sm shadow-emerald-500/25 active:scale-95 group cursor-pointer"
             >
               <MessageCircle className="h-3.5 w-3.5 opacity-90 group-hover:scale-110 transition-transform" />
-              <span className="hidden sm:inline">List Your Vehicle</span>
-              <span className="sm:hidden">List Car</span>
+              <span className="hidden sm:inline">{t("nav_list_vehicle")}</span>
+              <span className="sm:hidden">{language === "si" ? "ලියාපදිංචි" : "List Car"}</span>
             </a>
           )}
 
@@ -578,7 +584,7 @@ export function Header() {
             </div>
             <div className="flex flex-col text-left pr-2">
               <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 leading-tight">
-                Need help?
+                {t("nav_need_help")}
               </span>
               <span className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
                 +94 (77) 297 3530
@@ -602,10 +608,13 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="md:hidden fixed inset-x-0 top-20 bottom-0 z-50 bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
           <div className="bg-white dark:bg-[#0b0b0e] border-b border-slate-200 dark:border-white/10 p-5 shadow-2xl rounded-b-[30px] space-y-5 animate-in slide-in-from-top-4 duration-300 max-h-[85vh] overflow-y-auto">
+            {/* Mobile Language Switcher */}
+            <LanguageSwitcher variant="mobile" />
+
             {/* Quick Links List */}
             <div className="space-y-2">
               <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3 block mb-1">
-                {isAdmin ? "Admin Controls" : "Navigation"}
+                {isAdmin ? (language === "si" ? "පරිපාලක පාලනයන්" : "Admin Controls") : (language === "si" ? "ප්‍රධාන මෙනුව" : "Navigation")}
               </span>
 
               {isAdmin ? (
@@ -683,11 +692,11 @@ export function Header() {
                 /* Buyer Navigation */
                 <>
                   {[
-                    { href: "/", label: "Home", icon: Home, active: isHome },
-                    { href: "/vehicles", label: "Browse Vehicles", icon: Car, active: isVehicles },
-                    { href: "/details", label: "Specifications & Details", icon: FileText, active: isDetails },
-                    { href: "/about", label: "About Tourmate", icon: Users, active: isAbout },
-                    { href: "/contact", label: "Contact Us", icon: Mail, active: isContact },
+                    { href: "/", label: t("nav_home"), icon: Home, active: isHome },
+                    { href: "/vehicles", label: t("nav_browse_vehicles"), icon: Car, active: isVehicles },
+                    { href: "/details", label: t("nav_details"), icon: FileText, active: isDetails },
+                    { href: "/about", label: t("nav_about_us"), icon: Users, active: isAbout },
+                    { href: "/contact", label: t("nav_contact_us"), icon: Mail, active: isContact },
                   ].map((item) => {
                     const Icon = item.icon;
                     return (
@@ -720,7 +729,7 @@ export function Header() {
                   >
                     <div className="flex items-center gap-3">
                       <MessageCircle className="h-4 w-4" />
-                      <span>List Your Vehicle</span>
+                      <span>{t("nav_list_vehicle")}</span>
                     </div>
                     <span className="text-[10px] uppercase font-extrabold tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full">
                       WhatsApp
@@ -733,7 +742,7 @@ export function Header() {
             {/* Direct Support Actions */}
             <div className="pt-2 border-t border-slate-100 dark:border-white/10 space-y-2">
               <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3 block mb-2">
-                24/7 Roadside Assistance
+                {language === "si" ? "24/7 මාර්ගස්ථ සහය" : "24/7 Roadside Assistance"}
               </span>
 
               <div className="grid grid-cols-2 gap-2">
@@ -742,7 +751,7 @@ export function Header() {
                   className="flex items-center justify-center gap-2 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 text-slate-900 dark:text-white p-3 rounded-2xl text-xs font-bold transition-colors"
                 >
                   <Phone className="h-4 w-4 text-violet-600 dark:text-violet-400" />
-                  <span>Call Support</span>
+                  <span>{language === "si" ? "ඇමතුම් සහය" : "Call Support"}</span>
                 </a>
 
                 <a

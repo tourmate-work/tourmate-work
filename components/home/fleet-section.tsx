@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Gauge, Snowflake, ArrowRight, Star, Car, Users, MapPin } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { BookingInquiryModal, BookingVehicleInfo } from "@/components/booking/booking-inquiry-modal";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 interface CarItem {
   id: string;
@@ -24,6 +25,7 @@ interface CarItem {
 }
 
 export function FleetSection() {
+  const { t, language } = useLanguage();
   const [featuredCars, setFeaturedCars] = useState<CarItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBookingCar, setSelectedBookingCar] = useState<BookingVehicleInfo | null>(null);
@@ -58,7 +60,7 @@ export function FleetSection() {
               fuelEfficiency: "16 km/l",
               ac: true,
               image: validImage,
-              badge: v.isFeatured ? "Featured" : v.category,
+              badge: v.isFeatured ? (language === "si" ? "විශේෂිත" : "Featured") : v.category,
               rating: String(v.rating || "5.0"),
             };
           });
@@ -73,7 +75,7 @@ export function FleetSection() {
       }
     }
     loadCars();
-  }, []);
+  }, [language]);
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
@@ -81,11 +83,11 @@ export function FleetSection() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 sm:mb-12 gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-500/10 px-3 py-1 rounded-full mb-3">
-            <span>Premium Verified Fleet</span>
+            <span>{t("fleet_badge")}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-slate-950 dark:text-white leading-tight">
-            Choose the car that <br />
-            suits your journey.
+            {t("fleet_heading_1")} <br />
+            {t("fleet_heading_2")}
           </h2>
         </div>
 
@@ -93,7 +95,7 @@ export function FleetSection() {
           href="/vehicles"
           className="inline-flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white hover:text-violet-600 dark:hover:text-violet-400 transition-colors group"
         >
-          <span>View all vehicles</span>
+          <span>{t("fleet_view_all")}</span>
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </Link>
       </div>
@@ -105,7 +107,7 @@ export function FleetSection() {
             <Car className="h-8 w-8" />
           </div>
           <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
-            No Vehicles Currently Listed
+            {t("fleet_no_vehicles")}
           </h3>
           <p className="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto mb-6">
             There are currently no featured vehicles available. Want to list your vehicle on Tourmate? Contact our admin team on WhatsApp.
@@ -169,7 +171,7 @@ export function FleetSection() {
                       {car.name}
                     </h3>
                     <p className="text-xs text-slate-400 font-medium mt-0.5">
-                      {car.category} • Fully Insured
+                      {car.category} • {t("fleet_fully_insured")}
                     </p>
                   </div>
 
@@ -177,7 +179,7 @@ export function FleetSection() {
                     <span className="text-lg font-extrabold text-slate-950 dark:text-white block leading-tight">
                       {car.pricePerDay}
                     </span>
-                    <span className="text-[11px] text-slate-400">per day</span>
+                    <span className="text-[11px] text-slate-400">{t("fleet_per_day")}</span>
                   </div>
                 </div>
 
@@ -189,11 +191,11 @@ export function FleetSection() {
                   </div>
                   <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
                     <Users className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
-                    <span className="truncate">{car.seats} Seats</span>
+                    <span className="truncate">{car.seats} {language === "si" ? "ආසන" : "Seats"}</span>
                   </div>
                   <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
                     <Snowflake className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
-                    <span className="truncate">AC</span>
+                    <span className="truncate">{language === "si" ? "වායුසමනය" : "AC"}</span>
                   </div>
                 </div>
               </div>
@@ -204,7 +206,7 @@ export function FleetSection() {
                   href={`/details?car=${car.id}`}
                   className="w-full py-3 rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-xs transition-colors text-center"
                 >
-                  View Vehicle
+                  {t("fleet_btn_details")}
                 </Link>
                 <button
                   type="button"
@@ -222,7 +224,7 @@ export function FleetSection() {
                   }
                   className="w-full bg-slate-950 hover:bg-violet-700 dark:bg-white dark:text-slate-950 dark:hover:bg-violet-400 dark:hover:text-white text-white font-bold text-xs py-3 rounded-[30px] shadow-sm transition-all active:scale-95 text-center cursor-pointer flex items-center justify-center gap-1.5"
                 >
-                  <span>Request to Book</span>
+                  <span>{t("fleet_btn_book")}</span>
                 </button>
               </div>
             </div>
@@ -237,7 +239,7 @@ export function FleetSection() {
           href="/vehicles"
           className="inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-900 dark:text-white font-bold px-8 py-3.5 rounded-[30px] text-sm transition-all shadow-sm active:scale-95"
         >
-          <span>Explore complete vehicle catalog</span>
+          <span>{t("fleet_btn_explore")}</span>
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>

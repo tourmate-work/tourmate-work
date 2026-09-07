@@ -12,6 +12,7 @@ import {
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { CustomDatePicker } from "@/components/ui/custom-datepicker";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 const BLOG_POSTS = [
   {
@@ -99,6 +100,7 @@ function JeepLogo() {
 }
 
 export function ContactContent() {
+  const { t, language } = useLanguage();
   const [carType, setCarType] = useState("Sedan");
   const [pickupPlace, setPickupPlace] = useState("Bandaranaike Airport (CMB)");
   const [returnPlace, setReturnPlace] = useState("Same as pickup");
@@ -140,14 +142,14 @@ export function ContactContent() {
       <section className="pt-10 pb-8 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-950 tracking-tight mb-2">
-            Contact Us
+            {t("nav_contact_us")}
           </h1>
           <div className="flex items-center justify-center gap-2 text-xs font-semibold text-slate-400">
             <Link href="/" className="hover:text-slate-900 transition-colors">
-              Home
+              {t("nav_home")}
             </Link>
             <span>/</span>
-            <span className="text-slate-800">Contact Us</span>
+            <span className="text-slate-800">{t("nav_contact_us")}</span>
           </div>
         </div>
       </section>
@@ -161,7 +163,7 @@ export function ContactContent() {
               <div className="lg:col-span-4 bg-violet-600 text-white rounded-[30px] p-6 sm:p-7 shadow-xl flex flex-col justify-between">
                 <div>
                   <h2 className="text-xl font-bold text-center text-white mb-5">
-                    Book your car
+                    {language === "si" ? "ඔබගේ වාහනය වෙන්කරන්න" : "Book your car"}
                   </h2>
 
                   <form onSubmit={handleBookNow} className="space-y-3.5">
@@ -232,7 +234,13 @@ export function ContactContent() {
                       disabled={isSubmitting}
                       className="w-full bg-amber-400 hover:bg-amber-500 disabled:opacity-75 text-slate-950 font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg transition-all duration-200 transform active:scale-95 mt-2"
                     >
-                      {isSubmitting ? "Submitting..." : "Book now"}
+                      {isSubmitting
+                        ? language === "si"
+                          ? "යවමින් පවතී..."
+                          : "Submitting..."
+                        : language === "si"
+                        ? "දැන්ම වෙන්කරන්න"
+                        : "Book now"}
                     </button>
                   </form>
                 </div>
@@ -266,10 +274,10 @@ export function ContactContent() {
                 </div>
                 <div>
                   <span className="text-xs text-slate-400 font-medium block">
-                    Address
+                    {t("footer_address_title")}
                   </span>
                   <span className="text-sm font-bold text-slate-900 block mt-0.5">
-                    Wennapuwa, Sri Lanka
+                    {t("footer_address_value")}
                   </span>
                 </div>
               </div>
@@ -283,7 +291,7 @@ export function ContactContent() {
                 </div>
                 <div>
                   <span className="text-xs text-slate-400 font-medium block">
-                    Email
+                    {t("footer_email_title")}
                   </span>
                   <a
                     href="mailto:tourmaterentals@gmail.com"
@@ -303,7 +311,7 @@ export function ContactContent() {
                 </div>
                 <div>
                   <span className="text-xs text-slate-400 font-medium block">
-                    Phone
+                    {t("footer_phone_title")}
                   </span>
                   <a
                     href="tel:+94772973530"
@@ -323,10 +331,12 @@ export function ContactContent() {
                 </div>
                 <div>
                   <span className="text-xs text-slate-400 font-medium block">
-                    Opening hours
+                    {language === "si" ? "සේවා වේලාවන්" : "Opening hours"}
                   </span>
                   <span className="text-sm font-bold text-slate-900 block mt-0.5">
-                    Sun-Mon: 8:00am - 10:00pm
+                    {language === "si"
+                      ? "ඉරිදා - සඳුදා: පෙ.ව. 8:00 - ප.ව. 10:00"
+                      : "Sun-Mon: 8:00am - 10:00pm"}
                   </span>
                 </div>
               </div>
@@ -340,7 +350,9 @@ export function ContactContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="title-hover-glow text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight">
-              Latest blog posts & news
+              {language === "si"
+                ? "නවතම පුවත් සහ තොරතුරු"
+                : "Latest blog posts & news"}
             </h2>
           </div>
 

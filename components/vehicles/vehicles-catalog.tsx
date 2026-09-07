@@ -26,6 +26,7 @@ import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { BookingInquiryModal, BookingVehicleInfo } from "@/components/booking/booking-inquiry-modal";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 export interface VehicleDetail {
   id: string;
@@ -53,16 +54,7 @@ export interface VehicleDetail {
   thumbnails: string[];
 }
 
-const CATEGORIES = [
-  { id: "all", label: "All Vehicles", hasIcon: false },
-  { id: "Sedan", label: "Cars / Sedan", hasIcon: true },
-  { id: "SUV", label: "SUVs", hasIcon: true },
-  { id: "Van", label: "Vans", hasIcon: true },
-  { id: "Jeep", label: "Jeeps / 4x4", hasIcon: true },
-  { id: "Luxury", label: "Luxury", hasIcon: true },
-  { id: "Hatchback", label: "Hatchback", hasIcon: true },
-  { id: "Electric", label: "Electric / Hybrid", hasIcon: true },
-];
+
 
 function VehicleVectorGraphic({ type }: { type: string }) {
   if (type === "sport") {
@@ -112,6 +104,18 @@ function CarPillIcon({ className = "h-4 w-4" }: { className?: string }) {
 export function VehiclesCatalog() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t, language } = useLanguage();
+
+  const categories = [
+    { id: "all", label: t("cat_all"), hasIcon: false },
+    { id: "Sedan", label: t("cat_sedan"), hasIcon: true },
+    { id: "SUV", label: t("cat_suv"), hasIcon: true },
+    { id: "Van", label: t("cat_van"), hasIcon: true },
+    { id: "Jeep", label: t("cat_jeep"), hasIcon: true },
+    { id: "Luxury", label: t("cat_luxury"), hasIcon: true },
+    { id: "Hatchback", label: t("cat_hatchback"), hasIcon: true },
+    { id: "Electric", label: t("cat_electric"), hasIcon: true },
+  ];
 
   // Read URL search params
   const initialSearch = searchParams?.get("search") || "";
@@ -349,10 +353,10 @@ export function VehiclesCatalog() {
         {/* Section Heading */}
         <div className="text-center mb-8">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-950 dark:text-white tracking-tight mb-3">
-            Select an Available Vehicle
+            {t("catalog_title")}
           </h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base max-w-xl mx-auto">
-            Search our verified fleet across Sri Lanka. Filter by vehicle model, pickup city or address, and check real-time availability.
+            {t("catalog_subtitle")}
           </p>
         </div>
 
@@ -370,7 +374,7 @@ export function VehiclesCatalog() {
                     setSearchQuery(e.target.value);
                     setCurrentPage(1);
                   }}
-                  placeholder="Search vehicle model, brand, or features..."
+                  placeholder={t("catalog_search_placeholder")}
                   className="w-full pl-10 pr-9 py-2.5 text-xs font-semibold rounded-2xl bg-white dark:bg-white/5 border border-slate-200/90 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-600/30 focus:border-violet-600 transition-all"
                 />
                 {searchQuery && (
@@ -396,7 +400,7 @@ export function VehiclesCatalog() {
                   setLocationQuery(loc);
                   setCurrentPage(1);
                 }}
-                placeholder="Search city, place, or any address in Sri Lanka..."
+                placeholder={t("search_pickup_placeholder")}
                 variant="catalog"
               />
             </div>
@@ -421,7 +425,7 @@ export function VehiclesCatalog() {
                   }`}
                 />
                 <span className="truncate">
-                  {availableOnly ? "Available Now" : "All Vehicles"}
+                  {availableOnly ? t("catalog_available_now") : t("catalog_all_vehicles")}
                 </span>
                 {availableOnly && <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 ml-auto" />}
               </button>
@@ -443,7 +447,7 @@ export function VehiclesCatalog() {
           <div className="mt-3 pt-3 border-t border-slate-200/60 dark:border-white/5 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
             <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-1 flex-shrink-0 mr-1">
               <MapPin className="h-3 w-3 text-violet-500" />
-              <span>Sri Lanka Delivery Hubs:</span>
+              <span>{language === "si" ? "ප්‍රධාන ස්ථාන:" : "Sri Lanka Delivery Hubs:"}</span>
             </span>
             {QUICK_LOCATIONS.map((ql) => {
               const isActive =
@@ -457,10 +461,10 @@ export function VehiclesCatalog() {
                     setLocationQuery(ql.value);
                     setCurrentPage(1);
                   }}
-                  className={`px-3 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all flex-shrink-0 cursor-pointer ${
+                  className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap transition-all flex-shrink-0 cursor-pointer ${
                     isActive
-                      ? "bg-violet-600 text-white shadow-sm shadow-violet-500/20"
-                      : "bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:border-violet-300 hover:text-violet-600 dark:hover:text-white"
+                      ? "bg-violet-600 text-white shadow-xs"
+                      : "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10"
                   }`}
                 >
                   {ql.label}
@@ -472,7 +476,7 @@ export function VehiclesCatalog() {
 
         {/* Category Filter Tabs with Mobile Swipe */}
         <div className="flex items-center overflow-x-auto no-scrollbar gap-2 sm:gap-3 mb-6 pb-2 justify-start sm:justify-center px-1">
-          {CATEGORIES.map((cat) => {
+          {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
             return (
               <button
@@ -651,7 +655,7 @@ export function VehiclesCatalog() {
                       {car.isAvailable ? (
                         <span className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          Available Now
+                          {t("catalog_available_now")}
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider text-slate-500 bg-slate-500/10 px-2.5 py-0.5 rounded-full">
@@ -699,7 +703,7 @@ export function VehiclesCatalog() {
                             {car.name}
                           </h3>
                           <p className="text-xs text-slate-400 font-medium mt-0.5">
-                            {car.category} • Fully Insured
+                            {car.category} • {t("fleet_fully_insured")}
                           </p>
                         </div>
                         <div className="text-right flex-shrink-0">
@@ -718,11 +722,11 @@ export function VehiclesCatalog() {
                         </div>
                         <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
                           <Users className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
-                          <span className="truncate">{car.specs.seats} Seats</span>
+                          <span className="truncate">{car.specs.seats} {language === "si" ? "ආසන" : "Seats"}</span>
                         </div>
                         <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
                           <Snowflake className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
-                          <span className="truncate">AC</span>
+                          <span className="truncate">{language === "si" ? "වායුසමනය" : "AC"}</span>
                         </div>
                       </div>
                     </div>
@@ -734,7 +738,7 @@ export function VehiclesCatalog() {
                       onClick={() => handleOpenDetails(car)}
                       className="w-full py-3 rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-xs transition-colors text-center cursor-pointer"
                     >
-                      View Details
+                      {t("catalog_btn_view_details")}
                     </button>
                     <button
                       onClick={() =>
@@ -750,9 +754,9 @@ export function VehiclesCatalog() {
                           seats: car.specs.seats,
                         })
                       }
-                      className="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs py-3 rounded-[30px] shadow-sm shadow-violet-500/20 hover:shadow-md transition-all active:scale-95 text-center flex items-center justify-center cursor-pointer"
+                      className="w-full bg-slate-950 hover:bg-violet-700 dark:bg-white dark:text-slate-950 dark:hover:bg-violet-400 dark:hover:text-white text-white font-bold text-xs py-3 rounded-[30px] shadow-sm transition-all active:scale-95 text-center cursor-pointer flex items-center justify-center gap-1"
                     >
-                      <span>Request to Book</span>
+                      <span>{t("fleet_btn_book")}</span>
                     </button>
                   </div>
                 </div>

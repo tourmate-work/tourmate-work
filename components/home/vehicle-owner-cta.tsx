@@ -1,23 +1,26 @@
 "use client";
 
 import { MessageCircle, ShieldCheck, DollarSign, CalendarCheck, ArrowRight } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 export function VehicleOwnerSection() {
+  const { t, language } = useLanguage();
+
   const benefits = [
     {
       icon: DollarSign,
-      title: "Guaranteed Rental Income",
-      description: "Earn consistent, high-yield revenue on your idle car with prompt settlements.",
+      title: t("owner_benefit1_title"),
+      description: t("owner_benefit1_desc"),
     },
     {
       icon: ShieldCheck,
-      title: "Full Protection & Insurance",
-      description: "Every trip includes verified client identity verification and comprehensive coverage.",
+      title: t("owner_benefit2_title"),
+      description: t("owner_benefit2_desc"),
     },
     {
       icon: CalendarCheck,
-      title: "Flexible Scheduling",
-      description: "You decide when your car is available. Block out personal dates anytime.",
+      title: t("owner_benefit3_title"),
+      description: t("owner_benefit3_desc"),
     },
   ];
 
@@ -33,15 +36,15 @@ export function VehicleOwnerSection() {
           <div className="lg:col-span-7 space-y-6 text-left">
             <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3.5 py-1 rounded-full text-xs font-bold">
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Host & Partner With TourMate</span>
+              <span>{t("owner_badge")}</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.12] text-white">
-              Have a Vehicle You Want to Rent Out?
+              {t("owner_heading")}
             </h2>
 
             <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal max-w-xl">
-              Turn your vehicle into a reliable monthly income. Register your car, SUV, van, or jeep with TourMate Rentals. We connect vehicle owners with verified tourists and corporate travelers across Sri Lanka with guaranteed security and maintenance standards.
+              {t("owner_text")}
             </p>
 
             <div className="pt-2">
@@ -52,11 +55,13 @@ export function VehicleOwnerSection() {
                 className="inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm sm:text-base px-8 py-4 rounded-full shadow-xl shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
               >
                 <MessageCircle className="h-5 w-5 fill-white stroke-none" />
-                <span>List Your Vehicle</span>
+                <span>{t("owner_btn_list")}</span>
                 <ArrowRight className="h-4 w-4" />
               </a>
               <span className="block text-xs text-slate-400 mt-2 font-medium">
-                Connects instantly with our partner management concierge on WhatsApp
+                {language === "si"
+                  ? "WhatsApp ඔස්සේ අපගේ සහය කණ්ඩායම සමඟ සෘජුව සම්බන්ධ වන්න"
+                  : "Connects instantly with our partner management concierge on WhatsApp"}
               </span>
             </div>
           </div>

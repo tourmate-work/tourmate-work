@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Mail, Phone, MessageCircle } from "lucide-react";
 import { PolicyModal, PolicyType } from "./policy-modal";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -57,6 +58,7 @@ function GooglePlayIcon({ className = "h-5 w-5" }: { className?: string }) {
 }
 
 export function Footer() {
+  const { t, language } = useLanguage();
   const [activePolicy, setActivePolicy] = useState<PolicyType>(null);
 
   return (
@@ -89,9 +91,9 @@ export function Footer() {
               <MapPin className="h-5 w-5 fill-white text-[#f39c12]" />
             </div>
             <div>
-              <p className="text-xs text-neutral-400 leading-tight">Address</p>
+              <p className="text-xs text-neutral-400 leading-tight">{t("footer_address_title")}</p>
               <p className="text-sm font-bold text-white mt-0.5">
-                Wennapuwa, srilanka
+                {t("footer_address_value")}
               </p>
             </div>
           </div>
@@ -102,7 +104,7 @@ export function Footer() {
               <Mail className="h-5 w-5 fill-white text-[#f39c12]" />
             </div>
             <div>
-              <p className="text-xs text-neutral-400 leading-tight">Email</p>
+              <p className="text-xs text-neutral-400 leading-tight">{t("footer_email_title")}</p>
               <a
                 href="mailto:tourmaterentals@gmail.com"
                 className="text-sm font-bold text-white hover:text-amber-400 transition-colors mt-0.5 block break-all"
@@ -118,7 +120,7 @@ export function Footer() {
               <Phone className="h-5 w-5 fill-white text-[#f39c12]" />
             </div>
             <div>
-              <p className="text-xs text-neutral-400 leading-tight">Phone</p>
+              <p className="text-xs text-neutral-400 leading-tight">{t("footer_phone_title")}</p>
               <a
                 href="tel:+94772973530"
                 className="text-sm font-bold text-white hover:text-amber-400 transition-colors mt-0.5 block"
@@ -134,7 +136,7 @@ export function Footer() {
           {/* Description & Socials */}
           <div className="lg:col-span-4 space-y-6">
             <p className="text-neutral-300 text-sm leading-relaxed">
-              Tourmate Rentals provides premier self-drive and driver-driven car hire services across Sri Lanka. Enjoy reliable vehicles, transparent pricing, and 24/7 road support.
+              {t("footer_desc")}
             </p>
 
             {/* Social Icons */}
@@ -181,12 +183,12 @@ export function Footer() {
           {/* Useful Links */}
           <div className="lg:col-span-3">
             <h4 className="text-white font-bold text-base mb-5">
-              Useful links
+              {t("footer_useful_links")}
             </h4>
             <ul className="space-y-2.5 text-sm text-neutral-300">
               <li>
                 <Link href="/vehicles" className="hover:text-amber-400 font-semibold transition-colors">
-                  Browse Vehicles
+                  {t("nav_browse_vehicles")}
                 </Link>
               </li>
               <li>
@@ -196,18 +198,18 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors flex items-center gap-1.5"
                 >
-                  <span>List Your Vehicle</span>
+                  <span>{t("nav_list_vehicle")}</span>
                   <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-1.5 py-0.5 rounded-full">WhatsApp</span>
                 </a>
               </li>
               <li>
                 <Link href="/about" className="hover:text-amber-400 transition-colors">
-                  About
+                  {t("nav_about_us")}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="hover:text-amber-400 transition-colors">
-                  Contact
+                  {t("nav_contact_us")}
                 </Link>
               </li>
               <li>
@@ -216,7 +218,7 @@ export function Footer() {
                   onClick={() => setActivePolicy("terms")}
                   className="hover:text-amber-400 transition-colors text-left cursor-pointer"
                 >
-                  Terms & Conditions
+                  {t("footer_terms")}
                 </button>
               </li>
               <li>
@@ -225,7 +227,7 @@ export function Footer() {
                   onClick={() => setActivePolicy("privacy")}
                   className="hover:text-amber-400 transition-colors text-left cursor-pointer"
                 >
-                  Privacy Policy
+                  {t("footer_privacy")}
                 </button>
               </li>
               <li>
@@ -234,7 +236,7 @@ export function Footer() {
                   onClick={() => setActivePolicy("cancellation")}
                   className="hover:text-amber-400 transition-colors text-left cursor-pointer"
                 >
-                  Cancellation Policy
+                  {t("footer_cancellation")}
                 </button>
               </li>
               <li>
@@ -254,32 +256,32 @@ export function Footer() {
           {/* Vehicles */}
           <div className="lg:col-span-2">
             <h4 className="text-white font-bold text-base mb-5">
-              Vehicles
+              {language === "si" ? "වාහන" : "Vehicles"}
             </h4>
             <ul className="space-y-3 text-sm text-neutral-300">
               <li>
                 <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
-                  Sedan
+                  {language === "si" ? "සෙඩාන් (Sedan)" : "Sedan"}
                 </Link>
               </li>
               <li>
                 <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
-                  Cabriolet
+                  {language === "si" ? "කැබ්රියෝලට් (Cabriolet)" : "Cabriolet"}
                 </Link>
               </li>
               <li>
                 <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
-                  Pickup
+                  {language === "si" ? "පිකප් (Pickup)" : "Pickup"}
                 </Link>
               </li>
               <li>
                 <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
-                  Minivan
+                  {language === "si" ? "මිනිවෑන් (Minivan)" : "Minivan"}
                 </Link>
               </li>
               <li>
                 <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
-                  SUV
+                  {language === "si" ? "SUV රථ (SUV)" : "SUV"}
                 </Link>
               </li>
             </ul>
@@ -288,7 +290,7 @@ export function Footer() {
           {/* Download App */}
           <div className="lg:col-span-4 space-y-4">
             <h4 className="text-white font-bold text-base mb-5">
-              Download App
+              {language === "si" ? "ඇප් එක ඩවුන්ලෝඩ් කරන්න" : "Download App"}
             </h4>
             <div className="flex flex-col sm:flex-row lg:flex-col gap-3">
               {/* App Store Button */}
@@ -329,7 +331,7 @@ export function Footer() {
         {/* Bottom Copyright */}
         <div className="pt-8 border-t border-neutral-900 text-center">
           <p className="text-xs text-neutral-500">
-            © Copyright Tourmate rentals 2026. Design by MSP Solutions
+            {t("footer_copyright")}
           </p>
         </div>
       </div>

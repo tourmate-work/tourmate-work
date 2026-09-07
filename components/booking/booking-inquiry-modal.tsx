@@ -15,6 +15,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { LocationSearchInput } from "@/components/ui/location-search-input";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 export interface BookingVehicleInfo {
   id?: string;
@@ -48,6 +49,8 @@ export function BookingInquiryModal({
   initialReturnDate = "",
   initialMode = "self",
 }: BookingInquiryModalProps) {
+  const { t, language } = useLanguage();
+
   // Form State
   const [fullName, setFullName] = useState("");
   const [whatsappNumber, setWhatsappNumber] = useState("");
@@ -106,7 +109,11 @@ export function BookingInquiryModal({
     setErrorMessage("");
 
     if (!fullName.trim() || !whatsappNumber.trim() || !email.trim()) {
-      setErrorMessage("Please fill in your Full Name, WhatsApp Number, and Email.");
+      setErrorMessage(
+        language === "si"
+          ? "කරුණාකර ඔබගේ නම, WhatsApp අංකය සහ විද්‍යුත් ලිපිනය ඇතුළත් කරන්න."
+          : "Please fill in your Full Name, WhatsApp Number, and Email."
+      );
       return;
     }
 
@@ -140,16 +147,17 @@ export function BookingInquiryModal({
         body: JSON.stringify(payload),
       }).catch(() => null);
 
-      // 2. Generate WhatsApp link
+      // 2. Build direct WhatsApp dispatch URL
       const waMsg = buildWhatsAppMessage();
-      const waUrl = `https://wa.me/94703236834?text=${encodeURIComponent(waMsg)}`;
-      setGeneratedWhatsAppUrl(waUrl);
+      const directUrl = `https://wa.me/94703236834?text=${encodeURIComponent(waMsg)}`;
+      setGeneratedWhatsAppUrl(directUrl);
+
+      // Show confirmation dialog with direct option to launch WhatsApp
       setIsSuccess(true);
     } catch {
-      // If server error, still proceed to WhatsApp confirmation
       const waMsg = buildWhatsAppMessage();
-      const waUrl = `https://wa.me/94703236834?text=${encodeURIComponent(waMsg)}`;
-      setGeneratedWhatsAppUrl(waUrl);
+      const directUrl = `https://wa.me/94703236834?text=${encodeURIComponent(waMsg)}`;
+      setGeneratedWhatsAppUrl(directUrl);
       setIsSuccess(true);
     } finally {
       setIsSubmitting(false);
@@ -167,10 +175,10 @@ export function BookingInquiryModal({
             </div>
             <div>
               <h2 className="text-lg sm:text-xl font-black tracking-tight text-slate-950 dark:text-white">
-                Request to Book
+                {t("modal_title")}
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                TourMate Rentals • Guaranteed availability & direct WhatsApp confirmation
+                {t("modal_subtitle")}
               </p>
             </div>
           </div>
@@ -210,7 +218,7 @@ export function BookingInquiryModal({
                 )}
                 {vehicle.seats && (
                   <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400">
-                    • {vehicle.seats} Seats
+                    • {vehicle.seats} {language === "si" ? "ආසන" : "Seats"}
                   </span>
                 )}
               </div>
@@ -219,7 +227,7 @@ export function BookingInquiryModal({
               </h3>
               <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                 {typeof vehicle.pricePerDay === "number"
-                  ? `LKR ${vehicle.pricePerDay.toLocaleString()} / day`
+                  ? `LKR ${vehicle.pricePerDay.toLocaleString()} / ${language === "si" ? "දිනකට" : "day"}`
                   : vehicle.pricePerDay}
               </p>
             </div>
@@ -234,10 +242,10 @@ export function BookingInquiryModal({
 
               <div className="space-y-2">
                 <h3 className="text-xl font-black text-slate-950 dark:text-white">
-                  Thank you! Your booking inquiry has been received.
+                  {t("modal_success_title")}
                 </h3>
                 <p className="text-sm text-slate-600 dark:text-slate-300 max-w-md mx-auto leading-relaxed">
-                  TourMate Rentals will contact you shortly via WhatsApp to confirm availability and rental details.
+                  {t("modal_success_message")}
                 </p>
               </div>
 
@@ -250,20 +258,24 @@ export function BookingInquiryModal({
                   className="w-full sm:flex-1 py-3.5 px-6 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-lg shadow-emerald-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  <span>Open in WhatsApp</span>
+                  <span>{t("modal_btn_open_whatsapp")}</span>
                 </a>
                 <button
                   type="button"
                   onClick={onClose}
                   className="w-full sm:w-auto py-3.5 px-6 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-800 dark:text-slate-200 font-bold text-sm transition-all cursor-pointer"
                 >
-                  Done
+                  {t("modal_btn_done")}
                 </button>
               </div>
 
               <div className="pt-4 text-xs text-slate-400 flex items-center justify-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                <span>Transparent rates • No advance cancellation fees</span>
+                <span>
+                  {language === "si"
+                    ? "විනිවිද මිල ගණන් • අත්තිකාරම් අවලංගු කිරීමේ ගාස්තු නැත"
+                    : "Transparent rates • No advance cancellation fees"}
+                </span>
               </div>
             </div>
           ) : (
@@ -281,7 +293,7 @@ export function BookingInquiryModal({
                 <div className="flex items-center gap-2 pb-1 border-b border-slate-100 dark:border-white/10">
                   <User className="h-4 w-4 text-violet-600 dark:text-violet-400" />
                   <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                    Customer Information
+                    {t("modal_sec_customer")}
                   </h4>
                 </div>
 
@@ -289,7 +301,7 @@ export function BookingInquiryModal({
                   {/* Full Name */}
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-400 mb-1">
-                      Full Name *
+                      {t("modal_name")}
                     </label>
                     <input
                       type="text"
@@ -304,7 +316,7 @@ export function BookingInquiryModal({
                   {/* WhatsApp Number */}
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-400 mb-1">
-                      WhatsApp Number *
+                      {t("modal_whatsapp")}
                     </label>
                     <div className="relative">
                       <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-emerald-600" />
@@ -322,7 +334,7 @@ export function BookingInquiryModal({
                   {/* Email */}
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-400 mb-1">
-                      Email Address *
+                      {t("modal_email")}
                     </label>
                     <div className="relative">
                       <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
@@ -341,20 +353,20 @@ export function BookingInquiryModal({
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-400 mb-1">
-                        Country
+                        {t("modal_country")}
                       </label>
                       <input
                         type="text"
                         value={country}
                         onChange={(e) => setCountry(e.target.value)}
-                        placeholder="Country"
+                        placeholder={t("modal_country")}
                         className="w-full px-3 py-2.5 text-xs font-semibold rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white"
                       />
                     </div>
 
                     <div>
                       <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-400 mb-1">
-                        Passengers
+                        {t("modal_passengers")}
                       </label>
                       <select
                         value={passengers}
@@ -363,7 +375,7 @@ export function BookingInquiryModal({
                       >
                         {[1, 2, 3, 4, 5, 6, 7, 8, 10, 12].map((num) => (
                           <option key={num} value={num} className="dark:bg-black text-black dark:text-white">
-                            {num} {num === 1 ? "Passenger" : "Passengers"}
+                            {num} {num === 1 ? t("modal_passenger_single") : t("modal_passenger_plural")}
                           </option>
                         ))}
                       </select>
@@ -378,7 +390,7 @@ export function BookingInquiryModal({
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-violet-600 dark:text-violet-400" />
                     <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                      Rental Information
+                      {t("modal_sec_rental")}
                     </h4>
                   </div>
 
@@ -393,7 +405,7 @@ export function BookingInquiryModal({
                           : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
                       }`}
                     >
-                      Self-Drive
+                      {t("search_mode_self")}
                     </button>
                     <button
                       type="button"
@@ -404,7 +416,7 @@ export function BookingInquiryModal({
                           : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
                       }`}
                     >
-                      With Driver
+                      {t("search_mode_driver")}
                     </button>
                   </div>
                 </div>
@@ -412,12 +424,12 @@ export function BookingInquiryModal({
                 {/* Pickup Location */}
                 <div>
                   <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-400 mb-1">
-                    Pickup Location (Any city, airport, hotel, or address in Sri Lanka)
+                    {t("modal_pickup_loc")}
                   </label>
                   <LocationSearchInput
                     value={pickupLocation}
                     onChange={setPickupLocation}
-                    placeholder="Search or enter pickup address in Sri Lanka..."
+                    placeholder={t("search_pickup_placeholder")}
                     variant="catalog"
                   />
                 </div>
@@ -427,11 +439,11 @@ export function BookingInquiryModal({
                   {/* Pickup Date & Time */}
                   <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 space-y-2">
                     <span className="text-[10px] font-extrabold uppercase tracking-wider text-violet-600 dark:text-violet-400 block">
-                      Pickup Schedule
+                      {t("modal_pickup_schedule")}
                     </span>
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label className="block text-[10px] text-slate-400 mb-0.5">Date</label>
+                        <label className="block text-[10px] text-slate-400 mb-0.5">{t("modal_date")}</label>
                         <input
                           type="date"
                           value={pickupDate}
@@ -440,7 +452,7 @@ export function BookingInquiryModal({
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-slate-400 mb-0.5">Time</label>
+                        <label className="block text-[10px] text-slate-400 mb-0.5">{t("modal_time")}</label>
                         <input
                           type="time"
                           value={pickupTime}
@@ -454,11 +466,11 @@ export function BookingInquiryModal({
                   {/* Return Date & Time */}
                   <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 space-y-2">
                     <span className="text-[10px] font-extrabold uppercase tracking-wider text-violet-600 dark:text-violet-400 block">
-                      Return Schedule
+                      {t("modal_return_schedule")}
                     </span>
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label className="block text-[10px] text-slate-400 mb-0.5">Date</label>
+                        <label className="block text-[10px] text-slate-400 mb-0.5">{t("modal_date")}</label>
                         <input
                           type="date"
                           value={returnDate}
@@ -467,7 +479,7 @@ export function BookingInquiryModal({
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] text-slate-400 mb-0.5">Time</label>
+                        <label className="block text-[10px] text-slate-400 mb-0.5">{t("modal_time")}</label>
                         <input
                           type="time"
                           value={returnTime}
@@ -482,12 +494,12 @@ export function BookingInquiryModal({
                 {/* Return Location */}
                 <div>
                   <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-400 mb-1">
-                    Return Location
+                    {t("modal_return_loc")}
                   </label>
                   <LocationSearchInput
                     value={returnLocation}
                     onChange={setReturnLocation}
-                    placeholder="Search or enter drop-off address (default same as pickup)..."
+                    placeholder={t("search_pickup_placeholder")}
                     variant="catalog"
                   />
                 </div>
@@ -496,13 +508,13 @@ export function BookingInquiryModal({
               {/* Section 3: Additional Requirements */}
               <div className="space-y-2 pt-2">
                 <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-400">
-                  Additional Message / Requirements or Questions
+                  {t("modal_additional_notes")}
                 </label>
                 <textarea
                   rows={2}
                   value={additionalMessage}
                   onChange={(e) => setAdditionalMessage(e.target.value)}
-                  placeholder="Need a baby seat, flight pickup, itinerary assistance, or special drop-off request? Let us know here..."
+                  placeholder={t("modal_additional_placeholder")}
                   className="w-full px-3.5 py-2.5 text-xs font-semibold rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-600 resize-none"
                 />
               </div>
@@ -517,17 +529,17 @@ export function BookingInquiryModal({
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
                       <span className="h-4 w-4 rounded-full border-2 border-slate-950 border-t-transparent animate-spin" />
-                      <span>Sending Inquiry...</span>
+                      <span>{t("modal_submitting")}</span>
                     </span>
                   ) : (
                     <>
-                      <span>Send Booking Inquiry</span>
+                      <span>{t("modal_btn_submit")}</span>
                       <ArrowRight className="h-4 w-4" />
                     </>
                   )}
                 </button>
                 <p className="text-[11px] text-center text-slate-400 mt-2">
-                  No payment required right now. TourMate concierge will confirm availability on WhatsApp.
+                  {t("modal_no_payment_notice")}
                 </p>
               </div>
             </form>

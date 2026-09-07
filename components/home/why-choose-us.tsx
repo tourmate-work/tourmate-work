@@ -1,26 +1,31 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Search, Send, CheckCircle2 } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 export function WhyChooseUs() {
+  const { t, language } = useLanguage();
+
   const steps = [
     {
       num: "1",
       icon: Search,
-      title: "1. Browse",
-      description: "Find a vehicle that suits your trip.",
+      title: t("how_step1_title"),
+      description: t("how_step1_desc"),
     },
     {
       num: "2",
       icon: Send,
-      title: "2. Send an Inquiry",
-      description: "Select your dates and submit your booking request.",
+      title: t("how_step2_title"),
+      description: t("how_step2_desc"),
     },
     {
       num: "3",
       icon: CheckCircle2,
-      title: "3. Confirm Your Rental",
-      description: "We will contact customer and arrange the rental.",
+      title: t("how_step3_title"),
+      description: t("how_step3_desc"),
     },
   ];
 
@@ -46,10 +51,12 @@ export function WhyChooseUs() {
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-slate-900 dark:text-white">
-                    Direct WhatsApp Concierge Confirmation
+                    {language === "si" ? "සෘජු WhatsApp තහවුරු කිරීම" : "Direct WhatsApp Concierge Confirmation"}
                   </h4>
                   <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                    Fast response, zero hidden fees, and transparent rental contracts across Sri Lanka.
+                    {language === "si"
+                      ? "ක්ෂණික ප්‍රතිචාර, සැඟවුණු ගාස්තු නැත, සහ දිවයින පුරා විනිවිද කුලී ගිවිසුම්."
+                      : "Fast response, zero hidden fees, and transparent rental contracts across Sri Lanka."}
                   </p>
                 </div>
               </div>
@@ -61,13 +68,13 @@ export function WhyChooseUs() {
         <div className="lg:col-span-6 space-y-6 text-left">
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-500/10 px-3 py-1 rounded-full mb-3">
-              <span>Simple 3-Step Process</span>
+              <span>{t("how_badge")}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-slate-950 dark:text-white leading-tight">
-              How It Works
+              {t("how_heading")}
             </h2>
             <p className="text-slate-500 dark:text-slate-400 text-sm mt-2 max-w-md">
-              Renting a car in Sri Lanka with TourMate is effortless, transparent, and swift.
+              {t("how_subtitle")}
             </p>
           </div>
 
@@ -102,7 +109,7 @@ export function WhyChooseUs() {
               href="/vehicles"
               className="inline-flex items-center gap-2 bg-slate-950 hover:bg-violet-700 dark:bg-white dark:text-slate-950 dark:hover:bg-violet-400 dark:hover:text-white text-white font-extrabold text-xs sm:text-sm px-6 py-3.5 rounded-full shadow-md transition-all active:scale-95"
             >
-              <span>Browse Available Vehicles Now</span>
+              <span>{t("how_btn_browse")}</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

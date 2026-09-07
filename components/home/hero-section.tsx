@@ -8,24 +8,26 @@ import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { CustomDatePicker } from "@/components/ui/custom-datepicker";
 import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { ShieldCheck, Sparkles, MessageCircle, UserCheck, KeyRound, Search, ArrowRight } from "lucide-react";
-
-const CAR_TYPE_OPTIONS = [
-  { value: "All", label: "All Vehicle Types" },
-  { value: "Sedan", label: "Sedan (Premio, Axio, Allion)" },
-  { value: "SUV", label: "SUV (Vezel, RAV4, CR-V, Prado)" },
-  { value: "Luxury", label: "Luxury (Mercedes, BMW, Audi)" },
-  { value: "Van", label: "Van (KDH Super GL, Caravan)" },
-  { value: "Hatchback", label: "Hatchback (WagonR, Aqua, Vitz)" },
-  { value: "Electric", label: "Electric / Hybrid" },
-];
+import { useLanguage } from "@/lib/i18n/language-context";
 
 export function HeroSection() {
   const router = useRouter();
+  const { t, language } = useLanguage();
   const [rentalMode, setRentalMode] = useState<"self" | "driver">("self");
   const [carType, setCarType] = useState("All");
   const [pickupPlace, setPickupPlace] = useState("Bandaranaike Int'l Airport (CMB) / Katunayake");
   const [rentalDate, setRentalDate] = useState("2026-09-01");
   const [returnDate, setReturnDate] = useState("2026-09-07");
+
+  const carTypeOptions = [
+    { value: "All", label: language === "si" ? "සියලු වාහන වර්ග" : "All Vehicle Types" },
+    { value: "Sedan", label: language === "si" ? "සෙඩාන් (Premio, Axio, Allion)" : "Sedan (Premio, Axio, Allion)" },
+    { value: "SUV", label: language === "si" ? "SUV රථ (Vezel, RAV4, CR-V, Prado)" : "SUV (Vezel, RAV4, CR-V, Prado)" },
+    { value: "Luxury", label: language === "si" ? "සුඛෝපභෝගී (Mercedes, BMW, Audi)" : "Luxury (Mercedes, BMW, Audi)" },
+    { value: "Van", label: language === "si" ? "වෑන් රථ (KDH Super GL, Caravan)" : "Van (KDH Super GL, Caravan)" },
+    { value: "Hatchback", label: language === "si" ? "හැච්බැක් (WagonR, Aqua, Vitz)" : "Hatchback (WagonR, Aqua, Vitz)" },
+    { value: "Electric", label: language === "si" ? "විදුලි / හයිබ්‍රිඩ් (Electric / Hybrid)" : "Electric / Hybrid" },
+  ];
 
   const handleSearchVehicles = (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,16 +73,16 @@ export function HeroSection() {
             {/* Top Micro-badge */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1 rounded-full text-xs font-semibold text-amber-300 shadow-sm">
               <Sparkles className="h-3.5 w-3.5" />
-              <span>Sri Lanka&apos;s #1 Verified Car Rental Network</span>
+              <span>{t("hero_badge")}</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-black tracking-tight leading-[1.14] text-white drop-shadow-md">
-              Find Your Perfect Vehicle <br className="hidden sm:inline" />
-              in Sri Lanka
+              {t("hero_title_1")} <br className="hidden sm:inline" />
+              {t("hero_title_2")}
             </h1>
 
             <p className="max-w-xl text-sm sm:text-base text-slate-200/90 leading-relaxed font-normal">
-              Browse reliable cars and vehicles available for rent across Sri Lanka.
+              {t("hero_subtitle")}
             </p>
 
             {/* Hero Main Action Buttons */}
@@ -89,7 +91,7 @@ export function HeroSection() {
                 href="/vehicles"
                 className="inline-flex items-center gap-2 bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-extrabold text-sm px-6 py-3.5 rounded-full shadow-lg shadow-amber-500/25 transition-all duration-200 active:scale-95 cursor-pointer"
               >
-                <span>Browse Vehicles</span>
+                <span>{t("hero_btn_browse")}</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <a
@@ -99,7 +101,7 @@ export function HeroSection() {
                 className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold text-sm px-6 py-3.5 rounded-full border border-white/25 backdrop-blur-md transition-all duration-200 active:scale-95 cursor-pointer"
               >
                 <MessageCircle className="h-4 w-4 text-emerald-400" />
-                <span>List Your Vehicle</span>
+                <span>{t("hero_btn_list")}</span>
               </a>
             </div>
 
@@ -107,15 +109,15 @@ export function HeroSection() {
             <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-200">
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-amber-400" />
-                <span>Zero Hidden Fees</span>
+                <span>{t("hero_guarantee_1")}</span>
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>24/7 Islandwide Assist</span>
+                <span>{t("hero_guarantee_2")}</span>
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                <span>Free Airport Handover</span>
+                <span>{t("hero_guarantee_3")}</span>
               </span>
             </div>
           </div>
@@ -149,7 +151,7 @@ export function HeroSection() {
                         : "text-slate-400 group-hover:text-slate-600 scale-100 rotate-0"
                     }`}
                   />
-                  <span>Self Drive</span>
+                  <span>{t("search_mode_self")}</span>
                 </button>
 
                 <button
@@ -168,14 +170,14 @@ export function HeroSection() {
                         : "text-slate-400 group-hover:text-slate-600 scale-100"
                     }`}
                   />
-                  <span>With Driver</span>
+                  <span>{t("search_mode_driver")}</span>
                 </button>
               </div>
 
               <h2 className="text-lg font-extrabold text-slate-900 mb-4 flex items-center justify-between">
-                <span>Find & Reserve Vehicles</span>
+                <span>{t("search_title")}</span>
                 <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
-                  Live Availability
+                  {t("search_live_avail")}
                 </span>
               </h2>
 
@@ -183,10 +185,10 @@ export function HeroSection() {
                 {/* 1. Vehicle Type (Top) */}
                 <div>
                   <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
-                    Vehicle Type
+                    {t("search_vehicle_type")}
                   </label>
                   <CustomDropdown
-                    options={CAR_TYPE_OPTIONS}
+                    options={carTypeOptions}
                     value={carType}
                     onChange={setCarType}
                     variant="light"
@@ -197,12 +199,12 @@ export function HeroSection() {
                 {/* 2. Pickup Location */}
                 <div>
                   <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
-                    Pickup Location
+                    {t("search_pickup_loc")}
                   </label>
                   <LocationSearchInput
                     value={pickupPlace}
                     onChange={setPickupPlace}
-                    placeholder="Search any city, airport, hotel, or address in Sri Lanka..."
+                    placeholder={t("search_pickup_placeholder")}
                     variant="light"
                   />
                 </div>
@@ -211,24 +213,24 @@ export function HeroSection() {
                 <div className="grid grid-cols-2 gap-2.5">
                   <div>
                     <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
-                      Pickup Date
+                      {t("search_pickup_date")}
                     </label>
                     <CustomDatePicker
                       value={rentalDate}
                       onChange={setRentalDate}
-                      placeholder="Pickup Date"
+                      placeholder={t("search_pickup_date")}
                       variant="light"
                       position="auto"
                     />
                   </div>
                   <div>
                     <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
-                      Return Date
+                      {t("search_return_date")}
                     </label>
                     <CustomDatePicker
                       value={returnDate}
                       onChange={setReturnDate}
-                      placeholder="Return Date"
+                      placeholder={t("search_return_date")}
                       variant="light"
                       position="top"
                     />
@@ -241,7 +243,7 @@ export function HeroSection() {
                   className="w-full bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-extrabold text-sm py-3.5 rounded-[30px] shadow-lg shadow-amber-500/20 hover:shadow-xl transition-all duration-200 transform active:scale-[0.98] mt-2 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Search className="h-4 w-4" />
-                  <span>Search Vehicles</span>
+                  <span>{t("search_btn_submit")}</span>
                 </button>
 
                 {/* Secondary Option: Direct WhatsApp Concierge */}
@@ -251,7 +253,7 @@ export function HeroSection() {
                   className="w-full py-2 text-xs font-bold text-slate-500 hover:text-emerald-700 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <MessageCircle className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>Need direct help? Contact on WhatsApp</span>
+                  <span>{t("search_whatsapp_help")}</span>
                 </button>
               </form>
             </div>
