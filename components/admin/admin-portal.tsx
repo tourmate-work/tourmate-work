@@ -36,192 +36,6 @@ interface BookingRecord {
   status: "Active" | "Upcoming" | "Completed" | "Pending";
 }
 
-const INITIAL_ADMIN_FLEET: SellerVehicle[] = [
-  {
-    id: "sv-1",
-    name: "Toyota Axio WXB Hybrid",
-    category: "Sedan",
-    year: 2022,
-    dailyRate: 15500,
-    currency: "LKR",
-    transmission: "Automatic",
-    fuel: "Hybrid",
-    seats: 5,
-    doors: 4,
-    location: "Wennapuwa / Airport (CMB)",
-    status: "On Rental",
-    totalTrips: 18,
-    totalEarnings: 279000,
-    rating: 4.9,
-    type: "sedan",
-    image: "/images/mock/axio-sedan.jpg",
-    features: ["Air Conditioner", "Bluetooth Audio", "Reverse Camera", "GPS"],
-  },
-  {
-    id: "sv-2",
-    name: "Honda Vezel RS Sensing",
-    category: "SUV",
-    year: 2023,
-    dailyRate: 22000,
-    currency: "LKR",
-    transmission: "Automatic",
-    fuel: "Hybrid",
-    seats: 5,
-    doors: 5,
-    location: "Colombo / Negombo",
-    status: "Available",
-    totalTrips: 12,
-    totalEarnings: 264000,
-    rating: 5.0,
-    type: "suv",
-    image: "/images/mock/vezel-suv.jpg",
-    features: ["Air Conditioner", "Cruise Control", "Leather Seats", "Dashcam"],
-  },
-  {
-    id: "sv-3",
-    name: "Mercedes-Benz C200 AMG",
-    category: "Luxury",
-    year: 2022,
-    dailyRate: 48000,
-    currency: "LKR",
-    transmission: "Automatic",
-    fuel: "Petrol",
-    seats: 5,
-    doors: 4,
-    location: "Colombo 03 / Airport",
-    status: "On Rental",
-    totalTrips: 7,
-    totalEarnings: 336000,
-    rating: 4.9,
-    type: "sedan",
-    image: "/images/mock/mercedes-amg.jpg",
-    features: ["Sunroof", "Burmester Audio", "Executive Leather", "Driver Option"],
-  },
-  {
-    id: "sv-4",
-    name: "Toyota KDH Super GL Luxury",
-    category: "Van",
-    year: 2021,
-    dailyRate: 28000,
-    currency: "LKR",
-    transmission: "Automatic",
-    fuel: "Diesel",
-    seats: 10,
-    doors: 5,
-    location: "Wennapuwa / Kandy",
-    status: "Available",
-    totalTrips: 15,
-    totalEarnings: 420000,
-    rating: 4.8,
-    type: "van",
-    image: "/images/mock/kdh-van.jpg",
-    features: ["Dual AC", "Reclining Seats", "Luggage Carrier", "Curtains"],
-  },
-  {
-    id: "sv-5",
-    name: "Toyota Premio G-Superior",
-    category: "Sedan",
-    year: 2020,
-    dailyRate: 16500,
-    currency: "LKR",
-    transmission: "Automatic",
-    fuel: "Petrol",
-    seats: 5,
-    doors: 4,
-    location: "Wennapuwa Beach",
-    status: "Available",
-    totalTrips: 22,
-    totalEarnings: 363000,
-    rating: 4.9,
-    type: "sedan",
-    image: "/images/mock/premio-sedan.jpg",
-    features: ["Air Conditioner", "Touch Display", "Keyless Entry"],
-  },
-  {
-    id: "sv-6",
-    name: "Toyota Land Cruiser Prado TX",
-    category: "SUV",
-    year: 2022,
-    dailyRate: 55000,
-    currency: "LKR",
-    transmission: "Automatic",
-    fuel: "Diesel",
-    seats: 7,
-    doors: 5,
-    location: "Colombo / South Coast",
-    status: "Maintenance",
-    totalTrips: 9,
-    totalEarnings: 495000,
-    rating: 5.0,
-    type: "suv",
-    image: "/images/mock/prado-4x4.jpg",
-    features: ["4x4 Drive", "Sunroof", "360 Camera", "Cool Box"],
-  },
-];
-
-const INITIAL_BOOKINGS: BookingRecord[] = [
-  {
-    id: "BK-9801",
-    renterName: "David Miller",
-    renterPhone: "+44 7911 123456",
-    vehicleName: "Toyota Axio WXB Hybrid",
-    dates: "Sep 01 - Sep 07, 2026",
-    days: 6,
-    totalAmount: 93000,
-    status: "Active",
-  },
-  {
-    id: "BK-9802",
-    renterName: "Sophie Martin",
-    renterPhone: "+33 612 345678",
-    vehicleName: "Mercedes-Benz C200 AMG",
-    dates: "Aug 29 - Sep 05, 2026",
-    days: 7,
-    totalAmount: 336000,
-    status: "Active",
-  },
-  {
-    id: "BK-9803",
-    renterName: "Kasun Jayasuriya",
-    renterPhone: "+94 77 123 4567",
-    vehicleName: "Honda Vezel RS Sensing",
-    dates: "Sep 10 - Sep 14, 2026",
-    days: 4,
-    totalAmount: 88000,
-    status: "Upcoming",
-  },
-  {
-    id: "BK-9804",
-    renterName: "Elena Rostova",
-    renterPhone: "+7 903 123 4567",
-    vehicleName: "Toyota KDH Super GL Luxury",
-    dates: "Sep 15 - Sep 22, 2026",
-    days: 7,
-    totalAmount: 196000,
-    status: "Upcoming",
-  },
-  {
-    id: "BK-9799",
-    renterName: "Marcus Becker",
-    renterPhone: "+49 151 2345678",
-    vehicleName: "Toyota Land Cruiser Prado TX",
-    dates: "Aug 18 - Aug 25, 2026",
-    days: 7,
-    totalAmount: 385000,
-    status: "Completed",
-  },
-  {
-    id: "BK-9805",
-    renterName: "Arun Patel",
-    renterPhone: "+91 98200 12345",
-    vehicleName: "Toyota Premio G-Superior",
-    dates: "Sep 08 - Sep 11, 2026",
-    days: 3,
-    totalAmount: 49500,
-    status: "Pending",
-  },
-];
-
 export function AdminPortalContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -233,8 +47,9 @@ export function AdminPortalContent() {
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   const [activeTab, setActiveTab] = useState<string>(initialTab);
-  const [fleet, setFleet] = useState<SellerVehicle[]>(INITIAL_ADMIN_FLEET);
-  const [bookings] = useState<BookingRecord[]>(INITIAL_BOOKINGS);
+  const [fleet, setFleet] = useState<SellerVehicle[]>([]);
+  const [bookings, setBookings] = useState<BookingRecord[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [fleetFilter, setFleetFilter] = useState("all");
   const [bookingStatusFilter, setBookingStatusFilter] = useState("all");
@@ -269,19 +84,70 @@ export function AdminPortalContent() {
     }
   }, [searchParams]);
 
-  // Fetch live fleet from backend on mount or when authenticated
+  // Fetch live fleet and bookings from backend on mount or when authenticated
   useEffect(() => {
     if (!isAuthenticated) return;
 
     async function loadBackendData() {
+      setIsLoading(true);
       try {
-        const res = await fetch("/api/seller/vehicles");
-        const data = await res.json();
-        if (data.success && Array.isArray(data.fleet) && data.fleet.length > 0) {
-          setFleet(data.fleet);
+        // 1. Fetch live fleet
+        const fleetRes = await fetch("/api/seller/vehicles");
+        const fleetData = await fleetRes.json();
+        if (fleetData.success && Array.isArray(fleetData.fleet)) {
+          setFleet(fleetData.fleet);
+        } else {
+          setFleet([]);
+        }
+
+        // 2. Fetch live bookings
+        const bookingsRes = await fetch("/api/bookings");
+        const bookingsData = await bookingsRes.json();
+        if (bookingsData.success && Array.isArray(bookingsData.bookings)) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const mapped: BookingRecord[] = bookingsData.bookings.map((b: any) => {
+            const pickup = new Date(b.pickupDate);
+            const ret = new Date(b.returnDate);
+            const datesStr =
+              !isNaN(pickup.getTime()) && !isNaN(ret.getTime())
+                ? `${pickup.toLocaleDateString("en-US", { month: "short", day: "2-digit" })} - ${ret.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" })}`
+                : "Dates pending";
+
+            let status: BookingRecord["status"] = "Pending";
+            const s = (b.status || "").toUpperCase();
+            if (s === "ACTIVE") status = "Active";
+            else if (s === "COMPLETED") status = "Completed";
+            else if (s === "CONFIRMED" || s === "UPCOMING") status = "Upcoming";
+            else status = "Pending";
+
+            const carName = b.car
+              ? `${b.car.brand || ""} ${b.car.model || b.car.name || ""}`.trim()
+              : "Tourmate Vehicle";
+
+            const displayId =
+              typeof b.id === "string" && b.id.length > 8
+                ? `BK-${b.id.slice(-4).toUpperCase()}`
+                : b.id || "BK-0001";
+
+            return {
+              id: displayId,
+              renterName: b.customerName || "Customer",
+              renterPhone: b.customerPhone || "",
+              vehicleName: carName,
+              dates: datesStr,
+              days: b.totalDays || 1,
+              totalAmount: b.totalPrice || 0,
+              status,
+            };
+          });
+          setBookings(mapped);
+        } else {
+          setBookings([]);
         }
       } catch (e) {
-        console.error("Failed to load admin fleet from API:", e);
+        console.error("Failed to load admin data from API:", e);
+      } finally {
+        setIsLoading(false);
       }
     }
     loadBackendData();
@@ -379,10 +245,20 @@ export function AdminPortalContent() {
   };
 
   // Summary Metrics Calculation
-  const totalEarnings = fleet.reduce((sum, v) => sum + (v.totalEarnings || 0), 0);
-  const totalTrips = fleet.reduce((sum, v) => sum + (v.totalTrips || 0), 0);
+  const bookingsRevenue = bookings.reduce((sum, b) => sum + (b.totalAmount || 0), 0);
+  const fleetEarnings = fleet.reduce((sum, v) => sum + (v.totalEarnings || 0), 0);
+  const totalEarnings = Math.max(bookingsRevenue, fleetEarnings);
+
+  const completedBookings = bookings.filter((b) => b.status === "Completed").length;
+  const fleetTrips = fleet.reduce((sum, v) => sum + (v.totalTrips || 0), 0);
+  const totalTrips = Math.max(fleetTrips, completedBookings);
+
   const activeCount = fleet.filter((v) => v.status === "Available").length;
   const onRentalCount = fleet.filter((v) => v.status === "On Rental").length;
+  const averageRating =
+    fleet.length > 0
+      ? (fleet.reduce((sum, v) => sum + (v.rating || 5.0), 0) / fleet.length).toFixed(1)
+      : "5.0";
 
   const filteredFleet = fleet.filter((v) => {
     if (fleetFilter !== "all" && v.status.toLowerCase() !== fleetFilter.toLowerCase()) {
@@ -701,93 +577,125 @@ export function AdminPortalContent() {
               </div>
 
               {/* Fleet Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredFleet.map((car, index) => (
-                  <ScrollReveal key={car.id} delay={index * 50} direction="up">
-                    <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-5 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between h-full group hover:shadow-xl transition-all">
-                      <div>
-                        {/* Car Image Preview */}
-                        <div className="relative h-48 w-full rounded-2xl overflow-hidden bg-slate-100 dark:bg-white/5 mb-4">
-                          <Image
-                            src={car.image || "/images/mock/axio-sedan.jpg"}
-                            alt={car.name}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                          <span
-                            className={`absolute top-3 right-3 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-sm backdrop-blur-md ${
-                              car.status === "Available"
-                                ? "bg-emerald-500 text-white"
-                                : car.status === "On Rental"
-                                ? "bg-violet-600 text-white"
-                                : "bg-amber-500 text-white"
-                            }`}
+              {isLoading ? (
+                <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-12 border border-slate-200/80 dark:border-white/10 text-center text-xs font-bold text-slate-400">
+                  Loading live fleet data from database...
+                </div>
+              ) : filteredFleet.length === 0 ? (
+                <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-12 border border-slate-200/80 dark:border-white/10 text-center space-y-4">
+                  <div className="h-16 w-16 mx-auto rounded-3xl bg-violet-600/10 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+                    <Car className="h-8 w-8" />
+                  </div>
+                  <div className="space-y-1">
+                    <h3 className="text-base font-bold text-slate-950 dark:text-white">
+                      {fleetSearch ? "No matching vehicles found" : "No vehicles in live fleet"}
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+                      {fleetSearch
+                        ? "Try adjusting your search query or filter."
+                        : "Use the vehicle listing blueprint to add your first vehicle to the Tourmate fleet."}
+                    </p>
+                  </div>
+                  {!fleetSearch && (
+                    <button
+                      type="button"
+                      onClick={() => handleTabChange("list-vehicle")}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold transition-all cursor-pointer"
+                    >
+                      <Plus className="h-4 w-4" />
+                      <span>List Vehicle Now</span>
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredFleet.map((car, index) => (
+                    <ScrollReveal key={car.id} delay={index * 50} direction="up">
+                      <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-5 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between h-full group hover:shadow-xl transition-all">
+                        <div>
+                          {/* Car Image Preview */}
+                          <div className="relative h-48 w-full rounded-2xl overflow-hidden bg-slate-100 dark:bg-white/5 mb-4">
+                            <Image
+                              src={car.image || "/images/mock/axio-sedan.jpg"}
+                              alt={car.name}
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            <span
+                              className={`absolute top-3 right-3 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-sm backdrop-blur-md ${
+                                car.status === "Available"
+                                  ? "bg-emerald-500 text-white"
+                                  : car.status === "On Rental"
+                                  ? "bg-violet-600 text-white"
+                                  : "bg-amber-500 text-white"
+                              }`}
+                            >
+                              {car.status}
+                            </span>
+                            <span className="absolute bottom-3 left-3 text-[10px] font-extrabold uppercase bg-black/60 text-white px-2.5 py-0.5 rounded-md backdrop-blur-sm">
+                              {car.category} • {car.year}
+                            </span>
+                          </div>
+
+                          {/* Details */}
+                          <div className="space-y-1 mb-4">
+                            <h4 className="text-base font-extrabold text-slate-950 dark:text-white truncate">
+                              {car.name}
+                            </h4>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 truncate">
+                              <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                              <span>{car.location}</span>
+                            </p>
+                          </div>
+
+                          {/* Pricing & Trips */}
+                          <div className="grid grid-cols-2 gap-2 p-3 bg-slate-50 dark:bg-white/5 rounded-2xl text-xs mb-4">
+                            <div>
+                              <span className="text-slate-400 block text-[10px] uppercase font-bold">Daily Rate</span>
+                              <span className="font-extrabold text-slate-900 dark:text-white">
+                                LKR {car.dailyRate.toLocaleString()}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-slate-400 block text-[10px] uppercase font-bold">Total Trips</span>
+                              <span className="font-extrabold text-slate-900 dark:text-white">
+                                {car.totalTrips || 0} completed
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Admin Controls */}
+                        <div className="pt-2 border-t border-slate-100 dark:border-white/5 flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleToggleStatus(car.id)}
+                            className="flex-1 py-2 px-3 rounded-full border border-slate-200 dark:border-white/15 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-all text-center cursor-pointer"
                           >
-                            {car.status}
-                          </span>
-                          <span className="absolute bottom-3 left-3 text-[10px] font-extrabold uppercase bg-black/60 text-white px-2.5 py-0.5 rounded-md backdrop-blur-sm">
-                            {car.category} • {car.year}
-                          </span>
-                        </div>
+                            {car.status === "Maintenance" ? "Set Available" : "Set Maintenance"}
+                          </button>
 
-                        {/* Details */}
-                        <div className="space-y-1 mb-4">
-                          <h4 className="text-base font-extrabold text-slate-950 dark:text-white truncate">
-                            {car.name}
-                          </h4>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 truncate">
-                            <MapPin className="h-3.5 w-3.5 text-slate-400" />
-                            <span>{car.location}</span>
-                          </p>
-                        </div>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteVehicle(car.id, car.name)}
+                            className="p-2 rounded-full border border-rose-200 dark:border-rose-900/30 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-all cursor-pointer"
+                            title="Delete Vehicle"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
 
-                        {/* Pricing & Trips */}
-                        <div className="grid grid-cols-2 gap-2 p-3 bg-slate-50 dark:bg-white/5 rounded-2xl text-xs mb-4">
-                          <div>
-                            <span className="text-slate-400 block text-[10px] uppercase font-bold">Daily Rate</span>
-                            <span className="font-extrabold text-slate-900 dark:text-white">
-                              LKR {car.dailyRate.toLocaleString()}
-                            </span>
-                          </div>
-                          <div>
-                            <span className="text-slate-400 block text-[10px] uppercase font-bold">Total Trips</span>
-                            <span className="font-extrabold text-slate-900 dark:text-white">
-                              {car.totalTrips || 0} completed
-                            </span>
-                          </div>
+                          <Link
+                            href={`/details`}
+                            className="py-2 px-3.5 rounded-full bg-violet-600/10 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 text-xs font-bold hover:bg-violet-600 hover:text-white transition-all text-center cursor-pointer"
+                          >
+                            View
+                          </Link>
                         </div>
                       </div>
-
-                      {/* Admin Controls */}
-                      <div className="pt-2 border-t border-slate-100 dark:border-white/5 flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleToggleStatus(car.id)}
-                          className="flex-1 py-2 px-3 rounded-full border border-slate-200 dark:border-white/15 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-all text-center cursor-pointer"
-                        >
-                          {car.status === "Maintenance" ? "Set Available" : "Set Maintenance"}
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteVehicle(car.id, car.name)}
-                          className="p-2 rounded-full border border-rose-200 dark:border-rose-900/30 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-all cursor-pointer"
-                          title="Delete Vehicle"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-
-                        <Link
-                          href={`/details`}
-                          className="py-2 px-3.5 rounded-full bg-violet-600/10 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 text-xs font-bold hover:bg-violet-600 hover:text-white transition-all text-center cursor-pointer"
-                        >
-                          View
-                        </Link>
-                      </div>
-                    </div>
-                  </ScrollReveal>
-                ))}
-              </div>
+                    </ScrollReveal>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -836,59 +744,81 @@ export function AdminPortalContent() {
                 </div>
 
                 <div className="divide-y divide-slate-100 dark:divide-white/10">
-                  {filteredBookings.map((item) => (
-                    <div
-                      key={item.id}
-                      className="p-5 sm:p-6 hover:bg-slate-50/50 dark:hover:bg-white/[0.02] transition-colors flex flex-col lg:flex-row lg:items-center justify-between gap-4"
-                    >
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-violet-600 dark:text-violet-400 font-mono">
-                            {item.id}
-                          </span>
-                          <span
-                            className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide ${
-                              item.status === "Active"
-                                ? "bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20"
-                                : item.status === "Completed"
-                                ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
-                                : item.status === "Upcoming"
-                                ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20"
-                                : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
-                            }`}
-                          >
-                            {item.status}
-                          </span>
-                        </div>
-                        <h4 className="text-base font-bold text-slate-900 dark:text-white">
-                          {item.vehicleName}
-                        </h4>
-                        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
-                          <span>Renter: <strong className="text-slate-900 dark:text-white">{item.renterName}</strong></span>
-                          <span>•</span>
-                          <span>Dates: {item.dates} ({item.days} days)</span>
-                        </div>
+                  {isLoading ? (
+                    <div className="p-12 text-center text-xs font-bold text-slate-400">
+                      Loading customer bookings...
+                    </div>
+                  ) : filteredBookings.length === 0 ? (
+                    <div className="p-12 text-center space-y-3">
+                      <div className="h-14 w-14 mx-auto rounded-3xl bg-slate-100 dark:bg-white/5 text-slate-400 flex items-center justify-center">
+                        <CalendarCheck className="h-7 w-7" />
                       </div>
-
-                      <div className="flex items-center gap-4 justify-between lg:justify-end">
-                        <div className="text-right">
-                          <span className="text-[10px] uppercase font-bold text-slate-400 block">Total Amount</span>
-                          <span className="text-base font-black text-slate-950 dark:text-white">
-                            LKR {item.totalAmount.toLocaleString()}
-                          </span>
-                        </div>
-
-                        <a
-                          href={`https://wa.me/94703236834?text=${encodeURIComponent(`Hi ${item.renterName}, contacting you regarding Tourmate Booking ${item.id} for ${item.vehicleName}.`)}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition-all"
-                        >
-                          WhatsApp Renter
-                        </a>
+                      <div className="space-y-1">
+                        <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                          {bookingSearch ? "No matching bookings found" : "No customer bookings yet"}
+                        </h4>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs mx-auto">
+                          {bookingSearch
+                            ? "Try checking for spelling errors or clearing your search term."
+                            : "New customer reservations and rental requests will appear here in real-time."}
+                        </p>
                       </div>
                     </div>
-                  ))}
+                  ) : (
+                    filteredBookings.map((item) => (
+                      <div
+                        key={item.id}
+                        className="p-5 sm:p-6 hover:bg-slate-50/50 dark:hover:bg-white/[0.02] transition-colors flex flex-col lg:flex-row lg:items-center justify-between gap-4"
+                      >
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-violet-600 dark:text-violet-400 font-mono">
+                              {item.id}
+                            </span>
+                            <span
+                              className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide ${
+                                item.status === "Active"
+                                  ? "bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20"
+                                  : item.status === "Completed"
+                                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
+                                  : item.status === "Upcoming"
+                                  ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20"
+                                  : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
+                              }`}
+                            >
+                              {item.status}
+                            </span>
+                          </div>
+                          <h4 className="text-base font-bold text-slate-900 dark:text-white">
+                            {item.vehicleName}
+                          </h4>
+                          <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
+                            <span>Renter: <strong className="text-slate-900 dark:text-white">{item.renterName}</strong></span>
+                            <span>•</span>
+                            <span>Dates: {item.dates} ({item.days} days)</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 justify-between lg:justify-end">
+                          <div className="text-right">
+                            <span className="text-[10px] uppercase font-bold text-slate-400 block">Total Amount</span>
+                            <span className="text-base font-black text-slate-950 dark:text-white">
+                              LKR {item.totalAmount.toLocaleString()}
+                            </span>
+                          </div>
+
+                          <a
+                            href={`https://wa.me/94703236834?text=${encodeURIComponent(`Hi ${item.renterName}, contacting you regarding Tourmate Booking ${item.id} for ${item.vehicleName}.`)}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition-all"
+                          >
+                            WhatsApp Renter
+                          </a>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
@@ -911,7 +841,7 @@ export function AdminPortalContent() {
                       LKR {totalEarnings.toLocaleString()}
                     </span>
                     <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 mt-1 block">
-                      Active rentals generated
+                      {totalEarnings > 0 ? "Active rentals generated" : "No revenue recorded yet"}
                     </span>
                   </div>
                 </div>
@@ -925,7 +855,7 @@ export function AdminPortalContent() {
                   </div>
                   <div>
                     <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white block">
-                      {fleet.length} Cars
+                      {fleet.length} {fleet.length === 1 ? "Car" : "Cars"}
                     </span>
                     <span className="text-xs text-slate-500 dark:text-slate-400 mt-1 block">
                       {activeCount} ready for rent • {onRentalCount} on trip
@@ -945,7 +875,7 @@ export function AdminPortalContent() {
                       {totalTrips} Trips
                     </span>
                     <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 mt-1 block">
-                      Verified islandwide bookings
+                      {totalTrips > 0 ? "Verified islandwide bookings" : "Completed trip ledger"}
                     </span>
                   </div>
                 </div>
@@ -959,10 +889,10 @@ export function AdminPortalContent() {
                   </div>
                   <div>
                     <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white block">
-                      4.95 / 5.0
+                      {averageRating} / 5.0
                     </span>
                     <span className="text-xs font-semibold text-amber-600 dark:text-amber-400 mt-1 block">
-                      Top 5% rental network in Sri Lanka
+                      {fleet.length > 0 ? "Fleet average rating across active listings" : "Standard verified rating benchmark"}
                     </span>
                   </div>
                 </div>

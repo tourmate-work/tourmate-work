@@ -26,129 +26,6 @@ import { AddVehicleModal, SellerVehicle } from "./add-vehicle-modal";
 import { VehicleListingForm } from "./vehicle-listing-form";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
-const INITIAL_SELLER_FLEET: SellerVehicle[] = [
-  {
-    id: "sv-1",
-    name: "Toyota Axio WXB Hybrid",
-    category: "Sedan",
-    year: 2022,
-    dailyRate: 15500,
-    currency: "LKR",
-    transmission: "Automatic",
-    fuel: "Hybrid",
-    seats: 5,
-    doors: 4,
-    location: "Wennapuwa / Airport (CMB)",
-    status: "On Rental",
-    totalTrips: 18,
-    totalEarnings: 279000,
-    rating: 4.9,
-    type: "sedan",
-    image: "/images/mock/axio-sedan.jpg",
-    features: ["Air Conditioner", "Bluetooth Audio", "Reverse Camera", "GPS"],
-  },
-  {
-    id: "sv-2",
-    name: "Honda Vezel RS Sensing",
-    category: "SUV",
-    year: 2023,
-    dailyRate: 22000,
-    currency: "LKR",
-    transmission: "Automatic",
-    fuel: "Hybrid",
-    seats: 5,
-    doors: 5,
-    location: "Colombo / Negombo",
-    status: "Available",
-    totalTrips: 12,
-    totalEarnings: 264000,
-    rating: 5.0,
-    type: "suv",
-    image: "/images/mock/vezel-suv.jpg",
-    features: ["Air Conditioner", "Cruise Control", "Leather Seats", "Dashcam"],
-  },
-  {
-    id: "sv-3",
-    name: "Mercedes-Benz C200 AMG",
-    category: "Luxury",
-    year: 2022,
-    dailyRate: 48000,
-    currency: "LKR",
-    transmission: "Automatic",
-    fuel: "Petrol",
-    seats: 5,
-    doors: 4,
-    location: "Colombo 03 / Airport",
-    status: "On Rental",
-    totalTrips: 7,
-    totalEarnings: 336000,
-    rating: 4.9,
-    type: "sedan",
-    image: "/images/mock/mercedes-amg.jpg",
-    features: ["Sunroof", "Burmester Audio", "Executive Leather", "Driver Option"],
-  },
-  {
-    id: "sv-4",
-    name: "Toyota KDH Super GL Luxury",
-    category: "Van",
-    year: 2021,
-    dailyRate: 28000,
-    currency: "LKR",
-    transmission: "Automatic",
-    fuel: "Diesel",
-    seats: 10,
-    doors: 5,
-    location: "Wennapuwa / Kandy",
-    status: "Available",
-    totalTrips: 15,
-    totalEarnings: 420000,
-    rating: 4.8,
-    type: "van",
-    image: "/images/mock/kdh-van.jpg",
-    features: ["Dual AC", "Reclining Seats", "Luggage Carrier", "Curtains"],
-  },
-  {
-    id: "sv-5",
-    name: "Toyota Premio G-Superior",
-    category: "Sedan",
-    year: 2020,
-    dailyRate: 16500,
-    currency: "LKR",
-    transmission: "Automatic",
-    fuel: "Petrol",
-    seats: 5,
-    doors: 4,
-    location: "Wennapuwa Beach",
-    status: "Available",
-    totalTrips: 22,
-    totalEarnings: 363000,
-    rating: 4.9,
-    type: "sedan",
-    image: "/images/mock/premio-sedan.jpg",
-    features: ["Air Conditioner", "Touch Display", "Keyless Entry"],
-  },
-  {
-    id: "sv-6",
-    name: "Toyota Land Cruiser Prado TX",
-    category: "SUV",
-    year: 2022,
-    dailyRate: 55000,
-    currency: "LKR",
-    transmission: "Automatic",
-    fuel: "Diesel",
-    seats: 7,
-    doors: 5,
-    location: "Colombo / South Coast",
-    status: "Maintenance",
-    totalTrips: 9,
-    totalEarnings: 495000,
-    rating: 5.0,
-    type: "suv",
-    image: "/images/mock/prado-4x4.jpg",
-    features: ["4x4 Drive", "Sunroof", "360 Camera", "Cool Box"],
-  },
-];
-
 interface BookingRecord {
   id: string;
   renterName: string;
@@ -160,77 +37,14 @@ interface BookingRecord {
   status: "Active" | "Upcoming" | "Completed" | "Pending";
 }
 
-const INITIAL_BOOKINGS: BookingRecord[] = [
-  {
-    id: "BK-9801",
-    renterName: "David Miller",
-    renterPhone: "+44 7911 123456",
-    vehicleName: "Toyota Axio WXB Hybrid",
-    dates: "Sep 01 - Sep 07, 2026",
-    days: 6,
-    totalAmount: 93000,
-    status: "Active",
-  },
-  {
-    id: "BK-9802",
-    renterName: "Sophie Martin",
-    renterPhone: "+33 612 345678",
-    vehicleName: "Mercedes-Benz C200 AMG",
-    dates: "Aug 29 - Sep 05, 2026",
-    days: 7,
-    totalAmount: 336000,
-    status: "Active",
-  },
-  {
-    id: "BK-9803",
-    renterName: "Kasun Jayasuriya",
-    renterPhone: "+94 77 123 4567",
-    vehicleName: "Honda Vezel RS Sensing",
-    dates: "Sep 10 - Sep 14, 2026",
-    days: 4,
-    totalAmount: 88000,
-    status: "Upcoming",
-  },
-  {
-    id: "BK-9804",
-    renterName: "Elena Rostova",
-    renterPhone: "+7 903 123 4567",
-    vehicleName: "Toyota KDH Super GL Luxury",
-    dates: "Sep 15 - Sep 22, 2026",
-    days: 7,
-    totalAmount: 196000,
-    status: "Upcoming",
-  },
-  {
-    id: "BK-9799",
-    renterName: "Marcus Becker",
-    renterPhone: "+49 151 2345678",
-    vehicleName: "Toyota Land Cruiser Prado TX",
-    dates: "Aug 18 - Aug 25, 2026",
-    days: 7,
-    totalAmount: 385000,
-    status: "Completed",
-  },
-  {
-    id: "BK-9805",
-    renterName: "Arun Patel",
-    renterPhone: "+91 98200 12345",
-    vehicleName: "Toyota Premio G-Superior",
-    dates: "Sep 08 - Sep 11, 2026",
-    days: 3,
-    totalAmount: 49500,
-    status: "Pending",
-  },
-];
-
 export function SellerPortalContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialTab = searchParams.get("tab") || "overview";
 
   const [activeTab, setActiveTab] = useState<string>(initialTab);
-  const [fleet, setFleet] = useState<SellerVehicle[]>(INITIAL_SELLER_FLEET);
-  const [bookings, setBookings] = useState<BookingRecord[]>(INITIAL_BOOKINGS);
+  const [fleet, setFleet] = useState<SellerVehicle[]>([]);
+  const [bookings, setBookings] = useState<BookingRecord[]>([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [fleetFilter, setFleetFilter] = useState("all");
   const [bookingStatusFilter, setBookingStatusFilter] = useState("all");
@@ -252,17 +66,63 @@ export function SellerPortalContent() {
     }
   }, [searchParams]);
 
-  // Fetch live fleet from backend on mount
+  // Fetch live fleet and bookings from backend on mount
   useEffect(() => {
     async function loadBackendData() {
       try {
         const res = await fetch("/api/seller/vehicles");
         const data = await res.json();
-        if (data.success && Array.isArray(data.fleet) && data.fleet.length > 0) {
+        if (data.success && Array.isArray(data.fleet)) {
           setFleet(data.fleet);
+        } else {
+          setFleet([]);
+        }
+
+        const bRes = await fetch("/api/bookings");
+        const bData = await bRes.json();
+        if (bData.success && Array.isArray(bData.bookings)) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const mapped: BookingRecord[] = bData.bookings.map((b: any) => {
+            const pickup = new Date(b.pickupDate);
+            const ret = new Date(b.returnDate);
+            const datesStr =
+              !isNaN(pickup.getTime()) && !isNaN(ret.getTime())
+                ? `${pickup.toLocaleDateString("en-US", { month: "short", day: "2-digit" })} - ${ret.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" })}`
+                : "Dates pending";
+
+            let status: BookingRecord["status"] = "Pending";
+            const s = (b.status || "").toUpperCase();
+            if (s === "ACTIVE") status = "Active";
+            else if (s === "COMPLETED") status = "Completed";
+            else if (s === "CONFIRMED" || s === "UPCOMING") status = "Upcoming";
+            else status = "Pending";
+
+            const carName = b.car
+              ? `${b.car.brand || ""} ${b.car.model || b.car.name || ""}`.trim()
+              : "Tourmate Vehicle";
+
+            const displayId =
+              typeof b.id === "string" && b.id.length > 8
+                ? `BK-${b.id.slice(-4).toUpperCase()}`
+                : b.id || "BK-0001";
+
+            return {
+              id: displayId,
+              renterName: b.customerName || "Customer",
+              renterPhone: b.customerPhone || "",
+              vehicleName: carName,
+              dates: datesStr,
+              days: b.totalDays || 1,
+              totalAmount: b.totalPrice || 0,
+              status,
+            };
+          });
+          setBookings(mapped);
+        } else {
+          setBookings([]);
         }
       } catch (e) {
-        console.error("Failed to load seller vehicles from API:", e);
+        console.error("Failed to load seller vehicles and bookings from API:", e);
       }
     }
     loadBackendData();
