@@ -326,7 +326,7 @@ export function AboutContent() {
                 Download our app
               </h2>
               <p className="text-sm sm:text-base text-violet-100/90 leading-relaxed font-normal">
-                Book your rental car in seconds, unlock exclusive discounts, track your chauffeur, and manage your trips on the go with the Tourmate mobile app.
+                Book your rental car in seconds, unlock exclusive discounts, track your driver, and manage your trips on the go with the Tourmate mobile app.
               </p>
 
               {/* Download Badges */}

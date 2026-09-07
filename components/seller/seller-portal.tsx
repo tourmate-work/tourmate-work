@@ -85,7 +85,7 @@ const INITIAL_SELLER_FLEET: SellerVehicle[] = [
     rating: 4.9,
     type: "sedan",
     image: "/images/mock/mercedes-amg.jpg",
-    features: ["Sunroof", "Burmester Audio", "Executive Leather", "Chauffeur Option"],
+    features: ["Sunroof", "Burmester Audio", "Executive Leather", "Driver Option"],
   },
   {
     id: "sv-4",

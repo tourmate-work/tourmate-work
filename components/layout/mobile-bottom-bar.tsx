@@ -9,7 +9,6 @@ export function MobileBottomBar() {
 
   const isHome = pathname === "/";
   const isVehicles = pathname.startsWith("/vehicles");
-  const isSeller = pathname.startsWith("/seller");
 
   return (
     <nav
@@ -53,23 +52,18 @@ export function MobileBottomBar() {
           <span className="text-[10px] tracking-tight">Vehicles</span>
         </Link>
 
-        {/* Host / Seller Portal */}
-        <Link
-          href="/seller"
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-2xl transition-all active:scale-90 ${
-            isSeller
-              ? "text-violet-600 dark:text-violet-400 font-bold"
-              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-          }`}
+        {/* List Vehicle WhatsApp CTA */}
+        <a
+          href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col items-center gap-1 py-1 px-3 rounded-2xl text-violet-600 dark:text-violet-400 transition-all active:scale-90"
         >
           <div className="relative">
-            <LayoutDashboard className={`h-5 w-5 ${isSeller ? "stroke-[2.5]" : "stroke-2"}`} />
-            {isSeller && (
-              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-violet-600 dark:bg-violet-400" />
-            )}
+            <LayoutDashboard className="h-5 w-5 stroke-2" />
           </div>
-          <span className="text-[10px] tracking-tight">Host</span>
-        </Link>
+          <span className="text-[10px] font-semibold tracking-tight">List Car</span>
+        </a>
 
         {/* Direct WhatsApp CTA */}
         <a

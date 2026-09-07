@@ -128,7 +128,7 @@ export function Footer() {
           {/* Description & Socials */}
           <div className="lg:col-span-4 space-y-6">
             <p className="text-neutral-300 text-sm leading-relaxed">
-              Tourmate Rentals provides premier self-drive and chauffeur-driven car hire services across Sri Lanka. Enjoy reliable vehicles, transparent pricing, and 24/7 road support.
+              Tourmate Rentals provides premier self-drive and driver-driven car hire services across Sri Lanka. Enjoy reliable vehicles, transparent pricing, and 24/7 road support.
             </p>
 
             {/* Social Icons */}
@@ -179,10 +179,15 @@ export function Footer() {
             </h4>
             <ul className="space-y-3 text-sm text-neutral-300">
               <li>
-                <Link href="/seller" className="text-amber-400 hover:text-amber-300 font-semibold transition-colors flex items-center gap-1.5">
-                  <span>Seller Portal</span>
-                  <span className="text-[10px] bg-amber-400/20 text-amber-300 border border-amber-400/40 px-1.5 py-0.2 rounded-full">Host</span>
-                </Link>
+                <a
+                  href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors flex items-center gap-1.5"
+                >
+                  <span>List Your Vehicle</span>
+                  <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-1.5 py-0.5 rounded-full">WhatsApp</span>
+                </a>
               </li>
               <li>
                 <Link href="/#about" className="hover:text-amber-400 transition-colors">

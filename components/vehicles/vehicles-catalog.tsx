@@ -647,13 +647,15 @@ export function VehiclesCatalog() {
               No Vehicles Found
             </h3>
             <p className="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto mb-6">
-              There are currently no vehicles listed in the fleet. When vehicles are added in the Seller Portal, they will appear here immediately.
+              No vehicles found matching your criteria. Want to list your vehicle on Tourmate? Contact our admin on WhatsApp.
             </p>
             <a
-              href="/seller?tab=add"
-              className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-bold px-6 py-3 rounded-full text-sm shadow-md transition-all active:scale-95"
+              href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-full text-sm shadow-md transition-all active:scale-95"
             >
-              <span>Add Vehicle via Seller Portal</span>
+              <span>List a Vehicle via WhatsApp</span>
             </a>
           </div>
         ) : (

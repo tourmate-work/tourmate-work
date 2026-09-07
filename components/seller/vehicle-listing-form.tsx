@@ -312,7 +312,7 @@ const MESSAGE_CATEGORIES = [
   },
   {
     id: "airport_pickup",
-    title: "✈️ Airport Pickup & Chauffeur",
+    title: "✈️ Airport Pickup & Driver",
     desc: "Inquiries specifically requesting CMB Katunayake airport meet & greet or driver-assisted options.",
   },
   {
@@ -1432,7 +1432,7 @@ export function VehicleListingForm({
               "Cruise Control",
               "Keyless Push Start",
               "Baby / Child Safety Seat",
-              "Chauffeur Option Available",
+              "Driver Option Available",
               "Roof Luggage Rack",
               "24/7 Roadside Assist",
               "Unlimited Mileage Included",

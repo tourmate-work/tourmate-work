@@ -43,7 +43,7 @@ interface SubMenuItem {
   badgeClass?: string;
 }
 
-interface SellerNavSection {
+interface AdminNavSection {
   id: string;
   label: string;
   href: string;
@@ -57,23 +57,23 @@ interface SellerNavSection {
   };
 }
 
-const SELLER_NAV_SECTIONS: SellerNavSection[] = [
+const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
   {
     id: "overview",
     label: "Overview",
-    href: "/seller?tab=overview",
-    badgeTitle: "Host Dashboard",
+    href: "/admin?tab=overview",
+    badgeTitle: "Admin Dashboard",
     items: [
       {
         title: "Dashboard Overview",
         description: "Key performance metrics & live trips",
-        href: "/seller?tab=overview",
+        href: "/admin?tab=overview",
         icon: <LayoutDashboard className="h-4 w-4 text-violet-500" />,
       },
       {
-        title: "SuperHost Partner Score",
-        description: "Top 5% rated host score in Sri Lanka",
-        href: "/seller?tab=overview",
+        title: "Fleet Health & Ratings",
+        description: "Overall fleet reviews and utilization",
+        href: "/admin?tab=overview",
         icon: <Star className="h-4 w-4 text-amber-500" />,
         badge: "4.95 ★",
         badgeClass: "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20",
@@ -81,23 +81,23 @@ const SELLER_NAV_SECTIONS: SellerNavSection[] = [
       {
         title: "Add Vehicle Listing",
         description: "List a car with 7 photo blueprints",
-        href: "/seller?tab=list-vehicle",
+        href: "/admin?tab=list-vehicle",
         icon: <Sparkles className="h-4 w-4 text-violet-500" />,
-        badge: "New",
+        badge: "Admin",
         badgeClass: "bg-violet-500/10 text-violet-700 dark:text-violet-400 border border-violet-500/20",
       },
     ],
   },
   {
     id: "fleet",
-    label: "My Fleet",
-    href: "/seller?tab=fleet",
+    label: "Manage Fleet",
+    href: "/admin?tab=fleet",
     badgeTitle: "Fleet Operations",
     items: [
       {
         title: "All Vehicles",
         description: "Full vehicle inventory & management",
-        href: "/seller?tab=fleet&filter=all",
+        href: "/admin?tab=fleet&filter=all",
         icon: <Car className="h-4 w-4 text-violet-500" />,
         badge: "All Cars",
         badgeClass: "bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300",
@@ -105,7 +105,7 @@ const SELLER_NAV_SECTIONS: SellerNavSection[] = [
       {
         title: "Available for Rent",
         description: "Ready for instant tourist reservation",
-        href: "/seller?tab=fleet&filter=available",
+        href: "/admin?tab=fleet&filter=available",
         icon: <CheckCircle2 className="h-4 w-4 text-emerald-500" />,
         badge: "Ready",
         badgeClass: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20",
@@ -113,7 +113,7 @@ const SELLER_NAV_SECTIONS: SellerNavSection[] = [
       {
         title: "Currently on Road",
         description: "Active client trips in progress",
-        href: "/seller?tab=fleet&filter=on rental",
+        href: "/admin?tab=fleet&filter=on rental",
         icon: <Clock className="h-4 w-4 text-violet-500" />,
         badge: "On Trip",
         badgeClass: "bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20",
@@ -121,7 +121,7 @@ const SELLER_NAV_SECTIONS: SellerNavSection[] = [
       {
         title: "Under Maintenance",
         description: "Vehicles undergoing service or repair",
-        href: "/seller?tab=fleet&filter=maintenance",
+        href: "/admin?tab=fleet&filter=maintenance",
         icon: <Wrench className="h-4 w-4 text-amber-500" />,
         badge: "Service",
         badgeClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20",
@@ -129,21 +129,21 @@ const SELLER_NAV_SECTIONS: SellerNavSection[] = [
     ],
     footerAction: {
       label: "List a New Vehicle",
-      description: "Expand your rental fleet on Tourmate",
-      href: "/seller?tab=list-vehicle",
+      description: "Add a new car to the live fleet",
+      href: "/admin?tab=list-vehicle",
       icon: <Plus className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />,
     },
   },
   {
     id: "bookings",
     label: "Bookings",
-    href: "/seller?tab=bookings",
+    href: "/admin?tab=bookings",
     badgeTitle: "Reservations & Schedule",
     items: [
       {
         title: "All Bookings",
         description: "Master client reservations ledger",
-        href: "/seller?tab=bookings&filter=all",
+        href: "/admin?tab=bookings&filter=all",
         icon: <FileText className="h-4 w-4 text-blue-500" />,
         badge: "Ledger",
         badgeClass: "bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300",
@@ -151,7 +151,7 @@ const SELLER_NAV_SECTIONS: SellerNavSection[] = [
       {
         title: "Pending Approval",
         description: "New reservation inquiries awaiting confirmation",
-        href: "/seller?tab=bookings&filter=pending",
+        href: "/admin?tab=bookings&filter=pending",
         icon: <Clock className="h-4 w-4 text-amber-500" />,
         badge: "Action Req",
         badgeClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20",
@@ -159,7 +159,7 @@ const SELLER_NAV_SECTIONS: SellerNavSection[] = [
       {
         title: "Upcoming Trips",
         description: "Confirmed bookings ready for vehicle handover",
-        href: "/seller?tab=bookings&filter=upcoming",
+        href: "/admin?tab=bookings&filter=upcoming",
         icon: <Calendar className="h-4 w-4 text-blue-500" />,
         badge: "Scheduled",
         badgeClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20",
@@ -167,7 +167,7 @@ const SELLER_NAV_SECTIONS: SellerNavSection[] = [
       {
         title: "Completed Rentals",
         description: "Past finished trips & review ratings",
-        href: "/seller?tab=bookings&filter=completed",
+        href: "/admin?tab=bookings&filter=completed",
         icon: <CheckCircle2 className="h-4 w-4 text-emerald-500" />,
         badge: "Finished",
         badgeClass: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20",
@@ -176,20 +176,20 @@ const SELLER_NAV_SECTIONS: SellerNavSection[] = [
     footerAction: {
       label: "Airport & Beach Handovers",
       description: "View today's vehicle pickup schedule",
-      href: "/seller?tab=bookings",
+      href: "/admin?tab=bookings",
       icon: <MapPin className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />,
     },
   },
   {
     id: "earnings",
     label: "Earnings",
-    href: "/seller?tab=earnings",
-    badgeTitle: "Financial Analytics & Payouts",
+    href: "/admin?tab=earnings",
+    badgeTitle: "Financial Analytics & Revenue",
     items: [
       {
         title: "Payouts Overview",
         description: "Gross revenue, wallet balance & payouts",
-        href: "/seller?tab=earnings",
+        href: "/admin?tab=earnings",
         icon: <DollarSign className="h-4 w-4 text-emerald-500" />,
         badge: "Net Balance",
         badgeClass: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20",
@@ -197,23 +197,23 @@ const SELLER_NAV_SECTIONS: SellerNavSection[] = [
       {
         title: "Monthly Revenue Analytics",
         description: "Month-over-month performance growth",
-        href: "/seller?tab=earnings",
+        href: "/admin?tab=earnings",
         icon: <TrendingUp className="h-4 w-4 text-blue-500" />,
         badge: "+14.2%",
         badgeClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20",
       },
       {
         title: "Host Protection Guarantee",
-        description: "85% payout share with 0% listing fee",
-        href: "/seller?tab=earnings",
+        description: "Vehicle insurance and partner coverage",
+        href: "/admin?tab=earnings",
         icon: <ShieldCheck className="h-4 w-4 text-violet-500" />,
-        badge: "85% Net",
+        badge: "Full Cover",
         badgeClass: "bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20",
       },
       {
         title: "Download Tax & Invoice Reports",
         description: "Export monthly statements and CSV logs",
-        href: "/seller?tab=earnings",
+        href: "/admin?tab=earnings",
         icon: <Download className="h-4 w-4 text-slate-500" />,
         badge: "PDF / CSV",
         badgeClass: "bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300",
@@ -221,8 +221,8 @@ const SELLER_NAV_SECTIONS: SellerNavSection[] = [
     ],
     footerAction: {
       label: "Direct Bank Payouts",
-      description: "Weekly automated transfers to your SL account",
-      href: "/seller?tab=earnings",
+      description: "Automated settlements to Tourmate account",
+      href: "/admin?tab=earnings",
       icon: <DollarSign className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />,
     },
   },
@@ -232,25 +232,25 @@ export function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [activeSellerTab, setActiveSellerTab] = useState("overview");
+  const [activeAdminTab, setActiveAdminTab] = useState("overview");
   const [mobileExpandedSection, setMobileExpandedSection] = useState<string | null>("fleet");
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const isSeller = pathname.startsWith("/seller");
+  const isAdmin = pathname.startsWith("/admin");
   const isHome = pathname === "/";
   const isVehicles = pathname.startsWith("/vehicles");
   const isDetails = pathname.startsWith("/details");
   const isAbout = pathname.startsWith("/about");
   const isContact = pathname.startsWith("/contact");
 
-  // Sync active seller tab from URL
+  // Sync active admin tab from URL
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const tab = params.get("tab");
       if (tab) {
-        setActiveSellerTab(tab);
+        setActiveAdminTab(tab);
       }
     }
   }, [pathname]);
@@ -355,7 +355,7 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Logo & Portal Badge */}
         <div className="flex items-center gap-3">
-          <Link href={isSeller ? "/seller" : "/"} className="flex items-center gap-2 group py-1">
+          <Link href={isAdmin ? "/admin" : "/"} className="flex items-center gap-2 group py-1">
             <Image
               src="/images/logo-transparent.png"
               alt="Tourmate Rentals"
@@ -365,20 +365,20 @@ export function Header() {
               priority
             />
           </Link>
-          {isSeller && (
-            <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider bg-amber-400/20 text-amber-600 dark:text-amber-400 border border-amber-400/40 px-2.5 py-0.5 rounded-full">
-              Host Portal
+          {isAdmin && (
+            <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider bg-violet-500/20 text-violet-700 dark:text-violet-300 border border-violet-500/40 px-2.5 py-0.5 rounded-full">
+              Admin Portal
             </span>
           )}
         </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-1.5 text-sm font-medium">
-          {isSeller ? (
+          {isAdmin ? (
             <div className="flex items-center gap-1 sm:gap-1.5">
-              {SELLER_NAV_SECTIONS.map((section) => {
+              {ADMIN_NAV_SECTIONS.map((section) => {
                 const isOpen = activeDropdown === section.id;
-                const isCurrentActive = activeSellerTab === section.id;
+                const isCurrentActive = activeAdminTab === section.id;
 
                 return (
                   <div
@@ -390,7 +390,7 @@ export function Header() {
                     <Link
                       href={section.href}
                       onClick={() => {
-                        setActiveSellerTab(section.id);
+                        setActiveAdminTab(section.id);
                         setActiveDropdown(null);
                       }}
                       className={`flex items-center gap-1.5 py-2 px-3.5 rounded-full text-xs sm:text-sm font-bold transition-all ${
@@ -435,7 +435,7 @@ export function Header() {
                                   setActiveDropdown(null);
                                   if (item.href.includes("tab=")) {
                                     const match = item.href.match(/tab=([^&]+)/);
-                                    if (match) setActiveSellerTab(match[1]);
+                                    if (match) setActiveAdminTab(match[1]);
                                   }
                                 }}
                                 className="flex items-center justify-between p-2.5 rounded-2xl hover:bg-slate-100/80 dark:hover:bg-white/5 transition-all group/sub cursor-pointer"
@@ -475,7 +475,7 @@ export function Header() {
                                   setActiveDropdown(null);
                                   if (section.footerAction?.href.includes("tab=")) {
                                     const match = section.footerAction.href.match(/tab=([^&]+)/);
-                                    if (match) setActiveSellerTab(match[1]);
+                                    if (match) setActiveAdminTab(match[1]);
                                   }
                                 }}
                                 className="flex items-center justify-between p-2.5 rounded-2xl bg-violet-50/70 dark:bg-violet-950/30 hover:bg-violet-100/70 dark:hover:bg-violet-900/40 text-violet-950 dark:text-violet-200 transition-all group/foot cursor-pointer"
@@ -542,24 +542,27 @@ export function Header() {
         {/* Right Actions: Portal Switcher + Theme Toggle + Phone + Mobile Hamburger */}
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Portal Switcher Button */}
-          {isSeller ? (
+          {/* Action Button: Admin Mode View Public Site / Visitor Mode WhatsApp List Your Vehicle */}
+          {isAdmin ? (
             <Link
               href="/"
               className="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-[#16161a] dark:hover:bg-[#202026] text-slate-900 dark:text-white border border-slate-200 dark:border-white/15 px-3 sm:px-4 py-2 rounded-full text-xs font-bold transition-all shadow-sm group active:scale-95 cursor-pointer"
             >
               <ArrowLeft className="h-3.5 w-3.5 text-slate-500 group-hover:-translate-x-0.5 transition-transform" />
-              <span className="hidden sm:inline">Buyer Portal</span>
-              <span className="sm:hidden">Buyer</span>
+              <span className="hidden sm:inline">View Public Site</span>
+              <span className="sm:hidden">Public</span>
             </Link>
           ) : (
-            <Link
-              href="/seller"
-              className="inline-flex items-center gap-1.5 bg-violet-600 hover:bg-violet-700 text-white px-3 sm:px-4 py-2 rounded-full text-xs font-bold transition-all shadow-sm shadow-violet-500/25 active:scale-95 group cursor-pointer"
+            <a
+              href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold transition-all shadow-sm shadow-emerald-500/25 active:scale-95 group cursor-pointer"
             >
-              <LayoutDashboard className="h-3.5 w-3.5 opacity-90 group-hover:rotate-6 transition-transform" />
-              <span className="hidden sm:inline">Seller Portal</span>
-              <span className="sm:hidden">Host</span>
-            </Link>
+              <MessageCircle className="h-3.5 w-3.5 opacity-90 group-hover:scale-110 transition-transform" />
+              <span className="hidden sm:inline">List Your Vehicle</span>
+              <span className="sm:hidden">List Car</span>
+            </a>
           )}
 
           {/* Dark Mode Toggle */}
@@ -602,13 +605,13 @@ export function Header() {
             {/* Quick Links List */}
             <div className="space-y-2">
               <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3 block mb-1">
-                {isSeller ? "Host Portal Sub-Menus" : "Navigation"}
+                {isAdmin ? "Admin Controls" : "Navigation"}
               </span>
 
-              {isSeller ? (
-                /* Seller Mobile Navigation with Expandable Submenus */
+              {isAdmin ? (
+                /* Admin Mobile Navigation with Expandable Submenus */
                 <div className="space-y-2">
-                  {SELLER_NAV_SECTIONS.map((sec) => {
+                  {ADMIN_NAV_SECTIONS.map((sec) => {
                     const isExpanded = mobileExpandedSection === sec.id;
                     return (
                       <div
@@ -678,34 +681,52 @@ export function Header() {
                 </div>
               ) : (
                 /* Buyer Navigation */
-                [
-                  { href: "/", label: "Home", icon: Home, active: isHome },
-                  { href: "/vehicles", label: "Browse Vehicles", icon: Car, active: isVehicles },
-                  { href: "/details", label: "Specifications & Details", icon: FileText, active: isDetails },
-                  { href: "/about", label: "About Tourmate", icon: Users, active: isAbout },
-                  { href: "/contact", label: "Contact Us", icon: Mail, active: isContact },
-                  { href: "/seller", label: "Seller & Host Portal", icon: LayoutDashboard, active: isSeller },
-                ].map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center justify-between p-3 rounded-2xl text-sm font-bold transition-all ${
-                        item.active
-                          ? "bg-violet-600 text-white shadow-md shadow-violet-500/20"
-                          : "text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Icon className="h-4 w-4 opacity-80" />
-                        <span>{item.label}</span>
-                      </div>
-                      <ChevronRight className="h-4 w-4 opacity-50" />
-                    </Link>
-                  );
-                })
+                <>
+                  {[
+                    { href: "/", label: "Home", icon: Home, active: isHome },
+                    { href: "/vehicles", label: "Browse Vehicles", icon: Car, active: isVehicles },
+                    { href: "/details", label: "Specifications & Details", icon: FileText, active: isDetails },
+                    { href: "/about", label: "About Tourmate", icon: Users, active: isAbout },
+                    { href: "/contact", label: "Contact Us", icon: Mail, active: isContact },
+                  ].map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`flex items-center justify-between p-3 rounded-2xl text-sm font-bold transition-all ${
+                          item.active
+                            ? "bg-violet-600 text-white shadow-md shadow-violet-500/20"
+                            : "text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon className="h-4 w-4 opacity-80" />
+                          <span>{item.label}</span>
+                        </div>
+                        <ChevronRight className="h-4 w-4 opacity-50" />
+                      </Link>
+                    );
+                  })}
+
+                  {/* List Your Vehicle Mobile Button */}
+                  <a
+                    href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-3 rounded-2xl text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-500/20 transition-all active:scale-95"
+                  >
+                    <div className="flex items-center gap-3">
+                      <MessageCircle className="h-4 w-4" />
+                      <span>List Your Vehicle</span>
+                    </div>
+                    <span className="text-[10px] uppercase font-extrabold tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full">
+                      WhatsApp
+                    </span>
+                  </a>
+                </>
               )}
             </div>
 

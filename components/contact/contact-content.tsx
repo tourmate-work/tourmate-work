@@ -30,7 +30,7 @@ const BLOG_POSTS = [
     date: "12 April, 2026",
     image: "/images/hero-sri-lanka.jpg",
     excerpt:
-      "Compare self-drive freedom versus chauffeur-driven tours to maximize your holiday comfort and flexibility.",
+      "Compare self-drive freedom versus driver-driven tours to maximize your holiday comfort and flexibility.",
   },
   {
     id: "3",

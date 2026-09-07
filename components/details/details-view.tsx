@@ -159,7 +159,7 @@ const VEHICLES: VehicleDetail[] = [
       "Dual Line AC for all rows",
       "Reclining Velvet Captain Seats",
       "Extra Large Luggage Area",
-      "Chauffeur Option Available",
+      "Driver Option Available",
       "High-Roof Comfort",
     ],
     thumbnails: [

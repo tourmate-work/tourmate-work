@@ -35,7 +35,7 @@ const RETURN_OPTIONS = [
 ];
 
 export function HeroSection() {
-  const [rentalMode, setRentalMode] = useState<"self" | "chauffeur">("self");
+  const [rentalMode, setRentalMode] = useState<"self" | "driver">("self");
   const [carType, setCarType] = useState("Sedan");
   const [pickupPlace, setPickupPlace] = useState("Bandaranaike Airport (CMB)");
   const [returnPlace, setReturnPlace] = useState("Same as pickup");
@@ -44,7 +44,7 @@ export function HeroSection() {
 
   const handleBookNow = (e: React.FormEvent) => {
     e.preventDefault();
-    const modeText = rentalMode === "self" ? "Self-Drive" : "With Chauffeur";
+    const modeText = rentalMode === "self" ? "Self-Drive" : "With Driver";
     const message = `Hello Tourmate! I would like to reserve a ${modeText} ${carType} from ${pickupPlace} (${rentalDate}) to ${returnPlace} (${returnDate}).`;
     window.open(`https://wa.me/94703236834?text=${encodeURIComponent(message)}`, "_blank");
   };
@@ -82,7 +82,7 @@ export function HeroSection() {
             </h1>
 
             <p className="max-w-xl text-sm sm:text-base text-slate-200/90 leading-relaxed font-normal">
-              Tourmate provides luxury self-drive cars, family SUVs, and chauffeur-driven vans across Colombo, CMB Airport, Kandy, and the Southern Coast with guaranteed transparent rates.
+              Tourmate provides luxury self-drive cars, family SUVs, and driver-driven vans across Colombo, CMB Airport, Kandy, and the Southern Coast with guaranteed transparent rates.
             </p>
 
             {/* Quick Guarantees Pill Strip */}
@@ -105,13 +105,13 @@ export function HeroSection() {
           {/* Right Floating Booking Card */}
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
             <div className="w-full max-w-sm sm:max-w-md bg-white text-slate-900 rounded-[30px] p-6 sm:p-7 shadow-2xl border border-white/30 backdrop-blur-md">
-              {/* Rental Mode Switch (Self-Drive vs Chauffeur) with sliding pill animation */}
+              {/* Rental Mode Switch (Self-Drive vs Driver) with sliding pill animation */}
               <div className="relative grid grid-cols-2 p-1 bg-slate-100/90 rounded-full mb-5 border border-slate-200/80 shadow-inner select-none">
                 {/* Sliding Animated Pill Indicator */}
                 <span
                   aria-hidden="true"
                   className={`absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.06)] border border-slate-200/60 transition-transform duration-300 [transition-timing-function:cubic-bezier(0.25,1,0.5,1)] pointer-events-none ${
-                    rentalMode === "chauffeur" ? "translate-x-full" : "translate-x-0"
+                    rentalMode === "driver" ? "translate-x-full" : "translate-x-0"
                   }`}
                 />
 
@@ -136,21 +136,21 @@ export function HeroSection() {
 
                 <button
                   type="button"
-                  onClick={() => setRentalMode("chauffeur")}
+                  onClick={() => setRentalMode("driver")}
                   className={`relative z-10 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-full text-xs font-bold transition-all duration-200 active:scale-95 cursor-pointer ${
-                    rentalMode === "chauffeur"
+                    rentalMode === "driver"
                       ? "text-slate-950"
                       : "text-slate-500 hover:text-slate-800"
                   }`}
                 >
                   <UserCheck
                     className={`h-3.5 w-3.5 transition-all duration-300 ${
-                      rentalMode === "chauffeur"
+                      rentalMode === "driver"
                         ? "text-violet-600 scale-110"
                         : "text-slate-400 group-hover:text-slate-600 scale-100"
                     }`}
                   />
-                  <span>With Chauffeur</span>
+                  <span>With Driver</span>
                 </button>
               </div>
 

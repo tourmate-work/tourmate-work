@@ -100,15 +100,17 @@ export function FleetSection() {
             No Vehicles Currently Listed
           </h3>
           <p className="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto mb-6">
-            All test data has been cleared. Any vehicles you add through the Seller Portal will appear here in real time.
+            There are currently no featured vehicles available. Want to list your vehicle on Tourmate? Contact our admin team on WhatsApp.
           </p>
-          <Link
-            href="/seller?tab=add"
-            className="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-bold px-6 py-3 rounded-full text-sm shadow-md transition-all active:scale-95"
+          <a
+            href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-full text-sm shadow-md transition-all active:scale-95"
           >
-            <span>List a Vehicle Now</span>
+            <span>List a Vehicle via WhatsApp</span>
             <ArrowRight className="h-4 w-4" />
-          </Link>
+          </a>
         </div>
       ) : (
         /* Dynamic Car Cards Grid */
