@@ -124,6 +124,7 @@ export function VehiclesCatalog() {
   const [currentPage, setCurrentPage] = useState(1);
   const [activeModalCar, setActiveModalCar] = useState<VehicleDetail | null>(null);
   const [activeThumbnailIndex, setActiveThumbnailIndex] = useState(0);
+  const [modalPickupLocation, setModalPickupLocation] = useState(initialLocation);
   const [vehiclesList, setVehiclesList] = useState<VehicleDetail[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -135,7 +136,10 @@ export function VehiclesCatalog() {
     const c = searchParams.get("category");
     const a = searchParams.get("available");
     if (s !== null) setSearchQuery(s);
-    if (l !== null) setLocationQuery(l);
+    if (l !== null) {
+      setLocationQuery(l);
+      setModalPickupLocation(l);
+    }
     if (c !== null) setSelectedCategory(c);
     if (a !== null) setAvailableOnly(a !== "false");
   }, [searchParams]);
@@ -328,14 +332,23 @@ export function VehiclesCatalog() {
   const handleOpenDetails = (car: VehicleDetail) => {
     setActiveModalCar(car);
     setActiveThumbnailIndex(0);
+    setModalPickupLocation(locationQuery.trim() || car.location || "");
   };
 
   const handleCloseModal = () => {
     setActiveModalCar(null);
   };
 
-  const handleBookNow = (car: VehicleDetail) => {
-    const msg = `Hello Tourmate! I would like to book the ${car.name} (${car.category}) at ${car.price} ${car.period}, pickup at ${car.location || "Sri Lanka"}.`;
+  const handleBookNow = (car: VehicleDetail, customPickup?: string) => {
+    // Priority: custom explicitly passed pickup -> modal pickup location -> catalog locationQuery -> vehicle default location
+    const chosenLocation =
+      (customPickup && customPickup.trim()) ||
+      (modalPickupLocation && modalPickupLocation.trim()) ||
+      (locationQuery && locationQuery.trim()) ||
+      car.location ||
+      "Sri Lanka";
+
+    const msg = `Hello Tourmate! I would like to book the ${car.name} (${car.category}) at ${car.price} ${car.period}, pickup at ${chosenLocation}.`;
     window.open(
       `https://wa.me/94703236834?text=${encodeURIComponent(msg)}`,
       "_blank"
@@ -678,7 +691,9 @@ export function VehiclesCatalog() {
                       <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
                         <div className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-black/70 backdrop-blur-md text-white border border-white/20 truncate flex items-center gap-1">
                           <MapPin className="h-3 w-3 text-violet-400 flex-shrink-0" />
-                          <span className="truncate">{car.location || "Sri Lanka"}</span>
+                          <span className="truncate">
+                            {locationQuery.trim() ? `Pickup: ${locationQuery.trim()}` : (car.location || "Sri Lanka")}
+                          </span>
                         </div>
 
                         <div className="px-2 py-1 rounded-full text-[10px] font-bold bg-black/70 backdrop-blur-md text-slate-200 border border-white/20 flex-shrink-0">
@@ -734,7 +749,7 @@ export function VehiclesCatalog() {
                       Specifications
                     </button>
                     <button
-                      onClick={() => handleBookNow(car)}
+                      onClick={() => handleBookNow(car, locationQuery)}
                       className="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs py-3 rounded-[30px] shadow-sm shadow-violet-500/20 hover:shadow-md transition-all active:scale-95 text-center flex items-center justify-center cursor-pointer"
                     >
                       <span>Book Now</span>
@@ -805,10 +820,12 @@ export function VehiclesCatalog() {
                       {activeModalCar.period}
                     </span>
                   </span>
-                  {activeModalCar.location && (
-                    <span className="text-xs text-slate-400 flex items-center gap-1 ml-2">
-                      <MapPin className="h-3 w-3 text-violet-500" />
-                      {activeModalCar.location}
+                  {(modalPickupLocation || activeModalCar.location) && (
+                    <span className="text-xs text-slate-400 flex items-center gap-1 ml-2 max-w-xs truncate">
+                      <MapPin className="h-3 w-3 text-violet-500 flex-shrink-0" />
+                      <span className="truncate">
+                        {modalPickupLocation ? `Pickup: ${modalPickupLocation}` : activeModalCar.location}
+                      </span>
                     </span>
                   )}
                 </div>
@@ -966,10 +983,32 @@ export function VehiclesCatalog() {
                     </div>
                   </div>
 
+                  {/* Adaptive Pickup Location in Modal */}
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#15151a] border border-slate-200/80 dark:border-white/10 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                        <MapPin className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
+                        <span>Pickup Location / Delivery Address:</span>
+                      </label>
+                      <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 px-2 py-0.5 rounded-full">
+                        Adaptive
+                      </span>
+                    </div>
+                    <LocationSearchInput
+                      value={modalPickupLocation}
+                      onChange={setModalPickupLocation}
+                      placeholder="Type hotel, airport terminal, or address in Sri Lanka..."
+                      variant="catalog"
+                    />
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                      Tourmate delivers this vehicle directly to your chosen address anywhere in Sri Lanka.
+                    </p>
+                  </div>
+
                   {/* Rent A Car CTA Button */}
                   <div>
                     <button
-                      onClick={() => handleBookNow(activeModalCar)}
+                      onClick={() => handleBookNow(activeModalCar, modalPickupLocation)}
                       className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
                     >
                       Rent a car

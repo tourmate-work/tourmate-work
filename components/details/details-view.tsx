@@ -14,8 +14,10 @@ import {
   DoorOpen,
   ArrowRight,
   MessageCircle,
+  MapPin,
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { LocationSearchInput } from "@/components/ui/location-search-input";
 
 export interface VehicleDetail {
   id: string;
@@ -27,6 +29,7 @@ export interface VehicleDetail {
   period: string;
   type: "sedan" | "sport" | "suv" | "van";
   fuelCapacity: string;
+  location?: string;
   specs: {
     gearBox: string;
     fuel: string;
@@ -385,6 +388,7 @@ function DetailsContentInner() {
                   ? v.category.toLowerCase()
                   : "sedan",
               fuelCapacity: "60 Ltr",
+              location: v.location || "Bandaranaike Int'l Airport (CMB) / Katunayake",
               specs: {
                 gearBox: v.transmission,
                 fuel: v.fuelType,
@@ -409,9 +413,17 @@ function DetailsContentInner() {
     loadLiveVehicles();
   }, []);
 
+  // Initial location from query param
+  const [pickupLocation, setPickupLocation] = useState(
+    searchParams?.get("location") || ""
+  );
+
   // Sync state whenever URL query params change
   useEffect(() => {
-    const id = searchParams.get("car") || searchParams.get("id");
+    const loc = searchParams?.get("location");
+    if (loc) setPickupLocation(loc);
+
+    const id = searchParams?.get("car") || searchParams?.get("id");
     if (id) {
       const match = VEHICLES.find((v) => v.id === id) || liveVehicles.find((v) => v.id === id);
       if (match) {
@@ -454,6 +466,7 @@ function DetailsContentInner() {
                     ? v.category.toLowerCase()
                     : "sedan",
                 fuelCapacity: "60 Ltr",
+                location: v.location || "Bandaranaike Int'l Airport (CMB) / Katunayake",
                 specs: {
                   gearBox: v.transmission,
                   fuel: v.fuelType,
@@ -483,7 +496,8 @@ function DetailsContentInner() {
   };
 
   const handleBookNow = () => {
-    const msg = `Hello Tourmate! I would like to reserve the ${selectedVehicle.name} (${selectedVehicle.category}) at ${selectedVehicle.price} ${selectedVehicle.period}.`;
+    const chosenLoc = pickupLocation.trim() || selectedVehicle.location || "Sri Lanka";
+    const msg = `Hello Tourmate! I would like to book the ${selectedVehicle.name} (${selectedVehicle.category}) at ${selectedVehicle.price} ${selectedVehicle.period}, pickup at ${chosenLoc}.`;
     window.open(
       `https://wa.me/94703236834?text=${encodeURIComponent(msg)}`,
       "_blank"
@@ -645,6 +659,28 @@ function DetailsContentInner() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Adaptive Pickup Location Selection */}
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#15151a] border border-slate-200/80 dark:border-white/10 space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
+                  <span>Pickup Location / Delivery Address:</span>
+                </label>
+                <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">
+                  Live Map Search
+                </span>
+              </div>
+              <LocationSearchInput
+                value={pickupLocation}
+                onChange={setPickupLocation}
+                placeholder="Type or select pickup hotel, street address, or city in Sri Lanka..."
+                variant="catalog"
+              />
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                Tourmate delivers directly to your location anywhere across Sri Lanka.
+              </p>
             </div>
 
             {/* Rent A Car CTA Button */}
