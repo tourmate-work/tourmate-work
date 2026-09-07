@@ -46,16 +46,16 @@ export async function GET(req: NextRequest) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const where: any = {};
 
-    if (category && category !== "All") {
-      where.category = { equals: category };
+    if (category && category !== "All" && category !== "all") {
+      where.category = { equals: category, mode: "insensitive" };
     }
 
-    if (transmission && transmission !== "All") {
-      where.transmission = { equals: transmission };
+    if (transmission && transmission !== "All" && transmission !== "all") {
+      where.transmission = { equals: transmission, mode: "insensitive" };
     }
 
-    if (fuelType && fuelType !== "All") {
-      where.fuelType = { equals: fuelType };
+    if (fuelType && fuelType !== "All" && fuelType !== "all") {
+      where.fuelType = { equals: fuelType, mode: "insensitive" };
     }
 
     if (seats && parseInt(seats, 10) > 0) {
@@ -68,8 +68,8 @@ export async function GET(req: NextRequest) {
       if (maxPrice) where.pricePerDay.lte = parseFloat(maxPrice);
     }
 
-    if (location && location !== "All") {
-      where.location = { contains: location };
+    if (location && location !== "All" && location !== "all" && location.trim()) {
+      where.location = { contains: location.trim(), mode: "insensitive" };
     }
 
     if (isFeatured === "true") {
@@ -78,19 +78,24 @@ export async function GET(req: NextRequest) {
 
     if (isAvailable === "true") {
       where.isAvailable = true;
+      where.status = "Available";
     }
 
-    if (status && status !== "All") {
+    if (status && status !== "All" && status !== "all") {
       where.status = status;
     }
 
-    if (search) {
+    if (search && search.trim()) {
+      const q = search.trim();
       where.OR = [
-        { name: { contains: search } },
-        { brand: { contains: search } },
-        { model: { contains: search } },
-        { location: { contains: search } },
-        { category: { contains: search } },
+        { name: { contains: q, mode: "insensitive" } },
+        { brand: { contains: q, mode: "insensitive" } },
+        { model: { contains: q, mode: "insensitive" } },
+        { location: { contains: q, mode: "insensitive" } },
+        { category: { contains: q, mode: "insensitive" } },
+        { fuelType: { contains: q, mode: "insensitive" } },
+        { transmission: { contains: q, mode: "insensitive" } },
+        { features: { contains: q, mode: "insensitive" } },
       ];
     }
 

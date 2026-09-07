@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Fuel,
   Snowflake,
@@ -15,9 +16,14 @@ import {
   ArrowUp,
   ArrowDown,
   ArrowUpDown,
+  Search,
+  MapPin,
+  RotateCcw,
+  Check,
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
+import { LocationSearchInput } from "@/components/ui/location-search-input";
 
 export interface VehicleDetail {
   id: string;
@@ -29,6 +35,10 @@ export interface VehicleDetail {
   period: string;
   type: "sedan" | "sport" | "suv" | "van";
   fuelCapacity: string;
+  location?: string;
+  isAvailable?: boolean;
+  status?: string;
+  rating?: number;
   specs: {
     gearBox: string;
     fuel: string;
@@ -42,303 +52,13 @@ export interface VehicleDetail {
 }
 
 const CATEGORIES = [
-  { id: "all", label: "All vehicles", hasIcon: false },
+  { id: "all", label: "All Vehicles", hasIcon: false },
   { id: "Sedan", label: "Sedan", hasIcon: true },
-  { id: "Cabriolet", label: "Cabriolet", hasIcon: true },
-  { id: "Pickup", label: "Pickup", hasIcon: true },
   { id: "SUV", label: "SUV", hasIcon: true },
-  { id: "Minivan", label: "Minivan", hasIcon: true },
-];
-
-const ALL_VEHICLES: VehicleDetail[] = [
-  {
-    id: "bmw-3",
-    name: "BMW",
-    brand: "BMW",
-    category: "Sedan",
-    price: "$25",
-    priceNum: 25,
-    period: "/ day",
-    type: "sedan",
-    fuelCapacity: "65 Ltr",
-    specs: {
-      gearBox: "Automatic",
-      fuel: "Petrol",
-      doors: 5,
-      ac: "Yes",
-      seats: 5,
-      distance: "500 KM",
-    },
-    equipment: [
-      "ABS",
-      "Air Bags",
-      "Cruise control",
-      "GPS Navigation",
-      "Bluetooth & CarPlay",
-      "Air Conditioner",
-    ],
-    thumbnails: [
-      "/images/mock/axio-sedan.jpg",
-      "/images/mock/cockpit.jpg",
-      "/images/mock/rear-cabin.jpg",
-    ],
-  },
-  {
-    id: "mercedes-sedan",
-    name: "Mercedes",
-    brand: "Mercedes",
-    category: "Sedan",
-    price: "$25",
-    priceNum: 25,
-    period: "per day",
-    type: "sedan",
-    fuelCapacity: "70 Ltr",
-    specs: {
-      gearBox: "Automatic",
-      fuel: "Petrol",
-      doors: 4,
-      ac: "Yes",
-      seats: 5,
-      distance: "500 KM",
-    },
-    equipment: [
-      "ABS",
-      "Air Bags",
-      "Cruise control",
-      "Reverse Camera",
-      "Heated Seats",
-      "Air Conditioner",
-    ],
-    thumbnails: [
-      "/images/mock/mercedes-amg.jpg",
-      "/images/mock/cockpit.jpg",
-      "/images/mock/rear-cabin.jpg",
-    ],
-  },
-  {
-    id: "mercedes-sport",
-    name: "Mercedes",
-    brand: "Mercedes",
-    category: "Sport",
-    price: "$50",
-    priceNum: 50,
-    period: "per day",
-    type: "sport",
-    fuelCapacity: "65 Ltr",
-    specs: {
-      gearBox: "Automatic",
-      fuel: "Petrol",
-      doors: 2,
-      ac: "Yes",
-      seats: 2,
-      distance: "Unlimited",
-    },
-    equipment: [
-      "ABS",
-      "Dual Air Bags",
-      "Sport Suspension",
-      "Launch Control",
-      "Premium Audio",
-      "Climate Control",
-    ],
-    thumbnails: [
-      "/images/mock/mercedes-amg.jpg",
-      "/images/mock/cockpit.jpg",
-      "/images/mock/rear-cabin.jpg",
-    ],
-  },
-  {
-    id: "mercedes-e-class",
-    name: "Mercedes",
-    brand: "Mercedes",
-    category: "Sedan",
-    price: "$45",
-    priceNum: 45,
-    period: "per day",
-    type: "sedan",
-    fuelCapacity: "75 Ltr",
-    specs: {
-      gearBox: "Automatic",
-      fuel: "Petrol",
-      doors: 4,
-      ac: "Yes",
-      seats: 5,
-      distance: "500 KM",
-    },
-    equipment: [
-      "ABS",
-      "Air Bags",
-      "Lane Assist",
-      "Adaptive Cruise",
-      "Leather Interior",
-      "Air Conditioner",
-    ],
-    thumbnails: [
-      "/images/mock/mercedes-amg.jpg",
-      "/images/mock/rear-cabin.jpg",
-      "/images/mock/cockpit.jpg",
-    ],
-  },
-  {
-    id: "porsche-macan",
-    name: "Porsche",
-    brand: "Porsche",
-    category: "SUV",
-    price: "$40",
-    priceNum: 40,
-    period: "per day",
-    type: "suv",
-    fuelCapacity: "75 Ltr",
-    specs: {
-      gearBox: "Automatic",
-      fuel: "Petrol",
-      doors: 5,
-      ac: "Yes",
-      seats: 5,
-      distance: "600 KM",
-    },
-    equipment: [
-      "ABS",
-      "All-Wheel Drive",
-      "Air Bags",
-      "Panoramic Sunroof",
-      "Parking Sensors",
-      "Air Conditioner",
-    ],
-    thumbnails: [
-      "/images/mock/vezel-suv.jpg",
-      "/images/mock/cockpit.jpg",
-      "/images/mock/rear-cabin.jpg",
-    ],
-  },
-  {
-    id: "toyota-premio",
-    name: "Toyota",
-    brand: "Toyota",
-    category: "Sedan",
-    price: "$35",
-    priceNum: 35,
-    period: "per day",
-    type: "sedan",
-    fuelCapacity: "60 Ltr",
-    specs: {
-      gearBox: "Automatic",
-      fuel: "Hybrid",
-      doors: 4,
-      ac: "Yes",
-      seats: 5,
-      distance: "700 KM",
-    },
-    equipment: [
-      "ABS",
-      "Eco Mode",
-      "Air Bags",
-      "Touch Screen Audio",
-      "Smart Key Entry",
-      "Air Conditioner",
-    ],
-    thumbnails: [
-      "/images/mock/premio-sedan.jpg",
-      "/images/mock/cockpit.jpg",
-      "/images/mock/rear-cabin.jpg",
-    ],
-  },
-  {
-    id: "porsche-cayenne",
-    name: "Porsche",
-    brand: "Porsche",
-    category: "SUV",
-    price: "$50",
-    priceNum: 50,
-    period: "per day",
-    type: "suv",
-    fuelCapacity: "90 Ltr",
-    specs: {
-      gearBox: "Automatic",
-      fuel: "Petrol",
-      doors: 5,
-      ac: "Yes",
-      seats: 5,
-      distance: "Unlimited",
-    },
-    equipment: [
-      "ABS",
-      "AWD System",
-      "Surround Air Bags",
-      "360 Camera",
-      "Bose Sound System",
-      "Air Conditioner",
-    ],
-    thumbnails: [
-      "/images/mock/prado-4x4.jpg",
-      "/images/mock/rear-cabin.jpg",
-      "/images/mock/cockpit.jpg",
-    ],
-  },
-  {
-    id: "toyota-hilux",
-    name: "Toyota",
-    brand: "Toyota",
-    category: "Pickup",
-    price: "$40",
-    priceNum: 40,
-    period: "per day",
-    type: "suv",
-    fuelCapacity: "80 Ltr",
-    specs: {
-      gearBox: "Automatic",
-      fuel: "Diesel",
-      doors: 4,
-      ac: "Yes",
-      seats: 5,
-      distance: "Unlimited",
-    },
-    equipment: [
-      "ABS",
-      "4WD High/Low",
-      "Tow Package",
-      "Heavy Duty Bed Liner",
-      "Air Bags",
-      "Air Conditioner",
-    ],
-    thumbnails: [
-      "/images/mock/prado-4x4.jpg",
-      "/images/mock/cockpit.jpg",
-      "/images/mock/rear-cabin.jpg",
-    ],
-  },
-  {
-    id: "toyota-kdh",
-    name: "Toyota",
-    brand: "Toyota",
-    category: "Minivan",
-    price: "$45",
-    priceNum: 45,
-    period: "per day",
-    type: "van",
-    fuelCapacity: "70 Ltr",
-    specs: {
-      gearBox: "Automatic",
-      fuel: "Diesel",
-      doors: 5,
-      ac: "Yes",
-      seats: 9,
-      distance: "Unlimited",
-    },
-    equipment: [
-      "ABS",
-      "Dual Air Conditioning",
-      "Adjustable Seats",
-      "Huge Luggage Space",
-      "Air Bags",
-      "Bluetooth System",
-    ],
-    thumbnails: [
-      "/images/mock/kdh-van.jpg",
-      "/images/mock/rear-cabin.jpg",
-      "/images/mock/cockpit.jpg",
-    ],
-  },
+  { id: "Van", label: "Van", hasIcon: true },
+  { id: "Luxury", label: "Luxury", hasIcon: true },
+  { id: "Hatchback", label: "Hatchback", hasIcon: true },
+  { id: "Electric", label: "Electric / Hybrid", hasIcon: true },
 ];
 
 function VehicleVectorGraphic({ type }: { type: string }) {
@@ -387,13 +107,38 @@ function CarPillIcon({ className = "h-4 w-4" }: { className?: string }) {
 }
 
 export function VehiclesCatalog() {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Read URL search params
+  const initialSearch = searchParams?.get("search") || "";
+  const initialLocation = searchParams?.get("location") || "";
+  const initialCategory = searchParams?.get("category") || "all";
+  const initialAvailable = searchParams?.get("available") !== "false";
+
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
+  const [locationQuery, setLocationQuery] = useState(initialLocation);
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  const [availableOnly, setAvailableOnly] = useState(initialAvailable);
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "name-asc">("featured");
   const [currentPage, setCurrentPage] = useState(1);
   const [activeModalCar, setActiveModalCar] = useState<VehicleDetail | null>(null);
   const [activeThumbnailIndex, setActiveThumbnailIndex] = useState(0);
   const [vehiclesList, setVehiclesList] = useState<VehicleDetail[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Sync state if URL query params change
+  useEffect(() => {
+    if (!searchParams) return;
+    const s = searchParams.get("search");
+    const l = searchParams.get("location");
+    const c = searchParams.get("category");
+    const a = searchParams.get("available");
+    if (s !== null) setSearchQuery(s);
+    if (l !== null) setLocationQuery(l);
+    if (c !== null) setSelectedCategory(c);
+    if (a !== null) setAvailableOnly(a !== "false");
+  }, [searchParams]);
 
   // Fetch live vehicles from backend API
   useEffect(() => {
@@ -421,6 +166,11 @@ export function VehiclesCatalog() {
                   )
                 : [validHero];
 
+            const isAvail =
+              v.isAvailable !== false &&
+              v.status !== "Rented" &&
+              v.status !== "Maintenance";
+
             return {
               id: v.id,
               name: v.name,
@@ -434,6 +184,10 @@ export function VehiclesCatalog() {
                   ? v.category.toLowerCase()
                   : "sedan",
               fuelCapacity: "60 Ltr",
+              location: v.location || "Bandaranaike Int'l Airport (CMB) / Katunayake",
+              isAvailable: isAvail,
+              status: v.status || (isAvail ? "Available" : "Reserved"),
+              rating: v.rating || 4.9,
               specs: {
                 gearBox: v.transmission,
                 fuel: v.fuelType,
@@ -482,21 +236,94 @@ export function VehiclesCatalog() {
     };
   }, [activeModalCar]);
 
-  const filteredVehicles = vehiclesList.filter((v) => {
-    if (selectedCategory === "all") return true;
-    return v.category === selectedCategory;
-  }).sort((a, b) => {
-    if (sortBy === "price-asc") {
-      return a.priceNum - b.priceNum;
-    }
-    if (sortBy === "price-desc") {
-      return b.priceNum - a.priceNum;
-    }
-    if (sortBy === "name-asc") {
-      return a.name.localeCompare(b.name);
-    }
-    return 0; // featured default
-  });
+  const QUICK_LOCATIONS = [
+    { label: "All Sri Lanka", value: "" },
+    { label: "Airport (CMB)", value: "Airport" },
+    { label: "Colombo", value: "Colombo" },
+    { label: "Negombo", value: "Negombo" },
+    { label: "Kandy", value: "Kandy" },
+    { label: "Galle", value: "Galle" },
+    { label: "Ella", value: "Ella" },
+  ];
+
+  const hasActiveFilters =
+    Boolean(searchQuery.trim()) ||
+    Boolean(locationQuery.trim()) ||
+    selectedCategory !== "all" ||
+    !availableOnly;
+
+  const handleClearFilters = () => {
+    setSearchQuery("");
+    setLocationQuery("");
+    setSelectedCategory("all");
+    setAvailableOnly(true);
+    setCurrentPage(1);
+    router.replace("/vehicles", { scroll: false });
+  };
+
+  const filteredVehicles = vehiclesList
+    .filter((v) => {
+      // 1. Availability filter
+      if (availableOnly && !v.isAvailable) {
+        return false;
+      }
+
+      // 2. Category filter
+      if (
+        selectedCategory !== "all" &&
+        v.category.toLowerCase() !== selectedCategory.toLowerCase()
+      ) {
+        return false;
+      }
+
+      // 3. Vehicle Keyword Search (name, brand, category, specs, equipment)
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        const matchName = v.name.toLowerCase().includes(q);
+        const matchBrand = v.brand.toLowerCase().includes(q);
+        const matchCat = v.category.toLowerCase().includes(q);
+        const matchFuel = v.specs.fuel.toLowerCase().includes(q);
+        const matchGear = v.specs.gearBox.toLowerCase().includes(q);
+        const matchEquip = v.equipment.some((eq) =>
+          eq.toLowerCase().includes(q)
+        );
+        if (!matchName && !matchBrand && !matchCat && !matchFuel && !matchGear && !matchEquip) {
+          return false;
+        }
+      }
+
+      // 4. Location Search (city, place, address in Sri Lanka)
+      if (locationQuery.trim()) {
+        const q = locationQuery.toLowerCase().trim();
+        const carLoc = (v.location || "").toLowerCase();
+        
+        const qWords = q.split(/[\s,/-]+/).filter((w) => w.length > 2);
+        const carWords = carLoc.split(/[\s,/-]+/).filter((w) => w.length > 2);
+        
+        const directMatch = carLoc.includes(q) || q.includes(carLoc);
+        const wordMatch =
+          qWords.some((w) => carLoc.includes(w)) ||
+          carWords.some((w) => q.includes(w));
+        
+        if (!directMatch && !wordMatch) {
+          return false;
+        }
+      }
+
+      return true;
+    })
+    .sort((a, b) => {
+      if (sortBy === "price-asc") {
+        return a.priceNum - b.priceNum;
+      }
+      if (sortBy === "price-desc") {
+        return b.priceNum - a.priceNum;
+      }
+      if (sortBy === "name-asc") {
+        return a.name.localeCompare(b.name);
+      }
+      return 0; // featured default
+    });
 
   const handleOpenDetails = (car: VehicleDetail) => {
     setActiveModalCar(car);
@@ -508,7 +335,7 @@ export function VehiclesCatalog() {
   };
 
   const handleBookNow = (car: VehicleDetail) => {
-    const msg = `Hello Tourmate! I would like to book the ${car.name} (${car.category}) at ${car.price} ${car.period}.`;
+    const msg = `Hello Tourmate! I would like to book the ${car.name} (${car.category}) at ${car.price} ${car.period}, pickup at ${car.location || "Sri Lanka"}.`;
     window.open(
       `https://wa.me/94703236834?text=${encodeURIComponent(msg)}`,
       "_blank"
@@ -521,11 +348,125 @@ export function VehiclesCatalog() {
         {/* Section Heading */}
         <div className="text-center mb-8">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-950 dark:text-white tracking-tight mb-3">
-            Select a vehicle group
+            Select an Available Vehicle
           </h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base max-w-xl mx-auto">
-            Explore our diverse rental fleet across Sri Lanka. Choose from premium sedans, rugged SUVs, luxury convertibles, and spacious minivans.
+            Search our verified fleet across Sri Lanka. Filter by vehicle model, pickup city or address, and check real-time availability.
           </p>
+        </div>
+
+        {/* Search & Sri Lanka Location Discovery Console */}
+        <div className="mb-8 p-4 sm:p-5 rounded-[28px] bg-slate-50/90 dark:bg-[#0f0f13] border border-slate-200/90 dark:border-white/10 shadow-lg shadow-slate-200/30 dark:shadow-none">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 items-center">
+            {/* 1. Vehicle Search Input */}
+            <div className="md:col-span-5 relative">
+              <div className="relative flex items-center">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  placeholder="Search vehicle model, brand, or features..."
+                  className="w-full pl-10 pr-9 py-2.5 text-xs font-semibold rounded-2xl bg-white dark:bg-white/5 border border-slate-200/90 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-600/30 focus:border-violet-600 transition-all"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setCurrentPage(1);
+                    }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* 2. Sri Lanka Location/Address Search */}
+            <div className="md:col-span-4">
+              <LocationSearchInput
+                value={locationQuery}
+                onChange={(loc) => {
+                  setLocationQuery(loc);
+                  setCurrentPage(1);
+                }}
+                placeholder="Search city, place, or any address in Sri Lanka..."
+                variant="catalog"
+              />
+            </div>
+
+            {/* 3. Availability Toggle & Clear */}
+            <div className="md:col-span-3 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setAvailableOnly(!availableOnly);
+                  setCurrentPage(1);
+                }}
+                className={`flex-1 py-2.5 px-3.5 rounded-2xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer border ${
+                  availableOnly
+                    ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-700 dark:text-emerald-300 shadow-sm"
+                    : "bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-slate-300"
+                }`}
+              >
+                <span
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    availableOnly ? "bg-emerald-500 animate-pulse" : "bg-slate-400"
+                  }`}
+                />
+                <span className="truncate">
+                  {availableOnly ? "Available Now" : "All Vehicles"}
+                </span>
+                {availableOnly && <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 ml-auto" />}
+              </button>
+
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={handleClearFilters}
+                  title="Clear all search and filters"
+                  className="p-2.5 rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 text-slate-500 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-all flex-shrink-0 cursor-pointer"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Quick Location Chips */}
+          <div className="mt-3 pt-3 border-t border-slate-200/60 dark:border-white/5 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-1 flex-shrink-0 mr-1">
+              <MapPin className="h-3 w-3 text-violet-500" />
+              <span>Sri Lanka Delivery Hubs:</span>
+            </span>
+            {QUICK_LOCATIONS.map((ql) => {
+              const isActive =
+                (!ql.value && !locationQuery) ||
+                (ql.value && locationQuery.toLowerCase().includes(ql.value.toLowerCase()));
+              return (
+                <button
+                  key={ql.label}
+                  type="button"
+                  onClick={() => {
+                    setLocationQuery(ql.value);
+                    setCurrentPage(1);
+                  }}
+                  className={`px-3 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all flex-shrink-0 cursor-pointer ${
+                    isActive
+                      ? "bg-violet-600 text-white shadow-sm shadow-violet-500/20"
+                      : "bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:border-violet-300 hover:text-violet-600 dark:hover:text-white"
+                  }`}
+                >
+                  {ql.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Category Filter Tabs with Mobile Swipe */}
@@ -639,124 +580,176 @@ export function VehiclesCatalog() {
 
         {/* Vehicle Cards Grid (3x3) or Empty State */}
         {!loading && filteredVehicles.length === 0 ? (
-          <div className="text-center py-20 px-4 bg-slate-50 dark:bg-white/5 rounded-[32px] border border-dashed border-slate-200 dark:border-white/10 mb-12">
+          <div className="text-center py-16 px-4 bg-slate-50 dark:bg-white/5 rounded-[32px] border border-dashed border-slate-200 dark:border-white/10 mb-12">
             <div className="h-16 w-16 mx-auto mb-4 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 flex items-center justify-center">
-              <CarPillIcon className="h-8 w-8 text-violet-600 dark:text-violet-400" />
+              <Search className="h-8 w-8 text-violet-600 dark:text-violet-400" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
-              No Vehicles Found
+              No Available Vehicles Found
             </h3>
             <p className="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto mb-6">
-              No vehicles found matching your criteria. Want to list your vehicle on Tourmate? Contact our admin on WhatsApp.
+              {searchQuery || locationQuery ? (
+                <>
+                  No vehicles found matching{" "}
+                  {searchQuery ? (
+                    <span className="font-bold text-slate-800 dark:text-slate-200">
+                      &quot;{searchQuery}&quot;
+                    </span>
+                  ) : (
+                    "your search"
+                  )}
+                  {locationQuery ? (
+                    <>
+                      {" "}in{" "}
+                      <span className="font-bold text-slate-800 dark:text-slate-200">
+                        &quot;{locationQuery}&quot;
+                      </span>
+                    </>
+                  ) : null}
+                  . Try resetting filters to see all available vehicles across Sri Lanka.
+                </>
+              ) : (
+                "No vehicles are currently listed under this category. Check back soon or contact our concierge on WhatsApp."
+              )}
             </p>
-            <a
-              href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-full text-sm shadow-md transition-all active:scale-95"
-            >
-              <span>List a Vehicle via WhatsApp</span>
-            </a>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={handleClearFilters}
+                className="inline-flex items-center gap-2 bg-slate-950 dark:bg-white text-white dark:text-slate-950 font-bold px-6 py-3 rounded-full text-xs sm:text-sm shadow-md transition-all active:scale-95 cursor-pointer"
+              >
+                <RotateCcw className="h-4 w-4" />
+                <span>Reset Filters & View Available</span>
+              </button>
+              <a
+                href={`https://wa.me/94703236834?text=${encodeURIComponent(
+                  `Hello Tourmate! I am looking to rent a vehicle in ${locationQuery || "Sri Lanka"} (${searchQuery || "any model"}). Could you help me with vehicle availability?`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-full text-xs sm:text-sm shadow-md transition-all active:scale-95 cursor-pointer"
+              >
+                <span>Request via WhatsApp</span>
+              </a>
+            </div>
           </div>
         ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredVehicles.map((car, index) => (
-            <ScrollReveal
-              key={car.id}
-              delay={(index % 3) * 100}
-              direction="up"
-              distance={28}
-            >
-              <div className="stripe-card rounded-[30px] p-6 shadow-sm hover:shadow-2xl flex flex-col justify-between group h-full">
-                {/* Silhouette & Top Badge */}
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-500/10 px-2.5 py-0.5 rounded-full">
-                      Instant Booking
-                    </span>
-                    <span className="text-xs text-slate-400 font-bold">
-                      {car.specs.distance}
-                    </span>
-                  </div>
-
-                  {/* Vehicle Mock Photo Container */}
-                  <div className="relative aspect-[16/10] w-full rounded-[24px] overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-100 dark:border-white/10 mb-6 group-hover:shadow-lg transition-all">
-                    <Image
-                      src={car.thumbnails[0]}
-                      alt={car.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
-                    <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-black/60 backdrop-blur-md text-white border border-white/20">
-                      {car.specs.gearBox} • {car.specs.fuel}
-                    </div>
-                  </div>
-
-                  {/* Specs & Info */}
-                  <div className="space-y-4">
-                    {/* Header: Name + Price */}
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="title-hover-glow text-xl font-bold text-slate-900 dark:text-white leading-snug group-hover:text-violet-600 transition-colors">
-                          {car.name}
-                        </h3>
-                        <p className="text-xs text-slate-400 font-medium mt-0.5">
-                          {car.category} • Fully Insured
-                        </p>
-                      </div>
-                      <div className="text-right flex-shrink-0">
-                        <span className="text-lg font-bold text-violet-600 dark:text-violet-400 block leading-tight">
-                          {car.price}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {filteredVehicles.map((car, index) => (
+              <ScrollReveal
+                key={car.id}
+                delay={(index % 3) * 100}
+                direction="up"
+                distance={28}
+              >
+                <div className="stripe-card rounded-[30px] p-6 shadow-sm hover:shadow-2xl flex flex-col justify-between group h-full">
+                  {/* Silhouette & Top Badge */}
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      {/* Availability Status Badge */}
+                      {car.isAvailable ? (
+                        <span className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                          Available Now
                         </span>
-                        <span className="text-xs text-slate-400">{car.period}</span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider text-slate-500 bg-slate-500/10 px-2.5 py-0.5 rounded-full">
+                          {car.status || "Reserved"}
+                        </span>
+                      )}
+
+                      <span className="text-xs text-slate-400 font-bold">
+                        {car.specs.distance}
+                      </span>
+                    </div>
+
+                    {/* Vehicle Photo Container */}
+                    <div className="relative aspect-[16/10] w-full rounded-[24px] overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-100 dark:border-white/10 mb-5 group-hover:shadow-lg transition-all">
+                      <Image
+                        src={car.thumbnails[0]}
+                        alt={car.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
+
+                      {/* Location Badge on Photo */}
+                      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
+                        <div className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-black/70 backdrop-blur-md text-white border border-white/20 truncate flex items-center gap-1">
+                          <MapPin className="h-3 w-3 text-violet-400 flex-shrink-0" />
+                          <span className="truncate">{car.location || "Sri Lanka"}</span>
+                        </div>
+
+                        <div className="px-2 py-1 rounded-full text-[10px] font-bold bg-black/70 backdrop-blur-md text-slate-200 border border-white/20 flex-shrink-0">
+                          {car.specs.gearBox}
+                        </div>
                       </div>
                     </div>
 
-                    {/* 3 Quick Specs Pills */}
-                    <div className="grid grid-cols-3 gap-1.5 py-3 border-t border-slate-100 dark:border-white/10 text-[11px] text-slate-500 dark:text-slate-400">
-                      <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
-                        <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
-                        <span className="truncate">{car.specs.gearBox}</span>
+                    {/* Specs & Info */}
+                    <div className="space-y-3">
+                      {/* Header: Name + Price */}
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h3 className="title-hover-glow text-xl font-bold text-slate-900 dark:text-white leading-snug group-hover:text-violet-600 transition-colors">
+                            {car.name}
+                          </h3>
+                          <p className="text-xs text-slate-400 font-medium mt-0.5">
+                            {car.category} • Fully Insured
+                          </p>
+                        </div>
+                        <div className="text-right flex-shrink-0">
+                          <span className="text-lg font-bold text-violet-600 dark:text-violet-400 block leading-tight">
+                            {car.price}
+                          </span>
+                          <span className="text-xs text-slate-400">{car.period}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
-                        <Fuel className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
-                        <span className="truncate">{car.fuelCapacity}</span>
-                      </div>
-                      <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
-                        <Snowflake className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
-                        <span className="truncate">AC</span>
+
+                      {/* 3 Quick Specs Pills */}
+                      <div className="grid grid-cols-3 gap-1.5 py-2.5 border-t border-slate-100 dark:border-white/10 text-[11px] text-slate-500 dark:text-slate-400">
+                        <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
+                          <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+                          <span className="truncate">{car.specs.gearBox}</span>
+                        </div>
+                        <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
+                          <Fuel className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+                          <span className="truncate">{car.fuelCapacity}</span>
+                        </div>
+                        <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
+                          <Snowflake className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+                          <span className="truncate">AC</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Action Buttons: Specifications & Book Now */}
-                <div className="pt-4 grid grid-cols-2 gap-2">
-                  <button
-                    onClick={() => handleOpenDetails(car)}
-                    className="w-full py-3 rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-xs transition-colors text-center cursor-pointer"
-                  >
-                    Specifications
-                  </button>
-                  <button
-                    onClick={() => handleBookNow(car)}
-                    className="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs py-3 rounded-[30px] shadow-sm shadow-violet-500/20 hover:shadow-md transition-all active:scale-95 text-center flex items-center justify-center cursor-pointer"
-                  >
-                    <span>Book Now</span>
-                  </button>
+                  {/* Action Buttons: Specifications & Book Now */}
+                  <div className="pt-4 grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => handleOpenDetails(car)}
+                      className="w-full py-3 rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-xs transition-colors text-center cursor-pointer"
+                    >
+                      Specifications
+                    </button>
+                    <button
+                      onClick={() => handleBookNow(car)}
+                      className="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs py-3 rounded-[30px] shadow-sm shadow-violet-500/20 hover:shadow-md transition-all active:scale-95 text-center flex items-center justify-center cursor-pointer"
+                    >
+                      <span>Book Now</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-      )}
+              </ScrollReveal>
+            ))}
+          </div>
+        )}
 
         {/* Pagination only if vehicles exist */}
         {!loading && filteredVehicles.length > 0 && (
           <div className="mt-14 flex items-center justify-center gap-3 sm:gap-4">
-            {[1, 2, 3, 4, 5, 6].map((page) => {
+            {[1].map((page) => {
               const isCurrent = currentPage === page;
               return (
                 <button
@@ -794,16 +787,31 @@ export function VehiclesCatalog() {
           <div className="relative w-full max-w-5xl bg-white dark:bg-[#0b0b0e] rounded-[30px] shadow-2xl border border-slate-100/80 dark:border-white/10 my-auto z-10 max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 ease-out animate-in zoom-in-95 fade-in slide-in-from-bottom-6">
             {/* Modal Header Bar */}
             <div className="flex items-center justify-between px-6 sm:px-10 py-5 sm:py-6 border-b border-slate-100 dark:border-white/10 bg-white/95 dark:bg-[#0b0b0e]/95 backdrop-blur-sm sticky top-0 z-30 flex-shrink-0">
-              <div className="flex items-baseline gap-3">
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
-                  {activeModalCar.name}
-                </h2>
-                <span className="text-xl sm:text-2xl font-bold text-violet-600 dark:text-violet-400">
-                  {activeModalCar.price}
-                  <span className="text-xs sm:text-sm font-medium text-slate-400 ml-1">
-                    {activeModalCar.period}
+              <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
+                    {activeModalCar.name}
+                  </h2>
+                  {activeModalCar.isAvailable && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                      Available
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xl sm:text-2xl font-bold text-violet-600 dark:text-violet-400">
+                    {activeModalCar.price}
+                    <span className="text-xs sm:text-sm font-medium text-slate-400 ml-1">
+                      {activeModalCar.period}
+                    </span>
                   </span>
-                </span>
+                  {activeModalCar.location && (
+                    <span className="text-xs text-slate-400 flex items-center gap-1 ml-2">
+                      <MapPin className="h-3 w-3 text-violet-500" />
+                      {activeModalCar.location}
+                    </span>
+                  )}
+                </div>
               </div>
 
               {/* Close Button */}
@@ -991,7 +999,7 @@ export function VehiclesCatalog() {
               <div className="pt-6 border-t border-slate-100 dark:border-white/10">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="text-lg font-bold text-slate-900 dark:text-white">
-                    Other popular options
+                    Other available vehicles
                   </h4>
                   <span className="text-xs text-slate-400">
                     Click any car to view details
@@ -999,7 +1007,8 @@ export function VehiclesCatalog() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {ALL_VEHICLES.filter((v) => v.id !== activeModalCar.id)
+                  {vehiclesList
+                    .filter((v) => v.id !== activeModalCar.id)
                     .slice(0, 4)
                     .map((other) => (
                       <button
@@ -1010,9 +1019,18 @@ export function VehiclesCatalog() {
                         }}
                         className="text-left p-4 rounded-[24px] bg-slate-50/90 dark:bg-[#15151a] hover:bg-white dark:hover:bg-[#1c1c24] border border-slate-100 dark:border-white/10 hover:border-violet-200 dark:hover:border-violet-500/30 hover:shadow-lg transition-all duration-200 flex flex-col justify-between group cursor-pointer"
                       >
-                        {/* Mini Silhouette Image */}
-                        <div className="relative aspect-[16/10] w-full rounded-xl bg-white dark:bg-black/40 border border-slate-100 dark:border-white/5 mb-3 flex items-center justify-center overflow-hidden p-2">
-                          <VehicleVectorGraphic type={other.type} />
+                        {/* Mini Image Preview */}
+                        <div className="relative aspect-[16/10] w-full rounded-xl bg-white dark:bg-black/40 border border-slate-100 dark:border-white/5 mb-3 flex items-center justify-center overflow-hidden">
+                          {other.thumbnails[0] ? (
+                            <Image
+                              src={other.thumbnails[0]}
+                              alt={other.name}
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          ) : (
+                            <VehicleVectorGraphic type={other.type} />
+                          )}
                         </div>
 
                         <div>

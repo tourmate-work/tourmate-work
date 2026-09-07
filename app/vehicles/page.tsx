@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { VehiclesCatalog } from "@/components/vehicles/vehicles-catalog";
@@ -14,7 +15,15 @@ export default function VehiclesPage() {
     <div className="min-h-screen flex flex-col bg-white dark:bg-black text-slate-900 dark:text-white font-sans selection:bg-violet-600 selection:text-white transition-colors duration-300">
       <Header />
       <main className="flex-1 py-4">
-        <VehiclesCatalog />
+        <Suspense
+          fallback={
+            <div className="max-w-7xl mx-auto px-4 py-20 text-center text-xs font-bold text-slate-400">
+              Loading available vehicles...
+            </div>
+          }
+        >
+          <VehiclesCatalog />
+        </Suspense>
       </main>
       <Footer />
     </div>

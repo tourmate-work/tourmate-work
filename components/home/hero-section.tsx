@@ -2,50 +2,47 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { CustomDatePicker } from "@/components/ui/custom-datepicker";
-import { ShieldCheck, Sparkles, MessageCircle, UserCheck, KeyRound } from "lucide-react";
+import { LocationSearchInput } from "@/components/ui/location-search-input";
+import { ShieldCheck, Sparkles, MessageCircle, UserCheck, KeyRound, Search } from "lucide-react";
 
 const CAR_TYPE_OPTIONS = [
+  { value: "All", label: "All Vehicle Categories" },
   { value: "Sedan", label: "Sedan (Axio, Premio, Allion)" },
-  { value: "SUV", label: "SUV (Vezel, RAV4, CR-V)" },
+  { value: "SUV", label: "SUV (Vezel, RAV4, CR-V, Prado)" },
   { value: "Luxury", label: "Luxury (Mercedes, BMW, Audi)" },
   { value: "Van", label: "Van (KDH Super GL, Caravan)" },
   { value: "Hatchback", label: "Hatchback (WagonR, Aqua, Vitz)" },
   { value: "Electric", label: "Electric / Hybrid" },
 ];
 
-const PICKUP_OPTIONS = [
-  { value: "Bandaranaike Airport (CMB)", label: "CMB Airport (Free Handover)" },
-  { value: "Colombo City / Fort", label: "Colombo City / Fort" },
-  { value: "Wennapuwa / Negombo Beach", label: "Wennapuwa / Negombo Beach" },
-  { value: "Kandy City", label: "Kandy City" },
-  { value: "Galle / Mirissa / South", label: "Galle / Mirissa / South" },
-  { value: "Ella / Hill Country", label: "Ella / Hill Country" },
-  { value: "Sigiriya / Dambulla", label: "Sigiriya / Dambulla" },
-];
-
-const RETURN_OPTIONS = [
-  { value: "Same as pickup", label: "Return: Same as pickup" },
-  { value: "Bandaranaike Airport (CMB)", label: "Return: CMB Airport" },
-  { value: "Colombo City / Fort", label: "Return: Colombo City / Fort" },
-  { value: "Wennapuwa / Negombo Beach", label: "Return: Wennapuwa / Negombo" },
-  { value: "Kandy City", label: "Return: Kandy City" },
-  { value: "Galle / South Coast", label: "Return: Galle / South Coast" },
-];
-
 export function HeroSection() {
+  const router = useRouter();
   const [rentalMode, setRentalMode] = useState<"self" | "driver">("self");
-  const [carType, setCarType] = useState("Sedan");
-  const [pickupPlace, setPickupPlace] = useState("Bandaranaike Airport (CMB)");
-  const [returnPlace, setReturnPlace] = useState("Same as pickup");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [carType, setCarType] = useState("All");
+  const [pickupPlace, setPickupPlace] = useState("Bandaranaike Int'l Airport (CMB) / Katunayake");
   const [rentalDate, setRentalDate] = useState("2026-09-01");
   const [returnDate, setReturnDate] = useState("2026-09-07");
 
-  const handleBookNow = (e: React.FormEvent) => {
+  const handleSearchVehicles = (e: React.FormEvent) => {
     e.preventDefault();
+    const params = new URLSearchParams();
+    if (searchQuery.trim()) params.set("search", searchQuery.trim());
+    if (pickupPlace.trim()) params.set("location", pickupPlace.trim());
+    if (carType && carType !== "All") params.set("category", carType);
+    params.set("available", "true");
+    if (rentalMode) params.set("mode", rentalMode);
+    router.push(`/vehicles?${params.toString()}`);
+  };
+
+  const handleWhatsAppBooking = () => {
     const modeText = rentalMode === "self" ? "Self-Drive" : "With Driver";
-    const message = `Hello Tourmate! I would like to reserve a ${modeText} ${carType} from ${pickupPlace} (${rentalDate}) to ${returnPlace} (${returnDate}).`;
+    const vehicleText = searchQuery.trim() ? searchQuery.trim() : carType !== "All" ? carType : "Rental Vehicle";
+    const locText = pickupPlace.trim() || "Sri Lanka";
+    const message = `Hello Tourmate! I would like to check available ${modeText} vehicles (${vehicleText}) for delivery in ${locText} from ${rentalDate} to ${returnDate}.`;
     window.open(`https://wa.me/94703236834?text=${encodeURIComponent(message)}`, "_blank");
   };
 
@@ -155,14 +152,42 @@ export function HeroSection() {
               </div>
 
               <h2 className="text-lg font-extrabold text-slate-900 mb-4 flex items-center justify-between">
-                <span>Reserve Your Vehicle</span>
+                <span>Find & Reserve Vehicles</span>
                 <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
-                  Instant Confirmation
+                  Live Availability
                 </span>
               </h2>
 
-              <form onSubmit={handleBookNow} className="space-y-3">
-                {/* Custom Car Type Dropdown */}
+              <form onSubmit={handleSearchVehicles} className="space-y-3">
+                {/* Search Vehicle by Name / Model */}
+                <div>
+                  <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
+                    Search Vehicle / Model
+                  </label>
+                  <div className="relative flex items-center">
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="e.g. Premio, Axio, Vezel, Prado, Sedan..."
+                      className="w-full pl-10 pr-4 py-2.5 text-xs font-semibold rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-violet-600/30 focus:border-violet-600 transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Sri Lanka City / Place / Address Search */}
+                <div>
+                  <LocationSearchInput
+                    value={pickupPlace}
+                    onChange={setPickupPlace}
+                    label="City, Place, or Address in Sri Lanka"
+                    placeholder="Search any city, airport, or hotel address..."
+                    variant="light"
+                  />
+                </div>
+
+                {/* Vehicle Category Dropdown */}
                 <div>
                   <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
                     Vehicle Category
@@ -173,34 +198,6 @@ export function HeroSection() {
                     onChange={setCarType}
                     variant="light"
                     position="bottom"
-                  />
-                </div>
-
-                {/* Custom Place of Rental Dropdown */}
-                <div>
-                  <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
-                    Pickup Location
-                  </label>
-                  <CustomDropdown
-                    options={PICKUP_OPTIONS}
-                    value={pickupPlace}
-                    onChange={setPickupPlace}
-                    variant="light"
-                    position="bottom"
-                  />
-                </div>
-
-                {/* Custom Place of Return Dropdown */}
-                <div>
-                  <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
-                    Return Location
-                  </label>
-                  <CustomDropdown
-                    options={RETURN_OPTIONS}
-                    value={returnPlace}
-                    onChange={setReturnPlace}
-                    variant="light"
-                    position="auto"
                   />
                 </div>
 
@@ -232,13 +229,23 @@ export function HeroSection() {
                   </div>
                 </div>
 
-                {/* CTA Yellow Button with WhatsApp */}
+                {/* Primary CTA: Search Available Vehicles */}
                 <button
                   type="submit"
-                  className="w-full bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-extrabold text-sm py-3.5 rounded-[30px] shadow-lg shadow-amber-500/20 hover:shadow-xl transition-all duration-200 transform active:scale-[0.98] mt-3 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-extrabold text-sm py-3.5 rounded-[30px] shadow-lg shadow-amber-500/20 hover:shadow-xl transition-all duration-200 transform active:scale-[0.98] mt-2 flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <MessageCircle className="h-4 w-4" />
-                  <span>Reserve via WhatsApp</span>
+                  <Search className="h-4 w-4" />
+                  <span>Search Available Vehicles</span>
+                </button>
+
+                {/* Secondary Option: Direct WhatsApp Concierge */}
+                <button
+                  type="button"
+                  onClick={handleWhatsAppBooking}
+                  className="w-full py-2 text-xs font-bold text-slate-500 hover:text-emerald-700 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <MessageCircle className="h-3.5 w-3.5 text-emerald-600" />
+                  <span>Need direct help? Contact on WhatsApp</span>
                 </button>
               </form>
             </div>
