@@ -204,7 +204,7 @@ export function CustomDatePicker({
       {/* Calendar Dropdown Popover */}
       {isOpen && (
         <div
-          className={`absolute left-0 right-0 z-50 bg-white rounded-[24px] shadow-2xl border border-slate-100 p-4 w-full sm:min-w-[280px] max-w-[320px] animate-in fade-in-0 zoom-in-95 duration-150 ${
+          className={`absolute left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-0 z-50 bg-white rounded-[24px] shadow-2xl border border-slate-100 p-3 sm:p-4 w-[calc(100vw-3rem)] sm:w-full sm:min-w-[280px] max-w-[300px] animate-in fade-in-0 zoom-in-95 duration-150 ${
             effectivePosition === "top" ? "bottom-full mb-2" : "top-full mt-2"
           }`}
         >

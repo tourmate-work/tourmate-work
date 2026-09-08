@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Car, LayoutDashboard, MessageCircle } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/language-context";
 
 export function MobileBottomBar() {
   const pathname = usePathname();
+  const { language } = useLanguage();
 
   const isHome = pathname === "/";
   const isVehicles = pathname.startsWith("/vehicles");
@@ -31,7 +33,7 @@ export function MobileBottomBar() {
               <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-violet-600 dark:bg-violet-400" />
             )}
           </div>
-          <span className="text-[10px] tracking-tight">Home</span>
+          <span className="text-[10px] tracking-tight">{language === "si" ? "මුල් පිටුව" : "Home"}</span>
         </Link>
 
         {/* Vehicles */}
@@ -49,7 +51,7 @@ export function MobileBottomBar() {
               <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-violet-600 dark:bg-violet-400" />
             )}
           </div>
-          <span className="text-[10px] tracking-tight">Vehicles</span>
+          <span className="text-[10px] tracking-tight">{language === "si" ? "වාහන" : "Vehicles"}</span>
         </Link>
 
         {/* List Vehicle WhatsApp CTA */}
@@ -62,7 +64,7 @@ export function MobileBottomBar() {
           <div className="relative">
             <LayoutDashboard className="h-5 w-5 stroke-2" />
           </div>
-          <span className="text-[10px] font-semibold tracking-tight">List Car</span>
+          <span className="text-[10px] font-semibold tracking-tight">{language === "si" ? "ලියාපදිංචි" : "List Car"}</span>
         </a>
 
         {/* Direct WhatsApp CTA */}
@@ -76,7 +78,7 @@ export function MobileBottomBar() {
             <MessageCircle className="h-5 w-5 stroke-[2.2]" />
             <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-black animate-pulse" />
           </div>
-          <span className="text-[10px] font-bold tracking-tight">Chat</span>
+          <span className="text-[10px] font-bold tracking-tight">{language === "si" ? "සහය" : "Chat"}</span>
         </a>
       </div>
     </nav>

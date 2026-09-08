@@ -25,25 +25,25 @@ export function VehicleOwnerSection() {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-      <div className="relative rounded-[36px] bg-gradient-to-br from-slate-950 via-slate-900 to-violet-950 text-white p-8 sm:p-12 lg:p-16 shadow-2xl overflow-hidden border border-white/10">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+      <div className="relative rounded-[28px] sm:rounded-[36px] bg-gradient-to-br from-slate-950 via-slate-900 to-violet-950 text-white p-5 sm:p-10 lg:p-16 shadow-2xl overflow-hidden border border-white/10">
         {/* Subtle background glow */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-600/15 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           {/* Left Column: Heading, Explanation & CTA */}
-          <div className="lg:col-span-7 space-y-6 text-left">
+          <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
             <div className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3.5 py-1 rounded-full text-xs font-bold">
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>{t("owner_badge")}</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.12] text-white">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.15] text-white">
               {t("owner_heading")}
             </h2>
 
-            <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal max-w-xl">
+            <p className="text-sm sm:text-lg text-slate-300 leading-relaxed font-normal max-w-xl">
               {t("owner_text")}
             </p>
 
@@ -52,7 +52,7 @@ export function VehicleOwnerSection() {
                 href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm sm:text-base px-8 py-4 rounded-full shadow-xl shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
+                className="inline-flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm sm:text-base w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-full shadow-xl shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
               >
                 <MessageCircle className="h-5 w-5 fill-white stroke-none" />
                 <span>{t("owner_btn_list")}</span>

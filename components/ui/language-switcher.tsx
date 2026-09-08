@@ -66,7 +66,7 @@ export function LanguageSwitcher({ variant = "header" }: LanguageSwitcherProps) 
         type="button"
         onClick={() => setLanguage("en")}
         title="Switch to English"
-        className={`px-2.5 py-1 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer active:scale-95 ${
+        className={`px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all duration-200 cursor-pointer active:scale-95 ${
           language === "en"
             ? "bg-white dark:bg-white/15 text-slate-950 dark:text-white shadow-xs"
             : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
@@ -79,7 +79,7 @@ export function LanguageSwitcher({ variant = "header" }: LanguageSwitcherProps) 
         type="button"
         onClick={() => setLanguage("si")}
         title="සිංහල භාෂාවට මාරු වන්න"
-        className={`px-2.5 py-1 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer active:scale-95 ${
+        className={`px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all duration-200 cursor-pointer active:scale-95 ${
           language === "si"
             ? "bg-violet-600 text-white shadow-xs"
             : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"

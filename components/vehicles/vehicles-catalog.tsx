@@ -558,12 +558,12 @@ export function VehiclesCatalog() {
           </div>
 
           {/* Results Count & Dropdown */}
-          <div className="flex items-center justify-between md:justify-end gap-3 flex-shrink-0">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between md:justify-end gap-2.5 sm:gap-3 flex-shrink-0">
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
               Showing <span className="font-extrabold text-slate-900 dark:text-white">{filteredVehicles.length}</span> vehicles
             </span>
 
-            <div className="w-48 sm:w-56">
+            <div className="w-full sm:w-56">
               <CustomDropdown
                 options={[
                   { value: "featured", label: "Featured Showcase", icon: <Sparkles className="h-3.5 w-3.5 text-violet-500" /> },
@@ -805,10 +805,10 @@ export function VehiclesCatalog() {
           {/* Modal Container: cleanly rounded to 30px and overflow-hidden */}
           <div className="relative w-full max-w-5xl bg-white dark:bg-[#0b0b0e] rounded-[30px] shadow-2xl border border-slate-100/80 dark:border-white/10 my-auto z-10 max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 ease-out animate-in zoom-in-95 fade-in slide-in-from-bottom-6">
             {/* Modal Header Bar */}
-            <div className="flex items-center justify-between px-6 sm:px-10 py-5 sm:py-6 border-b border-slate-100 dark:border-white/10 bg-white/95 dark:bg-[#0b0b0e]/95 backdrop-blur-sm sticky top-0 z-30 flex-shrink-0">
+            <div className="flex items-center justify-between px-4 sm:px-10 py-4 sm:py-6 border-b border-slate-100 dark:border-white/10 bg-white/95 dark:bg-[#0b0b0e]/95 backdrop-blur-sm sticky top-0 z-30 flex-shrink-0">
               <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
+                  <h2 className="text-xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
                     {activeModalCar.name}
                   </h2>
                   {activeModalCar.isAvailable && (
@@ -818,7 +818,7 @@ export function VehiclesCatalog() {
                   )}
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xl sm:text-2xl font-bold text-violet-600 dark:text-violet-400">
+                  <span className="text-lg sm:text-2xl font-bold text-violet-600 dark:text-violet-400">
                     {activeModalCar.price}
                     <span className="text-xs sm:text-sm font-medium text-slate-400 ml-1">
                       {activeModalCar.period}
@@ -839,20 +839,20 @@ export function VehiclesCatalog() {
               <button
                 onClick={handleCloseModal}
                 aria-label="Close vehicle details"
-                className="h-10 w-10 sm:h-11 sm:w-11 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 flex items-center justify-center transition-all duration-200 hover:rotate-90 shadow-sm cursor-pointer"
+                className="h-9 w-9 sm:h-11 sm:w-11 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 flex items-center justify-center transition-all duration-200 hover:rotate-90 shadow-sm cursor-pointer flex-shrink-0"
               >
-                <X className="h-5 w-5 sm:h-6 sm:w-6" />
+                <X className="h-4 w-4 sm:h-6 sm:w-6" />
               </button>
             </div>
 
             {/* Scrollable Content inside Rounded Box */}
-            <div className="overflow-y-auto px-6 sm:px-10 py-6 space-y-8 flex-1">
+            <div className="overflow-y-auto px-4 sm:px-10 py-4 sm:py-6 space-y-6 sm:space-y-8 flex-1">
               {/* Main 2-Column Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
                 {/* Left Column: Silhouette Graphic & Gallery Thumbnails */}
-                <div className="lg:col-span-6 space-y-5">
+                <div className="lg:col-span-6 space-y-4 sm:space-y-5">
                   {/* Main Selected Hero Photo */}
-                  <div className="relative aspect-[16/10] w-full rounded-[30px] overflow-hidden border border-slate-100/90 dark:border-white/5 shadow-inner">
+                  <div className="relative aspect-[16/10] w-full rounded-[24px] sm:rounded-[30px] overflow-hidden border border-slate-100/90 dark:border-white/5 shadow-inner">
                     <Image
                       src={activeModalCar.thumbnails[activeThumbnailIndex] || activeModalCar.thumbnails[0]}
                       alt={activeModalCar.name}
@@ -863,12 +863,12 @@ export function VehiclesCatalog() {
                   </div>
 
                   {/* 3 Thumbnail Gallery Previews */}
-                  <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="flex items-center gap-2.5 sm:gap-4 overflow-x-auto no-scrollbar py-1">
                     {activeModalCar.thumbnails.map((thumb, idx) => (
                       <button
                         key={idx}
                         onClick={() => setActiveThumbnailIndex(idx)}
-                        className={`relative h-20 w-24 sm:h-24 sm:w-28 rounded-[20px] overflow-hidden border-2 transition-all ${
+                        className={`relative h-18 w-22 sm:h-24 sm:w-28 rounded-[16px] sm:rounded-[20px] overflow-hidden border-2 transition-all flex-shrink-0 ${
                           activeThumbnailIndex === idx
                             ? "border-violet-600 ring-2 ring-violet-600/30 scale-105 shadow-md"
                             : "border-slate-200 dark:border-white/10 opacity-70 hover:opacity-100"
@@ -886,15 +886,15 @@ export function VehiclesCatalog() {
                 </div>
 
                 {/* Right Column: Technical Specification & Equipment */}
-                <div className="lg:col-span-6 space-y-7">
+                <div className="lg:col-span-6 space-y-6 sm:space-y-7">
                   {/* Technical Specification Heading */}
                   <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-4">
+                    <h3 className="text-base sm:text-xl font-bold text-slate-900 dark:text-white mb-3 sm:mb-4">
                       Technical Specification
                     </h3>
 
                     {/* 2x3 Spec Cards Grid */}
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
                       {/* 1. Gear Box */}
                       <div className="bg-slate-50 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1a1a22] rounded-[20px] p-3.5 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
                         <div className="text-slate-800 dark:text-slate-200 mb-2">

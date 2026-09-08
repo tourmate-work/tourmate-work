@@ -20,7 +20,7 @@ export function FloatingWhatsAppButton({
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(defaultMessage)}`;
 
   return (
-    <div className="fixed bottom-20 md:bottom-7 right-5 md:right-7 z-50 flex items-center gap-3">
+    <div className="hidden md:flex fixed bottom-7 right-7 z-50 items-center gap-3">
       {/* Tooltip / Prompt bubble */}
       <div
         className={`hidden sm:flex items-center gap-2 bg-white dark:bg-[#121217] text-slate-900 dark:text-white px-3.5 py-2 rounded-2xl shadow-xl border border-slate-200/90 dark:border-white/10 text-xs font-bold transition-all duration-300 ${

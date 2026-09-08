@@ -355,21 +355,21 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full stripe-glass border-b border-slate-200/80 dark:border-white/10 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
         {/* Logo & Portal Badge */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           <Link href={isAdmin ? "/admin" : "/"} className="flex items-center gap-2 group py-1">
             <Image
               src="/images/logo-transparent.png"
               alt="Tourmate Rentals"
               width={160}
               height={52}
-              className="h-10 sm:h-11 w-auto object-contain group-hover:scale-105 transition-transform duration-200 dark:brightness-110"
+              className="h-8 sm:h-11 w-auto object-contain group-hover:scale-105 transition-transform duration-200 dark:brightness-110"
               priority
             />
           </Link>
           {isAdmin && (
-            <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider bg-violet-500/20 text-violet-700 dark:text-violet-300 border border-violet-500/40 px-2.5 py-0.5 rounded-full">
+            <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider bg-violet-500/20 text-violet-700 dark:text-violet-300 border border-violet-500/40 px-2 sm:px-2.5 py-0.5 rounded-full">
               Admin Portal
             </span>
           )}
@@ -543,7 +543,7 @@ export function Header() {
         </nav>
 
         {/* Right Actions: Language Switcher + Portal Switcher + Theme Toggle + Phone + Mobile Hamburger */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1 sm:gap-2.5">
           {/* Language Switcher */}
           <LanguageSwitcher />
 
@@ -552,7 +552,7 @@ export function Header() {
           {isAdmin ? (
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-[#16161a] dark:hover:bg-[#202026] text-slate-900 dark:text-white border border-slate-200 dark:border-white/15 px-3 sm:px-4 py-2 rounded-full text-xs font-bold transition-all shadow-sm group active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-1 bg-slate-100 hover:bg-slate-200 dark:bg-[#16161a] dark:hover:bg-[#202026] text-slate-900 dark:text-white border border-slate-200 dark:border-white/15 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-bold transition-all shadow-sm group active:scale-95 cursor-pointer"
             >
               <ArrowLeft className="h-3.5 w-3.5 text-slate-500 group-hover:-translate-x-0.5 transition-transform" />
               <span className="hidden sm:inline">{t("nav_public_site")}</span>
@@ -563,7 +563,7 @@ export function Header() {
               href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold transition-all shadow-sm shadow-emerald-500/25 active:scale-95 group cursor-pointer"
+              className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-bold transition-all shadow-sm shadow-emerald-500/25 active:scale-95 group cursor-pointer"
             >
               <MessageCircle className="h-3.5 w-3.5 opacity-90 group-hover:scale-110 transition-transform" />
               <span className="hidden sm:inline">{t("nav_list_vehicle")}</span>
@@ -597,17 +597,17 @@ export function Header() {
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            className="md:hidden h-10 w-10 rounded-full bg-slate-100 dark:bg-[#16161a] border border-slate-200 dark:border-white/15 text-slate-700 dark:text-slate-300 flex items-center justify-center transition-transform active:scale-90"
+            className="md:hidden h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-slate-100 dark:bg-[#16161a] border border-slate-200 dark:border-white/15 text-slate-700 dark:text-slate-300 flex items-center justify-center transition-transform active:scale-90 flex-shrink-0"
           >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileMenuOpen ? <X className="h-4 w-4 sm:h-5 sm:w-5" /> : <Menu className="h-4 w-4 sm:h-5 sm:w-5" />}
           </button>
         </div>
       </div>
 
       {/* Mobile Animated Slide-down Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-x-0 top-20 bottom-0 z-50 bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-[#0b0b0e] border-b border-slate-200 dark:border-white/10 p-5 shadow-2xl rounded-b-[30px] space-y-5 animate-in slide-in-from-top-4 duration-300 max-h-[85vh] overflow-y-auto">
+        <div className="md:hidden fixed inset-x-0 top-16 sm:top-20 bottom-0 z-50 bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-[#0b0b0e] border-b border-slate-200 dark:border-white/10 p-4 sm:p-5 shadow-2xl rounded-b-[30px] space-y-4 sm:space-y-5 animate-in slide-in-from-top-4 duration-300 max-h-[calc(100vh-4rem)] sm:max-h-[85vh] overflow-y-auto overscroll-contain">
             {/* Mobile Language Switcher */}
             <LanguageSwitcher variant="mobile" />
 

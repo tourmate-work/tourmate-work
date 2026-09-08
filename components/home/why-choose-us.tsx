@@ -30,11 +30,11 @@ export function WhyChooseUs() {
   ];
 
   return (
-    <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         {/* Left Image of Fleet */}
         <div className="lg:col-span-6 relative">
-          <div className="relative aspect-square sm:aspect-[4/3] lg:aspect-square w-full rounded-[30px] overflow-hidden shadow-2xl border border-slate-100 dark:border-white/10">
+          <div className="relative aspect-square sm:aspect-[4/3] lg:aspect-square w-full rounded-[28px] sm:rounded-[30px] overflow-hidden shadow-2xl border border-slate-100 dark:border-white/10">
             <Image
               src="/images/car-fleet.jpg"
               alt="Tourmate luxury and commercial rental vehicle fleet in Sri Lanka"
@@ -44,7 +44,7 @@ export function WhyChooseUs() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             
             {/* Overlay Guarantee Badge */}
-            <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-white/90 dark:bg-[#0b0b0e]/90 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-lg">
+            <div className="absolute bottom-3 left-3 right-3 sm:bottom-6 sm:left-6 sm:right-6 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/90 dark:bg-[#0b0b0e]/90 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-lg">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
                   <CheckCircle2 className="h-5 w-5" />

@@ -541,12 +541,12 @@ function DetailsContentInner() {
             </div>
 
             {/* 3 Thumbnail Gallery Previews */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-4 overflow-x-auto pb-2 no-scrollbar">
               {selectedVehicle.thumbnails.map((thumb, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveThumbnailIndex(idx)}
-                  className={`relative h-20 w-24 sm:h-24 sm:w-28 rounded-[20px] overflow-hidden border-2 transition-all cursor-pointer ${
+                  className={`relative h-20 w-24 sm:h-24 sm:w-28 flex-shrink-0 rounded-[20px] overflow-hidden border-2 transition-all cursor-pointer ${
                     activeThumbnailIndex === idx
                       ? "border-violet-600 ring-2 ring-violet-600/30 scale-105 shadow-md"
                       : "border-slate-200 dark:border-white/10 opacity-70 hover:opacity-100"
@@ -572,9 +572,9 @@ function DetailsContentInner() {
               </h2>
 
               {/* 2x3 Spec Cards Grid */}
-              <div className="grid grid-cols-3 gap-3.5 sm:gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
                 {/* 1. Gear Box */}
-                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[20px] p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[18px] sm:rounded-[20px] p-3.5 sm:p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
                   <div className="text-slate-800 dark:text-slate-200 mb-2">
                     <SlidersHorizontal className="h-5 w-5" />
                   </div>
@@ -589,7 +589,7 @@ function DetailsContentInner() {
                 </div>
 
                 {/* 2. Fuel */}
-                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[20px] p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[18px] sm:rounded-[20px] p-3.5 sm:p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
                   <div className="text-slate-800 dark:text-slate-200 mb-2">
                     <Fuel className="h-5 w-5" />
                   </div>
@@ -604,7 +604,7 @@ function DetailsContentInner() {
                 </div>
 
                 {/* 3. Doors */}
-                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[20px] p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[18px] sm:rounded-[20px] p-3.5 sm:p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
                   <div className="text-slate-800 dark:text-slate-200 mb-2">
                     <DoorOpen className="h-5 w-5" />
                   </div>
@@ -619,7 +619,7 @@ function DetailsContentInner() {
                 </div>
 
                 {/* 4. Air Conditioner */}
-                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[20px] p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[18px] sm:rounded-[20px] p-3.5 sm:p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
                   <div className="text-slate-800 dark:text-slate-200 mb-2">
                     <Snowflake className="h-5 w-5" />
                   </div>
@@ -634,7 +634,7 @@ function DetailsContentInner() {
                 </div>
 
                 {/* 5. Seats */}
-                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[20px] p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[18px] sm:rounded-[20px] p-3.5 sm:p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
                   <div className="text-slate-800 dark:text-slate-200 mb-2">
                     <Users className="h-5 w-5" />
                   </div>
@@ -649,7 +649,7 @@ function DetailsContentInner() {
                 </div>
 
                 {/* 6. Distance */}
-                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[20px] p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
+                <div className="bg-slate-50/90 dark:bg-[#15151a] hover:bg-slate-100/80 dark:hover:bg-[#1c1c24] rounded-[18px] sm:rounded-[20px] p-3.5 sm:p-4 border border-slate-100 dark:border-white/5 transition-all flex flex-col justify-between">
                   <div className="text-slate-800 dark:text-slate-200 mb-2">
                     <Gauge className="h-5 w-5" />
                   </div>
@@ -688,10 +688,10 @@ function DetailsContentInner() {
             </div>
 
             {/* Main Action Buttons: Request to Book + Direct WhatsApp */}
-            <div className="flex flex-col sm:flex-row items-center gap-3">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <button
                 onClick={() => setIsBookingModalOpen(true)}
-                className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-black text-sm sm:text-base py-4 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:flex-1 bg-violet-600 hover:bg-violet-700 text-white font-black text-sm sm:text-base py-3.5 sm:py-4 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer min-h-[48px]"
               >
                 <MessageCircle className="h-5 w-5" />
                 <span>{t("details_btn_request")}</span>
@@ -700,7 +700,7 @@ function DetailsContentInner() {
               <button
                 type="button"
                 onClick={handleBookNow}
-                className="w-full sm:w-auto px-6 py-4 rounded-full border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3.5 sm:py-4 rounded-full border border-slate-200 dark:border-white/10 text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors flex items-center justify-center gap-1.5 cursor-pointer min-h-[48px]"
               >
                 <span>{t("details_btn_whatsapp")}</span>
               </button>
@@ -711,7 +711,7 @@ function DetailsContentInner() {
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">
                 {t("details_equipment_title")}
               </h3>
-              <div className="grid grid-cols-2 gap-y-3.5 gap-x-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 sm:gap-y-3.5 gap-x-4 sm:gap-x-6">
                 {selectedVehicle.equipment.map((item, idx) => (
                   <div key={idx} className="flex items-center gap-2.5">
                     <CheckCircle2 className="h-4 w-4 text-violet-600 dark:text-violet-400 fill-violet-100 dark:fill-violet-900/30 flex-shrink-0" />
@@ -750,7 +750,7 @@ function DetailsContentInner() {
                 direction="up"
                 distance={28}
               >
-                <div className="card-hover-lift bg-[#f8fafc] dark:bg-[#111116] hover:bg-white dark:hover:bg-[#16161d] rounded-[30px] p-6 border border-slate-100/90 dark:border-white/10 shadow-sm hover:border-slate-200 dark:hover:border-white/20 transition-all duration-300 flex flex-col justify-between group h-full">
+                <div className="card-hover-lift bg-[#f8fafc] dark:bg-[#111116] hover:bg-white dark:hover:bg-[#16161d] rounded-[24px] sm:rounded-[30px] p-4 sm:p-6 border border-slate-100/90 dark:border-white/10 shadow-sm hover:border-slate-200 dark:hover:border-white/20 transition-all duration-300 flex flex-col justify-between group h-full">
                   {/* Silhouette Container */}
                   <div className="relative aspect-[16/9] w-full rounded-[24px] bg-white dark:bg-black/40 border border-slate-100 dark:border-white/5 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-50/50 dark:group-hover:bg-black/60 transition-colors">
                     <VehicleVectorGraphic type={car.type} />

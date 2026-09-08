@@ -50,11 +50,11 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-10">
+    <section className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-8 sm:pb-10">
       {/* Hero Container with Rounded corners */}
-      <div className="relative rounded-[30px] bg-gradient-to-r from-violet-950 via-purple-900 to-indigo-950 text-white min-h-[580px] lg:min-h-[620px] flex items-center shadow-2xl overflow-visible">
+      <div className="relative rounded-[28px] sm:rounded-[30px] bg-gradient-to-r from-violet-950 via-purple-900 to-indigo-950 text-white min-h-[540px] sm:min-h-[580px] lg:min-h-[620px] flex items-center shadow-2xl overflow-visible">
         {/* Background Image with Sri Lanka landmarks & cars */}
-        <div className="absolute inset-0 rounded-[30px] overflow-hidden z-0 pointer-events-none">
+        <div className="absolute inset-0 rounded-[28px] sm:rounded-[30px] overflow-hidden z-0 pointer-events-none">
           <Image
             src="/images/hero-sri-lanka.jpg"
             alt="Sri Lanka scenic landmarks and Tourmate rental fleet"
@@ -67,29 +67,29 @@ export function HeroSection() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 w-full p-6 sm:p-10 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="relative z-10 w-full p-4 sm:p-8 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Text */}
-          <div className="lg:col-span-7 space-y-6 text-left">
+          <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
             {/* Top Micro-badge */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1 rounded-full text-xs font-semibold text-amber-300 shadow-sm">
               <Sparkles className="h-3.5 w-3.5" />
               <span>{t("hero_badge")}</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-black tracking-tight leading-[1.14] text-white drop-shadow-md">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-black tracking-tight leading-[1.15] text-white drop-shadow-md">
               {t("hero_title_1")} <br className="hidden sm:inline" />
               {t("hero_title_2")}
             </h1>
 
-            <p className="max-w-xl text-sm sm:text-base text-slate-200/90 leading-relaxed font-normal">
+            <p className="max-w-xl text-xs sm:text-base text-slate-200/90 leading-relaxed font-normal">
               {t("hero_subtitle")}
             </p>
 
             {/* Hero Main Action Buttons */}
-            <div className="pt-2 flex flex-wrap items-center gap-3">
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <Link
                 href="/vehicles"
-                className="inline-flex items-center gap-2 bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-extrabold text-sm px-6 py-3.5 rounded-full shadow-lg shadow-amber-500/25 transition-all duration-200 active:scale-95 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-extrabold text-sm px-6 py-3.5 rounded-full shadow-lg shadow-amber-500/25 transition-all duration-200 active:scale-95 cursor-pointer"
               >
                 <span>{t("hero_btn_browse")}</span>
                 <ArrowRight className="h-4 w-4" />
@@ -98,7 +98,7 @@ export function HeroSection() {
                 href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold text-sm px-6 py-3.5 rounded-full border border-white/25 backdrop-blur-md transition-all duration-200 active:scale-95 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold text-sm px-6 py-3.5 rounded-full border border-white/25 backdrop-blur-md transition-all duration-200 active:scale-95 cursor-pointer"
               >
                 <MessageCircle className="h-4 w-4 text-emerald-400" />
                 <span>{t("hero_btn_list")}</span>
@@ -106,7 +106,7 @@ export function HeroSection() {
             </div>
 
             {/* Quick Guarantees Pill Strip */}
-            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-200">
+            <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4 text-xs font-semibold text-slate-200">
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-amber-400" />
                 <span>{t("hero_guarantee_1")}</span>
@@ -124,7 +124,7 @@ export function HeroSection() {
 
           {/* Right Floating Booking Card */}
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
-            <div className="w-full max-w-sm sm:max-w-md bg-white text-slate-900 rounded-[30px] p-6 sm:p-7 shadow-2xl border border-white/30 backdrop-blur-md">
+            <div className="w-full max-w-sm sm:max-w-md bg-white text-slate-900 rounded-[28px] sm:rounded-[30px] p-4 sm:p-7 shadow-2xl border border-white/30 backdrop-blur-md">
               {/* Rental Mode Switch (Self-Drive vs Driver) with sliding pill animation */}
               <div className="relative grid grid-cols-2 p-1 bg-slate-100/90 rounded-full mb-5 border border-slate-200/80 shadow-inner select-none">
                 {/* Sliding Animated Pill Indicator */}
@@ -210,7 +210,7 @@ export function HeroSection() {
                 </div>
 
                 {/* 3 & 4. Pickup Date and Return Date */}
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <div>
                     <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">
                       {t("search_pickup_date")}

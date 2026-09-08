@@ -78,9 +78,9 @@ export function FleetSection() {
   }, [language]);
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
       {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 sm:mb-12 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-500/10 px-3 py-1 rounded-full mb-3">
             <span>{t("fleet_badge")}</span>
@@ -127,7 +127,7 @@ export function FleetSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {featuredCars.map((car, index) => (
           <ScrollReveal key={car.id} delay={index * 60} direction="up">
-            <div className="stripe-card rounded-[30px] p-6 shadow-sm hover:shadow-2xl flex flex-col justify-between h-full group">
+            <div className="stripe-card rounded-[28px] sm:rounded-[30px] p-4 sm:p-6 shadow-sm hover:shadow-2xl flex flex-col justify-between h-full group">
               {/* Top Row: Category & Rating */}
               <div>
                 <div className="flex items-center justify-between mb-4">
