@@ -13,6 +13,7 @@ interface AuthContextType {
   authModalDefaultTab: AuthTab;
   openAuthModal: (tab?: AuthTab) => void;
   closeAuthModal: () => void;
+  loginWithPhone: (data: { phone: string; name?: string }) => Promise<{ success: boolean; user?: UserProfile; error?: string }>;
   sendPhoneOtp: (phone: string) => Promise<{ success: boolean; message?: string; devOtp?: string; error?: string }>;
   verifyPhoneOtp: (phone: string, code: string, name?: string) => Promise<{ success: boolean; user?: UserProfile; error?: string }>;
   loginWithGoogle: (data: { email?: string; name?: string; avatarUrl?: string; credential?: string }) => Promise<{ success: boolean; user?: UserProfile; error?: string }>;
@@ -57,6 +58,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const closeAuthModal = useCallback(() => {
     setIsAuthModalOpen(false);
   }, []);
+
+  const loginWithPhone = async (data: { phone: string; name?: string }) => {
+    try {
+      const res = await api.auth.loginWithPhone(data);
+      if (res.success && res.user) {
+        setUser(res.user);
+        setIsAuthModalOpen(false);
+        return { success: true, user: res.user };
+      }
+      return { success: false, error: res.error || "Failed to sign in with phone number." };
+    } catch {
+      return { success: false, error: "Network error during phone authentication." };
+    }
+  };
 
   const sendPhoneOtp = async (phone: string) => {
     try {
@@ -141,6 +156,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         authModalDefaultTab,
         openAuthModal,
         closeAuthModal,
+        loginWithPhone,
         sendPhoneOtp,
         verifyPhoneOtp,
         loginWithGoogle,

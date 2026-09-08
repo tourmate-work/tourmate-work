@@ -1,17 +1,15 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   X,
   Phone,
   Mail,
-  ShieldCheck,
   Sparkles,
   ArrowRight,
   CheckCircle2,
   AlertCircle,
   Loader2,
-  RefreshCw,
   Lock,
   User,
 } from "lucide-react";
@@ -33,8 +31,7 @@ export function AuthModal() {
     isAuthModalOpen,
     authModalDefaultTab,
     closeAuthModal,
-    sendPhoneOtp,
-    verifyPhoneOtp,
+    loginWithPhone,
     loginWithGoogle,
     loginWithEmail,
     registerWithEmail,
@@ -52,9 +49,6 @@ export function AuthModal() {
     if (isAuthModalOpen) {
       setError("");
       setSuccess("");
-      setPhoneStep("input");
-      setOtpDigits(["", "", "", "", "", ""]);
-      setResendTimer(0);
     }
   }, [isAuthModalOpen]);
 
@@ -66,120 +60,46 @@ export function AuthModal() {
   // Phone Auth State
   const [selectedCountry, setSelectedCountry] = useState(COUNTRY_CODES[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [userName, setUserName] = useState("");
-  const [phoneStep, setPhoneStep] = useState<"input" | "otp">("input");
-  const [otpDigits, setOtpDigits] = useState<string[]>(["", "", "", "", "", ""]);
-  const [devOtp, setDevOtp] = useState<string | null>(null);
-  const [resendTimer, setResendTimer] = useState(0);
-  const otpInputsRef = useRef<(HTMLInputElement | null)[]>([]);
+  const [phoneUserName, setPhoneUserName] = useState("");
 
-  // Gmail / Google Auth State
-  const [gmailAddress, setGmailAddress] = useState("");
-  const [gmailName, setGmailName] = useState("");
+  // Gmail / Email Auth State
+  const [emailAddress, setEmailAddress] = useState("");
+  const [emailUserName, setEmailUserName] = useState("");
 
-  // Email & Password State
+  // Email & Password State (Optional Tab)
   const [emailMode, setEmailMode] = useState<"login" | "register">("login");
-  const [email, setEmail] = useState("");
+  const [passwordEmail, setPasswordEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailName, setEmailName] = useState("");
-
-  // Countdown timer for OTP resend
-  useEffect(() => {
-    if (resendTimer > 0) {
-      const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [resendTimer]);
-
-  // Auto focus first OTP input on step change
-  useEffect(() => {
-    if (phoneStep === "otp" && otpInputsRef.current[0]) {
-      setTimeout(() => otpInputsRef.current[0]?.focus(), 150);
-    }
-  }, [phoneStep]);
+  const [passwordName, setPasswordName] = useState("");
 
   if (!isAuthModalOpen) return null;
 
   // --- Handlers ---
 
-  const handleSendOtp = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
+  const handlePhoneSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setError("");
     setSuccess("");
 
     const fullPhone = `${selectedCountry.code}${phoneNumber.replace(/^0+/, "").trim()}`;
-    if (phoneNumber.replace(/\D/g, "").length < 7) {
-      setError("Please enter a valid mobile number.");
+    const cleanDigits = fullPhone.replace(/\D/g, "");
+
+    if (cleanDigits.length < 8) {
+      setError("Please enter a valid mobile phone number.");
       return;
     }
 
     setLoading(true);
     try {
-      const res = await sendPhoneOtp(fullPhone);
-      if (res.success) {
-        setPhoneStep("otp");
-        setSuccess(`Verification code sent to ${fullPhone}`);
-        if (res.devOtp) {
-          setDevOtp(res.devOtp);
-        }
-        setResendTimer(45);
-      } else {
-        setError(res.error || "Failed to send verification code.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleOtpChange = (index: number, value: string) => {
-    // Handle pasting 6-digit code
-    if (value.length > 1) {
-      const digits = value.replace(/\D/g, "").slice(0, 6).split("");
-      const newDigits = [...otpDigits];
-      digits.forEach((d, i) => {
-        if (i < 6) newDigits[i] = d;
+      const res = await loginWithPhone({
+        phone: fullPhone,
+        name: phoneUserName.trim() || undefined,
       });
-      setOtpDigits(newDigits);
-      const nextFocus = Math.min(digits.length, 5);
-      otpInputsRef.current[nextFocus]?.focus();
-      return;
-    }
 
-    const digit = value.slice(-1).replace(/\D/g, "");
-    const newDigits = [...otpDigits];
-    newDigits[index] = digit;
-    setOtpDigits(newDigits);
-
-    // Auto advance focus
-    if (digit && index < 5) {
-      otpInputsRef.current[index + 1]?.focus();
-    }
-  };
-
-  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
-      otpInputsRef.current[index - 1]?.focus();
-    }
-  };
-
-  const handleVerifyOtp = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    const code = otpDigits.join("");
-    if (code.length !== 6) {
-      setError("Please enter the complete 6-digit code.");
-      return;
-    }
-
-    setError("");
-    setLoading(true);
-    const fullPhone = `${selectedCountry.code}${phoneNumber.replace(/^0+/, "").trim()}`;
-
-    try {
-      const res = await verifyPhoneOtp(fullPhone, code, userName || undefined);
       if (res.success) {
         setSuccess("Signed in successfully!");
       } else {
-        setError(res.error || "Invalid code. Please try again.");
+        setError(res.error || "Failed to sign in. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -190,65 +110,74 @@ export function AuthModal() {
     setError("");
     setLoading(true);
     try {
-      // Simulate Google Sign In / OAuth profile retrieval
-      // In production, Google Identity Services popup / redirect returns user credentials
-      const promptEmail = gmailAddress.trim() || "user@gmail.com";
+      const promptEmail = emailAddress.trim() || "user@gmail.com";
       const res = await loginWithGoogle({
         email: promptEmail.includes("@") ? promptEmail : `${promptEmail}@gmail.com`,
-        name: gmailName.trim() || "Tourmate Member",
-        avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(gmailName || "Google User")}&backgroundColor=7c3aed`,
+        name: emailUserName.trim() || "Tourmate Member",
+        avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
+          emailUserName || "Google User"
+        )}&backgroundColor=7c3aed`,
       });
 
       if (!res.success) {
-        setError(res.error || "Google sign in failed.");
+        setError(res.error || "Google authentication failed.");
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGmailDirectAuth = async (e: React.FormEvent) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!gmailAddress || !gmailAddress.includes("@")) {
-      setError("Please enter a valid Gmail address.");
+    setError("");
+    setSuccess("");
+
+    const trimmedEmail = emailAddress.trim().toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
+      setError("Please enter a valid email address (e.g. yourname@gmail.com).");
       return;
     }
 
-    setError("");
     setLoading(true);
     try {
       const res = await loginWithGoogle({
-        email: gmailAddress.trim(),
-        name: gmailName.trim() || undefined,
-        avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(gmailName || gmailAddress)}&backgroundColor=7c3aed`,
+        email: trimmedEmail,
+        name: emailUserName.trim() || undefined,
+        avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
+          emailUserName || trimmedEmail
+        )}&backgroundColor=7c3aed`,
       });
 
-      if (!res.success) {
-        setError(res.error || "Gmail authentication failed.");
+      if (res.success) {
+        setSuccess("Signed in successfully!");
+      } else {
+        setError(res.error || "Failed to sign in. Please try again.");
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleEmailAuth = async (e: React.FormEvent) => {
+  const handlePasswordAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
       if (emailMode === "login") {
-        const res = await loginWithEmail(email, password);
-        if (!res.success) setError(res.error || "Login failed.");
+        const res = await loginWithEmail(passwordEmail, password);
+        if (!res.success) setError(res.error || "Invalid email or password.");
       } else {
-        if (!emailName) {
+        if (!passwordName) {
           setError("Name is required.");
           setLoading(false);
           return;
         }
         const res = await registerWithEmail({
-          name: emailName,
-          email,
+          name: passwordName,
+          email: passwordEmail,
           password,
         });
         if (!res.success) setError(res.error || "Registration failed.");
@@ -266,7 +195,7 @@ export function AuthModal() {
       }}
     >
       <div className="relative w-full max-w-md bg-white dark:bg-[#111116] border border-slate-200/90 dark:border-white/10 rounded-[28px] sm:rounded-[32px] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-        {/* Glow Header Accent */}
+        {/* Top Gradient Accent */}
         <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-violet-600 via-fuchsia-500 to-emerald-500" />
 
         {/* Modal Close Button */}
@@ -279,7 +208,7 @@ export function AuthModal() {
         </button>
 
         <div className="p-6 sm:p-7">
-          {/* Header Title */}
+          {/* Header */}
           <div className="flex items-center gap-2.5 mb-1">
             <div className="h-9 w-9 rounded-xl bg-violet-600/10 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 flex items-center justify-center">
               <Sparkles className="h-5 w-5" />
@@ -342,7 +271,7 @@ export function AuthModal() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                 />
               </svg>
-              <span>Gmail</span>
+              <span>Gmail / Email</span>
             </button>
 
             <button
@@ -362,7 +291,7 @@ export function AuthModal() {
             </button>
           </div>
 
-          {/* Feedback alerts */}
+          {/* Feedback messages */}
           {error && (
             <div className="mb-4 flex items-center gap-2 p-3 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-700 dark:text-rose-400 text-xs font-medium animate-in fade-in duration-150">
               <AlertCircle className="h-4 w-4 flex-shrink-0" />
@@ -381,177 +310,75 @@ export function AuthModal() {
           {/* TAB 1: PHONE NUMBER AUTHENTICATION                   */}
           {/* ==================================================== */}
           {activeTab === "phone" && (
-            <div className="space-y-4">
-              {phoneStep === "input" ? (
-                <form onSubmit={handleSendOtp} className="space-y-3.5">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                      Mobile Phone Number
-                    </label>
-                    <div className="flex rounded-2xl border border-slate-200 dark:border-white/15 overflow-hidden focus-within:ring-2 focus-within:ring-violet-600 bg-slate-50 dark:bg-white/5 transition-all">
-                      {/* Country code selector */}
-                      <select
-                        value={selectedCountry.code}
-                        onChange={(e) => {
-                          const found = COUNTRY_CODES.find((c) => c.code === e.target.value);
-                          if (found) setSelectedCountry(found);
-                        }}
-                        className="bg-transparent text-xs font-bold text-slate-900 dark:text-white px-3 py-3 border-r border-slate-200 dark:border-white/10 outline-none cursor-pointer"
-                      >
-                        {COUNTRY_CODES.map((c) => (
-                          <option key={c.code + c.country} value={c.code} className="dark:bg-[#1c1c24] text-slate-900 dark:text-white">
-                            {c.flag} {c.code}
-                          </option>
-                        ))}
-                      </select>
-
-                      <input
-                        type="tel"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        placeholder={selectedCountry.placeholder}
-                        className="w-full bg-transparent px-3 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none"
-                        required
-                        autoFocus
-                      />
-                    </div>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1.5">
-                      We will send a 6-digit SMS verification code to your phone.
-                    </p>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                      Full Name <span className="text-slate-400 font-normal">(Optional for new accounts)</span>
-                    </label>
-                    <div className="relative">
-                      <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                      <input
-                        type="text"
-                        value={userName}
-                        onChange={(e) => setUserName(e.target.value)}
-                        placeholder="e.g. Kasun Perera"
-                        className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-violet-600"
-                      />
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full mt-2 flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 disabled:opacity-60 text-white font-bold text-sm py-3.5 rounded-2xl shadow-lg shadow-violet-500/25 transition-all active:scale-[0.98] cursor-pointer"
+            <form onSubmit={handlePhoneSubmit} className="space-y-3.5">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Mobile Phone Number
+                </label>
+                <div className="flex rounded-2xl border border-slate-200 dark:border-white/15 overflow-hidden focus-within:ring-2 focus-within:ring-violet-600 bg-slate-50 dark:bg-white/5 transition-all">
+                  {/* Country code selector */}
+                  <select
+                    value={selectedCountry.code}
+                    onChange={(e) => {
+                      const found = COUNTRY_CODES.find((c) => c.code === e.target.value);
+                      if (found) setSelectedCountry(found);
+                    }}
+                    className="bg-transparent text-xs font-bold text-slate-900 dark:text-white px-3 py-3 border-r border-slate-200 dark:border-white/10 outline-none cursor-pointer"
                   >
-                    {loading ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <>
-                        <span>Send Verification Code</span>
-                        <ArrowRight className="h-4 w-4" />
-                      </>
-                    )}
-                  </button>
-                </form>
-              ) : (
-                /* OTP Verification Step */
-                <form onSubmit={handleVerifyOtp} className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-[11px] text-slate-500 dark:text-slate-400">Verifying number</span>
-                      <div className="text-xs font-bold text-slate-900 dark:text-white">
-                        {selectedCountry.code} {phoneNumber}
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setPhoneStep("input")}
-                      className="text-xs font-bold text-violet-600 dark:text-violet-400 hover:underline cursor-pointer"
-                    >
-                      Change Number
-                    </button>
-                  </div>
+                    {COUNTRY_CODES.map((c) => (
+                      <option key={c.code + c.country} value={c.code} className="dark:bg-[#1c1c24] text-slate-900 dark:text-white">
+                        {c.flag} {c.code}
+                      </option>
+                    ))}
+                  </select>
 
-                  {/* 6 Digit Inputs */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 text-center">
-                      Enter 6-Digit SMS Code
-                    </label>
-                    <div className="flex items-center justify-center gap-2">
-                      {otpDigits.map((digit, idx) => (
-                        <input
-                          key={idx}
-                          ref={(el) => {
-                            otpInputsRef.current[idx] = el;
-                          }}
-                          type="text"
-                          inputMode="numeric"
-                          maxLength={1}
-                          value={digit}
-                          onChange={(e) => handleOtpChange(idx, e.target.value)}
-                          onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                          className="w-11 h-12 text-center text-lg font-black rounded-xl border border-slate-200 dark:border-white/15 bg-slate-50 dark:bg-white/5 text-slate-950 dark:text-white outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent transition-all"
-                        />
-                      ))}
-                    </div>
-                  </div>
+                  <input
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    placeholder={selectedCountry.placeholder}
+                    className="w-full bg-transparent px-3 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none"
+                    required
+                    autoFocus
+                  />
+                </div>
+              </div>
 
-                  {/* Dev Code Helper */}
-                  {devOtp && (
-                    <div className="flex items-center justify-between p-2.5 rounded-xl bg-violet-50 dark:bg-violet-950/40 border border-violet-200 dark:border-violet-500/20 text-xs text-violet-900 dark:text-violet-200">
-                      <span>
-                        Demo/Test Code: <strong className="font-mono font-bold tracking-widest">{devOtp}</strong>
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setOtpDigits(devOtp.split(""));
-                          setError("");
-                        }}
-                        className="text-[11px] font-bold text-violet-700 dark:text-violet-300 underline cursor-pointer"
-                      >
-                        Auto-fill
-                      </button>
-                    </div>
-                  )}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Full Name <span className="text-slate-400 font-normal">(Optional for new accounts)</span>
+                </label>
+                <div className="relative">
+                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                  <input
+                    type="text"
+                    value={phoneUserName}
+                    onChange={(e) => setPhoneUserName(e.target.value)}
+                    placeholder="e.g. Kasun Perera"
+                    className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-violet-600"
+                  />
+                </div>
+              </div>
 
-                  <button
-                    type="submit"
-                    disabled={loading || otpDigits.join("").length !== 6}
-                    className="w-full flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white font-bold text-sm py-3.5 rounded-2xl shadow-lg shadow-violet-500/25 transition-all active:scale-[0.98] cursor-pointer"
-                  >
-                    {loading ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <>
-                        <ShieldCheck className="h-4 w-4" />
-                        <span>Verify & Sign In</span>
-                      </>
-                    )}
-                  </button>
-
-                  {/* Resend Action */}
-                  <div className="text-center pt-1">
-                    {resendTimer > 0 ? (
-                      <span className="text-xs text-slate-400">
-                        Resend code in <strong className="text-slate-600 dark:text-slate-300">{resendTimer}s</strong>
-                      </span>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={handleSendOtp}
-                        className="inline-flex items-center gap-1 text-xs font-bold text-violet-600 dark:text-violet-400 hover:underline cursor-pointer"
-                      >
-                        <RefreshCw className="h-3 w-3" />
-                        <span>Resend SMS Code</span>
-                      </button>
-                    )}
-                  </div>
-                </form>
-              )}
-            </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full mt-2 flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 disabled:opacity-60 text-white font-bold text-sm py-3.5 rounded-2xl shadow-lg shadow-violet-500/25 transition-all active:scale-[0.98] cursor-pointer"
+              >
+                {loading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    <span>Sign In with Phone Number</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
+              </button>
+            </form>
           )}
 
           {/* ==================================================== */}
-          {/* TAB 2: GMAIL / GOOGLE AUTHENTICATION                 */}
+          {/* TAB 2: GMAIL / EMAIL AUTHENTICATION                  */}
           {/* ==================================================== */}
           {activeTab === "gmail" && (
             <div className="space-y-4">
@@ -592,22 +419,22 @@ export function AuthModal() {
               <div className="relative flex items-center justify-center my-3">
                 <span className="h-px w-full bg-slate-200 dark:bg-white/10" />
                 <span className="absolute bg-white dark:bg-[#111116] px-3 text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
-                  Or enter Gmail
+                  Or enter Email
                 </span>
               </div>
 
-              {/* Direct Gmail Input Form */}
-              <form onSubmit={handleGmailDirectAuth} className="space-y-3">
+              {/* Direct Email / Gmail Form */}
+              <form onSubmit={handleEmailSubmit} className="space-y-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                    Gmail Address
+                    Email Address
                   </label>
                   <div className="relative">
                     <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <input
                       type="email"
-                      value={gmailAddress}
-                      onChange={(e) => setGmailAddress(e.target.value)}
+                      value={emailAddress}
+                      onChange={(e) => setEmailAddress(e.target.value)}
                       placeholder="yourname@gmail.com"
                       className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-violet-600"
                       required
@@ -623,8 +450,8 @@ export function AuthModal() {
                     <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <input
                       type="text"
-                      value={gmailName}
-                      onChange={(e) => setGmailName(e.target.value)}
+                      value={emailUserName}
+                      onChange={(e) => setEmailUserName(e.target.value)}
                       placeholder="e.g. Dilshan Perera"
                       className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-violet-600"
                     />
@@ -640,7 +467,7 @@ export function AuthModal() {
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
                     <>
-                      <span>Sign In with Gmail</span>
+                      <span>Sign In with Email</span>
                       <ArrowRight className="h-4 w-4" />
                     </>
                   )}
@@ -653,7 +480,7 @@ export function AuthModal() {
           {/* TAB 3: STANDARD EMAIL & PASSWORD                     */}
           {/* ==================================================== */}
           {activeTab === "email" && (
-            <form onSubmit={handleEmailAuth} className="space-y-3">
+            <form onSubmit={handlePasswordAuth} className="space-y-3">
               {emailMode === "register" && (
                 <div>
                   <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
@@ -663,8 +490,8 @@ export function AuthModal() {
                     <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <input
                       type="text"
-                      value={emailName}
-                      onChange={(e) => setEmailName(e.target.value)}
+                      value={passwordName}
+                      onChange={(e) => setPasswordName(e.target.value)}
                       placeholder="Your full name"
                       className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-violet-600"
                       required
@@ -681,8 +508,8 @@ export function AuthModal() {
                   <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                   <input
                     type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={passwordEmail}
+                    onChange={(e) => setPasswordEmail(e.target.value)}
                     placeholder="name@example.com"
                     className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-violet-600"
                     required

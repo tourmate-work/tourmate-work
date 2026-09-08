@@ -50,6 +50,14 @@ export const api = {
       });
       return res.json();
     },
+    async loginWithPhone(data: { phone: string; name?: string }): Promise<{ success: boolean; message?: string; user?: UserProfile; token?: string; error?: string }> {
+      const res = await fetch("/api/auth/phone", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      return res.json();
+    },
     async sendPhoneOtp(phone: string): Promise<{ success: boolean; message?: string; phone?: string; devOtp?: string; error?: string }> {
       const res = await fetch("/api/auth/phone/send-otp", {
         method: "POST",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   X,
@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { useAuth } from "@/components/auth/auth-context";
 
 export interface BookingVehicleInfo {
   id?: string;
@@ -50,6 +51,7 @@ export function BookingInquiryModal({
   initialMode = "self",
 }: BookingInquiryModalProps) {
   const { t, language } = useLanguage();
+  const { user, isAuthenticated, openAuthModal, loginWithPhone } = useAuth();
 
   // Form State
   const [fullName, setFullName] = useState("");
@@ -57,6 +59,21 @@ export function BookingInquiryModal({
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("Sri Lanka");
   const [passengers, setPassengers] = useState(2);
+
+  // Auto-fill customer details from authenticated user profile
+  useEffect(() => {
+    if (isOpen && user) {
+      if (user.name && user.name !== "Tourmate Member" && !user.name.startsWith("User ")) {
+        setFullName((prev) => prev || user.name);
+      }
+      if (user.phone) {
+        setWhatsappNumber((prev) => prev || user.phone || "");
+      }
+      if (user.email && !user.email.endsWith("@tourmate.lk")) {
+        setEmail((prev) => prev || user.email);
+      }
+    }
+  }, [isOpen, user]);
 
   const [pickupLocation, setPickupLocation] = useState(
     initialPickupLocation || vehicle?.location || "Bandaranaike Int'l Airport (CMB) / Katunayake"
@@ -174,6 +191,14 @@ export function BookingInquiryModal({
       const waMsg = buildWhatsAppMessage();
       const directUrl = `https://wa.me/94703236834?text=${encodeURIComponent(waMsg)}`;
       setGeneratedWhatsAppUrl(directUrl);
+
+      // Auto-authenticate customer in background if not already signed in
+      if (!isAuthenticated && whatsappNumber.trim()) {
+        loginWithPhone({
+          phone: whatsappNumber.trim(),
+          name: fullName.trim() || undefined,
+        }).catch(() => null);
+      }
 
       // Show confirmation dialog with direct option to launch WhatsApp
       setIsSuccess(true);
@@ -309,6 +334,47 @@ export function BookingInquiryModal({
                 <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-bold flex items-center gap-2">
                   <X className="h-4 w-4 flex-shrink-0" />
                   <span>{errorMessage}</span>
+                </div>
+              )}
+
+              {/* Authentication Status & Quick Fill */}
+              {isAuthenticated && user ? (
+                <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                    <div>
+                      <div className="text-xs font-bold text-slate-900 dark:text-white">
+                        Signed in as {user.name}
+                      </div>
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400">
+                        {user.phone || user.email} • Reservation linked to your TourMate account.
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">
+                    Verified
+                  </span>
+                </div>
+              ) : (
+                <div className="p-3 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <Sparkles className="h-4 w-4 text-violet-600 dark:text-violet-400 flex-shrink-0" />
+                    <div>
+                      <div className="text-xs font-bold text-slate-900 dark:text-white">
+                        Have a TourMate account?
+                      </div>
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400">
+                        Sign in with Phone or Gmail to auto-fill details and track your reservation.
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => openAuthModal("phone")}
+                    className="flex-shrink-0 text-xs font-bold text-violet-600 dark:text-violet-400 hover:underline px-2 py-1 cursor-pointer"
+                  >
+                    Sign In
+                  </button>
                 </div>
               )}
 

@@ -157,10 +157,26 @@ export async function POST(req: NextRequest) {
     const dailyRate = vehicle.pricePerDay;
     const totalPrice = totalDays * dailyRate;
 
+    // Link to authenticated user or resolve by customer email / phone
+    let linkedUserId = user?.id || null;
+    if (!linkedUserId) {
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          OR: [
+            { email: customerEmail.trim().toLowerCase() },
+            { phone: customerPhone.trim() },
+          ],
+        },
+      });
+      if (existingUser) {
+        linkedUserId = existingUser.id;
+      }
+    }
+
     const booking = await prisma.booking.create({
       data: {
         carId,
-        userId: user?.id || null,
+        userId: linkedUserId,
         customerName: customerName.trim(),
         customerEmail: customerEmail.trim().toLowerCase(),
         customerPhone: customerPhone.trim(),
