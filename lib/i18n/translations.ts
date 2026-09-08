@@ -18,6 +18,9 @@ export const translations = {
   nav_need_help: { en: "Need help?", si: "උදව් අවශ්‍යද?" },
   nav_admin: { en: "Admin", si: "පරිපාලක" },
   nav_public_site: { en: "View Public Site", si: "ප්‍රධාන වෙබ් අඩවිය" },
+  nav_sign_in: { en: "Sign In", si: "ලොගින් වන්න" },
+  nav_sign_out: { en: "Sign Out", si: "ඉවත් වන්න" },
+  nav_account: { en: "Account", si: "ගිණුම" },
 
   // Hero Section
   hero_badge: {

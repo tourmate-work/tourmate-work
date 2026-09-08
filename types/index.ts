@@ -81,7 +81,8 @@ export interface UserProfile {
   id: string;
   name: string;
   email: string;
-  phone?: string;
-  avatarUrl?: string;
-  role: "customer" | "admin" | "partner";
+  phone?: string | null;
+  avatarUrl?: string | null;
+  role: "CUSTOMER" | "SELLER" | "ADMIN" | "customer" | "admin" | "partner" | string;
+  createdAt?: string | Date;
 }

@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { LanguageProvider } from "@/lib/i18n/language-context";
+import { AuthProvider } from "@/components/auth/auth-context";
+import { AuthModal } from "@/components/auth/auth-modal";
 import { MobileBottomBar } from "@/components/layout/mobile-bottom-bar";
 import { FloatingWhatsAppButton } from "@/components/ui/floating-whatsapp-button";
 
@@ -51,9 +53,12 @@ export default function RootLayout({
       <body className="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-violet-600 selection:text-white transition-colors duration-300 pb-24 md:pb-0">
         <ThemeProvider>
           <LanguageProvider>
-            {children}
-            <FloatingWhatsAppButton />
-            <MobileBottomBar />
+            <AuthProvider>
+              {children}
+              <FloatingWhatsAppButton />
+              <MobileBottomBar />
+              <AuthModal />
+            </AuthProvider>
           </LanguageProvider>
         </ThemeProvider>
       </body>

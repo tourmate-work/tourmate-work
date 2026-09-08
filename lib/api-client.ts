@@ -1,5 +1,7 @@
 import { Vehicle, UserProfile } from "@/types";
 
+export type { UserProfile };
+
 export interface ApiResponse<T> {
   success: boolean;
   message?: string;
@@ -42,6 +44,30 @@ export const api = {
     },
     async login(data: { email: string; password: string }) {
       const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      return res.json();
+    },
+    async sendPhoneOtp(phone: string): Promise<{ success: boolean; message?: string; phone?: string; devOtp?: string; error?: string }> {
+      const res = await fetch("/api/auth/phone/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone }),
+      });
+      return res.json();
+    },
+    async verifyPhoneOtp(data: { phone: string; code: string; name?: string }): Promise<{ success: boolean; message?: string; user?: UserProfile; token?: string; error?: string }> {
+      const res = await fetch("/api/auth/phone/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      return res.json();
+    },
+    async loginWithGoogle(data: { email?: string; name?: string; avatarUrl?: string; credential?: string }): Promise<{ success: boolean; message?: string; user?: UserProfile; token?: string; error?: string }> {
+      const res = await fetch("/api/auth/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

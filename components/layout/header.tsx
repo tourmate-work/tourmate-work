@@ -31,10 +31,13 @@ import {
   Plus,
   MapPin,
   ArrowRight,
+  User as UserIcon,
+  LogOut,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import { useAuth } from "@/components/auth/auth-context";
 
 interface SubMenuItem {
   title: string;
@@ -240,6 +243,21 @@ export function Header() {
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  const { user, isAuthenticated, openAuthModal, logout } = useAuth();
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const userDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close user dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target as Node)) {
+        setUserDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const isAdmin = pathname.startsWith("/admin");
   const isHome = pathname === "/";
   const isVehicles = pathname.startsWith("/vehicles");
@@ -258,10 +276,11 @@ export function Header() {
     }
   }, [pathname]);
 
-  // Close mobile drawer when route changes
+  // Close mobile drawer and user dropdown when route changes
   useEffect(() => {
     setMobileMenuOpen(false);
     setActiveDropdown(null);
+    setUserDropdownOpen(false);
   }, [pathname]);
 
   // Clean up hover timeout on unmount
@@ -544,6 +563,84 @@ export function Header() {
 
         {/* Right Actions: Language Switcher + Portal Switcher + Theme Toggle + Phone + Mobile Hamburger */}
         <div className="flex items-center gap-1 sm:gap-2.5">
+          {/* User Profile / Auth State Pill */}
+          {isAuthenticated && user ? (
+            <div className="relative" ref={userDropdownRef}>
+              <button
+                type="button"
+                onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                className="flex items-center gap-1.5 sm:gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-900 dark:text-white border border-slate-200/80 dark:border-white/10 pl-1.5 pr-2 sm:pr-3 py-1 sm:py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95"
+              >
+                <div className="h-6 w-6 rounded-full bg-violet-600 text-white flex items-center justify-center text-[11px] font-black overflow-hidden flex-shrink-0">
+                  {user.avatarUrl ? (
+                    <img src={user.avatarUrl} alt={user.name} className="h-full w-full object-cover" />
+                  ) : (
+                    user.name.charAt(0).toUpperCase()
+                  )}
+                </div>
+                <span className="hidden sm:inline max-w-[80px] truncate">{user.name.split(" ")[0]}</span>
+                <ChevronDown
+                  className={`h-3 w-3 text-slate-400 transition-transform duration-200 ${
+                    userDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {userDropdownOpen && (
+                <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl bg-white dark:bg-[#121217] border border-slate-200/90 dark:border-white/10 shadow-xl p-2 z-50 animate-in fade-in-0 zoom-in-95 duration-150">
+                  <div className="px-3 py-2 border-b border-slate-100 dark:border-white/5">
+                    <div className="text-xs font-bold text-slate-950 dark:text-white truncate">
+                      {user.name}
+                    </div>
+                    <div className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
+                      {user.phone || user.email}
+                    </div>
+                    <div className="mt-1">
+                      <span className="text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-500/20">
+                        {user.role}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="py-1 space-y-0.5">
+                    <Link
+                      href="/admin?tab=inquiries"
+                      onClick={() => setUserDropdownOpen(false)}
+                      className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                    >
+                      <span>Inquiries & Bookings</span>
+                      <ChevronRight className="h-3.5 w-3.5 opacity-50" />
+                    </Link>
+                  </div>
+
+                  <div className="pt-1 border-t border-slate-100 dark:border-white/5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUserDropdownOpen(false);
+                        logout();
+                      }}
+                      className="w-full flex items-center gap-2 p-2 rounded-xl text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors cursor-pointer"
+                    >
+                      <LogOut className="h-3.5 w-3.5" />
+                      <span>{t("nav_sign_out")}</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => openAuthModal("phone")}
+              className="inline-flex items-center gap-1.5 bg-violet-600 hover:bg-violet-700 text-white px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full text-xs font-bold transition-all shadow-sm shadow-violet-500/25 active:scale-95 cursor-pointer"
+            >
+              <UserIcon className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">{t("nav_sign_in")}</span>
+              <span className="sm:hidden">{language === "si" ? "ලොගින්" : "Sign In"}</span>
+            </button>
+          )}
+
           {/* Language Switcher */}
           <LanguageSwitcher />
 
@@ -610,6 +707,55 @@ export function Header() {
           <div className="bg-white dark:bg-[#0b0b0e] border-b border-slate-200 dark:border-white/10 p-4 sm:p-5 shadow-2xl rounded-b-[30px] space-y-4 sm:space-y-5 animate-in slide-in-from-top-4 duration-300 max-h-[calc(100vh-4rem)] sm:max-h-[85vh] overflow-y-auto overscroll-contain">
             {/* Mobile Language Switcher */}
             <LanguageSwitcher variant="mobile" />
+
+            {/* Mobile Auth User Status Card */}
+            {isAuthenticated && user ? (
+              <div className="p-3.5 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-between">
+                <div className="flex items-center gap-3 truncate">
+                  <div className="h-10 w-10 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 overflow-hidden">
+                    {user.avatarUrl ? (
+                      <img src={user.avatarUrl} alt={user.name} className="h-full w-full object-cover" />
+                    ) : (
+                      user.name.charAt(0).toUpperCase()
+                    )}
+                  </div>
+                  <div className="truncate">
+                    <div className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                      {user.name}
+                    </div>
+                    <div className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
+                      {user.phone || user.email}
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    logout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="p-2 rounded-xl text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"
+                  title="Log Out"
+                >
+                  <LogOut className="h-4 w-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  openAuthModal("phone");
+                }}
+                className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold text-xs shadow-md shadow-violet-500/20 active:scale-95 transition-all cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5">
+                  <UserIcon className="h-4 w-4" />
+                  <span>{language === "si" ? "ලොගින් වන්න (දුරකථන / Gmail)" : "Sign In / Register (Phone or Gmail)"}</span>
+                </div>
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            )}
 
             {/* Quick Links List */}
             <div className="space-y-2">

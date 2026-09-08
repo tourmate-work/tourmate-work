@@ -82,3 +82,88 @@ export function unauthorizedResponse(message = "Unauthorized. Please log in.") {
 export function forbiddenResponse(message = "Forbidden. Insufficient permissions.") {
   return NextResponse.json({ success: false, error: message }, { status: 403 });
 }
+
+// ==========================================
+// PHONE & OTP VERIFICATION UTILITIES
+// ==========================================
+
+export function normalizePhoneNumber(raw: string): string {
+  if (!raw) return "";
+  let cleaned = raw.replace(/[\s\-\(\)]/g, "").trim();
+
+  // Sri Lanka standard mobile: 07XXXXXXXX (10 digits) -> +947XXXXXXXX
+  if (cleaned.startsWith("0") && cleaned.length === 10) {
+    cleaned = "+94" + cleaned.substring(1);
+  } else if (!cleaned.startsWith("+")) {
+    if (cleaned.startsWith("94")) {
+      cleaned = "+" + cleaned;
+    } else {
+      cleaned = "+" + cleaned;
+    }
+  }
+  return cleaned;
+}
+
+interface OtpEntry {
+  code: string;
+  expiresAt: number;
+  attempts: number;
+}
+
+declare global {
+  // eslint-disable-next-line no-var
+  var _tourmate_otp_store: Map<string, OtpEntry> | undefined;
+}
+
+const otpStore: Map<string, OtpEntry> =
+  globalThis._tourmate_otp_store || new Map<string, OtpEntry>();
+
+if (process.env.NODE_ENV !== "production") {
+  globalThis._tourmate_otp_store = otpStore;
+}
+
+export function saveOtp(phone: string, code: string, ttlMs = 5 * 60 * 1000) {
+  otpStore.set(phone, {
+    code,
+    expiresAt: Date.now() + ttlMs,
+    attempts: 0,
+  });
+}
+
+export function verifyOtp(phone: string, inputCode: string): { valid: boolean; error?: string } {
+  const entry = otpStore.get(phone);
+  if (!entry) {
+    return {
+      valid: false,
+      error: "No active verification code found. Please request a new code.",
+    };
+  }
+
+  if (Date.now() > entry.expiresAt) {
+    otpStore.delete(phone);
+    return {
+      valid: false,
+      error: "Verification code has expired. Please request a new code.",
+    };
+  }
+
+  if (entry.attempts >= 5) {
+    otpStore.delete(phone);
+    return {
+      valid: false,
+      error: "Too many failed attempts. Please request a new code.",
+    };
+  }
+
+  if (entry.code !== inputCode.trim()) {
+    entry.attempts += 1;
+    return {
+      valid: false,
+      error: "Invalid 6-digit verification code. Please check and try again.",
+    };
+  }
+
+  // Code verified! Delete consumed OTP
+  otpStore.delete(phone);
+  return { valid: true };
+}
