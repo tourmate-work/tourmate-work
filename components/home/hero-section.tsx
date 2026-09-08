@@ -206,6 +206,7 @@ export function HeroSection() {
                     onChange={setPickupPlace}
                     placeholder={t("search_pickup_placeholder")}
                     variant="light"
+                    showQuickChips={true}
                   />
                 </div>
 

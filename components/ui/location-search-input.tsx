@@ -67,6 +67,31 @@ export const POPULAR_SRI_LANKA_LOCATIONS: SriLankaLocation[] = [
   { name: "Jaffna Town / Jaffna Fort", category: "Cultural & North/East", subtext: "Northern Peninsula" },
 ];
 
+export const POPULAR_QUICK_HUBS = [
+  { name: "Bandaranaike Int'l Airport (CMB) / Katunayake", shortLabel: "✈️ CMB Airport" },
+  { name: "Colombo City (Fort / Pettah)", shortLabel: "🏙️ Colombo" },
+  { name: "Negombo Beach / Porutota Road", shortLabel: "🏖️ Negombo" },
+  { name: "Kandy City Center (Temple of the Tooth)", shortLabel: "⛰️ Kandy" },
+  { name: "Galle Fort / Unawatuna Beach", shortLabel: "🏰 Galle Fort" },
+  { name: "Mirissa Beach / Coconut Tree Hill", shortLabel: "🏄 Mirissa" },
+  { name: "Nuwara Eliya (Little England)", shortLabel: "🌲 Nuwara Eliya" },
+  { name: "Ella (Nine Arch Bridge / Little Adam's Peak)", shortLabel: "🚂 Ella" },
+  { name: "Bentota / Beruwala / Aluthgama", shortLabel: "🌊 Bentota" },
+  { name: "Sigiriya (Lion Rock Fortress)", shortLabel: "🏛️ Sigiriya" },
+  { name: "Hikkaduwa Coral Reef / Narigama", shortLabel: "🤿 Hikkaduwa" },
+  { name: "Weligama Bay", shortLabel: "🏄 Weligama" },
+];
+
+export const LOCATION_CATEGORIES = [
+  { id: "all", label: "All Hubs" },
+  { id: "Airports & Transit", label: "✈️ Airports" },
+  { id: "Colombo & Suburbs", label: "🏙️ Colombo" },
+  { id: "Southern Coast", label: "🏖️ South Coast" },
+  { id: "Central & Hill Country", label: "⛰️ Hill Country" },
+  { id: "Western Province", label: "🌊 Western Coast" },
+  { id: "Cultural & North/East", label: "🏛️ Cultural / North" },
+] as const;
+
 export interface LocationSearchInputProps {
   value: string;
   onChange: (location: string) => void;
@@ -75,6 +100,7 @@ export interface LocationSearchInputProps {
   variant?: "light" | "catalog" | "dark";
   className?: string;
   required?: boolean;
+  showQuickChips?: boolean;
 }
 
 export function LocationSearchInput({
@@ -85,9 +111,11 @@ export function LocationSearchInput({
   variant = "light",
   className = "",
   required = false,
+  showQuickChips = false,
 }: LocationSearchInputProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState(value);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [liveResults, setLiveResults] = useState<LiveLocationItem[]>([]);
   const [isLoadingLive, setIsLoadingLive] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -170,8 +198,11 @@ export function LocationSearchInput({
     if (inputRef.current) inputRef.current.focus();
   };
 
-  // Filter preset suggestions based on user query
+  // Filter preset suggestions based on user query and category
   const filteredSuggestions = POPULAR_SRI_LANKA_LOCATIONS.filter((loc) => {
+    if (selectedCategory !== "all" && loc.category !== selectedCategory) {
+      return false;
+    }
     if (!query.trim()) return true;
     const q = query.toLowerCase();
     return (
@@ -236,16 +267,68 @@ export function LocationSearchInput({
         )}
       </div>
 
+      {/* Quick Horizontally Scrollable Pickup Location Chips */}
+      {showQuickChips && (
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-2 pb-0.5 touch-pan-x">
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex-shrink-0 mr-1">
+            Popular:
+          </span>
+          {POPULAR_QUICK_HUBS.map((hub) => {
+            const isMatch = value.toLowerCase() === hub.name.toLowerCase();
+            return (
+              <button
+                key={hub.name}
+                type="button"
+                onClick={() => handleSelectLocation(hub.name)}
+                className={`flex-shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+                  isMatch
+                    ? "bg-violet-600 text-white shadow-sm ring-1 ring-violet-600"
+                    : isLightVariant
+                    ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/80"
+                    : "bg-white/10 hover:bg-white/15 text-slate-200 border border-white/10"
+                }`}
+              >
+                {hub.shortLabel}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
       {/* Autocomplete Dropdown List */}
       {isOpen && (
-        <div className="absolute left-0 right-0 top-full mt-2 max-h-84 overflow-y-auto bg-white dark:bg-[#111116] border border-slate-200 dark:border-white/15 rounded-2xl shadow-2xl z-50 p-2 animate-in fade-in slide-in-from-top-2 duration-150 divide-y divide-slate-100 dark:divide-white/5">
+        <div className="absolute left-0 right-0 top-full mt-2 max-h-[55vh] sm:max-h-80 overflow-y-auto overscroll-contain touch-pan-y bg-white dark:bg-[#111116] border border-slate-200 dark:border-white/15 rounded-2xl shadow-2xl z-50 p-2 animate-in fade-in slide-in-from-top-2 duration-150 divide-y divide-slate-100 dark:divide-white/5 scrollbar-thin">
+          
+          {/* Horizontally Scrollable Category Pills Bar */}
+          <div className="pb-2 pt-0.5">
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar touch-pan-x py-0.5">
+              {LOCATION_CATEGORIES.map((cat) => {
+                const isActive = selectedCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => setSelectedCategory(cat.id)}
+                    className={`flex-shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer whitespace-nowrap ${
+                      isActive
+                        ? "bg-violet-600 text-white shadow-sm"
+                        : "bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-white/10"
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* 1. Custom typed address quick selection */}
           {query.trim() && (
-            <div className="pb-2">
+            <div className="py-2">
               <button
                 type="button"
                 onClick={() => handleSelectLocation(query.trim())}
-                className="w-full flex items-start gap-2.5 p-2 rounded-xl text-left bg-violet-50/80 dark:bg-violet-950/30 hover:bg-violet-100 dark:hover:bg-violet-950/50 transition-colors cursor-pointer"
+                className="w-full min-h-[44px] flex items-start gap-2.5 p-2 rounded-xl text-left bg-violet-50/80 dark:bg-violet-950/30 hover:bg-violet-100 dark:hover:bg-violet-950/50 transition-colors cursor-pointer"
               >
                 <div className="p-1.5 rounded-lg bg-violet-600 text-white flex-shrink-0 mt-0.5 shadow-sm">
                   <Navigation className="h-3.5 w-3.5" />
@@ -284,7 +367,7 @@ export function LocationSearchInput({
                     key={item.id}
                     type="button"
                     onClick={() => handleSelectLiveLocation(item)}
-                    className={`w-full flex items-center justify-between p-2 rounded-xl text-left transition-colors cursor-pointer ${
+                    className={`w-full min-h-[44px] flex items-center justify-between p-2 rounded-xl text-left transition-colors cursor-pointer ${
                       isSelected
                         ? "bg-violet-600 text-white"
                         : "hover:bg-slate-100 dark:hover:bg-white/5 text-slate-800 dark:text-slate-200"
@@ -318,16 +401,18 @@ export function LocationSearchInput({
             </div>
           )}
 
-          {/* 3. Popular Sri Lanka Presets (or fallback) */}
+          {/* 3. Popular Sri Lanka Presets (Filtered by Category & Query) */}
           <div className="pt-2 space-y-1">
             <div className="px-2 py-1 flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
               <span>
-                {query.trim().length >= 2
+                {selectedCategory !== "all"
+                  ? `${selectedCategory} Hubs`
+                  : query.trim().length >= 2
                   ? "Popular Hubs Matching Search"
-                  : "Popular Sri Lanka Delivery Hubs"}
+                  : "Sri Lanka Delivery Hubs"}
               </span>
               <span className="text-[9px] font-medium">
-                {filteredSuggestions.length} presets
+                {filteredSuggestions.length} available
               </span>
             </div>
 
@@ -339,14 +424,14 @@ export function LocationSearchInput({
                 </p>
               </div>
             ) : (
-              filteredSuggestions.slice(0, query.trim().length >= 2 ? 4 : 20).map((loc) => {
+              filteredSuggestions.map((loc) => {
                 const isSelected = value.toLowerCase() === loc.name.toLowerCase();
                 return (
                   <button
                     key={loc.name}
                     type="button"
                     onClick={() => handleSelectLocation(loc.name)}
-                    className={`w-full flex items-center justify-between p-2 rounded-xl text-left transition-colors cursor-pointer ${
+                    className={`w-full min-h-[44px] flex items-center justify-between p-2.5 sm:p-2 rounded-xl text-left transition-colors cursor-pointer ${
                       isSelected
                         ? "bg-violet-600 text-white"
                         : "hover:bg-slate-100 dark:hover:bg-white/5 text-slate-800 dark:text-slate-200"
