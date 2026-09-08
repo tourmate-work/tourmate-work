@@ -120,13 +120,37 @@ export function BookingInquiryModal({
     setIsSubmitting(true);
 
     try {
-      // 1. Post to backend booking/inquiry ledger
       const pDate = new Date(`${pickupDate}T${pickupTime || "00:00"}:00`);
       const rDate = new Date(`${returnDate}T${returnTime || "00:00"}:00`);
       const validPDate = isNaN(pDate.getTime()) ? new Date() : pDate;
       const validRDate = isNaN(rDate.getTime()) ? new Date(Date.now() + 86400000 * 3) : rDate;
 
-      const payload = {
+      // 1. Post to backend inquiries endpoint (so it appears in Admin Portal dashboard)
+      const inquiryPayload = {
+        name: fullName.trim(),
+        email: email.trim(),
+        phone: whatsappNumber.trim(),
+        carModel: `${vehicle.brand ? vehicle.brand + " " : ""}${vehicle.name}`,
+        carId: vehicle.id,
+        pickupLocation: pickupLocation.trim() || "Sri Lanka",
+        returnLocation: returnLocation.trim() || pickupLocation.trim() || "Sri Lanka",
+        pickupDate: validPDate.toISOString(),
+        returnDate: validRDate.toISOString(),
+        date: `${pickupDate} ${pickupTime} - ${returnDate} ${returnTime}`,
+        driverOption,
+        passengers,
+        additionalMessage: additionalMessage.trim(),
+        subject: `Inquiry: ${vehicle.name} (${vehicle.category})`,
+      };
+
+      await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inquiryPayload),
+      }).catch((err) => console.warn("Inquiry submission notice:", err));
+
+      // 2. Also attempt booking ledger sync
+      const bookingPayload = {
         carId: vehicle.id || "manual-inquiry",
         customerName: fullName.trim(),
         customerEmail: email.trim(),
@@ -140,11 +164,10 @@ export function BookingInquiryModal({
         } | ${additionalMessage.trim()}`,
       };
 
-      // Try booking API endpoint, fallback safely if carId is arbitrary
       await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(bookingPayload),
       }).catch(() => null);
 
       // 2. Build direct WhatsApp dispatch URL

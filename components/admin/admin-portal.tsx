@@ -20,10 +20,27 @@ import {
   Trash2,
   Sparkles,
   AlertCircle,
+  Mail,
+  MessageSquare,
+  Phone,
+  Clock,
 } from "lucide-react";
 import { AddVehicleModal, SellerVehicle } from "@/components/seller/add-vehicle-modal";
 import { VehicleListingForm } from "@/components/seller/vehicle-listing-form";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+
+export interface InquiryRecord {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  subject: string | null;
+  carModel: string | null;
+  date: string | null;
+  message: string;
+  status: "PENDING" | "REPLIED";
+  createdAt: string;
+}
 
 interface BookingRecord {
   id: string;
@@ -49,12 +66,16 @@ export function AdminPortalContent() {
   const [activeTab, setActiveTab] = useState<string>(initialTab);
   const [fleet, setFleet] = useState<SellerVehicle[]>([]);
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
+  const [inquiries, setInquiries] = useState<InquiryRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [fleetFilter, setFleetFilter] = useState("all");
   const [bookingStatusFilter, setBookingStatusFilter] = useState("all");
+  const [inquiryStatusFilter, setInquiryStatusFilter] = useState("all");
   const [bookingSearch, setBookingSearch] = useState("");
+  const [inquirySearch, setInquirySearch] = useState("");
   const [fleetSearch, setFleetSearch] = useState("");
+  const [updatingInquiryId, setUpdatingInquiryId] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
   // Check persistent admin authentication on mount
@@ -143,6 +164,15 @@ export function AdminPortalContent() {
           setBookings(mapped);
         } else {
           setBookings([]);
+        }
+
+        // 3. Fetch live vehicle inquiries
+        const inquiriesRes = await fetch("/api/inquiries");
+        const inquiriesData = await inquiriesRes.json();
+        if (inquiriesData.success && Array.isArray(inquiriesData.inquiries)) {
+          setInquiries(inquiriesData.inquiries);
+        } else {
+          setInquiries([]);
         }
       } catch (e) {
         console.error("Failed to load admin data from API:", e);
@@ -290,6 +320,74 @@ export function AdminPortalContent() {
       b.id.toLowerCase().includes(q)
     );
   });
+
+  const handleToggleInquiryStatus = async (id: string, currentStatus: string) => {
+    const nextStatus = currentStatus === "PENDING" ? "REPLIED" : "PENDING";
+    setUpdatingInquiryId(id);
+    try {
+      const res = await fetch("/api/inquiries", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status: nextStatus }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setInquiries((prev) =>
+          prev.map((inq) =>
+            inq.id === id ? { ...inq, status: nextStatus as "PENDING" | "REPLIED" } : inq
+          )
+        );
+        setNotice(
+          nextStatus === "REPLIED"
+            ? "Inquiry marked as Contacted / Replied."
+            : "Inquiry marked as Pending."
+        );
+        setTimeout(() => setNotice(null), 3500);
+      }
+    } catch (err) {
+      console.error("Failed to update inquiry status:", err);
+    } finally {
+      setUpdatingInquiryId(null);
+    }
+  };
+
+  const handleDeleteInquiry = async (id: string) => {
+    if (!confirm("Are you sure you want to remove this customer inquiry?")) return;
+    try {
+      const res = await fetch(`/api/inquiries?id=${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        setInquiries((prev) => prev.filter((inq) => inq.id !== id));
+        setNotice("Inquiry removed from ledger.");
+        setTimeout(() => setNotice(null), 3500);
+      }
+    } catch (err) {
+      console.error("Failed to delete inquiry:", err);
+    }
+  };
+
+  const filteredInquiries = inquiries.filter((inq) => {
+    if (inquiryStatusFilter !== "all") {
+      if (inquiryStatusFilter === "pending" && inq.status !== "PENDING") return false;
+      if (inquiryStatusFilter === "replied" && inq.status !== "REPLIED") return false;
+    }
+    if (!inquirySearch.trim()) return true;
+    const q = inquirySearch.toLowerCase();
+    return (
+      inq.name.toLowerCase().includes(q) ||
+      inq.email.toLowerCase().includes(q) ||
+      (inq.phone && inq.phone.toLowerCase().includes(q)) ||
+      (inq.carModel && inq.carModel.toLowerCase().includes(q)) ||
+      inq.message.toLowerCase().includes(q) ||
+      (inq.subject && inq.subject.toLowerCase().includes(q))
+    );
+  });
+
+  const pendingInquiriesCount = inquiries.filter(
+    (inq) => (inq.status || "").toUpperCase() === "PENDING"
+  ).length;
 
   if (checkingAuth) {
     return (
@@ -458,6 +556,13 @@ export function AdminPortalContent() {
             {[
               { id: "list-vehicle", label: "List Vehicle (Admin)", icon: Plus, badge: "New" },
               { id: "fleet", label: "Manage Fleet", icon: Car, count: fleet.length },
+              {
+                id: "inquiries",
+                label: "Vehicle Inquiries",
+                icon: MessageSquare,
+                count: inquiries.length,
+                badge: pendingInquiriesCount > 0 ? `${pendingInquiriesCount} New` : undefined,
+              },
               { id: "bookings", label: "Bookings Ledger", icon: CalendarCheck, count: bookings.length },
               { id: "overview", label: "Overview & Analytics", icon: TrendingUp },
             ].map((tab) => {
@@ -824,78 +929,426 @@ export function AdminPortalContent() {
             </div>
           )}
 
+          {/* TAB: VEHICLE INQUIRIES */}
+          {activeTab === "inquiries" && (
+            <div className="space-y-6">
+              {/* Inquiries Header & Controls */}
+              <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-6 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <div className="inline-flex items-center gap-1.5 text-xs font-bold text-violet-600 dark:text-violet-400 mb-1">
+                    <MessageSquare className="h-4 w-4" />
+                    <span>Customer Inquiries & Leads</span>
+                  </div>
+                  <h3 className="text-xl font-black text-slate-950 dark:text-white">
+                    Vehicle Inquiries Ledger
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Real-time inquiries and quote requests sent by travelers across the website.
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <div className="relative">
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <input
+                      type="text"
+                      value={inquirySearch}
+                      onChange={(e) => setInquirySearch(e.target.value)}
+                      placeholder="Search customer, vehicle, or phone..."
+                      className="w-full sm:w-64 pl-10 pr-4 py-2.5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-1 bg-slate-100 dark:bg-white/5 p-1 rounded-2xl border border-slate-200 dark:border-white/10">
+                    {[
+                      { id: "all", label: `All (${inquiries.length})` },
+                      { id: "pending", label: `Pending (${pendingInquiriesCount})` },
+                      { id: "replied", label: `Replied (${inquiries.length - pendingInquiriesCount})` },
+                    ].map((f) => (
+                      <button
+                        key={f.id}
+                        type="button"
+                        onClick={() => setInquiryStatusFilter(f.id)}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                          inquiryStatusFilter === f.id
+                            ? "bg-violet-600 text-white shadow-sm"
+                            : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                        }`}
+                      >
+                        {f.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Inquiries List */}
+              <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] border border-slate-200/80 dark:border-white/10 shadow-sm overflow-hidden">
+                <div className="p-6 border-b border-slate-100 dark:border-white/10 flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                    Showing {filteredInquiries.length} inquiries
+                  </span>
+                  {pendingInquiriesCount > 0 && (
+                    <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center gap-1.5">
+                      <Clock className="h-3 w-3" />
+                      {pendingInquiriesCount} awaiting customer reply
+                    </span>
+                  )}
+                </div>
+
+                <div className="divide-y divide-slate-100 dark:divide-white/10">
+                  {isLoading ? (
+                    <div className="p-12 text-center text-xs font-bold text-slate-400">
+                      Loading vehicle inquiries...
+                    </div>
+                  ) : filteredInquiries.length === 0 ? (
+                    <div className="p-12 text-center space-y-3">
+                      <div className="h-14 w-14 mx-auto rounded-3xl bg-slate-100 dark:bg-white/5 text-slate-400 flex items-center justify-center">
+                        <MessageSquare className="h-7 w-7" />
+                      </div>
+                      <div className="space-y-1">
+                        <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                          {inquirySearch ? "No matching inquiries found" : "No vehicle inquiries yet"}
+                        </h4>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs mx-auto">
+                          {inquirySearch
+                            ? "Try checking your search terms or resetting the status filter."
+                            : "When users submit inquiries from vehicle details or cards, they will appear here instantly."}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    filteredInquiries.map((inq) => {
+                      const isPending = (inq.status || "").toUpperCase() === "PENDING";
+                      const cleanPhone = inq.phone ? inq.phone.replace(/[^0-9]/g, "") : "";
+                      const waLink = cleanPhone
+                        ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
+                            `Hi ${inq.name}, contacting you from Tourmate Rentals regarding your inquiry for ${inq.carModel || "our rental vehicle"}. We'd love to confirm your reservation.`
+                          )}`
+                        : `https://wa.me/94703236834?text=${encodeURIComponent(
+                            `Customer Inquiry from ${inq.name} for ${inq.carModel || "vehicle"}.`
+                          )}`;
+
+                      const createdDate = new Date(inq.createdAt);
+                      const timeStr = !isNaN(createdDate.getTime())
+                        ? createdDate.toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
+                        : "Recent";
+
+                      return (
+                        <div
+                          key={inq.id}
+                          className="p-5 sm:p-6 hover:bg-slate-50/70 dark:hover:bg-white/[0.02] transition-colors space-y-4"
+                        >
+                          {/* Row 1: Header (Customer & Status) */}
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div className="flex items-center gap-3">
+                              <div className="h-10 w-10 rounded-2xl bg-violet-600/10 text-violet-600 dark:text-violet-400 font-black flex items-center justify-center text-sm flex-shrink-0">
+                                {inq.name ? inq.name.charAt(0).toUpperCase() : "U"}
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+                                    {inq.name}
+                                  </h4>
+                                  <span
+                                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1 ${
+                                      isPending
+                                        ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
+                                        : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
+                                    }`}
+                                  >
+                                    {isPending ? (
+                                      <>
+                                        <Clock className="h-3 w-3" />
+                                        Pending
+                                      </>
+                                    ) : (
+                                      <>
+                                        <CheckCircle2 className="h-3 w-3" />
+                                        Replied
+                                      </>
+                                    )}
+                                  </span>
+                                </div>
+                                <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                  {inq.phone && (
+                                    <span className="flex items-center gap-1">
+                                      <Phone className="h-3 w-3 text-emerald-500" />
+                                      <strong>{inq.phone}</strong>
+                                    </span>
+                                  )}
+                                  <span className="flex items-center gap-1">
+                                    <Mail className="h-3 w-3 text-violet-500" />
+                                    <span>{inq.email}</span>
+                                  </span>
+                                  <span>•</span>
+                                  <span className="text-[11px] text-slate-400">{timeStr}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Quick Action Buttons */}
+                            <div className="flex items-center gap-2 self-start sm:self-auto">
+                              <a
+                                href={waLink}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="px-3.5 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+                              >
+                                <Phone className="h-3.5 w-3.5" />
+                                <span>WhatsApp Customer</span>
+                              </a>
+
+                              <button
+                                type="button"
+                                onClick={() => handleToggleInquiryStatus(inq.id, inq.status)}
+                                disabled={updatingInquiryId === inq.id}
+                                className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
+                                  isPending
+                                    ? "bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-white/10"
+                                    : "bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/30"
+                                }`}
+                              >
+                                {updatingInquiryId === inq.id
+                                  ? "Updating..."
+                                  : isPending
+                                  ? "Mark Replied"
+                                  : "Revert to Pending"}
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteInquiry(inq.id)}
+                                title="Delete inquiry"
+                                className="p-2 rounded-full text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Row 2: Inquired Vehicle Banner */}
+                          <div className="flex flex-wrap items-center gap-3 p-3 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 text-xs">
+                            <div className="flex items-center gap-2">
+                              <div className="p-1.5 rounded-xl bg-violet-600/10 text-violet-600 dark:text-violet-400">
+                                <Car className="h-4 w-4" />
+                              </div>
+                              <span className="font-black text-slate-900 dark:text-white text-sm">
+                                {inq.carModel || inq.subject || "Tourmate Vehicle"}
+                              </span>
+                            </div>
+
+                            {inq.date && (
+                              <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
+                                <CalendarCheck className="h-3.5 w-3.5 text-violet-500" />
+                                <span>{inq.date}</span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Row 3: Message / Notes */}
+                          {inq.message && (
+                            <div className="text-xs text-slate-600 dark:text-slate-300 p-3.5 rounded-2xl bg-slate-100/50 dark:bg-white/[0.01] border border-slate-200/50 dark:border-white/5 space-y-1">
+                              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                                Inquiry Message & Requirements
+                              </span>
+                              <p className="whitespace-pre-line leading-relaxed">
+                                {inq.message}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* TAB 4: OVERVIEW & ANALYTICS */}
           {activeTab === "overview" && (
             <div className="space-y-8">
               {/* Metric Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-6 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Gross Fleet Revenue</span>
-                    <div className="h-10 w-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                      <DollarSign className="h-5 w-5" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-5 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Gross Revenue</span>
+                    <div className="h-9 w-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                      <DollarSign className="h-4 w-4" />
                     </div>
                   </div>
                   <div>
-                    <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white block">
+                    <span className="text-xl sm:text-2xl font-extrabold text-slate-950 dark:text-white block">
                       LKR {totalEarnings.toLocaleString()}
                     </span>
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 mt-1 block">
-                      {totalEarnings > 0 ? "Active rentals generated" : "No revenue recorded yet"}
+                    <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mt-1 block">
+                      {totalEarnings > 0 ? "Active rentals" : "No revenue yet"}
                     </span>
                   </div>
                 </div>
 
-                <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-6 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Vehicles</span>
-                    <div className="h-10 w-10 rounded-2xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center">
-                      <Car className="h-5 w-5" />
+                <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-5 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Customer Inquiries</span>
+                    <div className="h-9 w-9 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+                      <MessageSquare className="h-4 w-4" />
                     </div>
                   </div>
                   <div>
-                    <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white block">
+                    <span className="text-xl sm:text-2xl font-extrabold text-slate-950 dark:text-white block">
+                      {inquiries.length} {inquiries.length === 1 ? "Inquiry" : "Inquiries"}
+                    </span>
+                    <span className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 mt-1 block">
+                      {pendingInquiriesCount} awaiting reply
+                    </span>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-5 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Vehicles</span>
+                    <div className="h-9 w-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                      <Car className="h-4 w-4" />
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-xl sm:text-2xl font-extrabold text-slate-950 dark:text-white block">
                       {fleet.length} {fleet.length === 1 ? "Car" : "Cars"}
                     </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 mt-1 block">
-                      {activeCount} ready for rent • {onRentalCount} on trip
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 block">
+                      {activeCount} ready • {onRentalCount} on trip
                     </span>
                   </div>
                 </div>
 
-                <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-6 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between">
-                  <div className="flex items-center justify-between mb-4">
+                <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-5 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between">
+                  <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Completed Trips</span>
-                    <div className="h-10 w-10 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-                      <CalendarCheck className="h-5 w-5" />
+                    <div className="h-9 w-9 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                      <CalendarCheck className="h-4 w-4" />
                     </div>
                   </div>
                   <div>
-                    <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white block">
+                    <span className="text-xl sm:text-2xl font-extrabold text-slate-950 dark:text-white block">
                       {totalTrips} Trips
                     </span>
-                    <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 mt-1 block">
-                      {totalTrips > 0 ? "Verified islandwide bookings" : "Completed trip ledger"}
+                    <span className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 mt-1 block">
+                      {totalTrips > 0 ? "Verified bookings" : "Trip ledger"}
                     </span>
                   </div>
                 </div>
 
-                <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-6 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Driver Fleet Quality</span>
-                    <div className="h-10 w-10 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
-                      <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
+                <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-5 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Fleet Quality</span>
+                    <div className="h-9 w-9 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                      <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
                     </div>
                   </div>
                   <div>
-                    <span className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white block">
+                    <span className="text-xl sm:text-2xl font-extrabold text-slate-950 dark:text-white block">
                       {averageRating} / 5.0
                     </span>
-                    <span className="text-xs font-semibold text-amber-600 dark:text-amber-400 mt-1 block">
-                      {fleet.length > 0 ? "Fleet average rating across active listings" : "Standard verified rating benchmark"}
+                    <span className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 mt-1 block">
+                      Verified rating
                     </span>
                   </div>
                 </div>
+              </div>
+
+              {/* Recent Customer Inquiries Widget */}
+              <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-6 border border-slate-200/80 dark:border-white/10 shadow-sm space-y-4">
+                <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-white/10">
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-2 rounded-xl bg-violet-600/10 text-violet-600 dark:text-violet-400">
+                      <MessageSquare className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-slate-950 dark:text-white">
+                        Recent Vehicle Inquiries & Leads
+                      </h3>
+                      <p className="text-xs text-slate-400">
+                        Latest inquiries submitted by website travelers
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleTabChange("inquiries")}
+                    className="text-xs font-bold text-violet-600 dark:text-violet-400 hover:underline cursor-pointer"
+                  >
+                    View All ({inquiries.length})
+                  </button>
+                </div>
+
+                {inquiries.length === 0 ? (
+                  <p className="text-xs text-slate-400 text-center py-6">
+                    No customer inquiries received yet.
+                  </p>
+                ) : (
+                  <div className="divide-y divide-slate-100 dark:divide-white/10">
+                    {inquiries.slice(0, 4).map((inq) => {
+                      const cleanPhone = inq.phone ? inq.phone.replace(/[^0-9]/g, "") : "";
+                      const waLink = cleanPhone
+                        ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
+                            `Hi ${inq.name}, contacting you from Tourmate Rentals regarding your inquiry for ${inq.carModel || "vehicle"}.`
+                          )}`
+                        : `https://wa.me/94703236834`;
+
+                      return (
+                        <div
+                          key={inq.id}
+                          className="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                        >
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-bold text-slate-900 dark:text-white">
+                                {inq.name}
+                              </span>
+                              <span
+                                className={`px-2 py-0.2 rounded-full text-[9px] font-black uppercase tracking-wider ${
+                                  (inq.status || "").toUpperCase() === "PENDING"
+                                    ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                                    : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                }`}
+                              >
+                                {inq.status}
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 truncate max-w-md">
+                              Inquired for <strong>{inq.carModel || "Vehicle"}</strong>
+                              {inq.date ? ` • ${inq.date}` : ""}
+                            </p>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <a
+                              href={waLink}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="px-3 py-1 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold shadow-xs transition-all"
+                            >
+                              WhatsApp
+                            </a>
+                            <button
+                              type="button"
+                              onClick={() => handleToggleInquiryStatus(inq.id, inq.status)}
+                              className="px-3 py-1 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 text-[11px] font-semibold border border-slate-200 dark:border-white/10 transition-all cursor-pointer"
+                            >
+                              {inq.status === "PENDING" ? "Mark Replied" : "Pending"}
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
 
               {/* Quick Actions Panel */}
