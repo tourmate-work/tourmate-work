@@ -588,7 +588,7 @@ function HighlightMatch({ text, query }: { text: string; query: string }) {
 function rankLocations(
   locations: SriLankaLocation[],
   rawQuery: string,
-  category: string
+  category: string = "all"
 ): SriLankaLocation[] {
   const trimmed = rawQuery.trim().toLowerCase();
 
@@ -658,7 +658,6 @@ export interface LocationSearchInputProps {
   variant?: "light" | "catalog" | "dark";
   className?: string;
   required?: boolean;
-  showQuickChips?: boolean;
 }
 
 export function LocationSearchInput({
@@ -669,11 +668,9 @@ export function LocationSearchInput({
   variant = "light",
   className = "",
   required = false,
-  showQuickChips = false,
 }: LocationSearchInputProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState(value);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [liveResults, setLiveResults] = useState<LiveLocationItem[]>([]);
   const [isLoadingLive, setIsLoadingLive] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -759,8 +756,7 @@ export function LocationSearchInput({
   // Google-style ranked recommendations based on partial characters typed
   const rankedSuggestions = rankLocations(
     POPULAR_SRI_LANKA_LOCATIONS,
-    query,
-    selectedCategory
+    query
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -832,60 +828,9 @@ export function LocationSearchInput({
         )}
       </div>
 
-      {/* Quick Horizontally Scrollable Pickup Location Chips */}
-      {showQuickChips && (
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-2 pb-0.5 touch-pan-x">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex-shrink-0 mr-1">
-            Popular:
-          </span>
-          {POPULAR_QUICK_HUBS.map((hub) => {
-            const isMatch = value.toLowerCase() === hub.name.toLowerCase();
-            return (
-              <button
-                key={hub.name}
-                type="button"
-                onClick={() => handleSelectLocation(hub.name)}
-                className={`flex-shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                  isMatch
-                    ? "bg-violet-600 text-white shadow-sm ring-1 ring-violet-600"
-                    : isLightVariant
-                    ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/80"
-                    : "bg-white/10 hover:bg-white/15 text-slate-200 border border-white/10"
-                }`}
-              >
-                {hub.shortLabel}
-              </button>
-            );
-          })}
-        </div>
-      )}
-
       {/* Autocomplete Dropdown List */}
       {isOpen && (
         <div className="absolute left-0 right-0 top-full mt-2 max-h-[55vh] sm:max-h-80 overflow-y-auto overscroll-contain touch-pan-y bg-white dark:bg-[#111116] border border-slate-200 dark:border-white/15 rounded-2xl shadow-2xl z-50 p-2 animate-in fade-in slide-in-from-top-2 duration-150 divide-y divide-slate-100 dark:divide-white/5 scrollbar-thin">
-          
-          {/* Horizontally Scrollable Category Pills Bar */}
-          <div className="pb-2 pt-0.5">
-            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar touch-pan-x py-0.5">
-              {LOCATION_CATEGORIES.map((cat) => {
-                const isActive = selectedCategory === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    onClick={() => setSelectedCategory(cat.id)}
-                    className={`flex-shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer whitespace-nowrap ${
-                      isActive
-                        ? "bg-violet-600 text-white shadow-sm"
-                        : "bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-white/10"
-                    }`}
-                  >
-                    {cat.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
 
           {/* 1. Custom typed address quick selection */}
           {query.trim() && (
@@ -920,11 +865,7 @@ export function LocationSearchInput({
                     <span>Suggestions for &quot;{query.trim()}&quot;</span>
                   </>
                 ) : (
-                  <span>
-                    {selectedCategory !== "all"
-                      ? `${selectedCategory} Hubs`
-                      : "Popular Sri Lanka Delivery Hubs"}
-                  </span>
+                  <span>Popular Sri Lanka Delivery Hubs</span>
                 )}
               </span>
               <span className="text-[9px] font-medium">
