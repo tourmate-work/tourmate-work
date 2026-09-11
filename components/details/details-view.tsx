@@ -721,7 +721,7 @@ function DetailsContentInner() {
           </div>
 
           {/* 6 Car Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6 lg:gap-8">
             {otherCars.map((car, index) => (
               <ScrollReveal
                 key={car.id}
@@ -729,50 +729,50 @@ function DetailsContentInner() {
                 direction="up"
                 distance={28}
               >
-                <div className="card-hover-lift bg-[#f8fafc] dark:bg-[#111116] hover:bg-white dark:hover:bg-[#16161d] rounded-[24px] sm:rounded-[30px] p-4 sm:p-6 border border-slate-100/90 dark:border-white/10 shadow-sm hover:border-slate-200 dark:hover:border-white/20 transition-all duration-300 flex flex-col justify-between group h-full">
+                <div className="card-hover-lift bg-[#f8fafc] dark:bg-[#111116] hover:bg-white dark:hover:bg-[#16161d] rounded-[18px] sm:rounded-[30px] p-2.5 sm:p-6 border border-slate-100/90 dark:border-white/10 shadow-sm hover:border-slate-200 dark:hover:border-white/20 transition-all duration-300 flex flex-col justify-between group h-full">
                   {/* Car Photo Container */}
-                  <div className="relative aspect-[16/9] w-full rounded-[24px] bg-white dark:bg-black/40 border border-slate-100 dark:border-white/5 mb-6 flex items-center justify-center overflow-hidden group-hover:bg-slate-50/50 dark:group-hover:bg-black/60 transition-colors">
+                  <div className="relative aspect-[16/9] w-full rounded-[14px] sm:rounded-[24px] bg-white dark:bg-black/40 border border-slate-100 dark:border-white/5 mb-2 sm:mb-6 flex items-center justify-center overflow-hidden group-hover:bg-slate-50/50 dark:group-hover:bg-black/60 transition-colors">
                     <VehicleImage
                       src={car.thumbnails?.[0] || ""}
                       alt={car.name}
                       fallbackName={car.name}
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(max-width: 640px) 50vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   </div>
 
                   {/* Specs and Details */}
-                  <div className="space-y-4">
+                  <div className="space-y-1.5 sm:space-y-4">
                     {/* Name and Price */}
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="title-hover-glow text-lg font-bold text-slate-900 dark:text-white leading-snug group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-0.5 sm:gap-2">
+                      <div className="min-w-0">
+                        <h3 className="title-hover-glow text-xs sm:text-base lg:text-lg font-bold text-slate-900 dark:text-white leading-snug group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors truncate">
                           {car.name}
                         </h3>
-                        <p className="text-xs text-slate-400 font-medium">
+                        <p className="text-[10px] sm:text-xs text-slate-400 font-medium truncate">
                           {car.category}
                         </p>
                       </div>
-                      <div className="text-right">
-                        <span className="text-lg font-bold text-violet-600 dark:text-violet-400 block leading-tight">
+                      <div className="text-left sm:text-right flex-shrink-0 flex items-baseline sm:block gap-1 mt-0.5 sm:mt-0">
+                        <span className="text-xs sm:text-base lg:text-lg font-bold text-violet-600 dark:text-violet-400 block leading-tight">
                           {car.price}
                         </span>
-                        <span className="text-xs text-slate-400">{language === "si" ? t("fleet_per_day") : car.period}</span>
+                        <span className="text-[9px] sm:text-xs text-slate-400">{language === "si" ? t("fleet_per_day") : car.period}</span>
                       </div>
                     </div>
 
                     {/* 3 Specs: Automatic, Fuel / 70 Ltr, AC */}
-                    <div className="grid grid-cols-3 gap-1.5 py-3 border-t border-slate-200/70 dark:border-white/10 text-[11px] text-slate-500 dark:text-slate-400">
-                      <div className="flex items-center gap-1">
-                        <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400" />
+                    <div className="grid grid-cols-3 gap-0.5 sm:gap-1.5 py-1 sm:py-3 border-t border-slate-200/70 dark:border-white/10 text-[9px] sm:text-[11px] text-slate-500 dark:text-slate-400">
+                      <div className="flex items-center justify-center sm:justify-start gap-0.5 sm:gap-1">
+                        <SlidersHorizontal className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 text-slate-400 flex-shrink-0" />
                         <span className="truncate">{car.specs.gearBox}</span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Fuel className="h-3.5 w-3.5 text-slate-400" />
+                      <div className="flex items-center justify-center sm:justify-start gap-0.5 sm:gap-1">
+                        <Fuel className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 text-slate-400 flex-shrink-0" />
                         <span className="truncate">{car.specs.fuel}</span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Snowflake className="h-3.5 w-3.5 text-slate-400" />
+                      <div className="flex items-center justify-center sm:justify-start gap-0.5 sm:gap-1">
+                        <Snowflake className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 text-slate-400 flex-shrink-0" />
                         <span className="truncate">{t("details_ac")}</span>
                       </div>
                     </div>
@@ -780,7 +780,7 @@ function DetailsContentInner() {
                     {/* View Details Button */}
                     <button
                       onClick={() => handleSelectCar(car)}
-                      className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm py-3.5 rounded-[30px] shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-center cursor-pointer"
+                      className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-[10px] sm:text-sm py-1.5 sm:py-3.5 rounded-[14px] sm:rounded-[30px] shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-center cursor-pointer"
                     >
                       {t("details_view_details")}
                     </button>

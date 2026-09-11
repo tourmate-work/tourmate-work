@@ -605,7 +605,7 @@ export function VehiclesCatalog() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6 lg:gap-8">
             {filteredVehicles.map((car, index) => (
               <ScrollReveal
                 key={car.id}
@@ -613,85 +613,85 @@ export function VehiclesCatalog() {
                 direction="up"
                 distance={28}
               >
-                <div className="stripe-card rounded-[30px] p-6 shadow-sm hover:shadow-2xl flex flex-col justify-between group h-full">
+                <div className="stripe-card rounded-[18px] sm:rounded-[30px] p-2.5 sm:p-6 shadow-sm hover:shadow-2xl flex flex-col justify-between group h-full">
                   {/* Silhouette & Top Badge */}
                   <div>
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center justify-between mb-1.5 sm:mb-3">
                       {/* Availability Status Badge */}
                       {car.isAvailable ? (
-                        <span className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
+                        <span className="inline-flex items-center gap-1 sm:gap-1.5 text-[9px] sm:text-[11px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-1.5 sm:px-2.5 py-0.5 rounded-full">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          {t("catalog_available_now")}
+                          <span className="truncate">{t("catalog_available_now")}</span>
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider text-slate-500 bg-slate-500/10 px-2.5 py-0.5 rounded-full">
+                        <span className="inline-flex items-center gap-1 text-[9px] sm:text-[11px] font-extrabold uppercase tracking-wider text-slate-500 bg-slate-500/10 px-1.5 sm:px-2.5 py-0.5 rounded-full">
                           {car.status || "Reserved"}
                         </span>
                       )}
 
-                      <span className="text-xs text-slate-400 font-bold">
+                      <span className="text-[9px] sm:text-xs text-slate-400 font-bold truncate max-w-[65px] sm:max-w-none">
                         {car.specs.distance}
                       </span>
                     </div>
 
                     {/* Vehicle Photo Container */}
-                    <div className="relative aspect-[16/10] w-full rounded-[24px] overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-100 dark:border-white/10 mb-5 group-hover:shadow-lg transition-all">
+                    <div className="relative aspect-[16/10] w-full rounded-[14px] sm:rounded-[24px] overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-100 dark:border-white/10 mb-2 sm:mb-5 group-hover:shadow-lg transition-all">
                       <VehicleImage
                         src={car.thumbnails?.[0] || ""}
                         alt={car.name}
                         fallbackName={car.name}
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        sizes="(max-width: 640px) 50vw, (max-width: 1200px) 50vw, 33vw"
                       />
                       <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity pointer-events-none" />
 
                       {/* Location Badge on Photo */}
-                      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
-                        <div className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-black/70 backdrop-blur-md text-white border border-white/20 truncate flex items-center gap-1">
-                          <MapPin className="h-3 w-3 text-violet-400 flex-shrink-0" />
+                      <div className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-3 sm:left-3 sm:right-3 flex items-center justify-between gap-1 sm:gap-2">
+                        <div className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wide bg-black/70 backdrop-blur-md text-white border border-white/20 truncate flex items-center gap-0.5 sm:gap-1 max-w-[90%] sm:max-w-none">
+                          <MapPin className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-violet-400 flex-shrink-0" />
                           <span className="truncate">
                             {locationQuery.trim() ? `Pickup: ${locationQuery.trim()}` : (car.location || "Sri Lanka")}
                           </span>
                         </div>
 
-                        <div className="px-2 py-1 rounded-full text-[10px] font-bold bg-black/70 backdrop-blur-md text-slate-200 border border-white/20 flex-shrink-0">
+                        <div className="hidden xs:block sm:block px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[8px] sm:text-[10px] font-bold bg-black/70 backdrop-blur-md text-slate-200 border border-white/20 flex-shrink-0">
                           {car.specs.gearBox}
                         </div>
                       </div>
                     </div>
 
                     {/* Specs & Info */}
-                    <div className="space-y-3">
+                    <div className="space-y-1 sm:space-y-3">
                       {/* Header: Name + Price */}
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h3 className="title-hover-glow text-xl font-bold text-slate-900 dark:text-white leading-snug group-hover:text-violet-600 transition-colors">
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-0.5 sm:gap-2">
+                        <div className="min-w-0">
+                          <h3 className="title-hover-glow text-xs sm:text-lg lg:text-xl font-bold text-slate-900 dark:text-white leading-snug group-hover:text-violet-600 transition-colors truncate">
                             {car.name}
                           </h3>
-                          <p className="text-xs text-slate-400 font-medium mt-0.5">
+                          <p className="text-[10px] sm:text-xs text-slate-400 font-medium mt-0.5 truncate">
                             {car.category} • {t("fleet_fully_insured")}
                           </p>
                         </div>
-                        <div className="text-right flex-shrink-0">
-                          <span className="text-lg font-bold text-violet-600 dark:text-violet-400 block leading-tight">
+                        <div className="text-left sm:text-right flex-shrink-0 flex items-baseline sm:block gap-1 mt-0.5 sm:mt-0">
+                          <span className="text-xs sm:text-base lg:text-lg font-bold text-violet-600 dark:text-violet-400 block leading-tight">
                             {car.price}
                           </span>
-                          <span className="text-xs text-slate-400">{car.period}</span>
+                          <span className="text-[9px] sm:text-xs text-slate-400">{car.period}</span>
                         </div>
                       </div>
 
                       {/* 3 Quick Specs Pills: Transmission, Seats, AC */}
-                      <div className="grid grid-cols-3 gap-1.5 py-2.5 border-t border-slate-100 dark:border-white/10 text-[11px] text-slate-500 dark:text-slate-400">
-                        <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
-                          <SlidersHorizontal className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+                      <div className="grid grid-cols-3 gap-0.5 sm:gap-1.5 py-1 sm:py-2.5 border-t border-slate-100 dark:border-white/10 text-[9px] sm:text-[11px] text-slate-500 dark:text-slate-400">
+                        <div className="flex items-center justify-center sm:justify-start gap-0.5 sm:gap-1 bg-slate-50 dark:bg-white/5 py-1 sm:py-1.5 px-1 sm:px-2 rounded-lg sm:rounded-xl">
+                          <SlidersHorizontal className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 text-slate-400 flex-shrink-0" />
                           <span className="truncate">{car.specs.gearBox}</span>
                         </div>
-                        <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
-                          <Users className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+                        <div className="flex items-center justify-center sm:justify-start gap-0.5 sm:gap-1 bg-slate-50 dark:bg-white/5 py-1 sm:py-1.5 px-1 sm:px-2 rounded-lg sm:rounded-xl">
+                          <Users className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 text-slate-400 flex-shrink-0" />
                           <span className="truncate">{car.specs.seats} {language === "si" ? "ආසන" : "Seats"}</span>
                         </div>
-                        <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 py-1.5 px-2 rounded-xl">
-                          <Snowflake className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
+                        <div className="flex items-center justify-center sm:justify-start gap-0.5 sm:gap-1 bg-slate-50 dark:bg-white/5 py-1 sm:py-1.5 px-1 sm:px-2 rounded-lg sm:rounded-xl">
+                          <Snowflake className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 text-slate-400 flex-shrink-0" />
                           <span className="truncate">{language === "si" ? "වායුසමනය" : "AC"}</span>
                         </div>
                       </div>
@@ -699,10 +699,10 @@ export function VehiclesCatalog() {
                   </div>
 
                   {/* Action Buttons: View Details & Request to Book */}
-                  <div className="pt-4 grid grid-cols-2 gap-2">
+                  <div className="pt-2 sm:pt-4 grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2">
                     <button
                       onClick={() => handleOpenDetails(car)}
-                      className="w-full py-3 rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-xs transition-colors text-center cursor-pointer"
+                      className="w-full py-1.5 sm:py-3 rounded-[14px] sm:rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-[10px] sm:text-xs transition-colors text-center cursor-pointer"
                     >
                       {t("catalog_btn_view_details")}
                     </button>
@@ -720,7 +720,7 @@ export function VehiclesCatalog() {
                           seats: car.specs.seats,
                         })
                       }
-                      className="w-full bg-slate-950 hover:bg-violet-700 dark:bg-white dark:text-slate-950 dark:hover:bg-violet-400 dark:hover:text-white text-white font-bold text-xs py-3 rounded-[30px] shadow-sm transition-all active:scale-95 text-center cursor-pointer flex items-center justify-center gap-1"
+                      className="w-full bg-slate-950 hover:bg-violet-700 dark:bg-white dark:text-slate-950 dark:hover:bg-violet-400 dark:hover:text-white text-white font-bold text-[10px] sm:text-xs py-1.5 sm:py-3 rounded-[14px] sm:rounded-[30px] shadow-sm transition-all active:scale-95 text-center cursor-pointer flex items-center justify-center gap-1"
                     >
                       <span>{t("fleet_btn_book")}</span>
                     </button>
