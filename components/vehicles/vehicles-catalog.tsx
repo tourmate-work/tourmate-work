@@ -772,10 +772,9 @@ export function VehiclesCatalog() {
           <div className="relative w-full max-w-5xl bg-white dark:bg-[#0b0b0e] rounded-[30px] shadow-2xl border border-slate-100/80 dark:border-white/10 my-auto z-10 max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 ease-out animate-in zoom-in-95 fade-in slide-in-from-bottom-6">
             {/* Modal Header Bar */}
             <div className="flex items-center justify-between gap-3 px-4 sm:px-8 py-3.5 sm:py-5 border-b border-slate-100 dark:border-white/10 bg-white/95 dark:bg-[#0b0b0e]/95 backdrop-blur-sm sticky top-0 z-30 flex-shrink-0">
-              {/* Vehicle Title + Status + Price + Location in requested sequence */}
-              <div className="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-2 min-w-0 flex-1">
-                {/* 1. Name & Available Badge */}
-                <div className="flex items-center gap-2 flex-shrink-0">
+              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 min-w-0 flex-1">
+                {/* Left: Name & Available Badge */}
+                <div className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
                   <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-950 dark:text-white tracking-tight capitalize">
                     {activeModalCar.name}
                   </h2>
@@ -786,32 +785,35 @@ export function VehiclesCatalog() {
                   )}
                 </div>
 
-                {/* 2. Price (placed next to Available with space in between) */}
-                <div className="inline-flex items-baseline gap-1 whitespace-nowrap flex-shrink-0">
-                  <span className="text-lg sm:text-2xl font-black text-violet-600 dark:text-violet-400 whitespace-nowrap">
-                    {activeModalCar.price}
-                  </span>
-                  <span className="text-xs sm:text-sm font-medium text-slate-400 whitespace-nowrap">
-                    {activeModalCar.period}
-                  </span>
-                </div>
-
-                {/* 3. Location (placed after price) */}
-                {(modalPickupLocation || activeModalCar.location) && (
-                  <div className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-2.5 py-1 rounded-full max-w-full sm:max-w-xs truncate flex-shrink-0">
-                    <MapPin className="h-3.5 w-3.5 text-violet-500 flex-shrink-0" />
-                    <span className="truncate">
-                      {modalPickupLocation ? `Pickup: ${modalPickupLocation}` : activeModalCar.location}
+                {/* Right: Price & Location (pushed to the right with space in the middle) */}
+                <div className="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-2 sm:ml-auto">
+                  {/* Price */}
+                  <div className="inline-flex items-baseline gap-1 whitespace-nowrap flex-shrink-0">
+                    <span className="text-lg sm:text-2xl font-black text-violet-600 dark:text-violet-400 whitespace-nowrap">
+                      {activeModalCar.price}
+                    </span>
+                    <span className="text-xs sm:text-sm font-medium text-slate-400 whitespace-nowrap">
+                      {activeModalCar.period}
                     </span>
                   </div>
-                )}
+
+                  {/* Location */}
+                  {(modalPickupLocation || activeModalCar.location) && (
+                    <div className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-2.5 py-1 rounded-full max-w-full sm:max-w-xs truncate flex-shrink-0">
+                      <MapPin className="h-3.5 w-3.5 text-violet-500 flex-shrink-0" />
+                      <span className="truncate">
+                        {modalPickupLocation ? `Pickup: ${modalPickupLocation}` : activeModalCar.location}
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Close Button */}
               <button
                 onClick={handleCloseModal}
                 aria-label="Close vehicle details"
-                className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 flex items-center justify-center transition-all duration-200 hover:rotate-90 shadow-sm cursor-pointer flex-shrink-0 ml-1"
+                className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 flex items-center justify-center transition-all duration-200 hover:rotate-90 shadow-sm cursor-pointer flex-shrink-0 ml-1 sm:ml-2"
               >
                 <X className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
