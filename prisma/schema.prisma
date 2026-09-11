@@ -108,3 +108,14 @@ model Inquiry {
   status    String   @default("PENDING") // "PENDING", "REPLIED"
   createdAt DateTime @default(now())
 }
+
+model Policy {
+  id          String   @id // "terms", "privacy", "cancellation"
+  title       String
+  subtitle    String?
+  lastUpdated String?
+  intro       String?
+  sections    String   // JSON array string of sections
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

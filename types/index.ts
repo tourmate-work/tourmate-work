@@ -86,3 +86,24 @@ export interface UserProfile {
   role: "CUSTOMER" | "SELLER" | "ADMIN" | "customer" | "admin" | "partner" | string;
   createdAt?: string | Date;
 }
+
+export type PolicyType = "terms" | "privacy" | "cancellation";
+
+export interface PolicySection {
+  id: string;
+  title: string;
+  content: string;
+  note?: string;
+}
+
+export interface PolicyDocument {
+  id: PolicyType | string;
+  title: string;
+  subtitle?: string;
+  lastUpdated?: string;
+  intro?: string;
+  sections: PolicySection[];
+  updatedAt?: string;
+}
+
+export type PoliciesMap = Record<PolicyType, PolicyDocument>;
