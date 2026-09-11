@@ -82,9 +82,13 @@ export const api = {
       });
       return res.json();
     },
-    async me(): Promise<{ success: boolean; user?: UserProfile; error?: string }> {
-      const res = await fetch("/api/auth/me");
-      return res.json();
+    async me(): Promise<{ success: boolean; user?: UserProfile | null; authenticated?: boolean; error?: string }> {
+      try {
+        const res = await fetch("/api/auth/me");
+        return res.json();
+      } catch {
+        return { success: false, user: null, authenticated: false };
+      }
     },
     async logout() {
       const res = await fetch("/api/auth/logout", { method: "POST" });
