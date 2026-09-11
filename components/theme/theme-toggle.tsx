@@ -14,7 +14,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
 
   if (!mounted) {
     return (
-      <div className={`h-10 w-10 rounded-full border border-slate-200 dark:border-white/10 ${className}`} />
+      <div className={`h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 rounded-full border border-slate-200 dark:border-white/10 flex-shrink-0 ${className}`} />
     );
   }
 
@@ -25,22 +25,22 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       type="button"
       onClick={toggleTheme}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      className={`relative h-10 w-10 rounded-full flex items-center justify-center transition-all duration-300 border ${
+      className={`relative h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 rounded-full flex items-center justify-center transition-all duration-300 border flex-shrink-0 ${
         isDark
           ? "bg-[#16161a] hover:bg-[#202026] text-amber-400 border-white/15 shadow-inner"
           : "bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200 shadow-sm"
       } ${className} active:scale-95`}
     >
-      <div className="relative h-5 w-5">
+      <div className="relative h-3.5 w-3.5 sm:h-4 sm:w-4 md:h-5 md:w-5">
         <Sun
-          className={`h-5 w-5 absolute inset-0 transition-all duration-500 transform ${
+          className={`h-3.5 w-3.5 sm:h-4 sm:w-4 md:h-5 md:w-5 absolute inset-0 transition-all duration-500 transform ${
             isDark
               ? "rotate-90 scale-0 opacity-0"
               : "rotate-0 scale-100 opacity-100 text-amber-500"
           }`}
         />
         <Moon
-          className={`h-5 w-5 absolute inset-0 transition-all duration-500 transform ${
+          className={`h-3.5 w-3.5 sm:h-4 sm:w-4 md:h-5 md:w-5 absolute inset-0 transition-all duration-500 transform ${
             isDark
               ? "rotate-0 scale-100 opacity-100 text-amber-400"
               : "-rotate-90 scale-0 opacity-0"

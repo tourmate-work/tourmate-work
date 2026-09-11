@@ -374,21 +374,21 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full stripe-glass border-b border-slate-200/80 dark:border-white/10 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-20 flex items-center justify-between">
         {/* Logo & Portal Badge */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
           <Link href={isAdmin ? "/admin" : "/"} className="flex items-center gap-2 group py-1">
             <Image
               src="/images/logo-transparent.png"
               alt="Tourmate Rentals"
               width={160}
               height={52}
-              className="h-8 sm:h-11 w-auto object-contain group-hover:scale-105 transition-transform duration-200 dark:brightness-110"
+              className="h-7 sm:h-11 w-auto object-contain group-hover:scale-105 transition-transform duration-200 dark:brightness-110"
               priority
             />
           </Link>
           {isAdmin && (
-            <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider bg-violet-500/20 text-violet-700 dark:text-violet-300 border border-violet-500/40 px-2 sm:px-2.5 py-0.5 rounded-full">
+            <span className="inline-flex items-center gap-1 text-[9px] sm:text-[11px] font-extrabold uppercase tracking-wider bg-violet-500/20 text-violet-700 dark:text-violet-300 border border-violet-500/40 px-1.5 sm:px-2.5 py-0.5 rounded-full">
               Admin Portal
             </span>
           )}
@@ -409,42 +409,40 @@ export function Header() {
                     onMouseEnter={() => handleMouseEnter(section.id)}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <Link
-                      href={section.href}
+                    <button
+                      type="button"
                       onClick={() => {
-                        setActiveAdminTab(section.id);
-                        setActiveDropdown(null);
+                        if (section.href.includes("tab=")) {
+                          const match = section.href.match(/tab=([^&]+)/);
+                          if (match) setActiveAdminTab(match[1]);
+                        }
                       }}
-                      className={`flex items-center gap-1.5 py-2 px-3.5 rounded-full text-xs sm:text-sm font-bold transition-all ${
-                        isCurrentActive
-                          ? "bg-slate-100/90 dark:bg-white/10 text-slate-950 dark:text-white shadow-xs"
-                          : "text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100/60 dark:hover:bg-white/5"
+                      className={`flex items-center gap-1.5 py-2 px-3.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
+                        isCurrentActive || isOpen
+                          ? "bg-violet-600 text-white shadow-md shadow-violet-500/25"
+                          : "text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/5"
                       }`}
                     >
                       <span>{section.label}</span>
                       <ChevronDown
-                        className={`h-3.5 w-3.5 transition-transform duration-200 ${
-                          isOpen
-                            ? "rotate-180 text-violet-600 dark:text-violet-400"
-                            : "text-slate-400 dark:text-slate-500 opacity-70"
+                        className={`h-3 w-3 transition-transform duration-200 ${
+                          isOpen ? "rotate-180" : ""
                         }`}
                       />
-                    </Link>
+                    </button>
 
-                    {/* Animated Dropdown Flyout Sub-menu */}
+                    {/* Submenu Dropdown */}
                     {isOpen && (
                       <div
-                        className="absolute top-full -left-4 sm:left-1/2 sm:-translate-x-1/2 pt-2 z-50 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200"
+                        className="absolute top-full left-0 pt-2 z-50 animate-in fade-in-0 zoom-in-95 duration-150"
                         onMouseEnter={() => handleMouseEnter(section.id)}
                         onMouseLeave={handleMouseLeave}
                       >
-                        <div className="w-80 sm:w-96 rounded-[26px] bg-white/95 dark:bg-[#121217]/95 border border-slate-200/90 dark:border-white/10 shadow-2xl backdrop-blur-2xl p-2.5 space-y-1">
-                          {/* Category Header */}
-                          <div className="px-3 pt-1.5 pb-2 flex items-center justify-between border-b border-slate-100 dark:border-white/5">
-                            <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                        <div className="w-80 rounded-3xl bg-white dark:bg-[#0f0f13] border border-slate-200/90 dark:border-white/10 shadow-2xl p-3 space-y-2 backdrop-blur-xl">
+                          <div className="px-3 py-1.5 border-b border-slate-100 dark:border-white/5">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-violet-600 dark:text-violet-400">
                               {section.badgeTitle}
                             </span>
-                            <span className="h-1.5 w-1.5 rounded-full bg-violet-600 dark:bg-violet-400 animate-pulse" />
                           </div>
 
                           {/* Submenu Item Rows */}
@@ -562,16 +560,17 @@ export function Header() {
         </nav>
 
         {/* Right Actions: Language Switcher + Portal Switcher + Theme Toggle + Phone + Mobile Hamburger */}
-        <div className="flex items-center gap-1 sm:gap-2.5">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           {/* User Profile / Auth State Pill */}
           {isAuthenticated && user ? (
             <div className="relative" ref={userDropdownRef}>
               <button
                 type="button"
                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="flex items-center gap-1.5 sm:gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-900 dark:text-white border border-slate-200/80 dark:border-white/10 pl-1.5 pr-2 sm:pr-3 py-1 sm:py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95"
+                className="flex items-center gap-1.5 sm:gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-900 dark:text-white border border-slate-200/80 dark:border-white/10 h-8 w-8 sm:h-auto sm:w-auto p-0 sm:pl-1.5 sm:pr-3 sm:py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95 justify-center flex-shrink-0"
+                title={user.name}
               >
-                <div className="h-6 w-6 rounded-full bg-violet-600 text-white flex items-center justify-center text-[11px] font-black overflow-hidden flex-shrink-0">
+                <div className="h-6 w-6 rounded-full bg-violet-600 text-white flex items-center justify-center text-[10px] sm:text-[11px] font-black overflow-hidden flex-shrink-0">
                   {user.avatarUrl ? (
                     <img src={user.avatarUrl} alt={user.name} className="h-full w-full object-cover" />
                   ) : (
@@ -580,7 +579,7 @@ export function Header() {
                 </div>
                 <span className="hidden sm:inline max-w-[80px] truncate">{user.name.split(" ")[0]}</span>
                 <ChevronDown
-                  className={`h-3 w-3 text-slate-400 transition-transform duration-200 ${
+                  className={`hidden sm:block h-3 w-3 text-slate-400 transition-transform duration-200 ${
                     userDropdownOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -633,11 +632,11 @@ export function Header() {
             <button
               type="button"
               onClick={() => openAuthModal("phone")}
-              className="inline-flex items-center gap-1.5 bg-violet-600 hover:bg-violet-700 text-white px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full text-xs font-bold transition-all shadow-sm shadow-violet-500/25 active:scale-95 cursor-pointer"
+              className="inline-flex items-center justify-center h-8 w-8 sm:h-auto sm:w-auto sm:gap-1.5 bg-violet-600 hover:bg-violet-700 text-white sm:px-3.5 sm:py-2 rounded-full text-xs font-bold transition-all shadow-sm shadow-violet-500/25 active:scale-95 cursor-pointer flex-shrink-0"
+              title={t("nav_sign_in")}
             >
               <UserIcon className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">{t("nav_sign_in")}</span>
-              <span className="sm:hidden">{language === "si" ? "ලොගින්" : "Sign In"}</span>
             </button>
           )}
 
@@ -649,22 +648,22 @@ export function Header() {
           {isAdmin ? (
             <Link
               href="/"
-              className="inline-flex items-center gap-1 bg-slate-100 hover:bg-slate-200 dark:bg-[#16161a] dark:hover:bg-[#202026] text-slate-900 dark:text-white border border-slate-200 dark:border-white/15 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-bold transition-all shadow-sm group active:scale-95 cursor-pointer"
+              className="inline-flex items-center justify-center h-8 w-8 sm:h-auto sm:w-auto sm:gap-1 bg-slate-100 hover:bg-slate-200 dark:bg-[#16161a] dark:hover:bg-[#202026] text-slate-900 dark:text-white border border-slate-200 dark:border-white/15 sm:px-4 sm:py-2 rounded-full text-xs font-bold transition-all shadow-sm group active:scale-95 cursor-pointer flex-shrink-0"
+              title={t("nav_public_site")}
             >
               <ArrowLeft className="h-3.5 w-3.5 text-slate-500 group-hover:-translate-x-0.5 transition-transform" />
               <span className="hidden sm:inline">{t("nav_public_site")}</span>
-              <span className="sm:hidden">{language === "si" ? "ප්‍රධාන" : "Public"}</span>
             </Link>
           ) : (
             <a
               href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-bold transition-all shadow-sm shadow-emerald-500/25 active:scale-95 group cursor-pointer"
+              className="inline-flex items-center justify-center h-8 w-8 sm:h-auto sm:w-auto sm:gap-1 bg-emerald-600 hover:bg-emerald-700 text-white sm:px-4 sm:py-2 rounded-full text-xs font-bold transition-all shadow-sm shadow-emerald-500/25 active:scale-95 group cursor-pointer flex-shrink-0"
+              title={t("nav_list_vehicle")}
             >
               <MessageCircle className="h-3.5 w-3.5 opacity-90 group-hover:scale-110 transition-transform" />
               <span className="hidden sm:inline">{t("nav_list_vehicle")}</span>
-              <span className="sm:hidden">{language === "si" ? "ලියාපදිංචි" : "List Car"}</span>
             </a>
           )}
 
@@ -674,7 +673,7 @@ export function Header() {
           {/* Desktop Support Phone Pill */}
           <a
             href="tel:+94772973530"
-            className="hidden lg:flex items-center gap-3 bg-slate-50 dark:bg-[#16161a] hover:bg-slate-100 dark:hover:bg-[#202026] border border-slate-200/80 dark:border-white/15 px-3.5 py-2 rounded-full transition-all group shadow-sm active:scale-95"
+            className="hidden lg:flex items-center gap-3 bg-slate-50 dark:bg-[#16161a] hover:bg-slate-100 dark:hover:bg-[#202026] border border-slate-200/80 dark:border-white/15 px-3.5 py-2 rounded-full transition-all group shadow-sm active:scale-95 flex-shrink-0"
           >
             <div className="h-8 w-8 rounded-full bg-violet-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
               <Phone className="h-4 w-4" />
@@ -694,9 +693,9 @@ export function Header() {
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            className="md:hidden h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-slate-100 dark:bg-[#16161a] border border-slate-200 dark:border-white/15 text-slate-700 dark:text-slate-300 flex items-center justify-center transition-transform active:scale-90 flex-shrink-0"
+            className="md:hidden h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-slate-100 dark:bg-[#16161a] border border-slate-200 dark:border-white/15 text-slate-700 dark:text-slate-300 flex items-center justify-center transition-transform active:scale-90 flex-shrink-0"
           >
-            {mobileMenuOpen ? <X className="h-4 w-4 sm:h-5 sm:w-5" /> : <Menu className="h-4 w-4 sm:h-5 sm:w-5" />}
+            {mobileMenuOpen ? <X className="h-3.5 w-3.5 sm:h-5 sm:w-5" /> : <Menu className="h-3.5 w-3.5 sm:h-5 sm:w-5" />}
           </button>
         </div>
       </div>

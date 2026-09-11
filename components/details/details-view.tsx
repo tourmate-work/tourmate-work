@@ -535,9 +535,27 @@ function DetailsContentInner() {
               </div>
             </div>
 
-            {/* Main Silhouette View */}
-            <div className="relative aspect-[16/9] w-full rounded-[30px] bg-slate-50 dark:bg-[#111116] border border-slate-100/90 dark:border-white/10 flex items-center justify-center p-8 overflow-hidden shadow-inner">
-              <VehicleVectorGraphic type={selectedVehicle.type} />
+            {/* Main Hero Photo View */}
+            <div className="relative aspect-[16/9] w-full rounded-[30px] bg-slate-50 dark:bg-[#111116] border border-slate-100/90 dark:border-white/10 flex items-center justify-center overflow-hidden shadow-inner group">
+              {selectedVehicle.thumbnails && selectedVehicle.thumbnails[activeThumbnailIndex] ? (
+                <Image
+                  src={selectedVehicle.thumbnails[activeThumbnailIndex]}
+                  alt={`${selectedVehicle.name} - View ${activeThumbnailIndex + 1}`}
+                  fill
+                  className="object-cover transition-all duration-300 group-hover:scale-105"
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              ) : (
+                <VehicleVectorGraphic type={selectedVehicle.type} />
+              )}
+
+              {/* Photo Counter Badge */}
+              {selectedVehicle.thumbnails && selectedVehicle.thumbnails.length > 1 && (
+                <div className="absolute bottom-3.5 right-3.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold shadow-sm pointer-events-none">
+                  {activeThumbnailIndex + 1} / {selectedVehicle.thumbnails.length}
+                </div>
+              )}
             </div>
 
             {/* 3 Thumbnail Gallery Previews */}
@@ -751,9 +769,19 @@ function DetailsContentInner() {
                 distance={28}
               >
                 <div className="card-hover-lift bg-[#f8fafc] dark:bg-[#111116] hover:bg-white dark:hover:bg-[#16161d] rounded-[24px] sm:rounded-[30px] p-4 sm:p-6 border border-slate-100/90 dark:border-white/10 shadow-sm hover:border-slate-200 dark:hover:border-white/20 transition-all duration-300 flex flex-col justify-between group h-full">
-                  {/* Silhouette Container */}
-                  <div className="relative aspect-[16/9] w-full rounded-[24px] bg-white dark:bg-black/40 border border-slate-100 dark:border-white/5 mb-6 flex items-center justify-center overflow-hidden p-4 group-hover:bg-slate-50/50 dark:group-hover:bg-black/60 transition-colors">
-                    <VehicleVectorGraphic type={car.type} />
+                  {/* Car Photo Container */}
+                  <div className="relative aspect-[16/9] w-full rounded-[24px] bg-white dark:bg-black/40 border border-slate-100 dark:border-white/5 mb-6 flex items-center justify-center overflow-hidden group-hover:bg-slate-50/50 dark:group-hover:bg-black/60 transition-colors">
+                    {car.thumbnails && car.thumbnails[0] ? (
+                      <Image
+                        src={car.thumbnails[0]}
+                        alt={car.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    ) : (
+                      <VehicleVectorGraphic type={car.type} />
+                    )}
                   </div>
 
                   {/* Specs and Details */}
