@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Gauge, Snowflake, ArrowRight, Star, Car, Users, MapPin } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { BookingInquiryModal, BookingVehicleInfo } from "@/components/booking/booking-inquiry-modal";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { SITE_CONTACT } from "@/lib/constants";
+import { VehicleImage } from "@/components/ui/vehicle-image";
 
 interface CarItem {
   id: string;
@@ -152,14 +152,14 @@ export function FleetSection() {
 
                 {/* Car Image Container */}
                 <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-slate-50 dark:bg-white/[0.03] mb-4 flex items-center justify-center p-4 border border-slate-100 dark:border-white/5">
-                  <Image
+                  <VehicleImage
                     src={car.image}
                     alt={`${car.name} ${car.category}`}
-                    fill
+                    fallbackName={car.name}
                     className="object-contain object-center group-hover:scale-105 transition-transform duration-300"
                   />
                   {/* Location Badge on Image */}
-                  <div className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-black/70 backdrop-blur-md text-white border border-white/20 flex items-center gap-1">
+                  <div className="absolute bottom-2.5 left-2.5 z-20 px-2.5 py-1 rounded-full text-[10px] font-bold bg-black/70 backdrop-blur-md text-white border border-white/20 flex items-center gap-1 pointer-events-none">
                     <MapPin className="h-3 w-3 text-violet-400" />
                     <span className="truncate max-w-[150px]">{car.location}</span>
                   </div>

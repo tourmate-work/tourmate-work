@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import {
   X,
   Calendar,
@@ -18,6 +17,7 @@ import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { useAuth } from "@/components/auth/auth-context";
 import { SITE_CONTACT } from "@/lib/constants";
+import { VehicleImage } from "@/components/ui/vehicle-image";
 
 export interface CountryDialCode {
   code: string;
@@ -509,10 +509,11 @@ export function BookingInquiryModal({
           <div className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-2xl bg-slate-100/70 dark:bg-white/5 border border-slate-200/80 dark:border-white/10">
             {vehicle.imageUrl && (
               <div className="relative h-20 w-28 rounded-xl overflow-hidden bg-white dark:bg-black flex-shrink-0">
-                <Image
+                <VehicleImage
                   src={vehicle.imageUrl}
                   alt={vehicle.name}
-                  fill
+                  fallbackName={vehicle.name}
+                  showSpinner={false}
                   className="object-cover"
                 />
               </div>

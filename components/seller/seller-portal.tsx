@@ -26,6 +26,7 @@ import { AddVehicleModal, SellerVehicle } from "./add-vehicle-modal";
 import { VehicleListingForm } from "./vehicle-listing-form";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { SITE_CONTACT } from "@/lib/constants";
+import { VehicleImage } from "@/components/ui/vehicle-image";
 
 interface BookingRecord {
   id: string;
@@ -388,7 +389,7 @@ export function SellerPortalContent() {
                       >
                         <div className="flex items-start gap-4">
                           <div className="relative h-16 w-24 rounded-xl overflow-hidden flex-shrink-0 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
-                            <Image
+                            <VehicleImage
                               src={
                                 item.vehicleName.includes("Axio")
                                   ? "/images/mock/axio-sedan.jpg"
@@ -397,7 +398,8 @@ export function SellerPortalContent() {
                                   : "/images/mock/mercedes-amg.jpg"
                               }
                               alt={item.vehicleName}
-                              fill
+                              fallbackName={item.vehicleName}
+                              showSpinner={false}
                               className="object-cover"
                             />
                           </div>
@@ -556,14 +558,14 @@ export function SellerPortalContent() {
 
                         {/* Vehicle Mock Photo */}
                         <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-slate-100 dark:bg-white/5 mb-4 border border-slate-100 dark:border-white/10 group-hover:shadow-md transition-all">
-                          <Image
+                          <VehicleImage
                             src={car.image || "/images/mock/axio-sedan.jpg"}
                             alt={car.name}
-                            fill
+                            fallbackName={car.name}
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
-                          <div className="absolute top-2 left-2 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-black/60 backdrop-blur-md text-white border border-white/20">
+                          <div className="absolute top-2 left-2 z-20 px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-black/60 backdrop-blur-md text-white border border-white/20">
                             {car.transmission} • {car.fuel}
                           </div>
                         </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -21,6 +20,7 @@ import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { BookingInquiryModal } from "@/components/booking/booking-inquiry-modal";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { SITE_CONTACT } from "@/lib/constants";
+import { VehicleImage } from "@/components/ui/vehicle-image";
 
 export interface VehicleDetail {
   id: string;
@@ -304,43 +304,6 @@ const VEHICLES: VehicleDetail[] = [
   },
 ];
 
-function VehicleVectorGraphic({ type }: { type: string }) {
-  if (type === "sport") {
-    return (
-      <svg
-        viewBox="0 0 450 160"
-        className="w-full max-w-[360px] h-auto text-slate-300 drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
-        fill="currentColor"
-      >
-        <path d="M38 100c0-6 4-12 11-14l30-8 62-24c18-7 37-10 56-10h70c20 0 40 5 57 15l48 26c12 7 21 16 26 27 6 12 8 20 8 30v6c0 5-4 9-9 9h-24c-4-15-18-26-35-26s-31 11-35 26h-152c-4-15-18-26-35-26s-31 11-35 26H46c-5 0-8-4-8-9v-23zm73 31c9 0 17 8 17 17s-8 17-17 17-17-8-17-17 8-17 17-17zm222 0c9 0 17 8 17 17s-8 17-17 17-17-8-17-17 8-17 17-17zm-180-55h88l-14-22c-20 1-38 8-48 22h-26zm106 0h64l-38-21c-12-3-24-3-36-1l10 22z" />
-      </svg>
-    );
-  }
-
-  if (type === "suv" || type === "van") {
-    return (
-      <svg
-        viewBox="0 0 450 180"
-        className="w-full max-w-[360px] h-auto text-slate-300 drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
-        fill="currentColor"
-      >
-        <path d="M40 115c0-10 6-18 16-20l18-4c12-32 38-52 74-53l120-2c28 0 54 14 70 38l38 19c15 8 26 20 32 34 5 12 7 24 7 36v12c0 6-4 10-10 10h-28c-4-18-20-32-40-32s-36 14-40 32H165c-4-18-20-32-40-32s-36 14-40 32H48c-5 0-8-4-8-10v-32zm67 33c11 0 20 9 20 20s-9 20-20 20-20-9-20-20 9-20 20-20zm210 0c11 0 20 9 20 20s-9 20-20 20-20-9-20-20 9-20 20-20zm-180-69h94l-2-36c-28 2-54 14-68 36h-24zm114 0h76l-46-33c-16-4-32-4-48-2l18 35z" />
-      </svg>
-    );
-  }
-
-  // Default sedan
-  return (
-    <svg
-      viewBox="0 0 450 170"
-      className="w-full max-w-[360px] h-auto text-slate-300 drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
-      fill="currentColor"
-    >
-      <path d="M42 108c0-10 6-18 16-20l22-4c12-26 36-44 66-46l88-4c30 0 58 14 74 38l48 18c14 6 26 16 33 28 8 12 12 24 12 38v10c0 6-4 10-10 10h-26c-4-18-20-32-40-32s-36 14-40 32H147c-4-18-20-32-40-32s-36 14-40 32H52c-6 0-10-4-10-10v-30zm65 30c11 0 20 9 20 20s-9 20-20 20-20-9-20-20 9-20 20-20zm214 0c11 0 20 9 20 20s-9 20-20 20-20-9-20-20 9-20 20-20zm-186-62h78l-2-32c-24 2-46 12-58 32h-18zm96 0h70l-42-30c-14-4-28-4-42-2l14 32z" />
-    </svg>
-  );
-}
-
 function DetailsContentInner() {
   const { t, language } = useLanguage();
   const searchParams = useSearchParams();
@@ -536,30 +499,26 @@ function DetailsContentInner() {
               </div>
             </div>
 
-            {/* Main Hero Photo View */}
+            {/* Main Hero Photo View with Loading Shimmer & Spinner */}
             <div className="relative aspect-[16/9] w-full rounded-[30px] bg-slate-50 dark:bg-[#111116] border border-slate-100/90 dark:border-white/10 flex items-center justify-center overflow-hidden shadow-inner group">
-              {selectedVehicle.thumbnails && selectedVehicle.thumbnails[activeThumbnailIndex] ? (
-                <Image
-                  src={selectedVehicle.thumbnails[activeThumbnailIndex]}
-                  alt={`${selectedVehicle.name} - View ${activeThumbnailIndex + 1}`}
-                  fill
-                  className="object-cover transition-all duration-300 group-hover:scale-105"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              ) : (
-                <VehicleVectorGraphic type={selectedVehicle.type} />
-              )}
+              <VehicleImage
+                src={selectedVehicle.thumbnails?.[activeThumbnailIndex] || selectedVehicle.thumbnails?.[0] || ""}
+                alt={`${selectedVehicle.name} - View ${activeThumbnailIndex + 1}`}
+                fallbackName={selectedVehicle.name}
+                priority
+                className="object-cover group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
 
               {/* Photo Counter Badge */}
               {selectedVehicle.thumbnails && selectedVehicle.thumbnails.length > 1 && (
-                <div className="absolute bottom-3.5 right-3.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold shadow-sm pointer-events-none">
+                <div className="absolute bottom-3.5 right-3.5 z-20 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold shadow-sm pointer-events-none">
                   {activeThumbnailIndex + 1} / {selectedVehicle.thumbnails.length}
                 </div>
               )}
             </div>
 
-            {/* 3 Thumbnail Gallery Previews */}
+            {/* Thumbnail Gallery Previews */}
             <div className="flex items-center gap-3 sm:gap-4 overflow-x-auto pb-2 no-scrollbar">
               {selectedVehicle.thumbnails.map((thumb, idx) => (
                 <button
@@ -571,10 +530,11 @@ function DetailsContentInner() {
                       : "border-slate-200 dark:border-white/10 opacity-70 hover:opacity-100"
                   }`}
                 >
-                  <Image
+                  <VehicleImage
                     src={thumb}
                     alt={`${selectedVehicle.name} preview ${idx + 1}`}
-                    fill
+                    fallbackName={selectedVehicle.name}
+                    showSpinner={false}
                     className="object-cover"
                   />
                 </button>
@@ -772,17 +732,13 @@ function DetailsContentInner() {
                 <div className="card-hover-lift bg-[#f8fafc] dark:bg-[#111116] hover:bg-white dark:hover:bg-[#16161d] rounded-[24px] sm:rounded-[30px] p-4 sm:p-6 border border-slate-100/90 dark:border-white/10 shadow-sm hover:border-slate-200 dark:hover:border-white/20 transition-all duration-300 flex flex-col justify-between group h-full">
                   {/* Car Photo Container */}
                   <div className="relative aspect-[16/9] w-full rounded-[24px] bg-white dark:bg-black/40 border border-slate-100 dark:border-white/5 mb-6 flex items-center justify-center overflow-hidden group-hover:bg-slate-50/50 dark:group-hover:bg-black/60 transition-colors">
-                    {car.thumbnails && car.thumbnails[0] ? (
-                      <Image
-                        src={car.thumbnails[0]}
-                        alt={car.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                    ) : (
-                      <VehicleVectorGraphic type={car.type} />
-                    )}
+                    <VehicleImage
+                      src={car.thumbnails?.[0] || ""}
+                      alt={car.name}
+                      fallbackName={car.name}
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
                   </div>
 
                   {/* Specs and Details */}

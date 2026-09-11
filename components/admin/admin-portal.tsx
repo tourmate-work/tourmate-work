@@ -30,6 +30,7 @@ import { VehicleListingForm } from "@/components/seller/vehicle-listing-form";
 import { PolicyManager } from "@/components/admin/policy-manager";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { SITE_CONTACT } from "@/lib/constants";
+import { VehicleImage } from "@/components/ui/vehicle-image";
 
 export interface InquiryRecord {
   id: string;
@@ -723,14 +724,14 @@ export function AdminPortalContent() {
                         <div>
                           {/* Car Image Preview */}
                           <div className="relative h-48 w-full rounded-2xl overflow-hidden bg-slate-100 dark:bg-white/5 mb-4">
-                            <Image
+                            <VehicleImage
                               src={car.image || "/images/mock/axio-sedan.jpg"}
                               alt={car.name}
-                              fill
+                              fallbackName={car.name}
                               className="object-cover group-hover:scale-105 transition-transform duration-300"
                             />
                             <span
-                              className={`absolute top-3 right-3 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-sm backdrop-blur-md ${
+                              className={`absolute top-3 right-3 z-20 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-sm backdrop-blur-md ${
                                 car.status === "Available"
                                   ? "bg-emerald-500 text-white"
                                   : car.status === "On Rental"
