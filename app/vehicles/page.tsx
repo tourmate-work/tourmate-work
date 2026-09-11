@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { VehiclesCatalog } from "@/components/vehicles/vehicles-catalog";
+import { LottieLoader } from "@/components/ui/lottie-loader";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -17,8 +18,11 @@ export default function VehiclesPage() {
       <main className="flex-1 py-4">
         <Suspense
           fallback={
-            <div className="max-w-7xl mx-auto px-4 py-20 text-center text-xs font-bold text-slate-400">
-              Loading available vehicles...
+            <div className="max-w-7xl mx-auto px-4 py-12">
+              <LottieLoader
+                title="Loading TourMate Fleet..."
+                subtitle="Fetching verified vehicles across Sri Lanka"
+              />
             </div>
           }
         >

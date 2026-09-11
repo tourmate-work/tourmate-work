@@ -21,6 +21,7 @@ import { BookingInquiryModal } from "@/components/booking/booking-inquiry-modal"
 import { useLanguage } from "@/lib/i18n/language-context";
 import { SITE_CONTACT } from "@/lib/constants";
 import { VehicleImage } from "@/components/ui/vehicle-image";
+import { LottieLoader } from "@/components/ui/lottie-loader";
 
 export interface VehicleDetail {
   id: string;
@@ -819,8 +820,11 @@ export function DetailsView() {
   return (
     <Suspense
       fallback={
-        <div className="w-full min-h-[50vh] flex items-center justify-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-violet-600" />
+        <div className="w-full min-h-[60vh] flex items-center justify-center py-16 px-4">
+          <LottieLoader
+            title="Loading Vehicle Specifications..."
+            subtitle="Retrieving vehicle details, features, and rates across Sri Lanka"
+          />
         </div>
       }
     >

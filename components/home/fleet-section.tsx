@@ -8,6 +8,7 @@ import { BookingInquiryModal, BookingVehicleInfo } from "@/components/booking/bo
 import { useLanguage } from "@/lib/i18n/language-context";
 import { SITE_CONTACT } from "@/lib/constants";
 import { VehicleImage } from "@/components/ui/vehicle-image";
+import { LottieLoader } from "@/components/ui/lottie-loader";
 
 interface CarItem {
   id: string;
@@ -101,8 +102,13 @@ export function FleetSection() {
         </Link>
       </div>
 
-      {/* Empty State when Database has 0 vehicles */}
-      {!loading && featuredCars.length === 0 ? (
+      {/* Loading & Empty States */}
+      {loading ? (
+        <LottieLoader
+          title="Loading Featured Fleet..."
+          subtitle="Gathering handpicked vehicles with islandwide delivery across Sri Lanka"
+        />
+      ) : featuredCars.length === 0 ? (
         <div className="text-center py-16 px-4 bg-slate-50 dark:bg-white/5 rounded-[30px] border border-dashed border-slate-200 dark:border-white/10">
           <div className="h-16 w-16 mx-auto mb-4 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 flex items-center justify-center">
             <Car className="h-8 w-8" />

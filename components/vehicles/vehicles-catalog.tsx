@@ -28,6 +28,7 @@ import { BookingInquiryModal, BookingVehicleInfo } from "@/components/booking/bo
 import { useLanguage } from "@/lib/i18n/language-context";
 import { SITE_CONTACT } from "@/lib/constants";
 import { VehicleImage } from "@/components/ui/vehicle-image";
+import { LottieLoader } from "@/components/ui/lottie-loader";
 
 export interface VehicleDetail {
   id: string;
@@ -550,7 +551,14 @@ export function VehiclesCatalog() {
         </div>
 
         {/* Vehicle Cards Grid (3x3) or Empty State */}
-        {!loading && filteredVehicles.length === 0 ? (
+        {loading ? (
+          <div className="mb-12">
+            <LottieLoader
+              title="Loading TourMate Fleet..."
+              subtitle="Fetching live availability, vehicle specs, and best daily rates across Sri Lanka"
+            />
+          </div>
+        ) : filteredVehicles.length === 0 ? (
           <div className="text-center py-16 px-4 bg-slate-50 dark:bg-white/5 rounded-[32px] border border-dashed border-slate-200 dark:border-white/10 mb-12">
             <div className="h-16 w-16 mx-auto mb-4 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 flex items-center justify-center">
               <Search className="h-8 w-8 text-violet-600 dark:text-violet-400" />
