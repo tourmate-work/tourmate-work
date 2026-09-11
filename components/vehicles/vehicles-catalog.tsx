@@ -614,26 +614,7 @@ export function VehiclesCatalog() {
                 distance={28}
               >
                 <div className="stripe-card rounded-[18px] sm:rounded-[30px] p-2.5 sm:p-6 shadow-sm hover:shadow-2xl flex flex-col justify-between group h-full">
-                  {/* Silhouette & Top Badge */}
                   <div>
-                    <div className="flex items-center justify-between mb-1.5 sm:mb-3">
-                      {/* Availability Status Badge */}
-                      {car.isAvailable ? (
-                        <span className="inline-flex items-center gap-1 sm:gap-1.5 text-[9px] sm:text-[11px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-1.5 sm:px-2.5 py-0.5 rounded-full">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          <span className="truncate">{t("catalog_available_now")}</span>
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-[9px] sm:text-[11px] font-extrabold uppercase tracking-wider text-slate-500 bg-slate-500/10 px-1.5 sm:px-2.5 py-0.5 rounded-full">
-                          {car.status || "Reserved"}
-                        </span>
-                      )}
-
-                      <span className="text-[9px] sm:text-xs text-slate-400 font-bold truncate max-w-[65px] sm:max-w-none">
-                        {car.specs.distance}
-                      </span>
-                    </div>
-
                     {/* Vehicle Photo Container */}
                     <div className="relative aspect-[16/10] w-full rounded-[14px] sm:rounded-[24px] overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-100 dark:border-white/10 mb-2 sm:mb-5 group-hover:shadow-lg transition-all">
                       <VehicleImage
