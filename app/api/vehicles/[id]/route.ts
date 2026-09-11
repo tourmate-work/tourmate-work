@@ -127,8 +127,20 @@ export async function PATCH(
     if (body.pricePerDay !== undefined) updateData.pricePerDay = parseFloat(body.pricePerDay);
     if (body.depositAmount !== undefined) updateData.depositAmount = parseFloat(body.depositAmount);
     if (body.imageUrl !== undefined) updateData.imageUrl = body.imageUrl;
-    if (body.status !== undefined) updateData.status = body.status;
-    if (body.isAvailable !== undefined) updateData.isAvailable = Boolean(body.isAvailable);
+    if (body.status !== undefined) {
+      updateData.status = body.status;
+      if (body.status === "Maintenance" || body.status === "On Rental") {
+        updateData.isAvailable = false;
+      } else if (body.status === "Available") {
+        updateData.isAvailable = true;
+      }
+    }
+    if (body.isAvailable !== undefined) {
+      updateData.isAvailable = Boolean(body.isAvailable);
+      if (!updateData.isAvailable && (!updateData.status || updateData.status === "Available")) {
+        updateData.status = "Maintenance";
+      }
+    }
     if (body.isFeatured !== undefined) updateData.isFeatured = Boolean(body.isFeatured);
     if (body.location !== undefined) updateData.location = body.location;
     if (body.galleryImages !== undefined) {

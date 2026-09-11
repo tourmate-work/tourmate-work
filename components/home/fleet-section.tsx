@@ -26,6 +26,21 @@ interface CarItem {
   rating?: string;
 }
 
+interface ApiVehicleRaw {
+  id: string;
+  name: string;
+  category: string;
+  pricePerDay: number;
+  transmission?: string;
+  seats?: number;
+  location?: string;
+  isAvailable?: boolean;
+  status?: string;
+  isFeatured?: boolean;
+  rating?: number | string;
+  imageUrl?: string;
+}
+
 export function FleetSection() {
   const { t, language } = useLanguage();
   const [featuredCars, setFeaturedCars] = useState<CarItem[]>([]);
@@ -38,11 +53,12 @@ export function FleetSection() {
       setLoading(true);
       const startTime = Date.now();
       try {
-        const res = await fetch("/api/vehicles?limit=6");
+        const res = await fetch("/api/vehicles?limit=6&status=Available");
         const data = await res.json();
         if (data.success && Array.isArray(data.vehicles)) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const mapped: CarItem[] = data.vehicles.map((v: any) => {
+          const mapped: CarItem[] = (data.vehicles as ApiVehicleRaw[])
+            .filter((v) => v.status?.toLowerCase() !== "maintenance" && v.isAvailable !== false)
+            .map((v) => {
             const fallbackImg =
               v.category === "Van"
                 ? "/images/mock/kdh-van.jpg"

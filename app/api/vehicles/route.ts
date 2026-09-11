@@ -76,13 +76,18 @@ export async function GET(req: NextRequest) {
       where.isFeatured = true;
     }
 
+    if (status && status !== "All" && status !== "all") {
+      where.status = status;
+    } else {
+      // By default, never show vehicles under Maintenance to public users
+      where.status = { not: "Maintenance" };
+    }
+
     if (isAvailable === "true") {
       where.isAvailable = true;
       where.status = "Available";
-    }
-
-    if (status && status !== "All" && status !== "all") {
-      where.status = status;
+    } else if (isAvailable === "false") {
+      where.isAvailable = false;
     }
 
     if (search && search.trim()) {

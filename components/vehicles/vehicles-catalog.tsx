@@ -38,7 +38,7 @@ export interface VehicleDetail {
   price: string;
   priceNum: number;
   period: string;
-  type: "sedan" | "sport" | "suv" | "van";
+  type: string;
   fuelCapacity: string;
   location?: string;
   isAvailable?: boolean;
@@ -54,6 +54,26 @@ export interface VehicleDetail {
   };
   equipment: string[];
   thumbnails: string[];
+}
+
+interface ApiVehicleRaw {
+  id: string;
+  name: string;
+  brand?: string;
+  category: string;
+  pricePerDay: number;
+  location?: string;
+  isAvailable?: boolean;
+  status?: string;
+  rating?: number;
+  transmission: string;
+  fuelType: string;
+  doors?: number;
+  seats?: number;
+  mileageLimit?: string;
+  features?: string[];
+  imageUrl?: string;
+  galleryImages?: string[];
 }
 
 
@@ -129,8 +149,9 @@ export function VehiclesCatalog() {
         const res = await fetch("/api/vehicles");
         const data = await res.json();
         if (data.success && Array.isArray(data.vehicles)) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const mapped: VehicleDetail[] = data.vehicles.map((v: any) => {
+          const mapped: VehicleDetail[] = (data.vehicles as ApiVehicleRaw[])
+            .filter((v) => v.status?.toLowerCase() !== "maintenance")
+            .map((v) => {
             const fallbackImg =
               v.category === "Van"
                 ? "/images/mock/kdh-van.jpg"
@@ -253,6 +274,11 @@ export function VehiclesCatalog() {
 
   const filteredVehicles = vehiclesList
     .filter((v) => {
+      // 0. Maintenance filter - never show cars undergoing maintenance to users
+      if (v.status?.toLowerCase() === "maintenance") {
+        return false;
+      }
+
       // 1. Availability filter
       if (availableOnly && !v.isAvailable) {
         return false;

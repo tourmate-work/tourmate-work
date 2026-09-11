@@ -242,7 +242,10 @@ export function AdminPortalContent() {
       await fetch(`/api/vehicles/${vehicleId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: nextStatus }),
+        body: JSON.stringify({
+          status: nextStatus,
+          isAvailable: nextStatus === "Available",
+        }),
       });
       setNotice(`Vehicle status updated to "${nextStatus}".`);
       setTimeout(() => setNotice(null), 3500);

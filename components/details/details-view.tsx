@@ -31,9 +31,11 @@ export interface VehicleDetail {
   price: string;
   priceNum: number;
   period: string;
-  type: "sedan" | "sport" | "suv" | "van";
+  type: string;
   fuelCapacity: string;
   location?: string;
+  status?: string;
+  isAvailable?: boolean;
   specs: {
     gearBox: string;
     fuel: string;
@@ -44,6 +46,26 @@ export interface VehicleDetail {
   };
   equipment: string[];
   thumbnails: string[];
+}
+
+interface ApiVehicleRaw {
+  id: string;
+  name: string;
+  brand?: string;
+  category: string;
+  pricePerDay: number;
+  location?: string;
+  isAvailable?: boolean;
+  status?: string;
+  rating?: number;
+  transmission: string;
+  fuelType: string;
+  doors?: number;
+  seats?: number;
+  mileageLimit?: string;
+  features?: string[];
+  imageUrl?: string;
+  galleryImages?: string[];
 }
 
 const VEHICLES: VehicleDetail[] = [
@@ -325,8 +347,9 @@ function DetailsContentInner() {
         const res = await fetch("/api/vehicles");
         const data = await res.json();
         if (data.success && Array.isArray(data.vehicles) && data.vehicles.length > 0) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const mapped: VehicleDetail[] = data.vehicles.map((v: any) => {
+          const mapped: VehicleDetail[] = (data.vehicles as ApiVehicleRaw[])
+            .filter((v) => v.status?.toLowerCase() !== "maintenance")
+            .map((v) => {
             const fallbackImg =
               v.category === "Van"
                 ? "/images/mock/kdh-van.jpg"
@@ -436,6 +459,8 @@ function DetailsContentInner() {
                     : "sedan",
                 fuelCapacity: "60 Ltr",
                 location: v.location || "Bandaranaike Int'l Airport (CMB) / Katunayake",
+                status: v.status || "Available",
+                isAvailable: v.isAvailable !== false && v.status?.toLowerCase() !== "maintenance",
                 specs: {
                   gearBox: v.transmission,
                   fuel: v.fuelType,
@@ -667,14 +692,33 @@ function DetailsContentInner() {
               </p>
             </div>
 
+            {/* Maintenance Warning Banner if vehicle is under maintenance */}
+            {selectedVehicle.status?.toLowerCase() === "maintenance" && (
+              <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-200 text-xs sm:text-sm font-semibold flex items-center gap-3">
+                <span className="text-xl">⚠️</span>
+                <span>
+                  This vehicle is currently undergoing scheduled maintenance and is temporarily unavailable for booking.
+                </span>
+              </div>
+            )}
+
             {/* Main Action Buttons: Request to Book + Direct WhatsApp */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <button
                 onClick={() => setIsBookingModalOpen(true)}
-                className="w-full sm:flex-1 bg-violet-600 hover:bg-violet-700 text-white font-black text-sm sm:text-base py-3.5 sm:py-4 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer min-h-[48px]"
+                disabled={selectedVehicle.status?.toLowerCase() === "maintenance" || selectedVehicle.isAvailable === false}
+                className={`w-full sm:flex-1 ${
+                  selectedVehicle.status?.toLowerCase() === "maintenance" || selectedVehicle.isAvailable === false
+                    ? "bg-slate-300 dark:bg-white/10 text-slate-500 dark:text-slate-400 cursor-not-allowed"
+                    : "bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-500/25 active:scale-[0.98] cursor-pointer"
+                } font-black text-sm sm:text-base py-3.5 sm:py-4 rounded-[30px] transition-all duration-200 flex items-center justify-center gap-2 min-h-[48px]`}
               >
                 <MessageCircle className="h-5 w-5" />
-                <span>{t("details_btn_request")}</span>
+                <span>
+                  {selectedVehicle.status?.toLowerCase() === "maintenance"
+                    ? "Currently Under Maintenance"
+                    : t("details_btn_request")}
+                </span>
               </button>
 
               <button
