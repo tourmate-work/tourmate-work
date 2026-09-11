@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { SITE_CONTACT } from "@/lib/constants";
 
 function AppleLogoIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
@@ -94,7 +95,7 @@ export function AboutContent() {
     const msg =
       "Hello Tourmate! I am viewing your About Us page and would like to inquire about renting a car.";
     window.open(
-      `https://wa.me/94703236834?text=${encodeURIComponent(msg)}`,
+      `https://wa.me/${SITE_CONTACT.whatsappNumber}?text=${encodeURIComponent(msg)}`,
       "_blank"
     );
   };
@@ -463,11 +464,11 @@ export function AboutContent() {
                 {language === "si" ? "ඔබට වාහනයක් අවශ්‍යද?" : "Looking for a car?"}
               </h2>
               <a
-                href="tel:+94772973530"
+                href={`tel:${SITE_CONTACT.phone}`}
                 className="inline-flex items-center gap-2 text-2xl sm:text-3xl font-black text-amber-300 hover:text-amber-200 transition-colors"
               >
                 <Phone className="h-6 w-6" />
-                <span>+94 (77) 297 3530</span>
+                <span>{SITE_CONTACT.phoneDisplay}</span>
               </a>
               <p className="text-xs sm:text-sm text-violet-100/90 leading-relaxed font-normal">
                 {language === "si"

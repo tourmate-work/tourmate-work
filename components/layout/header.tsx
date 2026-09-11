@@ -38,6 +38,7 @@ import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { useAuth } from "@/components/auth/auth-context";
+import { SITE_CONTACT } from "@/lib/constants";
 
 interface SubMenuItem {
   title: string;
@@ -656,7 +657,7 @@ export function Header() {
             </Link>
           ) : (
             <a
-              href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+              href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=I%20want%20to%20list%20a%20vehicle`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center h-8 w-8 sm:h-auto sm:w-auto sm:gap-1 bg-emerald-600 hover:bg-emerald-700 text-white sm:px-4 sm:py-2 rounded-full text-xs font-bold transition-all shadow-sm shadow-emerald-500/25 active:scale-95 group cursor-pointer flex-shrink-0"
@@ -672,7 +673,7 @@ export function Header() {
 
           {/* Desktop Support Phone Pill */}
           <a
-            href="tel:+94772973530"
+            href={`tel:${SITE_CONTACT.phone}`}
             className="hidden lg:flex items-center gap-3 bg-slate-50 dark:bg-[#16161a] hover:bg-slate-100 dark:hover:bg-[#202026] border border-slate-200/80 dark:border-white/15 px-3.5 py-2 rounded-full transition-all group shadow-sm active:scale-95 flex-shrink-0"
           >
             <div className="h-8 w-8 rounded-full bg-violet-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
@@ -683,7 +684,7 @@ export function Header() {
                 {t("nav_need_help")}
               </span>
               <span className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
-                +94 (77) 297 3530
+                {SITE_CONTACT.phoneDisplay}
               </span>
             </div>
           </a>
@@ -866,7 +867,7 @@ export function Header() {
 
                   {/* List Your Vehicle Mobile Button */}
                   <a
-                    href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+                    href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=I%20want%20to%20list%20a%20vehicle`}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setMobileMenuOpen(false)}
@@ -892,7 +893,7 @@ export function Header() {
 
               <div className="grid grid-cols-2 gap-2">
                 <a
-                  href="tel:+94772973530"
+                  href={`tel:${SITE_CONTACT.phone}`}
                   className="flex items-center justify-center gap-2 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 text-slate-900 dark:text-white p-3 rounded-2xl text-xs font-bold transition-colors"
                 >
                   <Phone className="h-4 w-4 text-violet-600 dark:text-violet-400" />
@@ -900,7 +901,7 @@ export function Header() {
                 </a>
 
                 <a
-                  href="https://wa.me/94703236834"
+                  href={`https://wa.me/${SITE_CONTACT.whatsappNumber}`}
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-2xl text-xs font-bold transition-colors shadow-sm"

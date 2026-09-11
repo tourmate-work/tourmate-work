@@ -7,6 +7,7 @@ import { Gauge, Snowflake, ArrowRight, Star, Car, Users, MapPin } from "lucide-r
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { BookingInquiryModal, BookingVehicleInfo } from "@/components/booking/booking-inquiry-modal";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { SITE_CONTACT } from "@/lib/constants";
 
 interface CarItem {
   id: string;
@@ -113,7 +114,7 @@ export function FleetSection() {
             There are currently no featured vehicles available. Want to list your vehicle on Tourmate? Contact our admin team on WhatsApp.
           </p>
           <a
-            href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+            href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=I%20want%20to%20list%20a%20vehicle`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-full text-sm shadow-md transition-all active:scale-95"

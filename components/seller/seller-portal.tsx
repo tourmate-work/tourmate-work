@@ -25,6 +25,7 @@ import {
 import { AddVehicleModal, SellerVehicle } from "./add-vehicle-modal";
 import { VehicleListingForm } from "./vehicle-listing-form";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { SITE_CONTACT } from "@/lib/constants";
 
 interface BookingRecord {
   id: string;
@@ -477,7 +478,7 @@ export function SellerPortalContent() {
                             Accept & Reserve
                           </button>
                           <a
-                            href={`https://wa.me/94703236834?text=${encodeURIComponent(`Hi ${item.renterName}, confirming your Tourmate rental for ${item.vehicleName}.`)}`}
+                            href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=${encodeURIComponent(`Hi ${item.renterName}, confirming your Tourmate rental for ${item.vehicleName}.`)}`}
                             target="_blank"
                             rel="noreferrer"
                             className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-full transition-all"
@@ -732,7 +733,7 @@ export function SellerPortalContent() {
                         </div>
 
                         <a
-                          href={`https://wa.me/94703236834?text=${encodeURIComponent(`Tourmate Host Notification: Booking ${item.id} for ${item.vehicleName}`)}`}
+                          href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=${encodeURIComponent(`Tourmate Host Notification: Booking ${item.id} for ${item.vehicleName}`)}`}
                           target="_blank"
                           rel="noreferrer"
                           className="px-4 py-2 rounded-full border border-slate-200 dark:border-white/15 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-all text-center w-fit"

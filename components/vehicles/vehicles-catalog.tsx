@@ -27,6 +27,7 @@ import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { BookingInquiryModal, BookingVehicleInfo } from "@/components/booking/booking-inquiry-modal";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { SITE_CONTACT } from "@/lib/constants";
 
 export interface VehicleDetail {
   id: string;
@@ -627,7 +628,7 @@ export function VehiclesCatalog() {
                 <span>Reset Filters & View Available</span>
               </button>
               <a
-                href={`https://wa.me/94703236834?text=${encodeURIComponent(
+                href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=${encodeURIComponent(
                   `Hello Tourmate! I am looking to rent a vehicle in ${locationQuery || "Sri Lanka"} (${searchQuery || "any model"}). Could you help me with vehicle availability?`
                 )}`}
                 target="_blank"
@@ -805,43 +806,49 @@ export function VehiclesCatalog() {
           {/* Modal Container: cleanly rounded to 30px and overflow-hidden */}
           <div className="relative w-full max-w-5xl bg-white dark:bg-[#0b0b0e] rounded-[30px] shadow-2xl border border-slate-100/80 dark:border-white/10 my-auto z-10 max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 ease-out animate-in zoom-in-95 fade-in slide-in-from-bottom-6">
             {/* Modal Header Bar */}
-            <div className="flex items-center justify-between px-4 sm:px-10 py-4 sm:py-6 border-b border-slate-100 dark:border-white/10 bg-white/95 dark:bg-[#0b0b0e]/95 backdrop-blur-sm sticky top-0 z-30 flex-shrink-0">
-              <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
+            <div className="flex items-center justify-between gap-3 px-4 sm:px-8 py-3.5 sm:py-5 border-b border-slate-100 dark:border-white/10 bg-white/95 dark:bg-[#0b0b0e]/95 backdrop-blur-sm sticky top-0 z-30 flex-shrink-0">
+              {/* Vehicle Title + Status + Price + Location in requested sequence */}
+              <div className="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-2 min-w-0 flex-1">
+                {/* 1. Name & Available Badge */}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-950 dark:text-white tracking-tight capitalize">
                     {activeModalCar.name}
                   </h2>
                   {activeModalCar.isAvailable && (
-                    <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                    <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full flex-shrink-0">
                       Available
                     </span>
                   )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-lg sm:text-2xl font-bold text-violet-600 dark:text-violet-400">
+
+                {/* 2. Price (placed next to Available with space in between) */}
+                <div className="inline-flex items-baseline gap-1 whitespace-nowrap flex-shrink-0">
+                  <span className="text-lg sm:text-2xl font-black text-violet-600 dark:text-violet-400 whitespace-nowrap">
                     {activeModalCar.price}
-                    <span className="text-xs sm:text-sm font-medium text-slate-400 ml-1">
-                      {activeModalCar.period}
-                    </span>
                   </span>
-                  {(modalPickupLocation || activeModalCar.location) && (
-                    <span className="text-xs text-slate-400 flex items-center gap-1 ml-2 max-w-xs truncate">
-                      <MapPin className="h-3 w-3 text-violet-500 flex-shrink-0" />
-                      <span className="truncate">
-                        {modalPickupLocation ? `Pickup: ${modalPickupLocation}` : activeModalCar.location}
-                      </span>
-                    </span>
-                  )}
+                  <span className="text-xs sm:text-sm font-medium text-slate-400 whitespace-nowrap">
+                    {activeModalCar.period}
+                  </span>
                 </div>
+
+                {/* 3. Location (placed after price) */}
+                {(modalPickupLocation || activeModalCar.location) && (
+                  <div className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-2.5 py-1 rounded-full max-w-full sm:max-w-xs truncate flex-shrink-0">
+                    <MapPin className="h-3.5 w-3.5 text-violet-500 flex-shrink-0" />
+                    <span className="truncate">
+                      {modalPickupLocation ? `Pickup: ${modalPickupLocation}` : activeModalCar.location}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Close Button */}
               <button
                 onClick={handleCloseModal}
                 aria-label="Close vehicle details"
-                className="h-9 w-9 sm:h-11 sm:w-11 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 flex items-center justify-center transition-all duration-200 hover:rotate-90 shadow-sm cursor-pointer flex-shrink-0"
+                className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 flex items-center justify-center transition-all duration-200 hover:rotate-90 shadow-sm cursor-pointer flex-shrink-0 ml-1"
               >
-                <X className="h-4 w-4 sm:h-6 sm:w-6" />
+                <X className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
             </div>
 
@@ -852,23 +859,28 @@ export function VehiclesCatalog() {
                 {/* Left Column: Silhouette Graphic & Gallery Thumbnails */}
                 <div className="lg:col-span-6 space-y-4 sm:space-y-5">
                   {/* Main Selected Hero Photo */}
-                  <div className="relative aspect-[16/10] w-full rounded-[24px] sm:rounded-[30px] overflow-hidden border border-slate-100/90 dark:border-white/5 shadow-inner">
+                  <div className="relative aspect-[16/10] w-full rounded-[24px] sm:rounded-[30px] overflow-hidden border border-slate-100/90 dark:border-white/5 shadow-inner group">
                     <Image
                       src={activeModalCar.thumbnails[activeThumbnailIndex] || activeModalCar.thumbnails[0]}
                       alt={activeModalCar.name}
                       fill
-                      className="object-cover transition-all duration-300"
+                      className="object-cover transition-all duration-300 group-hover:scale-105"
                       priority
                     />
+                    {activeModalCar.thumbnails && activeModalCar.thumbnails.length > 1 && (
+                      <div className="absolute bottom-3 right-3 px-2.5 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold shadow-sm pointer-events-none">
+                        {activeThumbnailIndex + 1} / {activeModalCar.thumbnails.length}
+                      </div>
+                    )}
                   </div>
 
-                  {/* 3 Thumbnail Gallery Previews */}
+                  {/* Thumbnail Gallery Previews */}
                   <div className="flex items-center gap-2.5 sm:gap-4 overflow-x-auto no-scrollbar py-1">
                     {activeModalCar.thumbnails.map((thumb, idx) => (
                       <button
                         key={idx}
                         onClick={() => setActiveThumbnailIndex(idx)}
-                        className={`relative h-18 w-22 sm:h-24 sm:w-28 rounded-[16px] sm:rounded-[20px] overflow-hidden border-2 transition-all flex-shrink-0 ${
+                        className={`relative h-16 w-20 sm:h-24 sm:w-28 rounded-[16px] sm:rounded-[20px] overflow-hidden border-2 transition-all flex-shrink-0 cursor-pointer ${
                           activeThumbnailIndex === idx
                             ? "border-violet-600 ring-2 ring-violet-600/30 scale-105 shadow-md"
                             : "border-slate-200 dark:border-white/10 opacity-70 hover:opacity-100"

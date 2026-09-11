@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MessageCircle, X } from "lucide-react";
+import { SITE_CONTACT } from "@/lib/constants";
 
 interface FloatingWhatsAppButtonProps {
   phoneNumber?: string;
@@ -9,7 +10,7 @@ interface FloatingWhatsAppButtonProps {
 }
 
 export function FloatingWhatsAppButton({
-  phoneNumber = "94703236834",
+  phoneNumber = SITE_CONTACT.whatsappNumber,
   defaultMessage = "Hello Tourmate! I would like to inquire about vehicle rentals in Sri Lanka.",
 }: FloatingWhatsAppButtonProps) {
   const [isHovered, setIsHovered] = useState(false);

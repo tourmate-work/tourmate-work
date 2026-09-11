@@ -89,7 +89,7 @@ export const DEFAULT_PRIVACY_SECTIONS: PolicySection[] = [
     id: "priv-4",
     title: "4. WhatsApp Communications",
     content:
-      "Booking confirmations, delivery schedules, and support notifications are conducted directly through our official WhatsApp concierge (+94 70 323 6834).",
+      "Booking confirmations, delivery schedules, and support notifications are conducted directly through our official WhatsApp concierge (+94 77 297 3618).",
   },
 ];
 

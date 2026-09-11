@@ -29,6 +29,7 @@ import { AddVehicleModal, SellerVehicle } from "@/components/seller/add-vehicle-
 import { VehicleListingForm } from "@/components/seller/vehicle-listing-form";
 import { PolicyManager } from "@/components/admin/policy-manager";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { SITE_CONTACT } from "@/lib/constants";
 
 export interface InquiryRecord {
   id: string;
@@ -915,7 +916,7 @@ export function AdminPortalContent() {
                           </div>
 
                           <a
-                            href={`https://wa.me/94703236834?text=${encodeURIComponent(`Hi ${item.renterName}, contacting you regarding Tourmate Booking ${item.id} for ${item.vehicleName}.`)}`}
+                            href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=${encodeURIComponent(`Hi ${item.renterName}, contacting you regarding Tourmate Booking ${item.id} for ${item.vehicleName}.`)}`}
                             target="_blank"
                             rel="noreferrer"
                             className="px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition-all"
@@ -1027,7 +1028,7 @@ export function AdminPortalContent() {
                         ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
                             `Hi ${inq.name}, contacting you from Tourmate Rentals regarding your inquiry for ${inq.carModel || "our rental vehicle"}. We'd love to confirm your reservation.`
                           )}`
-                        : `https://wa.me/94703236834?text=${encodeURIComponent(
+                        : `https://wa.me/${SITE_CONTACT.whatsappNumber}?text=${encodeURIComponent(
                             `Customer Inquiry from ${inq.name} for ${inq.carModel || "vehicle"}.`
                           )}`;
 
@@ -1301,7 +1302,7 @@ export function AdminPortalContent() {
                         ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
                             `Hi ${inq.name}, contacting you from Tourmate Rentals regarding your inquiry for ${inq.carModel || "vehicle"}.`
                           )}`
-                        : `https://wa.me/94703236834`;
+                        : `https://wa.me/${SITE_CONTACT.whatsappNumber}`;
 
                       return (
                         <div

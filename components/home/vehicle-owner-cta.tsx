@@ -2,6 +2,7 @@
 
 import { MessageCircle, ShieldCheck, DollarSign, CalendarCheck, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { SITE_CONTACT } from "@/lib/constants";
 
 export function VehicleOwnerSection() {
   const { t, language } = useLanguage();
@@ -49,7 +50,7 @@ export function VehicleOwnerSection() {
 
             <div className="pt-2">
               <a
-                href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+                href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=I%20want%20to%20list%20a%20vehicle`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm sm:text-base w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-full shadow-xl shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"

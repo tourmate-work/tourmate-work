@@ -20,6 +20,7 @@ import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { BookingInquiryModal } from "@/components/booking/booking-inquiry-modal";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { SITE_CONTACT } from "@/lib/constants";
 
 export interface VehicleDetail {
   id: string;
@@ -503,7 +504,7 @@ function DetailsContentInner() {
     const chosenLoc = pickupLocation.trim() || selectedVehicle.location || "Sri Lanka";
     const msg = `Hello Tourmate! I would like to book the ${selectedVehicle.name} (${selectedVehicle.category}) at ${selectedVehicle.price} ${selectedVehicle.period}, pickup at ${chosenLoc}.`;
     window.open(
-      `https://wa.me/94703236834?text=${encodeURIComponent(msg)}`,
+      `https://wa.me/${SITE_CONTACT.whatsappNumber}?text=${encodeURIComponent(msg)}`,
       "_blank"
     );
   };

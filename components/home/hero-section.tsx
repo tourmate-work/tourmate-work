@@ -9,6 +9,7 @@ import { CustomDatePicker } from "@/components/ui/custom-datepicker";
 import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { ShieldCheck, Sparkles, MessageCircle, UserCheck, KeyRound, Search, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { SITE_CONTACT } from "@/lib/constants";
 
 export function HeroSection() {
   const router = useRouter();
@@ -46,7 +47,7 @@ export function HeroSection() {
     const typeText = carType !== "All" ? carType : "Vehicle";
     const locText = pickupPlace.trim() || "Sri Lanka";
     const message = `Hello Tourmate! I would like to check available ${modeText} ${typeText} rentals for delivery at ${locText}, pickup on ${rentalDate} and return on ${returnDate}.`;
-    window.open(`https://wa.me/94703236834?text=${encodeURIComponent(message)}`, "_blank");
+    window.open(`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   return (
@@ -95,7 +96,7 @@ export function HeroSection() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <a
-                href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+                href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=I%20want%20to%20list%20a%20vehicle`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold text-sm px-6 py-3.5 rounded-full border border-white/25 backdrop-blur-md transition-all duration-200 active:scale-95 cursor-pointer"

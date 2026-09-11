@@ -13,6 +13,7 @@ import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { CustomDatePicker } from "@/components/ui/custom-datepicker";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { SITE_CONTACT } from "@/lib/constants";
 
 const BLOG_POSTS = [
   {
@@ -130,7 +131,7 @@ export function ContactContent() {
       setIsSubmitting(false);
       const msg = `Hello Tourmate! I would like to book a ${carType} from ${pickupPlace} (${rentalDate}) to ${returnPlace} (${returnDate}).`;
       window.open(
-        `https://wa.me/94703236834?text=${encodeURIComponent(msg)}`,
+        `https://wa.me/${SITE_CONTACT.whatsappNumber}?text=${encodeURIComponent(msg)}`,
         "_blank"
       );
     }
@@ -314,10 +315,10 @@ export function ContactContent() {
                     {t("footer_phone_title")}
                   </span>
                   <a
-                    href="tel:+94772973530"
+                    href={`tel:${SITE_CONTACT.phone}`}
                     className="text-sm font-bold text-slate-900 hover:text-amber-600 transition-colors block mt-0.5"
                   >
-                    +94 (77) 297 3530
+                    {SITE_CONTACT.phoneDisplay}
                   </a>
                 </div>
               </div>

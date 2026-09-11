@@ -17,6 +17,7 @@ import {
 import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { useAuth } from "@/components/auth/auth-context";
+import { SITE_CONTACT } from "@/lib/constants";
 
 export interface CountryDialCode {
   code: string;
@@ -460,12 +461,12 @@ export function BookingInquiryModal({
 
       // 3. Build WhatsApp URL with verified details (NO ACCOUNT CREATION)
       const waMsg = buildWhatsAppMessage(verifiedPhone);
-      const directUrl = `https://wa.me/94703236834?text=${encodeURIComponent(waMsg)}`;
+      const directUrl = `https://wa.me/${SITE_CONTACT.whatsappNumber}?text=${encodeURIComponent(waMsg)}`;
       setGeneratedWhatsAppUrl(directUrl);
       setIsSuccess(true);
     } catch {
       const waMsg = buildWhatsAppMessage(verifiedPhone);
-      const directUrl = `https://wa.me/94703236834?text=${encodeURIComponent(waMsg)}`;
+      const directUrl = `https://wa.me/${SITE_CONTACT.whatsappNumber}?text=${encodeURIComponent(waMsg)}`;
       setGeneratedWhatsAppUrl(directUrl);
       setIsSuccess(true);
     } finally {

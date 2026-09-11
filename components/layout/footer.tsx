@@ -6,6 +6,7 @@ import Link from "next/link";
 import { MapPin, Mail, Phone, MessageCircle } from "lucide-react";
 import { PolicyModal, PolicyType } from "./policy-modal";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { SITE_CONTACT } from "@/lib/constants";
 
 function FacebookIcon({ className }: { className?: string }) {
   return (
@@ -106,10 +107,10 @@ export function Footer() {
             <div>
               <p className="text-xs text-neutral-400 leading-tight">{t("footer_phone_title")}</p>
               <a
-                href="tel:+94772973530"
+                href={`tel:${SITE_CONTACT.phone}`}
                 className="text-sm font-bold text-white hover:text-amber-400 transition-colors mt-0.5 block"
               >
-                +94 (77) 297 3530
+                {SITE_CONTACT.phoneDisplay}
               </a>
             </div>
           </div>
@@ -126,7 +127,7 @@ export function Footer() {
             {/* Social Icons */}
             <div className="flex items-center gap-5 pt-2">
               <a
-                href="https://facebook.com"
+                href={SITE_CONTACT.facebook}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Facebook"
@@ -135,7 +136,7 @@ export function Footer() {
                 <FacebookIcon className="h-4 w-4" />
               </a>
               <a
-                href="https://instagram.com"
+                href={SITE_CONTACT.instagram}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Instagram"
@@ -177,7 +178,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+                  href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=I%20want%20to%20list%20a%20vehicle`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors flex items-center gap-1.5"
@@ -225,13 +226,13 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://wa.me/94703236834?text=Hello%20Tourmate!%20I%20have%20an%20inquiry."
+                  href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=Hello%20Tourmate!%20I%20have%20an%20inquiry.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-emerald-400 transition-colors flex items-center gap-1.5 text-emerald-400"
                 >
                   <MessageCircle className="h-3.5 w-3.5" />
-                  <span>WhatsApp (+94 70 323 6834)</span>
+                  <span>WhatsApp ({SITE_CONTACT.whatsappDisplay})</span>
                 </a>
               </li>
             </ul>

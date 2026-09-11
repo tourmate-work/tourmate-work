@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Home, Car, LayoutDashboard, MessageCircle, User } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { useAuth } from "@/components/auth/auth-context";
+import { SITE_CONTACT } from "@/lib/constants";
 
 export function MobileBottomBar() {
   const pathname = usePathname();
@@ -58,7 +59,7 @@ export function MobileBottomBar() {
 
         {/* List Vehicle WhatsApp CTA */}
         <a
-          href="https://wa.me/94703236834?text=I%20want%20to%20list%20a%20vehicle"
+          href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=I%20want%20to%20list%20a%20vehicle`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex flex-col items-center gap-1 py-1 px-2.5 text-violet-600 dark:text-violet-400 transition-all active:scale-90"
@@ -71,7 +72,7 @@ export function MobileBottomBar() {
 
         {/* Direct WhatsApp CTA */}
         <a
-          href="https://wa.me/94703236834?text=Hello%20Tourmate!%20I%20have%20an%20inquiry%20about%20renting%20a%20car."
+          href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=Hello%20Tourmate!%20I%20have%20an%20inquiry%20about%20renting%20a%20car.`}
           target="_blank"
           rel="noreferrer"
           className="flex flex-col items-center gap-1 py-1 px-2.5 text-emerald-600 dark:text-emerald-400 transition-all active:scale-90"
