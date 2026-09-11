@@ -33,7 +33,10 @@ export function FleetSection() {
   const [selectedBookingCar, setSelectedBookingCar] = useState<BookingVehicleInfo | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
     async function loadCars() {
+      setLoading(true);
+      const startTime = Date.now();
       try {
         const res = await fetch("/api/vehicles?limit=6");
         const data = await res.json();
@@ -66,17 +69,24 @@ export function FleetSection() {
               rating: String(v.rating || "5.0"),
             };
           });
-          setFeaturedCars(mapped);
+          if (isMounted) setFeaturedCars(mapped);
         } else {
-          setFeaturedCars([]);
+          if (isMounted) setFeaturedCars([]);
         }
       } catch {
-        setFeaturedCars([]);
+        if (isMounted) setFeaturedCars([]);
       } finally {
-        setLoading(false);
+        const elapsed = Date.now() - startTime;
+        const remainingDelay = Math.max(0, 800 - elapsed);
+        setTimeout(() => {
+          if (isMounted) setLoading(false);
+        }, remainingDelay);
       }
     }
     loadCars();
+    return () => {
+      isMounted = false;
+    };
   }, [language]);
 
   return (

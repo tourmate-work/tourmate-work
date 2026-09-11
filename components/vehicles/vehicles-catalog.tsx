@@ -121,7 +121,10 @@ export function VehiclesCatalog() {
 
   // Fetch live vehicles from backend API
   useEffect(() => {
+    let isMounted = true;
     async function loadVehicles() {
+      setLoading(true);
+      const startTime = Date.now();
       try {
         const res = await fetch("/api/vehicles");
         const data = await res.json();
@@ -181,17 +184,25 @@ export function VehiclesCatalog() {
               thumbnails: validGallery,
             };
           });
-          setVehiclesList(mapped);
+          if (isMounted) setVehiclesList(mapped);
         } else {
-          setVehiclesList([]);
+          if (isMounted) setVehiclesList([]);
         }
       } catch {
-        setVehiclesList([]);
+        if (isMounted) setVehiclesList([]);
       } finally {
-        setLoading(false);
+        // Guarantee Lottie loading animation is visible for at least 800ms
+        const elapsed = Date.now() - startTime;
+        const remainingDelay = Math.max(0, 800 - elapsed);
+        setTimeout(() => {
+          if (isMounted) setLoading(false);
+        }, remainingDelay);
       }
     }
     loadVehicles();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // Lock body scroll when modal is open and handle ESC key
@@ -527,7 +538,16 @@ export function VehiclesCatalog() {
           {/* Results Count & Dropdown */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between md:justify-end gap-2.5 sm:gap-3 flex-shrink-0">
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
-              Showing <span className="font-extrabold text-slate-900 dark:text-white">{filteredVehicles.length}</span> vehicles
+              {loading ? (
+                <span className="inline-flex items-center gap-1.5 text-violet-600 dark:text-violet-400 font-semibold">
+                  <span className="w-2 h-2 rounded-full bg-violet-600 dark:bg-violet-400 animate-ping" />
+                  Loading TourMate Fleet...
+                </span>
+              ) : (
+                <>
+                  Showing <span className="font-extrabold text-slate-900 dark:text-white">{filteredVehicles.length}</span> vehicles
+                </>
+              )}
             </span>
 
             <div className="w-full sm:w-56">

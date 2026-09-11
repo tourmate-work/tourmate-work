@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { Sparkles } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Sparkles, Car } from "lucide-react";
 
 interface LottieLoaderProps {
   title?: string;
@@ -19,24 +19,52 @@ export function LottieLoader({
   variant = "card",
   className = "",
 }: LottieLoaderProps) {
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+
+  // Safeguard: make iframe visible after 800ms regardless of iframe onLoad event
+  useEffect(() => {
+    const t = setTimeout(() => setIframeLoaded(true), 800);
+    return () => clearTimeout(t);
+  }, []);
+
+  const renderAnimation = (sizeClass: string) => (
+    <div className={`relative ${sizeClass} overflow-hidden pointer-events-none flex items-center justify-center`}>
+      {/* Background Pulse Animation while iframe loads */}
+      <div
+        className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-500 ${
+          iframeLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      >
+        <div className="w-14 h-14 rounded-2xl bg-violet-600/10 dark:bg-violet-400/10 border border-violet-500/20 flex items-center justify-center animate-bounce shadow-inner">
+          <Car className="w-7 h-7 text-violet-600 dark:text-violet-400" />
+        </div>
+      </div>
+
+      {/* Lottie Embed Iframe */}
+      <iframe
+        src={LOTTIE_ANIMATION_URL}
+        className={`w-full h-full border-0 pointer-events-none bg-transparent transition-opacity duration-300 ${
+          iframeLoaded ? "opacity-100" : "opacity-90"
+        }`}
+        title="Tourmate Loading Animation"
+        loading="eager"
+        allow="autoplay"
+        onLoad={() => setIframeLoaded(true)}
+      />
+    </div>
+  );
+
   if (variant === "fullscreen") {
     return (
       <div
-        className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/90 dark:bg-[#0b0b0e]/95 backdrop-blur-md px-4 transition-all duration-300 ${className}`}
+        className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/95 dark:bg-[#0b0b0e]/95 backdrop-blur-md px-4 transition-all duration-300 ${className}`}
       >
         <div className="relative flex flex-col items-center max-w-sm text-center">
           {/* Animated Glow Backdrop */}
           <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-violet-600/20 via-purple-600/20 to-indigo-600/20 blur-2xl animate-pulse pointer-events-none" />
 
           {/* Lottie Animation Frame */}
-          <div className="relative w-48 h-48 sm:w-60 sm:h-60 overflow-hidden pointer-events-none">
-            <iframe
-              src={LOTTIE_ANIMATION_URL}
-              className="w-full h-full border-0 pointer-events-none bg-transparent"
-              title="Tourmate Loading Animation"
-              loading="eager"
-            />
-          </div>
+          {renderAnimation("w-52 h-52 sm:w-64 sm:h-64 min-h-[200px]")}
 
           {/* Engaging Status Pill */}
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-violet-500/10 dark:bg-violet-400/10 border border-violet-500/20 text-violet-700 dark:text-violet-300 text-xs font-bold mb-3 shadow-sm">
@@ -63,14 +91,7 @@ export function LottieLoader({
   if (variant === "inline") {
     return (
       <div className={`flex flex-col items-center justify-center py-6 text-center ${className}`}>
-        <div className="relative w-36 h-36 sm:w-44 sm:h-44 overflow-hidden pointer-events-none">
-          <iframe
-            src={LOTTIE_ANIMATION_URL}
-            className="w-full h-full border-0 pointer-events-none bg-transparent"
-            title="Tourmate Loading Animation"
-            loading="eager"
-          />
-        </div>
+        {renderAnimation("w-36 h-36 sm:w-44 sm:h-44 min-h-[140px]")}
         <p className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 mt-1">
           {title}
         </p>
@@ -81,23 +102,16 @@ export function LottieLoader({
   // Default "card" variant for car listings and search results
   return (
     <div
-      className={`w-full py-12 sm:py-16 px-4 rounded-[28px] sm:rounded-[36px] bg-gradient-to-b from-slate-50/80 via-white to-slate-50/60 dark:from-[#111116] dark:via-[#0e0e12] dark:to-[#111116] border border-slate-200/80 dark:border-white/10 shadow-sm text-center flex flex-col items-center justify-center relative overflow-hidden ${className}`}
+      className={`w-full py-12 sm:py-16 px-4 rounded-[28px] sm:rounded-[36px] bg-gradient-to-b from-slate-50/90 via-white to-slate-50/70 dark:from-[#111116] dark:via-[#0e0e12] dark:to-[#111116] border border-slate-200/90 dark:border-white/10 shadow-sm text-center flex flex-col items-center justify-center relative overflow-hidden ${className}`}
     >
       {/* Background Accent Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-violet-500/10 dark:bg-violet-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-violet-500/10 dark:bg-violet-500/5 rounded-full blur-3xl pointer-events-none" />
 
       {/* Lottie Animation */}
-      <div className="relative w-44 h-44 sm:w-56 sm:h-56 overflow-hidden pointer-events-none">
-        <iframe
-          src={LOTTIE_ANIMATION_URL}
-          className="w-full h-full border-0 pointer-events-none bg-transparent"
-          title="Tourmate Loading Animation"
-          loading="eager"
-        />
-      </div>
+      {renderAnimation("w-48 h-48 sm:w-60 sm:h-60 min-h-[190px]")}
 
       {/* Badge & Text */}
-      <div className="relative z-10 max-w-md mx-auto mt-1 space-y-2">
+      <div className="relative z-10 max-w-md mx-auto mt-2 space-y-2">
         <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-500/20 text-[11px] font-bold">
           <span className="w-2 h-2 rounded-full bg-violet-600 dark:bg-violet-400 animate-ping" />
           <span>Live Fleet Search</span>
