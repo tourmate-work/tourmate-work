@@ -253,8 +253,8 @@ export function ContactContent() {
                   src="/images/hero-sri-lanka.jpg"
                   alt="Tourmate rental fleet in Sri Lanka"
                   fill
+                  sizes="(max-width: 1024px) 100vw, 66vw"
                   className="object-cover hover:scale-105 transition-transform duration-700"
-                  priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>

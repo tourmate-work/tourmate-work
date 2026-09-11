@@ -831,8 +831,8 @@ export function VehiclesCatalog() {
                       src={activeModalCar.thumbnails?.[activeThumbnailIndex] || activeModalCar.thumbnails?.[0] || ""}
                       alt={activeModalCar.name}
                       fallbackName={activeModalCar.name}
-                      priority
                       className="object-cover group-hover:scale-105"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
                     />
                     {activeModalCar.thumbnails && activeModalCar.thumbnails.length > 1 && (
                       <div className="absolute bottom-3 right-3 z-20 px-2.5 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold shadow-sm pointer-events-none">
@@ -859,6 +859,7 @@ export function VehiclesCatalog() {
                           fallbackName={activeModalCar.name}
                           showSpinner={false}
                           className="object-cover"
+                          sizes="(max-width: 640px) 80px, 112px"
                         />
                       </button>
                     ))}

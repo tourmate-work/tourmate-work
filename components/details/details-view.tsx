@@ -505,7 +505,6 @@ function DetailsContentInner() {
                 src={selectedVehicle.thumbnails?.[activeThumbnailIndex] || selectedVehicle.thumbnails?.[0] || ""}
                 alt={`${selectedVehicle.name} - View ${activeThumbnailIndex + 1}`}
                 fallbackName={selectedVehicle.name}
-                priority
                 className="object-cover group-hover:scale-105"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
@@ -536,6 +535,7 @@ function DetailsContentInner() {
                     fallbackName={selectedVehicle.name}
                     showSpinner={false}
                     className="object-cover"
+                    sizes="(max-width: 640px) 96px, 112px"
                   />
                 </button>
               ))}
