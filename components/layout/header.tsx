@@ -379,14 +379,26 @@ export function Header() {
         {/* Logo & Portal Badge */}
         <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
           <Link href={isAdmin ? "/admin" : "/"} className="flex items-center gap-2 group py-1">
+            {/* Light Mode: Transparent logo */}
             <Image
               src="/images/logo-transparent.png"
               alt="Tourmate Rentals"
               width={160}
               height={52}
-              className="h-7 sm:h-11 w-auto object-contain group-hover:scale-105 transition-transform duration-200 dark:brightness-110"
+              className="h-7 sm:h-11 w-auto object-contain group-hover:scale-105 transition-transform duration-200 dark:hidden"
               priority
             />
+            {/* Dark Mode: Original logo with white background preserved */}
+            <div className="hidden dark:flex items-center bg-white rounded-xl sm:rounded-2xl px-2 sm:px-2.5 py-0.5 sm:py-1 shadow-sm group-hover:scale-105 transition-transform duration-200">
+              <Image
+                src="/images/logo-white-bg.png"
+                alt="Tourmate Rentals"
+                width={160}
+                height={52}
+                className="h-6 sm:h-9 w-auto object-contain"
+                priority
+              />
+            </div>
           </Link>
           {isAdmin && (
             <span className="inline-flex items-center gap-1 text-[9px] sm:text-[11px] font-extrabold uppercase tracking-wider bg-violet-500/20 text-violet-700 dark:text-violet-300 border border-violet-500/40 px-1.5 sm:px-2.5 py-0.5 rounded-full">
