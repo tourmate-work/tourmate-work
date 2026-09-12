@@ -262,7 +262,6 @@ export function Header() {
   const isAdmin = pathname.startsWith("/admin");
   const isHome = pathname === "/";
   const isVehicles = pathname.startsWith("/vehicles");
-  const isDetails = pathname.startsWith("/details");
   const isAbout = pathname.startsWith("/about");
   const isContact = pathname.startsWith("/contact");
 
@@ -326,11 +325,10 @@ export function Header() {
     () => [
       { href: "/", label: t("nav_home"), isActive: isHome },
       { href: "/vehicles", label: t("nav_browse_vehicles"), isActive: isVehicles },
-      { href: "/details", label: t("nav_details"), isActive: isDetails },
       { href: "/about", label: t("nav_about_us"), isActive: isAbout },
       { href: "/contact", label: t("nav_contact_us"), isActive: isContact },
     ],
-    [isHome, isVehicles, isDetails, isAbout, isContact, t]
+    [isHome, isVehicles, isAbout, isContact, t]
   );
 
   const updatePillPosition = useCallback(
@@ -852,7 +850,6 @@ export function Header() {
                   {[
                     { href: "/", label: t("nav_home"), icon: Home, active: isHome },
                     { href: "/vehicles", label: t("nav_browse_vehicles"), icon: Car, active: isVehicles },
-                    { href: "/details", label: t("nav_details"), icon: FileText, active: isDetails },
                     { href: "/about", label: t("nav_about_us"), icon: Users, active: isAbout },
                     { href: "/contact", label: t("nav_contact_us"), icon: Mail, active: isContact },
                   ].map((item) => {
