@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import crypto from "crypto";
+import sharp from "sharp";
 
 export const dynamic = "force-dynamic";
 
@@ -41,11 +42,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // File size limit (8MB)
-    const MAX_SIZE = 8 * 1024 * 1024;
+    // File size limit (15MB raw input limit)
+    const MAX_SIZE = 15 * 1024 * 1024;
     if (file.size > MAX_SIZE) {
       return NextResponse.json(
-        { success: false, error: "File size exceeds maximum limit of 8MB." },
+        { success: false, error: "File size exceeds maximum limit of 15MB." },
         { status: 400 }
       );
     }
@@ -53,22 +54,37 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Determine extension
-    let ext = "jpg";
-    if (file.name.includes(".")) {
-      ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
-    } else if (file.type.includes("/")) {
-      ext = file.type.split("/")[1].toLowerCase();
+    // Optimize image with sharp: auto-orient, resize to max 1600x1600, compress to WebP
+    let uploadBuffer: Buffer = buffer;
+    let uploadContentType = "image/webp";
+    let ext = "webp";
+
+    try {
+      uploadBuffer = await sharp(buffer)
+        .rotate() // Auto-orient EXIF camera photos
+        .resize(1600, 1600, { fit: "inside", withoutEnlargement: true })
+        .webp({ quality: 80, effort: 4 })
+        .toBuffer();
+    } catch (sharpError) {
+      console.warn("Sharp optimization skipped, using original buffer:", sharpError);
+      uploadBuffer = buffer;
+      uploadContentType = file.type || "image/jpeg";
+      if (file.name.includes(".")) {
+        ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+      } else if (file.type.includes("/")) {
+        ext = file.type.split("/")[1].toLowerCase();
+      }
     }
 
     const uniqueId = crypto.randomUUID();
     const fileName = `${Date.now()}_${uniqueId}.${ext}`;
 
-    // Upload to Supabase Storage
+    // Upload to Supabase Storage with 1-year immutable cache control
     const { error: uploadError } = await supabase.storage
       .from(BUCKET_NAME)
-      .upload(fileName, buffer, {
-        contentType: file.type || "image/jpeg",
+      .upload(fileName, uploadBuffer, {
+        contentType: uploadContentType,
+        cacheControl: "31536000, public, immutable",
         upsert: true,
       });
 
@@ -80,8 +96,9 @@ export async function POST(req: NextRequest) {
         await supabase.storage.createBucket(BUCKET_NAME, { public: true });
         const { error: retryError } = await supabase.storage
           .from(BUCKET_NAME)
-          .upload(fileName, buffer, {
-            contentType: file.type || "image/jpeg",
+          .upload(fileName, uploadBuffer, {
+            contentType: uploadContentType,
+            cacheControl: "31536000, public, immutable",
             upsert: true,
           });
 
@@ -98,8 +115,8 @@ export async function POST(req: NextRequest) {
       }
 
       // If Supabase upload fails completely, convert to data URL so the client image isn't lost
-      const base64 = buffer.toString("base64");
-      const dataUri = `data:${file.type};base64,${base64}`;
+      const base64 = uploadBuffer.toString("base64");
+      const dataUri = `data:${uploadContentType};base64,${base64}`;
       return NextResponse.json({
         success: true,
         url: dataUri,

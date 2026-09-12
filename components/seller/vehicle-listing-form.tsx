@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { SellerVehicle } from "./add-vehicle-modal";
 import { CustomDropdown, DropdownOption } from "@/components/ui/custom-dropdown";
+import { compressImageClient } from "@/lib/image-compress";
 
 export interface VehicleListingFormProps {
   onSuccess?: (vehicle: SellerVehicle) => void;
@@ -552,10 +553,11 @@ export function VehicleListingForm({
       let idx = 0;
       for (const [slotId, file] of fileEntries) {
         idx++;
-        setUploadStatusText(`Uploading photo ${idx} of ${fileEntries.length}...`);
+        setUploadStatusText(`Optimizing & uploading photo ${idx} of ${fileEntries.length}...`);
         try {
+          const optimizedFile = await compressImageClient(file);
           const formData = new FormData();
-          formData.append("file", file);
+          formData.append("file", optimizedFile);
           const uploadRes = await fetch("/api/upload", {
             method: "POST",
             body: formData,

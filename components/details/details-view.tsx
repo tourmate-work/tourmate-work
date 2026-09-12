@@ -553,6 +553,7 @@ function DetailsContentInner() {
                 src={selectedVehicle.thumbnails?.[activeThumbnailIndex] || selectedVehicle.thumbnails?.[0] || ""}
                 alt={`${selectedVehicle.name} - View ${activeThumbnailIndex + 1}`}
                 fallbackName={selectedVehicle.name}
+                priority={true}
                 className="object-cover group-hover:scale-105"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
@@ -572,16 +573,17 @@ function DetailsContentInner() {
                   key={idx}
                   onClick={() => setActiveThumbnailIndex(idx)}
                   className={`relative h-20 w-24 sm:h-24 sm:w-28 flex-shrink-0 rounded-[20px] overflow-hidden border-2 transition-all cursor-pointer ${
-                    activeThumbnailIndex === idx
-                      ? "border-violet-600 ring-2 ring-violet-600/30 scale-105 shadow-md"
-                      : "border-slate-200 dark:border-white/10 opacity-70 hover:opacity-100"
-                  }`}
+                  activeThumbnailIndex === idx
+                    ? "border-violet-600 ring-2 ring-violet-600/30 scale-105 shadow-md"
+                    : "border-slate-200 dark:border-white/10 opacity-70 hover:opacity-100"
+                }`}
                 >
                   <VehicleImage
                     src={thumb}
                     alt={`${selectedVehicle.name} preview ${idx + 1}`}
                     fallbackName={selectedVehicle.name}
                     showSpinner={false}
+                    quality={70}
                     className="object-cover"
                     sizes="(max-width: 640px) 96px, 112px"
                   />

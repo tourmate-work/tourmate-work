@@ -675,6 +675,7 @@ export function VehiclesCatalog() {
                         src={car.thumbnails?.[0] || ""}
                         alt={car.name}
                         fallbackName={car.name}
+                        priority={index < 4}
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                         sizes="(max-width: 640px) 50vw, (max-width: 1200px) 50vw, 33vw"
                       />
@@ -866,6 +867,7 @@ export function VehiclesCatalog() {
                       src={activeModalCar.thumbnails?.[activeThumbnailIndex] || activeModalCar.thumbnails?.[0] || ""}
                       alt={activeModalCar.name}
                       fallbackName={activeModalCar.name}
+                      priority={true}
                       className="object-cover group-hover:scale-105"
                       sizes="(max-width: 1024px) 100vw, 50vw"
                     />
@@ -893,6 +895,7 @@ export function VehiclesCatalog() {
                           alt={`${activeModalCar.name} preview thumbnail ${idx + 1}`}
                           fallbackName={activeModalCar.name}
                           showSpinner={false}
+                          quality={70}
                           className="object-cover"
                           sizes="(max-width: 640px) 80px, 112px"
                         />
@@ -1098,6 +1101,8 @@ export function VehiclesCatalog() {
                             alt={other.name}
                             fallbackName={other.name}
                             showSpinner={false}
+                            quality={70}
+                            sizes="(max-width: 640px) 150px, 220px"
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         </div>

@@ -18,9 +18,10 @@ export function VehicleImage({
   className = "",
   containerClassName = "",
   fallbackName,
-  showSpinner = true,
+  showSpinner = false,
   priority = false,
-  sizes,
+  quality = 80,
+  sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw",
   ...rest
 }: VehicleImageProps) {
   const [isLoading, setIsLoading] = useState(true);
@@ -37,17 +38,16 @@ export function VehicleImage({
 
   return (
     <div className={`relative w-full h-full overflow-hidden ${containerClassName}`}>
-      {/* Loading Skeleton / Shimmer Animation when image takes time to load */}
+      {/* Sleek Shimmer Skeleton while loading */}
       {isLoading && !hasError && validSrc && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-100 dark:bg-[#111116] transition-opacity duration-300">
-          {/* Shimmer sweep effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 dark:via-white/5 to-transparent animate-pulse" />
 
           {showSpinner && (
-            <div className="relative z-20 flex flex-col items-center gap-2 px-3 py-2 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 text-white shadow-md">
-              <Loader2 className="h-5 w-5 animate-spin text-violet-400" />
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-200">
-                Loading photo...
+            <div className="relative z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white shadow-sm">
+              <Loader2 className="h-4 w-4 animate-spin text-violet-400" />
+              <span className="text-[10px] font-semibold tracking-wider text-slate-200">
+                Loading...
               </span>
             </div>
           )}
@@ -61,6 +61,7 @@ export function VehicleImage({
           alt={alt || "Vehicle photo"}
           fill={fill}
           priority={priority}
+          quality={quality}
           sizes={sizes}
           className={`transition-all duration-500 ease-out ${
             isLoading ? "opacity-0 scale-98" : "opacity-100 scale-100"

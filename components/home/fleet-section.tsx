@@ -188,6 +188,7 @@ export function FleetSection() {
                     src={car.image}
                     alt={`${car.name} ${car.category}`}
                     fallbackName={car.name}
+                    priority={index < 4}
                     className="object-contain object-center group-hover:scale-105 transition-transform duration-300"
                     sizes="(max-width: 640px) 50vw, (max-width: 1200px) 50vw, 33vw"
                   />
