@@ -331,11 +331,16 @@ function DetailsContentInner() {
   const { t, language } = useLanguage();
   const searchParams = useSearchParams();
   const requestedCarId = searchParams.get("car") || searchParams.get("id") || "mercedes-sedan";
+  const hasRequestedSpecificId = Boolean(searchParams.get("car") || searchParams.get("id"));
+  const isStaticCar = VEHICLES.some((v) => v.id === requestedCarId);
 
   const foundCar =
     VEHICLES.find((v) => v.id === requestedCarId) || VEHICLES[0];
 
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleDetail>(foundCar);
+  const [isLoadingDetails, setIsLoadingDetails] = useState<boolean>(
+    hasRequestedSpecificId && !isStaticCar
+  );
   const [activeThumbnailIndex, setActiveThumbnailIndex] = useState(0);
   const [liveVehicles, setLiveVehicles] = useState<VehicleDetail[]>([]);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
@@ -421,6 +426,7 @@ function DetailsContentInner() {
       if (match) {
         setSelectedVehicle(match);
         setActiveThumbnailIndex(0);
+        setIsLoadingDetails(false);
       } else {
         // Fetch from API in case direct link or database vehicle
         fetch(`/api/vehicles/${id}`)
@@ -478,8 +484,13 @@ function DetailsContentInner() {
               setActiveThumbnailIndex(0);
             }
           })
-          .catch(() => {});
+          .catch(() => {})
+          .finally(() => {
+            setIsLoadingDetails(false);
+          });
       }
+    } else {
+      setIsLoadingDetails(false);
     }
   }, [searchParams, liveVehicles]);
 
@@ -500,6 +511,17 @@ function DetailsContentInner() {
 
   const pool = liveVehicles.length > 0 ? liveVehicles : VEHICLES;
   const otherCars = pool.filter((v) => v.id !== selectedVehicle.id).slice(0, 6);
+
+  if (isLoadingDetails) {
+    return (
+      <div className="w-full bg-white dark:bg-black text-slate-900 dark:text-white py-24 min-h-[65vh] flex flex-col items-center justify-center">
+        <LottieLoader
+          title="Loading Vehicle Specifications..."
+          subtitle="Fetching verified car specs, equipment, and live daily rates"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-white dark:bg-black text-slate-900 dark:text-white pb-20">

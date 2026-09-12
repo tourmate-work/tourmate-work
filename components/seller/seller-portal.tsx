@@ -628,7 +628,7 @@ export function SellerPortalContent() {
                             : "Set Maintenance"}
                         </button>
                         <Link
-                          href={`/details?id=1`}
+                          href={`/details?car=${encodeURIComponent(car.id)}`}
                           className="py-2.5 px-4 rounded-[30px] bg-violet-600/10 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 text-xs font-bold hover:bg-violet-600 hover:text-white transition-all text-center"
                         >
                           Preview

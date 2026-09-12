@@ -797,7 +797,7 @@ export function AdminPortalContent() {
                           </button>
 
                           <Link
-                            href={`/details`}
+                            href={`/details?car=${encodeURIComponent(car.id)}`}
                             className="py-2 px-3.5 rounded-full bg-violet-600/10 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 text-xs font-bold hover:bg-violet-600 hover:text-white transition-all text-center cursor-pointer"
                           >
                             View
