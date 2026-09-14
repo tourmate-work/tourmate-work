@@ -113,6 +113,7 @@ function GithubCallbackContent() {
 
         // 5. Grant local admin authorization flag
         if (typeof window !== "undefined") {
+          localStorage.setItem("tourmate_admin_github_auth", "true");
           localStorage.setItem("tourmate_admin_auth", "true");
         }
 

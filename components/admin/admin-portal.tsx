@@ -15,7 +15,6 @@ import {
   CheckCircle2,
   DollarSign,
   Search,
-  KeyRound,
   LogOut,
   Trash2,
   Sparkles,
@@ -66,7 +65,6 @@ export function AdminPortalContent() {
   const { user, logout: authLogout } = useAuth();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [passcode, setPasscode] = useState("");
   const [authError, setAuthError] = useState("");
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [githubLoading, setGithubLoading] = useState(false);
@@ -86,15 +84,27 @@ export function AdminPortalContent() {
   const [updatingInquiryId, setUpdatingInquiryId] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
-  // Check persistent admin authentication on mount
+  // Check persistent admin authentication on mount (Strict GitHub Supabase session)
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("tourmate_admin_auth");
-      if (stored === "true" || user?.role === "ADMIN") {
-        setIsAuthenticated(true);
+    async function checkAdminAuth() {
+      if (typeof window !== "undefined") {
+        // Clear any old legacy password authorization
+        localStorage.removeItem("tourmate_admin_auth");
+
+        // Verify if user has an active Supabase GitHub session
+        const { data } = await supabase.auth.getSession();
+        const hasGithubAdmin = localStorage.getItem("tourmate_admin_github_auth") === "true";
+
+        if (data.session?.user && (hasGithubAdmin || user?.role === "ADMIN")) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+          localStorage.removeItem("tourmate_admin_github_auth");
+        }
+        setCheckingAuth(false);
       }
-      setCheckingAuth(false);
     }
+    checkAdminAuth();
   }, [user]);
 
   // Sync state when URL query parameters change
@@ -191,28 +201,6 @@ export function AdminPortalContent() {
     loadBackendData();
   }, [isAuthenticated]);
 
-  const handleLogin = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (passcode.trim() === "tourmate123" || passcode.trim().toLowerCase() === "admin") {
-      setIsAuthenticated(true);
-      setAuthError("");
-      if (typeof window !== "undefined") {
-        localStorage.setItem("tourmate_admin_auth", "true");
-      }
-    } else {
-      setAuthError("Invalid passcode. Please enter the Tourmate admin passcode.");
-    }
-  };
-
-  const handleQuickUnlock = () => {
-    setPasscode("tourmate123");
-    setIsAuthenticated(true);
-    setAuthError("");
-    if (typeof window !== "undefined") {
-      localStorage.setItem("tourmate_admin_auth", "true");
-    }
-  };
-
   const handleGithubLogin = async () => {
     setGithubLoading(true);
     setAuthError("");
@@ -250,9 +238,9 @@ export function AdminPortalContent() {
 
   const handleLogout = async () => {
     setIsAuthenticated(false);
-    setPasscode("");
     if (typeof window !== "undefined") {
       localStorage.removeItem("tourmate_admin_auth");
+      localStorage.removeItem("tourmate_admin_github_auth");
     }
     try {
       await supabase.auth.signOut();
@@ -472,32 +460,20 @@ export function AdminPortalContent() {
             </p>
           </div>
 
-          {/* Option A: Quick unlock if current session is an admin */}
-          {user?.role === "ADMIN" && (
-            <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-left space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                <p className="text-xs font-bold text-emerald-800 dark:text-emerald-300">
-                  Signed in as Administrator: {user.name || user.email}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsAuthenticated(true)}
-                className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow transition-all active:scale-95 cursor-pointer"
-              >
-                Enter Admin Portal
-              </button>
+          {authError && (
+            <div className="p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/30 text-rose-600 dark:text-rose-400 text-xs font-semibold flex items-center gap-2 text-left">
+              <AlertCircle className="h-4 w-4 shrink-0" />
+              <span>{authError}</span>
             </div>
           )}
 
-          {/* Option B: Supabase GitHub OAuth Login */}
-          <div className="space-y-3">
+          {/* Dedicated Supabase GitHub OAuth Login Button */}
+          <div className="pt-2 space-y-3">
             <button
               type="button"
               onClick={handleGithubLogin}
               disabled={githubLoading}
-              className="w-full py-3.5 px-4 rounded-2xl bg-[#161b22] hover:bg-[#21262d] text-white font-bold text-sm border border-white/10 shadow-lg shadow-black/20 flex items-center justify-center gap-3 transition-all active:scale-95 disabled:opacity-75 cursor-pointer"
+              className="w-full py-4 px-4 rounded-2xl bg-[#161b22] hover:bg-[#21262d] text-white font-bold text-sm border border-white/10 shadow-xl shadow-black/25 flex items-center justify-center gap-3 transition-all active:scale-95 disabled:opacity-75 cursor-pointer"
             >
               {githubLoading ? (
                 <>
@@ -513,58 +489,11 @@ export function AdminPortalContent() {
                       d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
                     />
                   </svg>
-                  <span>Continue with GitHub (Supabase)</span>
+                  <span>Sign In with GitHub (Supabase)</span>
                 </>
               )}
             </button>
-
-            <div className="relative flex items-center justify-center my-4">
-              <div className="border-t border-slate-200 dark:border-white/10 w-full" />
-              <span className="bg-white dark:bg-[#0b0b0e] px-3 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 shrink-0">
-                or use admin passcode
-              </span>
-            </div>
           </div>
-
-          <form onSubmit={handleLogin} className="space-y-4 text-left">
-            <div>
-              <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
-                Admin Passcode
-              </label>
-              <div className="relative">
-                <input
-                  type="password"
-                  value={passcode}
-                  onChange={(e) => setPasscode(e.target.value)}
-                  placeholder="Enter passcode (tourmate123)"
-                  className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl py-3 px-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-600"
-                  autoFocus
-                />
-                <KeyRound className="absolute right-3.5 top-3.5 h-4 w-4 text-slate-400" />
-              </div>
-              {authError && (
-                <p className="text-xs font-semibold text-rose-500 mt-1.5 flex items-center gap-1">
-                  <AlertCircle className="h-3.5 w-3.5" />
-                  <span>{authError}</span>
-                </p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              className="w-full py-3.5 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm shadow-md shadow-violet-500/20 transition-all active:scale-95 cursor-pointer"
-            >
-              Unlock with Passcode
-            </button>
-
-            <button
-              type="button"
-              onClick={handleQuickUnlock}
-              className="w-full py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 text-xs font-bold transition-colors cursor-pointer"
-            >
-              Quick Unlock (Developer / Owner)
-            </button>
-          </form>
 
           <div className="pt-2 border-t border-slate-100 dark:border-white/5">
             <Link
