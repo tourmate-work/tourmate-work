@@ -82,6 +82,14 @@ export const api = {
       });
       return res.json();
     },
+    async loginWithGithub(data: { email?: string; name?: string; avatarUrl?: string; githubUsername?: string; supabaseId?: string; forAdmin?: boolean }): Promise<{ success: boolean; message?: string; user?: UserProfile; token?: string; error?: string }> {
+      const res = await fetch("/api/auth/github", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      return res.json();
+    },
     async me(): Promise<{ success: boolean; user?: UserProfile | null; authenticated?: boolean; error?: string }> {
       try {
         const res = await fetch("/api/auth/me");

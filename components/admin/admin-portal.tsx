@@ -24,6 +24,7 @@ import {
   MessageSquare,
   Phone,
   Clock,
+  RefreshCw,
 } from "lucide-react";
 import { AddVehicleModal, SellerVehicle } from "@/components/seller/add-vehicle-modal";
 import { VehicleListingForm } from "@/components/seller/vehicle-listing-form";
@@ -31,6 +32,8 @@ import { PolicyManager } from "@/components/admin/policy-manager";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { SITE_CONTACT } from "@/lib/constants";
 import { VehicleImage } from "@/components/ui/vehicle-image";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/components/auth/auth-context";
 
 export interface InquiryRecord {
   id: string;
@@ -60,11 +63,13 @@ export function AdminPortalContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialTab = searchParams.get("tab") || "list-vehicle";
+  const { user, logout: authLogout } = useAuth();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passcode, setPasscode] = useState("");
   const [authError, setAuthError] = useState("");
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [githubLoading, setGithubLoading] = useState(false);
 
   const [activeTab, setActiveTab] = useState<string>(initialTab);
   const [fleet, setFleet] = useState<SellerVehicle[]>([]);
@@ -85,12 +90,12 @@ export function AdminPortalContent() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("tourmate_admin_auth");
-      if (stored === "true") {
+      if (stored === "true" || user?.role === "ADMIN") {
         setIsAuthenticated(true);
       }
       setCheckingAuth(false);
     }
-  }, []);
+  }, [user]);
 
   // Sync state when URL query parameters change
   useEffect(() => {
@@ -208,11 +213,52 @@ export function AdminPortalContent() {
     }
   };
 
-  const handleLogout = () => {
+  const handleGithubLogin = async () => {
+    setGithubLoading(true);
+    setAuthError("");
+    try {
+      const redirectUrl =
+        typeof window !== "undefined"
+          ? `${window.location.origin}/admin/auth/callback`
+          : "/admin/auth/callback";
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "github",
+        options: {
+          redirectTo: redirectUrl,
+          scopes: "read:user user:email",
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (err: unknown) {
+      console.error("Supabase GitHub OAuth error:", err);
+      setAuthError(
+        err instanceof Error
+          ? err.message
+          : "Failed to initiate GitHub login. Please ensure GitHub OAuth is configured in Supabase."
+      );
+      setGithubLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
     setIsAuthenticated(false);
     setPasscode("");
     if (typeof window !== "undefined") {
       localStorage.removeItem("tourmate_admin_auth");
+    }
+    try {
+      await supabase.auth.signOut();
+      await authLogout();
+    } catch {
+      // Non-blocking logout error
     }
   };
 
@@ -426,6 +472,60 @@ export function AdminPortalContent() {
             </p>
           </div>
 
+          {/* Option A: Quick unlock if current session is an admin */}
+          {user?.role === "ADMIN" && (
+            <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-left space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                <p className="text-xs font-bold text-emerald-800 dark:text-emerald-300">
+                  Signed in as Administrator: {user.name || user.email}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAuthenticated(true)}
+                className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow transition-all active:scale-95 cursor-pointer"
+              >
+                Enter Admin Portal
+              </button>
+            </div>
+          )}
+
+          {/* Option B: Supabase GitHub OAuth Login */}
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={handleGithubLogin}
+              disabled={githubLoading}
+              className="w-full py-3.5 px-4 rounded-2xl bg-[#161b22] hover:bg-[#21262d] text-white font-bold text-sm border border-white/10 shadow-lg shadow-black/20 flex items-center justify-center gap-3 transition-all active:scale-95 disabled:opacity-75 cursor-pointer"
+            >
+              {githubLoading ? (
+                <>
+                  <RefreshCw className="h-4 w-4 animate-spin text-slate-300" />
+                  <span>Connecting to GitHub...</span>
+                </>
+              ) : (
+                <>
+                  <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                    />
+                  </svg>
+                  <span>Continue with GitHub (Supabase)</span>
+                </>
+              )}
+            </button>
+
+            <div className="relative flex items-center justify-center my-4">
+              <div className="border-t border-slate-200 dark:border-white/10 w-full" />
+              <span className="bg-white dark:bg-[#0b0b0e] px-3 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 shrink-0">
+                or use admin passcode
+              </span>
+            </div>
+          </div>
+
           <form onSubmit={handleLogin} className="space-y-4 text-left">
             <div>
               <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
@@ -454,7 +554,7 @@ export function AdminPortalContent() {
               type="submit"
               className="w-full py-3.5 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm shadow-md shadow-violet-500/20 transition-all active:scale-95 cursor-pointer"
             >
-              Unlock Admin Portal
+              Unlock with Passcode
             </button>
 
             <button
@@ -502,6 +602,11 @@ export function AdminPortalContent() {
                 <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 px-3 py-1 rounded-full text-xs font-semibold text-emerald-300">
                   <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span>Verified Fleet Administrator</span>
+                  {user && (
+                    <span className="text-white/80 font-normal ml-1">
+                      • {user.name || user.email}
+                    </span>
+                  )}
                 </div>
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight">
                   Tourmate Administration & Vehicle Listing

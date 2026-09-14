@@ -13,4 +13,18 @@ const supabaseAnonKey =
   process.env.SUPABASE_SECRET_KEY ||
   "placeholder-key";
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+  },
+});
+
+export const isSupabaseConfigured = () => {
+  return (
+    Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL) &&
+    supabaseUrl !== "https://placeholder.supabase.co" &&
+    supabaseAnonKey !== "placeholder-key"
+  );
+};

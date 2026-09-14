@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { api, UserProfile } from "@/lib/api-client";
+import { supabase } from "@/lib/supabase";
 
 export type AuthTab = "phone" | "gmail" | "email";
 
@@ -17,6 +18,7 @@ interface AuthContextType {
   sendPhoneOtp: (phone: string) => Promise<{ success: boolean; message?: string; devOtp?: string; error?: string }>;
   verifyPhoneOtp: (phone: string, code: string, name?: string) => Promise<{ success: boolean; user?: UserProfile; error?: string }>;
   loginWithGoogle: (data: { email?: string; name?: string; avatarUrl?: string; credential?: string }) => Promise<{ success: boolean; user?: UserProfile; error?: string }>;
+  loginWithGithub: (data: { email?: string; name?: string; avatarUrl?: string; githubUsername?: string; supabaseId?: string; forAdmin?: boolean }) => Promise<{ success: boolean; user?: UserProfile; error?: string }>;
   loginWithEmail: (email: string, password: string) => Promise<{ success: boolean; user?: UserProfile; error?: string }>;
   registerWithEmail: (data: { name: string; email: string; password: string; phone?: string }) => Promise<{ success: boolean; user?: UserProfile; error?: string }>;
   logout: () => Promise<void>;
@@ -110,6 +112,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const loginWithGithub = async (data: { email?: string; name?: string; avatarUrl?: string; githubUsername?: string; supabaseId?: string; forAdmin?: boolean }) => {
+    try {
+      const res = await api.auth.loginWithGithub(data);
+      if (res.success && res.user) {
+        setUser(res.user);
+        setIsAuthModalOpen(false);
+        return { success: true, user: res.user };
+      }
+      return { success: false, error: res.error || "GitHub authentication failed." };
+    } catch {
+      return { success: false, error: "Network error during GitHub login." };
+    }
+  };
+
   const loginWithEmail = async (email: string, password: string) => {
     try {
       const res = await api.auth.login({ email, password });
@@ -140,6 +156,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     try {
+      await supabase.auth.signOut();
       await api.auth.logout();
     } finally {
       setUser(null);
@@ -160,6 +177,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         sendPhoneOtp,
         verifyPhoneOtp,
         loginWithGoogle,
+        loginWithGithub,
         loginWithEmail,
         registerWithEmail,
         logout,
