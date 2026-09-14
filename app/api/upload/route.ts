@@ -53,27 +53,14 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Optimize image with sharp: auto-orient, resize to max 1600x1600, compress to WebP
-    let uploadBuffer: Buffer = buffer;
-    let uploadContentType = "image/webp";
-    let ext = "webp";
-
-    try {
-      const sharp = (await import("sharp")).default;
-      uploadBuffer = await sharp(buffer)
-        .rotate() // Auto-orient EXIF camera photos
-        .resize(1600, 1600, { fit: "inside", withoutEnlargement: true })
-        .webp({ quality: 80, effort: 4 })
-        .toBuffer();
-    } catch (sharpError) {
-      console.warn("Sharp optimization skipped, using original buffer:", sharpError);
-      uploadBuffer = buffer;
-      uploadContentType = file.type || "image/jpeg";
-      if (file.name.includes(".")) {
-        ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
-      } else if (file.type.includes("/")) {
-        ext = file.type.split("/")[1].toLowerCase();
-      }
+    // Use original image buffer (no server-side optimization)
+    const uploadBuffer: Buffer = buffer;
+    const uploadContentType = file.type || "image/jpeg";
+    let ext = "jpg";
+    if (file.name.includes(".")) {
+      ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+    } else if (file.type.includes("/")) {
+      ext = file.type.split("/")[1].toLowerCase();
     }
 
     const uniqueId = crypto.randomUUID();
