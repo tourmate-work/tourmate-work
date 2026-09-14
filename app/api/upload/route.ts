@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import crypto from "crypto";
-import sharp from "sharp";
 
 export const dynamic = "force-dynamic";
 
@@ -60,6 +59,7 @@ export async function POST(req: NextRequest) {
     let ext = "webp";
 
     try {
+      const sharp = (await import("sharp")).default;
       uploadBuffer = await sharp(buffer)
         .rotate() // Auto-orient EXIF camera photos
         .resize(1600, 1600, { fit: "inside", withoutEnlargement: true })
