@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { CustomDatePicker } from "@/components/ui/custom-datepicker";
 import { LocationSearchInput } from "@/components/ui/location-search-input";
-import { ShieldCheck, Sparkles, MessageCircle, UserCheck, KeyRound, Search, ArrowRight } from "lucide-react";
+import { MessageCircle, UserCheck, KeyRound, Search, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { SITE_CONTACT } from "@/lib/constants";
 
@@ -71,11 +71,7 @@ export function HeroSection() {
         <div className="relative z-10 w-full p-4 sm:p-8 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Text */}
           <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
-            {/* Top Micro-badge */}
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1 rounded-full text-xs font-semibold text-amber-300 shadow-sm">
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>{t("hero_badge")}</span>
-            </div>
+
 
             <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-black tracking-tight leading-[1.15] text-white drop-shadow-md">
               {t("hero_title_1")} <br className="hidden sm:inline" />
@@ -106,21 +102,7 @@ export function HeroSection() {
               </a>
             </div>
 
-            {/* Quick Guarantees Pill Strip */}
-            <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4 text-xs font-semibold text-slate-200">
-              <span className="flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-amber-400" />
-                <span>{t("hero_guarantee_1")}</span>
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>{t("hero_guarantee_2")}</span>
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                <span>{t("hero_guarantee_3")}</span>
-              </span>
-            </div>
+
           </div>
 
           {/* Right Floating Booking Card */}
