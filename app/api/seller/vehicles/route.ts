@@ -8,12 +8,15 @@ export async function GET(req: NextRequest) {
   try {
     const user = await getAuthUser(req);
     const { searchParams } = new URL(req.url);
-    const sellerId = searchParams.get("sellerId") || user?.id;
+    const explicitSellerId = searchParams.get("sellerId");
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const where: any = {};
-    if (sellerId) {
-      where.sellerId = sellerId;
+    // Admins see ALL vehicles; non-admins only see their own
+    if (explicitSellerId) {
+      where.sellerId = explicitSellerId;
+    } else if (user?.role !== "ADMIN" && user?.id) {
+      where.sellerId = user.id;
     }
 
     const rawVehicles = await prisma.vehicle.findMany({
