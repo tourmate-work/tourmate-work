@@ -17,6 +17,26 @@ export async function POST(req: NextRequest) {
       forAdmin = true,
     } = body;
 
+    // Only allow the authorized admin GitHub account
+    const ALLOWED_ADMIN_GITHUB = (
+      process.env.ADMIN_GITHUB_USERNAME || "tourmate-work"
+    ).toLowerCase();
+
+    if (
+      forAdmin &&
+      (!githubUsername ||
+        githubUsername.toLowerCase().trim() !== ALLOWED_ADMIN_GITHUB)
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "Access denied. Only the authorized admin account can sign in here.",
+        },
+        { status: 403 }
+      );
+    }
+
     // Handle email - fallback to GitHub handle if email is private
     let userEmail = email ? email.toLowerCase().trim() : null;
     if (!userEmail && githubUsername) {
