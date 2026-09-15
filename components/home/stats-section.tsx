@@ -1,26 +1,131 @@
+"use client";
+
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Car, Users, Calendar, Gauge } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
+interface Stats {
+  vehicleCount: number;
+  clientCount: number;
+  yearsInBusiness: number;
+  totalKmDriven: number;
+}
+
+const FALLBACK_STATS: Stats = {
+  vehicleCount: 0,
+  clientCount: 0,
+  yearsInBusiness: 1,
+  totalKmDriven: 0,
+};
+
+/**
+ * Format a number with commas: 50000 → "50,000"
+ */
+function formatNumber(n: number): string {
+  return n.toLocaleString("en-US");
+}
+
+/**
+ * Animated counter hook — counts from 0 to `target` over `duration` ms.
+ */
+function useAnimatedCounter(target: number, duration = 1800, start = false) {
+  const [count, setCount] = useState(0);
+  const frameRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!start || target === 0) {
+      setCount(target);
+      return;
+    }
+
+    const startTime = performance.now();
+
+    function step(now: number) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // ease-out quad
+      const eased = 1 - (1 - progress) * (1 - progress);
+      setCount(Math.round(eased * target));
+
+      if (progress < 1) {
+        frameRef.current = requestAnimationFrame(step);
+      }
+    }
+
+    frameRef.current = requestAnimationFrame(step);
+
+    return () => {
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
+    };
+  }, [target, duration, start]);
+
+  return count;
+}
+
+function AnimatedStat({
+  target,
+  suffix,
+  loaded,
+}: {
+  target: number;
+  suffix: string;
+  loaded: boolean;
+}) {
+  const count = useAnimatedCounter(target, 1800, loaded);
+  return (
+    <span className="text-lg sm:text-2xl font-black block leading-tight text-white">
+      {loaded ? `${formatNumber(count)}${suffix}` : (
+        <span className="inline-block w-16 h-6 rounded bg-white/10 animate-pulse" />
+      )}
+    </span>
+  );
+}
+
 export function StatsSection() {
-  const stats = [
+  const [stats, setStats] = useState<Stats>(FALLBACK_STATS);
+  const [loaded, setLoaded] = useState(false);
+
+  const fetchStats = useCallback(async () => {
+    try {
+      const res = await fetch("/api/stats", { cache: "no-store" });
+      const data = await res.json();
+      if (data.success && data.stats) {
+        setStats(data.stats);
+      }
+    } catch (err) {
+      console.warn("Failed to fetch live stats, using fallback values.", err);
+    } finally {
+      setLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
+
+  const statCards = [
     {
       icon: Car,
-      value: "100+",
+      target: stats.vehicleCount,
+      suffix: "+",
       label: "Premium Cars",
     },
     {
       icon: Users,
-      value: "1,000+",
+      target: stats.clientCount,
+      suffix: "+",
       label: "Happy Clients",
     },
     {
       icon: Calendar,
-      value: "5+ Years",
+      target: stats.yearsInBusiness,
+      suffix: "+ Years",
       label: "Industry Trust",
     },
     {
       icon: Gauge,
-      value: "50,000+",
+      target: stats.totalKmDriven,
+      suffix: "+",
       label: "Safe KM Driven",
     },
   ];
@@ -43,7 +148,7 @@ export function StatsSection() {
 
         {/* 4 Stat Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-          {stats.map((stat, index) => {
+          {statCards.map((stat, index) => {
             const Icon = stat.icon;
             return (
               <ScrollReveal key={index} delay={index * 80} direction="up">
@@ -52,9 +157,11 @@ export function StatsSection() {
                     <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                   </div>
                   <div className="text-center sm:text-left">
-                    <span className="text-lg sm:text-2xl font-black block leading-tight text-white">
-                      {stat.value}
-                    </span>
+                    <AnimatedStat
+                      target={stat.target}
+                      suffix={stat.suffix}
+                      loaded={loaded}
+                    />
                     <span className="text-[11px] sm:text-xs font-medium text-slate-300 dark:text-slate-400 block mt-0.5">
                       {stat.label}
                     </span>
@@ -68,4 +175,3 @@ export function StatsSection() {
     </section>
   );
 }
-
