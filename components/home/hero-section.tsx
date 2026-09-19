@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { CustomDatePicker } from "@/components/ui/custom-datepicker";
 import { LocationSearchInput } from "@/components/ui/location-search-input";
-import { MessageCircle, UserCheck, KeyRound, Search, ArrowRight } from "lucide-react";
+import { MessageCircle, Search, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { useSiteAssets } from "@/lib/site-assets-context";
 import { SITE_CONTACT } from "@/lib/constants";
@@ -17,7 +17,6 @@ export function HeroSection() {
   const { t, language } = useLanguage();
   const { getAsset } = useSiteAssets();
   const heroImage = getAsset("home_hero", "/images/hero-sri-lanka.png");
-  const [rentalMode, setRentalMode] = useState<"self" | "driver">("self");
   const [carType, setCarType] = useState("All");
   const [pickupPlace, setPickupPlace] = useState("Bandaranaike Int'l Airport (CMB) / Katunayake");
   const [rentalDate, setRentalDate] = useState("2026-09-01");
@@ -41,15 +40,14 @@ export function HeroSection() {
     if (rentalDate) params.set("pickupDate", rentalDate);
     if (returnDate) params.set("returnDate", returnDate);
     params.set("available", "true");
-    if (rentalMode) params.set("mode", rentalMode);
+    params.set("mode", "self");
     router.push(`/vehicles?${params.toString()}`);
   };
 
   const handleWhatsAppBooking = () => {
-    const modeText = rentalMode === "self" ? "Self-Drive" : "With Driver";
     const typeText = carType !== "All" ? carType : "Vehicle";
     const locText = pickupPlace.trim() || "Sri Lanka";
-    const message = `Hello Tourmate! I would like to check available ${modeText} ${typeText} rentals for delivery at ${locText}, pickup on ${rentalDate} and return on ${returnDate}.`;
+    const message = `Hello Tourmate! I would like to check available Self-Drive ${typeText} rentals for delivery at ${locText}, pickup on ${rentalDate} and return on ${returnDate}.`;
     window.open(`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
@@ -112,54 +110,6 @@ export function HeroSection() {
           {/* Right Floating Booking Card */}
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
             <div className="w-full max-w-sm sm:max-w-md bg-white text-slate-900 rounded-[28px] sm:rounded-[30px] p-4 sm:p-7 shadow-2xl border border-white/30 backdrop-blur-md">
-              {/* Rental Mode Switch (Self-Drive vs Driver) with sliding pill animation */}
-              <div className="relative grid grid-cols-2 p-1 bg-slate-100/90 rounded-full mb-5 border border-slate-200/80 shadow-inner select-none">
-                {/* Sliding Animated Pill Indicator */}
-                <span
-                  aria-hidden="true"
-                  className={`absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.06)] border border-slate-200/60 transition-transform duration-300 [transition-timing-function:cubic-bezier(0.25,1,0.5,1)] pointer-events-none ${
-                    rentalMode === "driver" ? "translate-x-full" : "translate-x-0"
-                  }`}
-                />
-
-                <button
-                  type="button"
-                  onClick={() => setRentalMode("self")}
-                  className={`relative z-10 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-full text-xs font-bold transition-all duration-200 active:scale-95 cursor-pointer ${
-                    rentalMode === "self"
-                      ? "text-slate-950"
-                      : "text-slate-500 hover:text-slate-800"
-                  }`}
-                >
-                  <KeyRound
-                    className={`h-3.5 w-3.5 transition-all duration-300 ${
-                      rentalMode === "self"
-                        ? "text-emerald-600 scale-110 -rotate-12"
-                        : "text-slate-400 group-hover:text-slate-600 scale-100 rotate-0"
-                    }`}
-                  />
-                  <span>{t("search_mode_self")}</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setRentalMode("driver")}
-                  className={`relative z-10 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-full text-xs font-bold transition-all duration-200 active:scale-95 cursor-pointer ${
-                    rentalMode === "driver"
-                      ? "text-slate-950"
-                      : "text-slate-500 hover:text-slate-800"
-                  }`}
-                >
-                  <UserCheck
-                    className={`h-3.5 w-3.5 transition-all duration-300 ${
-                      rentalMode === "driver"
-                        ? "text-emerald-600 scale-110"
-                        : "text-slate-400 group-hover:text-slate-600 scale-100"
-                    }`}
-                  />
-                  <span>{t("search_mode_driver")}</span>
-                </button>
-              </div>
 
               <h2 className="text-lg font-extrabold text-slate-900 mb-4 flex items-center justify-between">
                 <span>{t("search_title")}</span>

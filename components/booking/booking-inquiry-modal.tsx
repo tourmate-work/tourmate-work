@@ -261,7 +261,6 @@ interface BookingInquiryModalProps {
   initialPickupLocation?: string;
   initialPickupDate?: string;
   initialReturnDate?: string;
-  initialMode?: "self" | "driver";
 }
 
 export function BookingInquiryModal({
@@ -271,7 +270,6 @@ export function BookingInquiryModal({
   initialPickupLocation = "",
   initialPickupDate = "",
   initialReturnDate = "",
-  initialMode = "self",
 }: BookingInquiryModalProps) {
   const { t, language } = useLanguage();
   const { user } = useAuth();
@@ -329,7 +327,7 @@ export function BookingInquiryModal({
   const [pickupTime, setPickupTime] = useState("10:00");
   const [returnDate, setReturnDate] = useState(initialReturnDate || "2026-09-15");
   const [returnTime, setReturnTime] = useState("10:00");
-  const [driverOption, setDriverOption] = useState<"self" | "driver">(initialMode);
+  const [driverOption] = useState<"self">("self");
   const [additionalMessage, setAdditionalMessage] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -353,7 +351,6 @@ export function BookingInquiryModal({
   if (!isOpen || !vehicle) return null;
 
   const buildWhatsAppMessage = (formattedPhone: string) => {
-    const driverText = driverOption === "driver" ? "With Driver" : "Without Driver (Self-Drive)";
     const pLoc = pickupLocation.trim() || "Sri Lanka";
     const rLoc = returnLocation.trim() || pLoc;
 
@@ -368,8 +365,7 @@ export function BookingInquiryModal({
     msg += `📍 *Pickup Location:* ${pLoc}\n`;
     msg += `📅 *Pickup Date & Time:* ${pickupDate} at ${pickupTime}\n`;
     msg += `📍 *Return Location:* ${rLoc}\n`;
-    msg += `📅 *Return Date & Time:* ${returnDate} at ${returnTime}\n`;
-    msg += `🧑‍✈️ *Driver Option:* ${driverText}\n`;
+    msg += `🧑‍✈️ *Rental Type:* Self-Drive\n`;
 
     if (additionalMessage.trim()) {
       msg += `\n💬 *Additional Requirements / Questions:*\n${additionalMessage.trim()}\n`;
@@ -448,9 +444,7 @@ export function BookingInquiryModal({
         returnDate: validRDate.toISOString(),
         pickupLocation: pickupLocation.trim() || "Sri Lanka",
         returnLocation: returnLocation.trim() || pickupLocation.trim() || "Sri Lanka",
-        specialRequests: `Country: ${country} | Passengers: ${passengers} | Driver: ${
-          driverOption === "driver" ? "With Driver" : "Without Driver"
-        } | ${additionalMessage.trim()}`,
+        specialRequests: `Country: ${country} | Passengers: ${passengers} | Rental: Self-Drive | ${additionalMessage.trim()}`,
       };
 
       await fetch("/api/bookings", {
@@ -803,31 +797,6 @@ export function BookingInquiryModal({
                     </h4>
                   </div>
 
-                  {/* Driver Option Toggle */}
-                  <div className="flex items-center gap-1 bg-slate-100 dark:bg-white/10 p-1 rounded-full text-[11px] font-bold">
-                    <button
-                      type="button"
-                      onClick={() => setDriverOption("self")}
-                      className={`px-2.5 py-1 rounded-full transition-all cursor-pointer ${
-                        driverOption === "self"
-                          ? "bg-white dark:bg-black text-slate-950 dark:text-white shadow-xs"
-                          : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
-                      }`}
-                    >
-                      {t("search_mode_self")}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setDriverOption("driver")}
-                      className={`px-2.5 py-1 rounded-full transition-all cursor-pointer ${
-                        driverOption === "driver"
-                          ? "bg-white dark:bg-black text-slate-950 dark:text-white shadow-xs"
-                          : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
-                      }`}
-                    >
-                      {t("search_mode_driver")}
-                    </button>
-                  </div>
                 </div>
 
                 {/* Pickup Location */}
