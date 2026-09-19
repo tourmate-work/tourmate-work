@@ -59,15 +59,8 @@ export function FleetSection() {
           const mapped: CarItem[] = (data.vehicles as ApiVehicleRaw[])
             .filter((v) => v.status?.toLowerCase() !== "maintenance" && v.isAvailable !== false)
             .map((v) => {
-            const fallbackImg =
-              v.category === "Van"
-                ? "/images/mock/kdh-van.jpg"
-                : v.category === "SUV" || v.category === "4x4"
-                ? "/images/mock/prado-4x4.jpg"
-                : "/images/mock/premio-sedan.jpg";
-
             const validImage =
-              v.imageUrl && !v.imageUrl.startsWith("blob:") ? v.imageUrl : fallbackImg;
+              v.imageUrl && !v.imageUrl.startsWith("blob:") ? v.imageUrl : "";
 
             return {
               id: v.id,

@@ -48,19 +48,9 @@ export async function GET(
       parsedFeatures = [];
     }
 
-    const fallbackCategoryImg: { [cat: string]: string } = {
-      Sedan: "/images/mock/premio-sedan.jpg",
-      SUV: "/images/mock/vezel-suv.jpg",
-      "4x4": "/images/mock/prado-4x4.jpg",
-      Van: "/images/mock/kdh-van.jpg",
-      Luxury: "/images/mock/mercedes-amg.jpg",
-    };
-
-
-
     let cleanImageUrl = vehicle.imageUrl;
     if (!cleanImageUrl || cleanImageUrl.startsWith("blob:")) {
-      cleanImageUrl = fallbackCategoryImg[vehicle.category] || "/images/mock/premio-sedan.jpg";
+      cleanImageUrl = "";
     }
 
     const cleanGallery = (parsedGallery.length > 0 ? parsedGallery : [])

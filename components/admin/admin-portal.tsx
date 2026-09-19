@@ -762,7 +762,7 @@ export function AdminPortalContent() {
                           {/* Car Image Preview */}
                           <div className="relative h-48 w-full rounded-2xl overflow-hidden bg-slate-100 dark:bg-white/5 mb-4">
                             <VehicleImage
-                              src={car.image || "/images/mock/axio-sedan.jpg"}
+                              src={car.image || ""}
                               alt={car.name}
                               fallbackName={car.name}
                               className="object-cover group-hover:scale-105 transition-transform duration-300"

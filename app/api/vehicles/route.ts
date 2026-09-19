@@ -4,13 +4,7 @@ import { getAuthUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
-const fallbackCategoryImg: { [cat: string]: string } = {
-  Sedan: "/images/mock/premio-sedan.jpg",
-  SUV: "/images/mock/vezel-suv.jpg",
-  "4x4": "/images/mock/prado-4x4.jpg",
-  Van: "/images/mock/kdh-van.jpg",
-  Luxury: "/images/mock/mercedes-amg.jpg",
-};
+
 
 
 
@@ -145,10 +139,10 @@ export async function GET(req: NextRequest) {
         parsedFeatures = [];
       }
 
-      // Sanitize imageUrl (replace temporary/dead blob URLs)
+      // Sanitize imageUrl (remove temporary/dead blob URLs)
       let cleanImageUrl = v.imageUrl;
       if (!cleanImageUrl || cleanImageUrl.startsWith("blob:")) {
-        cleanImageUrl = fallbackCategoryImg[v.category] || "/images/mock/premio-sedan.jpg";
+        cleanImageUrl = "";
       }
 
       // Sanitize galleryImages (remove dead blob URLs, do NOT inject fallbacks)
@@ -231,7 +225,7 @@ export async function POST(req: NextRequest) {
     // Clean imageUrl and galleryImages to guarantee no blob URLs enter database
     let cleanHeroImage = imageUrl;
     if (!cleanHeroImage || cleanHeroImage.startsWith("blob:")) {
-      cleanHeroImage = fallbackCategoryImg[category] || "/images/mock/axio-sedan.jpg";
+      cleanHeroImage = "";
     }
 
     const cleanGalleryList = (Array.isArray(galleryImages) ? galleryImages : [])
