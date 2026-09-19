@@ -38,9 +38,9 @@ const FAQS = [
       "Yes, we provide 24/7 dedicated Bandaranaike International Airport (CMB) pickup and drop-off services for seamless arrivals and departures.",
   },
   {
-    question: "Does Tourmate offer comprehensive insurance and 24/7 road support?",
+    question: "Are the vehicles insured?",
     answer:
-      "Every Tourmate vehicle comes with full comprehensive rental insurance coverage and 24/7 island-wide emergency roadside assistance for complete peace of mind.",
+      "Yes. All vehicles on TourMate are required to have valid comprehensive insurance, giving you added protection during your rental",
   },
 ];
 
