@@ -882,23 +882,23 @@ export function LocationSearchInput({
               </div>
             ) : (
               rankedSuggestions.map((loc) => {
-                const isSelected = value.toLowerCase() === loc.name.toLowerCase();
+                const isSelected = value.trim().toLowerCase() === loc.name.toLowerCase();
                 return (
                   <button
                     key={loc.name}
                     type="button"
                     onClick={() => handleSelectLocation(loc.name)}
-                    className={`w-full min-h-[44px] flex items-center justify-between p-2 sm:p-2.5 rounded-xl text-left transition-colors cursor-pointer group ${
+                    className={`w-full min-h-[44px] flex items-center justify-between p-2 sm:p-2.5 rounded-xl text-left transition-colors cursor-pointer group border ${
                       isSelected
-                        ? "bg-emerald-600 text-white"
-                        : "hover:bg-slate-100 dark:hover:bg-white/5 text-slate-800 dark:text-slate-200"
+                        ? "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500/40 text-slate-900 dark:text-white"
+                        : "hover:bg-slate-100 dark:hover:bg-white/5 text-slate-800 dark:text-slate-200 border-transparent"
                     }`}
                   >
                     <div className="flex items-start gap-2.5 min-w-0 flex-1 pr-2">
                       <div
                         className={`p-1.5 rounded-lg mt-0.5 flex-shrink-0 transition-colors ${
                           isSelected
-                            ? "bg-white/20 text-white"
+                            ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
                             : "bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400 group-hover:text-emerald-600 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-950/40"
                         }`}
                       >
@@ -909,15 +909,11 @@ export function LocationSearchInput({
                         )}
                       </div>
                       <div className="truncate flex-1 min-w-0">
-                        <span className="text-xs font-bold block truncate">
+                        <span className="text-xs font-bold text-slate-900 dark:text-white block truncate">
                           <HighlightMatch text={loc.name} query={query} />
                         </span>
                         {loc.subtext && (
-                          <span
-                            className={`text-[10px] block truncate mt-0.5 ${
-                              isSelected ? "text-emerald-200" : "text-slate-400"
-                            }`}
-                          >
+                          <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate mt-0.5">
                             <HighlightMatch text={loc.subtext} query={query} />
                           </span>
                         )}
@@ -925,7 +921,7 @@ export function LocationSearchInput({
                     </div>
                     <div className="flex items-center gap-1.5 flex-shrink-0">
                       {isSelected ? (
-                        <Check className="h-4 w-4 text-white" />
+                        <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                       ) : (
                         <ArrowUpLeft className="h-3.5 w-3.5 text-slate-300 dark:text-slate-600 group-hover:text-emerald-500 transition-colors opacity-70 group-hover:opacity-100" />
                       )}
@@ -950,42 +946,49 @@ export function LocationSearchInput({
               </div>
 
               {liveResults.map((item) => {
+                const cleanName = item.subtext
+                  ? `${item.name} (${item.subtext})`
+                  : item.displayName;
                 const isSelected =
-                  value.toLowerCase() === item.name.toLowerCase() ||
-                  value.toLowerCase() === item.displayName.toLowerCase();
+                  value.trim().toLowerCase() === cleanName.toLowerCase() ||
+                  value.trim().toLowerCase() === item.displayName.toLowerCase();
                 return (
                   <button
                     key={item.id}
                     type="button"
                     onClick={() => handleSelectLiveLocation(item)}
-                    className={`w-full min-h-[44px] flex items-center justify-between p-2 rounded-xl text-left transition-colors cursor-pointer ${
+                    className={`w-full min-h-[46px] flex items-center justify-between p-2.5 rounded-xl text-left transition-colors cursor-pointer group border ${
                       isSelected
-                        ? "bg-emerald-600 text-white"
-                        : "hover:bg-slate-100 dark:hover:bg-white/5 text-slate-800 dark:text-slate-200"
+                        ? "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500/40 text-slate-900 dark:text-white"
+                        : "hover:bg-slate-100 dark:hover:bg-white/5 text-slate-800 dark:text-slate-200 border-transparent"
                     }`}
                   >
                     <div className="flex items-start gap-2.5 min-w-0 flex-1 pr-2">
-                      <MapPin
-                        className={`h-4 w-4 flex-shrink-0 mt-0.5 ${
-                          isSelected ? "text-white" : "text-emerald-500"
+                      <div
+                        className={`p-1.5 rounded-lg mt-0.5 flex-shrink-0 transition-colors ${
+                          isSelected
+                            ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                            : "bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400 group-hover:text-emerald-600 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-950/40"
                         }`}
-                      />
-                      <div className="truncate">
-                        <span className="text-xs font-bold block truncate">
+                      >
+                        <MapPin className="h-3.5 w-3.5" />
+                      </div>
+                      <div className="truncate flex-1 min-w-0">
+                        <span className="text-xs font-bold text-slate-900 dark:text-white block truncate">
                           <HighlightMatch text={item.name} query={query} />
                         </span>
-                        <span
-                          className={`text-[10px] block truncate ${
-                            isSelected ? "text-emerald-200" : "text-slate-400"
-                          }`}
-                        >
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate mt-0.5">
                           <HighlightMatch text={item.subtext} query={query} />
                         </span>
                       </div>
                     </div>
-                    {isSelected && (
-                      <Check className="h-4 w-4 text-white flex-shrink-0" />
-                    )}
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      {isSelected ? (
+                        <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                      ) : (
+                        <ArrowUpLeft className="h-3.5 w-3.5 text-slate-300 dark:text-slate-600 group-hover:text-emerald-500 transition-colors opacity-70 group-hover:opacity-100" />
+                      )}
+                    </div>
                   </button>
                 );
               })}
