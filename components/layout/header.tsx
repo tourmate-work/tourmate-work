@@ -36,6 +36,7 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { useSiteAssets } from "@/lib/site-assets-context";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { useAuth } from "@/components/auth/auth-context";
 import { SITE_CONTACT } from "@/lib/constants";
@@ -245,6 +246,9 @@ export function Header() {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { user, isAuthenticated, openAuthModal, logout } = useAuth();
+  const { getAsset } = useSiteAssets();
+  const logoDark = getAsset("logo_dark", "/images/logo-transparent.png");
+  const logoLight = getAsset("logo_light", "/images/logo-white-bg.png");
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const userDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -379,20 +383,22 @@ export function Header() {
           <Link href={isAdmin ? "/admin" : "/"} className="flex items-center gap-2 group py-1">
             {/* Light Mode: Transparent logo */}
             <Image
-              src="/images/logo-transparent.png"
+              src={logoDark}
               alt="Tourmate Rentals"
               width={160}
               height={52}
+              unoptimized={logoDark.startsWith("http")}
               className="h-7 sm:h-11 w-auto object-contain group-hover:scale-105 transition-transform duration-200 dark:hidden"
               priority
             />
             {/* Dark Mode: Original logo with white background preserved */}
             <div className="hidden dark:flex items-center bg-white rounded-xl sm:rounded-2xl px-2 sm:px-2.5 py-0.5 sm:py-1 shadow-sm group-hover:scale-105 transition-transform duration-200">
               <Image
-                src="/images/logo-white-bg.png"
+                src={logoLight}
                 alt="Tourmate Rentals"
                 width={160}
                 height={52}
+                unoptimized={logoLight.startsWith("http")}
                 className="h-6 sm:h-9 w-auto object-contain"
                 priority
               />

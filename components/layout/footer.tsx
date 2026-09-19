@@ -6,6 +6,7 @@ import Link from "next/link";
 import { MapPin, Mail, Phone, MessageCircle } from "lucide-react";
 import { PolicyModal, PolicyType } from "./policy-modal";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { useSiteAssets } from "@/lib/site-assets-context";
 import { SITE_CONTACT } from "@/lib/constants";
 
 function FacebookIcon({ className }: { className?: string }) {
@@ -44,6 +45,8 @@ function YoutubeIcon({ className }: { className?: string }) {
 
 export function Footer() {
   const { t, language } = useLanguage();
+  const { getAsset } = useSiteAssets();
+  const footerLogo = getAsset("logo_footer", "/images/logo.png");
   const [activePolicy, setActivePolicy] = useState<PolicyType>(null);
 
   return (
@@ -58,10 +61,11 @@ export function Footer() {
               className="bg-white rounded-2xl p-2 h-16 w-16 flex items-center justify-center shadow-md flex-shrink-0 hover:opacity-95 transition-opacity"
             >
               <Image
-                src="/images/logo.png"
+                src={footerLogo}
                 alt="Tourmate Rentals"
                 width={56}
                 height={56}
+                unoptimized={footerLogo.startsWith("http")}
                 className="w-full h-full object-contain"
               />
             </Link>

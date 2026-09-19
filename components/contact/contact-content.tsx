@@ -13,6 +13,7 @@ import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { CustomDatePicker } from "@/components/ui/custom-datepicker";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { useSiteAssets } from "@/lib/site-assets-context";
 import { SITE_CONTACT } from "@/lib/constants";
 
 const BLOG_POSTS = [
@@ -102,6 +103,8 @@ function JeepLogo() {
 
 export function ContactContent() {
   const { t, language } = useLanguage();
+  const { getAsset } = useSiteAssets();
+  const contactShowcaseImage = getAsset("contact_showcase", "/images/hero-sri-lanka.jpg");
   const [carType, setCarType] = useState("Sedan");
   const [pickupPlace, setPickupPlace] = useState("Bandaranaike Airport (CMB)");
   const [returnPlace, setReturnPlace] = useState("Same as pickup");
@@ -250,9 +253,10 @@ export function ContactContent() {
               {/* Right Hero Road Image */}
               <div className="lg:col-span-8 relative min-h-[360px] sm:min-h-[420px] rounded-[30px] overflow-hidden border border-slate-200/60">
                 <Image
-                  src="/images/hero-sri-lanka.jpg"
+                  src={contactShowcaseImage}
                   alt="Tourmate rental fleet in Sri Lanka"
                   fill
+                  unoptimized={contactShowcaseImage.startsWith("http")}
                   sizes="(max-width: 1024px) 100vw, 66vw"
                   className="object-cover hover:scale-105 transition-transform duration-700"
                 />

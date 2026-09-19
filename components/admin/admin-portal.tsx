@@ -25,10 +25,12 @@ import {
   Clock,
   RefreshCw,
   ArrowUpDown,
+  ImageIcon,
 } from "lucide-react";
 import { AddVehicleModal, SellerVehicle } from "@/components/seller/add-vehicle-modal";
 import { VehicleListingForm } from "@/components/seller/vehicle-listing-form";
 import { PolicyManager } from "@/components/admin/policy-manager";
+import { SiteMediaManager } from "@/components/admin/site-media-manager";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { SITE_CONTACT } from "@/lib/constants";
 import { VehicleImage } from "@/components/ui/vehicle-image";
@@ -651,6 +653,7 @@ export function AdminPortalContent() {
                 count: inquiries.length,
                 badge: pendingInquiriesCount > 0 ? `${pendingInquiriesCount} New` : undefined,
               },
+              { id: "site-media", label: "Site Media & Pictures", icon: ImageIcon },
               { id: "bookings", label: "Bookings Ledger", icon: CalendarCheck, count: bookings.length },
               { id: "policies", label: "Manage Policies", icon: ShieldCheck },
               { id: "overview", label: "Overview & Analytics", icon: TrendingUp },
@@ -1514,6 +1517,16 @@ export function AdminPortalContent() {
                 </button>
               </div>
             </div>
+          )}
+
+          {/* TAB: SITE MEDIA & PICTURES */}
+          {activeTab === "site-media" && (
+            <SiteMediaManager
+              onNotify={(msg) => {
+                setNotice(msg);
+                setTimeout(() => setNotice(null), 4000);
+              }}
+            />
           )}
 
           {/* TAB: MANAGE POLICIES */}

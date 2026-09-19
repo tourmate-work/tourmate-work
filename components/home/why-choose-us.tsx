@@ -4,9 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Search, Send, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { useSiteAssets } from "@/lib/site-assets-context";
 
 export function WhyChooseUs() {
   const { t, language } = useLanguage();
+  const { getAsset } = useSiteAssets();
+  const fleetImage = getAsset("home_why_choose_us", "/images/car-fleet.jpg");
 
   const steps = [
     {
@@ -36,9 +39,10 @@ export function WhyChooseUs() {
         <div className="lg:col-span-6 relative">
           <div className="relative aspect-square sm:aspect-[4/3] lg:aspect-square w-full rounded-[28px] sm:rounded-[30px] overflow-hidden shadow-2xl border border-slate-100 dark:border-white/10">
             <Image
-              src="/images/car-fleet.jpg"
+              src={fleetImage}
               alt="Tourmate luxury and commercial rental vehicle fleet in Sri Lanka"
               fill
+              unoptimized={fleetImage.startsWith("http")}
               className="object-cover hover:scale-105 transition-transform duration-500"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

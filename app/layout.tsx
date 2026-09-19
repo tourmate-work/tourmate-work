@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { LanguageProvider } from "@/lib/i18n/language-context";
 import { AuthProvider } from "@/components/auth/auth-context";
+import { SiteAssetsProvider } from "@/lib/site-assets-context";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { MobileBottomBar } from "@/components/layout/mobile-bottom-bar";
 import { FloatingWhatsAppButton } from "@/components/ui/floating-whatsapp-button";
@@ -54,10 +55,12 @@ export default function RootLayout({
         <ThemeProvider>
           <LanguageProvider>
             <AuthProvider>
-              {children}
-              <FloatingWhatsAppButton />
-              <MobileBottomBar />
-              <AuthModal />
+              <SiteAssetsProvider>
+                {children}
+                <FloatingWhatsAppButton />
+                <MobileBottomBar />
+                <AuthModal />
+              </SiteAssetsProvider>
             </AuthProvider>
           </LanguageProvider>
         </ThemeProvider>

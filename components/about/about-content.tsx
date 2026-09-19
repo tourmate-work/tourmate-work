@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { useLanguage } from "@/lib/i18n/language-context";
+import { useSiteAssets } from "@/lib/site-assets-context";
 import { SITE_CONTACT } from "@/lib/constants";
 
 function AppleLogoIcon({ className = "h-5 w-5" }: { className?: string }) {
@@ -84,6 +85,10 @@ const TESTIMONIALS = [
 
 export function AboutContent() {
   const { t, language } = useLanguage();
+  const { getAsset } = useSiteAssets();
+  const aboutHeroImage = getAsset("about_hero", "/images/hero-sri-lanka.jpg");
+  const aboutFleetImage = getAsset("about_fleet", "/images/car-fleet.jpg");
+  const aboutMissionImage = getAsset("about_mission", "/images/car-side.jpg");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
 
@@ -180,9 +185,10 @@ export function AboutContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative aspect-[21/9] sm:aspect-[2.4/1] w-full rounded-[30px] overflow-hidden shadow-2xl group border border-slate-100">
             <Image
-              src="/images/hero-sri-lanka.jpg"
+              src={aboutHeroImage}
               alt="Tourmate scenic road trip video preview in Sri Lanka"
               fill
+              unoptimized={aboutHeroImage.startsWith("http")}
               className="object-cover group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
@@ -285,9 +291,10 @@ export function AboutContent() {
             <div className="lg:col-span-6">
               <div className="relative aspect-[4/3] w-full rounded-[30px] overflow-hidden shadow-2xl border border-slate-100 group">
                 <Image
-                  src="/images/car-fleet.jpg"
+                  src={aboutFleetImage}
                   alt="Tourmate rental fleet travelers exploring Sri Lanka"
                   fill
+                  unoptimized={aboutFleetImage.startsWith("http")}
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
@@ -489,9 +496,10 @@ export function AboutContent() {
             {/* Right Car Graphic / Render */}
             <div className="relative aspect-[16/9] w-full max-w-sm sm:max-w-md flex items-center justify-center z-10">
               <Image
-                src="/images/car-side.jpg"
+                src={aboutMissionImage}
                 alt="Tourmate rental car"
                 fill
+                unoptimized={aboutMissionImage.startsWith("http")}
                 className="object-contain hover:scale-105 transition-transform duration-500"
               />
             </div>
