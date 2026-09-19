@@ -256,9 +256,9 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
       id: "terms" as PolicyType,
       label: "Terms & Conditions",
       icon: FileText,
-      color: "text-violet-500",
-      bg: "bg-violet-500/10",
-      border: "border-violet-500/20",
+      color: "text-emerald-500",
+      bg: "bg-emerald-500/10",
+      border: "border-emerald-500/20",
     },
     {
       id: "privacy" as PolicyType,
@@ -281,7 +281,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
   if (isLoading) {
     return (
       <div className="bg-white dark:bg-[#0b0b0e] rounded-[32px] p-12 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col items-center justify-center gap-3 text-slate-400">
-        <div className="h-8 w-8 rounded-full border-2 border-violet-500 border-t-transparent animate-spin" />
+        <div className="h-8 w-8 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
         <p className="text-xs font-bold uppercase tracking-wider">Loading Platform Policies...</p>
       </div>
     );
@@ -293,7 +293,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
       <div className="bg-white dark:bg-[#0b0b0e] rounded-[32px] p-6 sm:p-8 border border-slate-200/80 dark:border-white/10 shadow-sm space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100 dark:border-white/5">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 text-xs font-black text-violet-600 dark:text-violet-400 uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
               <ShieldCheck className="h-4 w-4" />
               <span>Platform Legal & Governance Engine</span>
             </div>
@@ -312,7 +312,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
               onClick={() => setPreviewPolicy(activePolicyType)}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-800 dark:text-slate-200 text-xs font-bold transition-all cursor-pointer shadow-sm active:scale-95"
             >
-              <Eye className="h-4 w-4 text-violet-500" />
+              <Eye className="h-4 w-4 text-emerald-500" />
               <span>Preview Customer Modal</span>
             </button>
 
@@ -353,8 +353,8 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
                 }}
                 className={`p-4 rounded-2xl border text-left transition-all relative cursor-pointer ${
                   isSelected
-                    ? "bg-violet-600 text-white border-violet-500 shadow-md shadow-violet-500/20"
-                    : "bg-slate-50/50 dark:bg-white/[0.02] border-slate-200/80 dark:border-white/10 hover:border-violet-300 dark:hover:border-white/20 text-slate-700 dark:text-slate-300"
+                    ? "bg-emerald-600 text-white border-emerald-500 shadow-md shadow-emerald-500/20"
+                    : "bg-slate-50/50 dark:bg-white/[0.02] border-slate-200/80 dark:border-white/10 hover:border-emerald-300 dark:hover:border-white/20 text-slate-700 dark:text-slate-300"
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -376,7 +376,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
                 <div className="font-bold text-sm tracking-tight">{tab.label}</div>
                 <div
                   className={`text-xs mt-0.5 truncate ${
-                    isSelected ? "text-violet-100" : "text-slate-500 dark:text-slate-400"
+                    isSelected ? "text-emerald-100" : "text-slate-500 dark:text-slate-400"
                   }`}
                 >
                   {doc?.title || tab.label}
@@ -428,7 +428,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
       <div className="bg-white dark:bg-[#0b0b0e] rounded-[32px] p-6 sm:p-8 border border-slate-200/80 dark:border-white/10 shadow-sm space-y-5">
         <div className="flex items-center justify-between">
           <h3 className="text-base font-extrabold text-slate-950 dark:text-white flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-violet-500" />
+            <Sparkles className="h-4 w-4 text-emerald-500" />
             <span>Header & Document Information</span>
           </h3>
           {currentPolicy.updatedAt && (
@@ -456,7 +456,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
               type="text"
               value={currentPolicy.title || ""}
               onChange={(e) => handleUpdateMeta("title", e.target.value)}
-              className="w-full px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm font-bold focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="w-full px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500"
               placeholder="e.g. TOURMATE RENTALS – TERMS & CONDITIONS"
             />
           </div>
@@ -469,7 +469,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
               type="text"
               value={currentPolicy.subtitle || ""}
               onChange={(e) => handleUpdateMeta("subtitle", e.target.value)}
-              className="w-full px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="w-full px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500"
               placeholder="e.g. TourMate Rentals Sri Lanka"
             />
           </div>
@@ -484,7 +484,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
               type="text"
               value={currentPolicy.lastUpdated || ""}
               onChange={(e) => handleUpdateMeta("lastUpdated", e.target.value)}
-              className="w-full px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="w-full px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500"
               placeholder="e.g. September 2026"
             />
           </div>
@@ -497,7 +497,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
               rows={2}
               value={currentPolicy.intro || ""}
               onChange={(e) => handleUpdateMeta("intro", e.target.value)}
-              className="w-full px-4 py-2 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-violet-500 resize-none"
+              className="w-full px-4 py-2 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
               placeholder="Introductory text shown at the top of the policy agreement."
             />
           </div>
@@ -509,7 +509,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 dark:border-white/5">
           <div>
             <h3 className="text-base font-extrabold text-slate-950 dark:text-white flex items-center gap-2">
-              <FileText className="h-4 w-4 text-violet-500" />
+              <FileText className="h-4 w-4 text-emerald-500" />
               <span>Policy Clauses & Sections ({currentPolicy.sections.length})</span>
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
@@ -520,7 +520,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
           <button
             type="button"
             onClick={handleAddSection}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-300 border border-violet-200 dark:border-violet-800 hover:bg-violet-100 text-xs font-bold transition-all cursor-pointer self-start sm:self-auto"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 text-xs font-bold transition-all cursor-pointer self-start sm:self-auto"
           >
             <Plus className="h-3.5 w-3.5" />
             <span>Add New Clause</span>
@@ -537,14 +537,14 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
               {/* Section Header with Actions */}
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 flex-1">
-                  <span className="h-6 w-6 rounded-full bg-violet-600/10 text-violet-600 dark:text-violet-400 font-black text-xs flex items-center justify-center flex-shrink-0">
+                  <span className="h-6 w-6 rounded-full bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 font-black text-xs flex items-center justify-center flex-shrink-0">
                     {idx + 1}
                   </span>
                   <input
                     type="text"
                     value={sec.title}
                     onChange={(e) => handleUpdateSection(idx, "title", e.target.value)}
-                    className="flex-1 px-3 py-1.5 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-950 dark:text-white text-xs sm:text-sm font-extrabold focus:outline-none focus:ring-2 focus:ring-violet-500"
+                    className="flex-1 px-3 py-1.5 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-950 dark:text-white text-xs sm:text-sm font-extrabold focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     placeholder="Section Title (e.g. 1. About TourMate Rentals)"
                   />
                 </div>
@@ -591,7 +591,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
                   rows={2}
                   value={sec.content}
                   onChange={(e) => handleUpdateSection(idx, "content", e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-violet-500 resize-y"
+                  className="w-full px-3 py-2 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-y"
                   placeholder="Primary policy statement / rule text..."
                 />
               </div>
@@ -605,7 +605,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
                   type="text"
                   value={sec.note || ""}
                   onChange={(e) => handleUpdateSection(idx, "note", e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 text-xs font-normal focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  className="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 text-xs font-normal focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   placeholder="Optional disclaimer or sub-clause note..."
                 />
               </div>
@@ -617,7 +617,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
         <button
           type="button"
           onClick={handleAddSection}
-          className="w-full py-4 rounded-2xl border-2 border-dashed border-slate-200 dark:border-white/10 hover:border-violet-400 dark:hover:border-violet-500 text-slate-500 hover:text-violet-600 dark:hover:text-violet-400 text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full py-4 rounded-2xl border-2 border-dashed border-slate-200 dark:border-white/10 hover:border-emerald-400 dark:hover:border-emerald-500 text-slate-500 hover:text-emerald-600 dark:hover:text-emerald-400 text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
           <Plus className="h-4 w-4" />
           <span>Add Another Clause to {currentPolicy.title}</span>
@@ -651,7 +651,7 @@ export function PolicyManager({ onNotify }: PolicyManagerProps) {
             type="button"
             onClick={handleSaveChanges}
             disabled={isSaving}
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full bg-violet-600 hover:bg-violet-700 text-white text-xs font-black shadow-lg shadow-violet-500/25 transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-lg shadow-emerald-500/25 transition-all cursor-pointer active:scale-95 disabled:opacity-50"
           >
             {isSaving ? (
               <>

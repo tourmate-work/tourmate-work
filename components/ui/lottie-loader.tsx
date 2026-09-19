@@ -35,8 +35,8 @@ export function LottieLoader({
           iframeLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       >
-        <div className="w-14 h-14 rounded-2xl bg-violet-600/10 dark:bg-violet-400/10 border border-violet-500/20 flex items-center justify-center animate-bounce shadow-inner">
-          <Car className="w-7 h-7 text-violet-600 dark:text-violet-400" />
+        <div className="w-14 h-14 rounded-2xl bg-emerald-600/10 dark:bg-emerald-400/10 border border-emerald-500/20 flex items-center justify-center animate-bounce shadow-inner">
+          <Car className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
         </div>
       </div>
 
@@ -61,14 +61,14 @@ export function LottieLoader({
       >
         <div className="relative flex flex-col items-center max-w-sm text-center">
           {/* Animated Glow Backdrop */}
-          <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-violet-600/20 via-purple-600/20 to-indigo-600/20 blur-2xl animate-pulse pointer-events-none" />
+          <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-emerald-600/20 via-teal-600/20 to-green-600/20 blur-2xl animate-pulse pointer-events-none" />
 
           {/* Lottie Animation Frame */}
           {renderAnimation("w-52 h-52 sm:w-64 sm:h-64 min-h-[200px]")}
 
           {/* Engaging Status Pill */}
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-violet-500/10 dark:bg-violet-400/10 border border-violet-500/20 text-violet-700 dark:text-violet-300 text-xs font-bold mb-3 shadow-sm">
-            <Sparkles className="h-3.5 w-3.5 animate-spin text-violet-600 dark:text-violet-400" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-500/10 dark:bg-emerald-400/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-bold mb-3 shadow-sm">
+            <Sparkles className="h-3.5 w-3.5 animate-spin text-emerald-600 dark:text-emerald-400" />
             <span>TourMate Sri Lanka</span>
           </div>
 
@@ -81,7 +81,7 @@ export function LottieLoader({
 
           {/* Subtle Progress Bar */}
           <div className="w-44 h-1.5 bg-slate-100 dark:bg-white/10 rounded-full overflow-hidden mt-5">
-            <div className="h-full bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full animate-pulse w-3/4" />
+            <div className="h-full bg-gradient-to-r from-emerald-600 to-indigo-600 rounded-full animate-pulse w-3/4" />
           </div>
         </div>
       </div>
@@ -105,15 +105,15 @@ export function LottieLoader({
       className={`w-full py-12 sm:py-16 px-4 rounded-[28px] sm:rounded-[36px] bg-gradient-to-b from-slate-50/90 via-white to-slate-50/70 dark:from-[#111116] dark:via-[#0e0e12] dark:to-[#111116] border border-slate-200/90 dark:border-white/10 shadow-sm text-center flex flex-col items-center justify-center relative overflow-hidden ${className}`}
     >
       {/* Background Accent Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-violet-500/10 dark:bg-violet-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-emerald-500/10 dark:bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
 
       {/* Lottie Animation */}
       {renderAnimation("w-48 h-48 sm:w-60 sm:h-60 min-h-[190px]")}
 
       {/* Badge & Text */}
       <div className="relative z-10 max-w-md mx-auto mt-2 space-y-2">
-        <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-500/20 text-[11px] font-bold">
-          <span className="w-2 h-2 rounded-full bg-violet-600 dark:bg-violet-400 animate-ping" />
+        <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 text-[11px] font-bold">
+          <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-ping" />
           <span>Live Fleet Search</span>
         </div>
 
@@ -127,7 +127,7 @@ export function LottieLoader({
 
         {/* Shimmer line */}
         <div className="w-36 h-1 bg-slate-200/70 dark:bg-white/10 rounded-full overflow-hidden mx-auto mt-4">
-          <div className="w-full h-full bg-gradient-to-r from-transparent via-violet-600 to-transparent animate-pulse" />
+          <div className="w-full h-full bg-gradient-to-r from-transparent via-emerald-600 to-transparent animate-pulse" />
         </div>
       </div>
     </div>

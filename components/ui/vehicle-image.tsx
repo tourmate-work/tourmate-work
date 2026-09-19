@@ -45,7 +45,7 @@ export function VehicleImage({
 
           {showSpinner && (
             <div className="relative z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white shadow-sm">
-              <Loader2 className="h-4 w-4 animate-spin text-violet-400" />
+              <Loader2 className="h-4 w-4 animate-spin text-emerald-400" />
               <span className="text-[10px] font-semibold tracking-wider text-slate-200">
                 Loading...
               </span>

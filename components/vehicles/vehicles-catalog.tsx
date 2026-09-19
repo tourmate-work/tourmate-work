@@ -152,22 +152,15 @@ export function VehiclesCatalog() {
           const mapped: VehicleDetail[] = (data.vehicles as ApiVehicleRaw[])
             .filter((v) => v.status?.toLowerCase() !== "maintenance")
             .map((v) => {
-            const fallbackImg =
-              v.category === "Van"
-                ? "/images/mock/kdh-van.jpg"
-                : v.category === "SUV" || v.category === "4x4"
-                ? "/images/mock/prado-4x4.jpg"
-                : "/images/mock/premio-sedan.jpg";
-
             const validHero =
-              v.imageUrl && !v.imageUrl.startsWith("blob:") ? v.imageUrl : fallbackImg;
+              v.imageUrl && !v.imageUrl.startsWith("blob:") ? v.imageUrl : "";
 
             const validGallery =
               Array.isArray(v.galleryImages) && v.galleryImages.length > 0
-                ? v.galleryImages.map((img: string) =>
-                    img && !img.startsWith("blob:") ? img : fallbackImg
+                ? v.galleryImages.filter((img: string) =>
+                    img && !img.startsWith("blob:")
                   )
-                : [validHero];
+                : (validHero ? [validHero] : []);
 
             const isAvail =
               v.isAvailable !== false &&
@@ -379,7 +372,7 @@ export function VehiclesCatalog() {
                     setCurrentPage(1);
                   }}
                   placeholder={t("catalog_search_placeholder")}
-                  className="w-full pl-10 pr-9 py-2.5 text-xs font-semibold rounded-2xl bg-white dark:bg-white/5 border border-slate-200/90 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-600/30 focus:border-violet-600 transition-all"
+                  className="w-full pl-10 pr-9 py-2.5 text-xs font-semibold rounded-2xl bg-white dark:bg-white/5 border border-slate-200/90 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-600/30 focus:border-emerald-600 transition-all"
                 />
                 {searchQuery && (
                   <button
@@ -450,7 +443,7 @@ export function VehiclesCatalog() {
           {/* Quick Location Chips */}
           <div className="mt-3 pt-3 border-t border-slate-200/60 dark:border-white/5 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
             <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-1 flex-shrink-0 mr-1">
-              <MapPin className="h-3 w-3 text-violet-500" />
+              <MapPin className="h-3 w-3 text-emerald-500" />
               <span>{language === "si" ? "ප්‍රධාන ස්ථාන:" : "Sri Lanka Delivery Hubs:"}</span>
             </span>
             {QUICK_LOCATIONS.map((ql) => {
@@ -467,7 +460,7 @@ export function VehiclesCatalog() {
                   }}
                   className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap transition-all flex-shrink-0 cursor-pointer ${
                     isActive
-                      ? "bg-violet-600 text-white shadow-xs"
+                      ? "bg-emerald-600 text-white shadow-xs"
                       : "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10"
                   }`}
                 >
@@ -511,7 +504,7 @@ export function VehiclesCatalog() {
           {/* Quick Price Sort Buttons */}
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
             <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1.5 flex-shrink-0 mr-1">
-              <ArrowUpDown className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
+              <ArrowUpDown className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Sort Price:</span>
             </span>
 
@@ -523,8 +516,8 @@ export function VehiclesCatalog() {
               }}
               className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all flex-shrink-0 cursor-pointer ${
                 sortBy === "price-asc"
-                  ? "bg-violet-600 text-white shadow-md shadow-violet-500/25 scale-[1.02]"
-                  : "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:border-violet-400 hover:text-violet-600 dark:hover:text-white"
+                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-500/25 scale-[1.02]"
+                  : "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:border-emerald-400 hover:text-emerald-600 dark:hover:text-white"
               }`}
             >
               <ArrowUp className="h-3.5 w-3.5" />
@@ -539,8 +532,8 @@ export function VehiclesCatalog() {
               }}
               className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all flex-shrink-0 cursor-pointer ${
                 sortBy === "price-desc"
-                  ? "bg-violet-600 text-white shadow-md shadow-violet-500/25 scale-[1.02]"
-                  : "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:border-violet-400 hover:text-violet-600 dark:hover:text-white"
+                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-500/25 scale-[1.02]"
+                  : "bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:border-emerald-400 hover:text-emerald-600 dark:hover:text-white"
               }`}
             >
               <ArrowDown className="h-3.5 w-3.5" />
@@ -565,8 +558,8 @@ export function VehiclesCatalog() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between md:justify-end gap-2.5 sm:gap-3 flex-shrink-0">
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
               {loading ? (
-                <span className="inline-flex items-center gap-1.5 text-violet-600 dark:text-violet-400 font-semibold">
-                  <span className="w-2 h-2 rounded-full bg-violet-600 dark:bg-violet-400 animate-ping" />
+                <span className="inline-flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-semibold">
+                  <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-ping" />
                   Loading TourMate Fleet...
                 </span>
               ) : (
@@ -579,7 +572,7 @@ export function VehiclesCatalog() {
             <div className="w-full sm:w-56">
               <CustomDropdown
                 options={[
-                  { value: "featured", label: "Featured Showcase", icon: <Sparkles className="h-3.5 w-3.5 text-violet-500" /> },
+                  { value: "featured", label: "Featured Showcase", icon: <Sparkles className="h-3.5 w-3.5 text-emerald-500" /> },
                   { value: "price-asc", label: "Price: Low to High", icon: <ArrowUp className="h-3.5 w-3.5 text-emerald-500" />, badge: "Budget" },
                   { value: "price-desc", label: "Price: High to Low", icon: <ArrowDown className="h-3.5 w-3.5 text-amber-500" />, badge: "Luxury" },
                   { value: "name-asc", label: "Name: A to Z" },
@@ -606,8 +599,8 @@ export function VehiclesCatalog() {
           </div>
         ) : filteredVehicles.length === 0 ? (
           <div className="text-center py-16 px-4 bg-slate-50 dark:bg-white/5 rounded-[32px] border border-dashed border-slate-200 dark:border-white/10 mb-12">
-            <div className="h-16 w-16 mx-auto mb-4 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 flex items-center justify-center">
-              <Search className="h-8 w-8 text-violet-600 dark:text-violet-400" />
+            <div className="h-16 w-16 mx-auto mb-4 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+              <Search className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
               No Available Vehicles Found
@@ -684,7 +677,7 @@ export function VehiclesCatalog() {
                       {/* Location Badge on Photo */}
                       <div className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-3 sm:left-3 sm:right-3 flex items-center justify-between gap-1 sm:gap-2">
                         <div className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wide bg-black/70 backdrop-blur-md text-white border border-white/20 truncate flex items-center gap-0.5 sm:gap-1 max-w-[90%] sm:max-w-none">
-                          <MapPin className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-violet-400 flex-shrink-0" />
+                          <MapPin className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-emerald-400 flex-shrink-0" />
                           <span className="truncate">
                             {locationQuery.trim() ? `Pickup: ${locationQuery.trim()}` : (car.location || "Sri Lanka")}
                           </span>
@@ -701,7 +694,7 @@ export function VehiclesCatalog() {
                       {/* Header: Name + Price */}
                       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-0.5 sm:gap-2">
                         <div className="min-w-0">
-                          <h3 className="title-hover-glow text-xs sm:text-lg lg:text-xl font-bold text-slate-900 dark:text-white leading-snug group-hover:text-violet-600 transition-colors truncate">
+                          <h3 className="title-hover-glow text-xs sm:text-lg lg:text-xl font-bold text-slate-900 dark:text-white leading-snug group-hover:text-emerald-600 transition-colors truncate">
                             {car.name}
                           </h3>
                           <p className="text-[10px] sm:text-xs text-slate-400 font-medium mt-0.5 truncate">
@@ -709,7 +702,7 @@ export function VehiclesCatalog() {
                           </p>
                         </div>
                         <div className="text-left sm:text-right flex-shrink-0 flex items-baseline sm:block gap-1 mt-0.5 sm:mt-0">
-                          <span className="text-xs sm:text-base lg:text-lg font-bold text-violet-600 dark:text-violet-400 block leading-tight">
+                          <span className="text-xs sm:text-base lg:text-lg font-bold text-emerald-600 dark:text-emerald-400 block leading-tight">
                             {car.price}
                           </span>
                           <span className="text-[9px] sm:text-xs text-slate-400">{car.period}</span>
@@ -756,7 +749,7 @@ export function VehiclesCatalog() {
                           seats: car.specs.seats,
                         })
                       }
-                      className="w-full bg-slate-950 hover:bg-violet-700 dark:bg-white dark:text-slate-950 dark:hover:bg-violet-400 dark:hover:text-white text-white font-bold text-[10px] sm:text-xs py-1.5 sm:py-3 rounded-[14px] sm:rounded-[30px] shadow-sm transition-all active:scale-95 text-center cursor-pointer flex items-center justify-center gap-1"
+                      className="w-full bg-slate-950 hover:bg-emerald-700 dark:bg-white dark:text-slate-950 dark:hover:bg-emerald-400 dark:hover:text-white text-white font-bold text-[10px] sm:text-xs py-1.5 sm:py-3 rounded-[14px] sm:rounded-[30px] shadow-sm transition-all active:scale-95 text-center cursor-pointer flex items-center justify-center gap-1"
                     >
                       <span>{t("fleet_btn_book")}</span>
                     </button>
@@ -825,7 +818,7 @@ export function VehiclesCatalog() {
                 <div className="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-2 sm:ml-auto">
                   {/* Price */}
                   <div className="inline-flex items-baseline gap-1 whitespace-nowrap flex-shrink-0">
-                    <span className="text-lg sm:text-2xl font-black text-violet-600 dark:text-violet-400 whitespace-nowrap">
+                    <span className="text-lg sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
                       {activeModalCar.price}
                     </span>
                     <span className="text-xs sm:text-sm font-medium text-slate-400 whitespace-nowrap">
@@ -836,7 +829,7 @@ export function VehiclesCatalog() {
                   {/* Location */}
                   {(modalPickupLocation || activeModalCar.location) && (
                     <div className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-2.5 py-1 rounded-full max-w-full sm:max-w-xs truncate flex-shrink-0">
-                      <MapPin className="h-3.5 w-3.5 text-violet-500 flex-shrink-0" />
+                      <MapPin className="h-3.5 w-3.5 text-emerald-500 flex-shrink-0" />
                       <span className="truncate">
                         {modalPickupLocation ? `Pickup: ${modalPickupLocation}` : activeModalCar.location}
                       </span>
@@ -886,7 +879,7 @@ export function VehiclesCatalog() {
                         onClick={() => setActiveThumbnailIndex(idx)}
                         className={`relative h-16 w-20 sm:h-24 sm:w-28 rounded-[16px] sm:rounded-[20px] overflow-hidden border-2 transition-all flex-shrink-0 cursor-pointer ${
                           activeThumbnailIndex === idx
-                            ? "border-violet-600 ring-2 ring-violet-600/30 scale-105 shadow-md"
+                            ? "border-emerald-600 ring-2 ring-emerald-600/30 scale-105 shadow-md"
                             : "border-slate-200 dark:border-white/10 opacity-70 hover:opacity-100"
                         }`}
                       >
@@ -1010,7 +1003,7 @@ export function VehiclesCatalog() {
                   <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#15151a] border border-slate-200/80 dark:border-white/10 space-y-2">
                     <div className="flex items-center justify-between">
                       <label className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                        <MapPin className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
+                        <MapPin className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                         <span>Pickup Location / Delivery Address:</span>
                       </label>
                       <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 px-2 py-0.5 rounded-full">
@@ -1044,7 +1037,7 @@ export function VehiclesCatalog() {
                           seats: activeModalCar.specs.seats,
                         });
                       }}
-                      className="w-full sm:w-3/5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg shadow-violet-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full sm:w-3/5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm sm:text-base py-3.5 rounded-[30px] shadow-lg shadow-emerald-500/25 transition-all duration-200 transform active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <MessageCircle className="h-5 w-5" />
                       <span>Request to Book</span>
@@ -1059,7 +1052,7 @@ export function VehiclesCatalog() {
                     <div className="grid grid-cols-2 gap-y-2.5 gap-x-6">
                       {activeModalCar.equipment.map((item, idx) => (
                         <div key={idx} className="flex items-center gap-2.5">
-                          <CheckCircle2 className="h-4 w-4 text-violet-600 dark:text-violet-400 fill-violet-100 dark:fill-violet-900/30 flex-shrink-0" />
+                          <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 fill-emerald-100 dark:fill-emerald-900/30 flex-shrink-0" />
                           <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">
                             {item}
                           </span>
@@ -1092,7 +1085,7 @@ export function VehiclesCatalog() {
                           setActiveModalCar(other);
                           setActiveThumbnailIndex(0);
                         }}
-                        className="text-left p-4 rounded-[24px] bg-slate-50/90 dark:bg-[#15151a] hover:bg-white dark:hover:bg-[#1c1c24] border border-slate-100 dark:border-white/10 hover:border-violet-200 dark:hover:border-violet-500/30 hover:shadow-lg transition-all duration-200 flex flex-col justify-between group cursor-pointer"
+                        className="text-left p-4 rounded-[24px] bg-slate-50/90 dark:bg-[#15151a] hover:bg-white dark:hover:bg-[#1c1c24] border border-slate-100 dark:border-white/10 hover:border-emerald-200 dark:hover:border-emerald-500/30 hover:shadow-lg transition-all duration-200 flex flex-col justify-between group cursor-pointer"
                       >
                         {/* Mini Image Preview */}
                         <div className="relative aspect-[16/10] w-full rounded-xl bg-white dark:bg-black/40 border border-slate-100 dark:border-white/5 mb-3 flex items-center justify-center overflow-hidden">
@@ -1110,7 +1103,7 @@ export function VehiclesCatalog() {
                         <div>
                           <div className="flex items-start justify-between">
                             <div>
-                              <span className="text-sm font-bold text-slate-900 dark:text-white block leading-snug group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                              <span className="text-sm font-bold text-slate-900 dark:text-white block leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                                 {other.name}
                               </span>
                               <span className="text-[11px] text-slate-400 font-medium">
@@ -1118,7 +1111,7 @@ export function VehiclesCatalog() {
                               </span>
                             </div>
                             <div className="text-right">
-                              <span className="text-xs font-bold text-violet-600 dark:text-violet-400 block">
+                              <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 block">
                                 {other.price}
                               </span>
                               <span className="text-[10px] text-slate-400">

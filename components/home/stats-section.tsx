@@ -134,7 +134,7 @@ export function StatsSection() {
     <section id="about" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       {/* Container */}
       <div className="stripe-glass rounded-[28px] sm:rounded-[30px] p-5 sm:p-12 lg:p-14 text-center border border-slate-200/80 dark:border-white/10 shadow-sm">
-        <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-500/10 px-3 py-1 rounded-full mb-3">
+        <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full mb-3">
           <span>Tourmate Track Record</span>
         </div>
 

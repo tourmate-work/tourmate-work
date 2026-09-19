@@ -25,30 +25,30 @@ export const metadata: Metadata = {
 };
 
 const SECTION_ICONS = [
-  { icon: Handshake, color: "bg-violet-500/10 text-violet-600 dark:text-violet-400" },
+  { icon: Handshake, color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
   { icon: Clock, color: "bg-blue-500/10 text-blue-600 dark:text-blue-400" },
   { icon: DollarSign, color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
   { icon: MapPin, color: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
   { icon: CheckCircle2, color: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400" },
   { icon: Users, color: "bg-rose-500/10 text-rose-600 dark:text-rose-400" },
   { icon: ShieldCheck, color: "bg-teal-500/10 text-teal-600 dark:text-teal-400" },
-  { icon: Handshake, color: "bg-purple-500/10 text-purple-600 dark:text-purple-400" },
+  { icon: Handshake, color: "bg-teal-500/10 text-teal-600 dark:text-teal-400" },
   { icon: AlertCircle, color: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
-  { icon: Sparkles, color: "bg-violet-500/10 text-violet-600 dark:text-violet-400" },
+  { icon: Sparkles, color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
 ];
 
 export default async function TermsPage() {
   const terms = await getPolicy("terms");
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-[#070709] text-slate-900 dark:text-white font-sans selection:bg-violet-600 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-[#070709] text-slate-900 dark:text-white font-sans selection:bg-emerald-600 selection:text-white">
       <Header />
 
       <main className="flex-1 py-12 sm:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           {/* Header Banner */}
           <div className="text-center space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-600 dark:text-violet-400 text-xs font-black uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-black uppercase tracking-wider">
               <FileText className="h-4 w-4" />
               <span>{terms.subtitle || "Official Policy Agreement"}</span>
             </div>
@@ -59,7 +59,7 @@ export default async function TermsPage() {
 
             {terms.lastUpdated && (
               <div className="flex items-center justify-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400">
-                <Clock className="h-4 w-4 text-violet-500" />
+                <Clock className="h-4 w-4 text-emerald-500" />
                 <span>Last Updated: {terms.lastUpdated}</span>
               </div>
             )}
@@ -84,21 +84,21 @@ export default async function TermsPage() {
                 return (
                   <section
                     key={sec.id || idx}
-                    className="bg-gradient-to-br from-violet-600/10 via-purple-600/5 to-transparent border border-violet-500/30 rounded-[28px] p-6 sm:p-8 space-y-3"
+                    className="bg-gradient-to-br from-emerald-600/10 via-teal-600/5 to-transparent border border-emerald-500/30 rounded-[28px] p-6 sm:p-8 space-y-3"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-2xl bg-violet-600 text-white flex items-center justify-center flex-shrink-0 shadow-md">
+                      <div className="h-10 w-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 shadow-md">
                         <CheckCircle2 className="h-5 w-5" />
                       </div>
-                      <h2 className="text-lg sm:text-xl font-black text-violet-950 dark:text-violet-200">
+                      <h2 className="text-lg sm:text-xl font-black text-emerald-950 dark:text-emerald-200">
                         {sec.title}
                       </h2>
                     </div>
-                    <p className="text-violet-950 dark:text-violet-300 font-medium">
+                    <p className="text-emerald-950 dark:text-emerald-300 font-medium">
                       {sec.content}
                     </p>
                     {sec.note && (
-                      <p className="text-xs text-violet-800 dark:text-violet-400">
+                      <p className="text-xs text-emerald-800 dark:text-emerald-400">
                         {sec.note}
                       </p>
                     )}

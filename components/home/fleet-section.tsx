@@ -110,7 +110,7 @@ export function FleetSection() {
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-500/10 px-3 py-1 rounded-full mb-3">
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full mb-3">
             <span>{t("fleet_badge")}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-slate-950 dark:text-white leading-tight">
@@ -121,7 +121,7 @@ export function FleetSection() {
 
         <Link
           href="/vehicles"
-          className="inline-flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white hover:text-violet-600 dark:hover:text-violet-400 transition-colors group"
+          className="inline-flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors group"
         >
           <span>{t("fleet_view_all")}</span>
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -136,7 +136,7 @@ export function FleetSection() {
         />
       ) : featuredCars.length === 0 ? (
         <div className="text-center py-16 px-4 bg-slate-50 dark:bg-white/5 rounded-[30px] border border-dashed border-slate-200 dark:border-white/10">
-          <div className="h-16 w-16 mx-auto mb-4 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+          <div className="h-16 w-16 mx-auto mb-4 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
             <Car className="h-8 w-8" />
           </div>
           <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
@@ -165,7 +165,7 @@ export function FleetSection() {
               <div>
                 <div className="flex items-center justify-between mb-2 sm:mb-4">
                   {car.badge ? (
-                    <span className="inline-flex items-center gap-1 text-[9px] sm:text-[11px] font-extrabold uppercase tracking-wide bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-500/20 px-2 sm:px-2.5 py-0.5 rounded-full truncate max-w-[90px] sm:max-w-none">
+                    <span className="inline-flex items-center gap-1 text-[9px] sm:text-[11px] font-extrabold uppercase tracking-wide bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 px-2 sm:px-2.5 py-0.5 rounded-full truncate max-w-[90px] sm:max-w-none">
                       {car.badge}
                     </span>
                   ) : (
@@ -194,7 +194,7 @@ export function FleetSection() {
                   />
                   {/* Location Badge on Image */}
                   <div className="absolute bottom-1.5 left-1.5 z-20 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[8px] sm:text-[10px] font-bold bg-black/70 backdrop-blur-md text-white border border-white/20 flex items-center gap-0.5 sm:gap-1 pointer-events-none max-w-[90%] truncate">
-                    <MapPin className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-violet-400 flex-shrink-0" />
+                    <MapPin className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-emerald-400 flex-shrink-0" />
                     <span className="truncate">{car.location}</span>
                   </div>
                 </div>
@@ -257,7 +257,7 @@ export function FleetSection() {
                       seats: car.seats,
                     })
                   }
-                  className="w-full bg-slate-950 hover:bg-violet-700 dark:bg-white dark:text-slate-950 dark:hover:bg-violet-400 dark:hover:text-white text-white font-bold text-[10px] sm:text-xs py-1.5 sm:py-3 rounded-[14px] sm:rounded-[30px] shadow-sm transition-all active:scale-95 text-center cursor-pointer flex items-center justify-center gap-1"
+                  className="w-full bg-slate-950 hover:bg-emerald-700 dark:bg-white dark:text-slate-950 dark:hover:bg-emerald-400 dark:hover:text-white text-white font-bold text-[10px] sm:text-xs py-1.5 sm:py-3 rounded-[14px] sm:rounded-[30px] shadow-sm transition-all active:scale-95 text-center cursor-pointer flex items-center justify-center gap-1"
                 >
                   <span>{t("fleet_btn_book")}</span>
                 </button>

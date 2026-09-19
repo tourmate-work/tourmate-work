@@ -61,7 +61,7 @@ export function PolicyModal({ policy, customPolicies, onClose }: PolicyModalProp
         {policy === "terms" && (
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-2xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center flex-shrink-0">
+              <div className="h-10 w-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
                 <FileText className="h-5 w-5" />
               </div>
               <div>
@@ -69,7 +69,7 @@ export function PolicyModal({ policy, customPolicies, onClose }: PolicyModalProp
                   {currentDoc.title}
                 </h3>
                 {currentDoc.lastUpdated && (
-                  <p className="text-xs font-semibold text-violet-600 dark:text-violet-400">
+                  <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                     Last Updated: {currentDoc.lastUpdated}
                   </p>
                 )}

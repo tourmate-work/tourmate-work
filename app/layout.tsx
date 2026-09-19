@@ -50,7 +50,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-violet-600 selection:text-white transition-colors duration-300 pb-24 md:pb-0">
+      <body className="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-emerald-600 selection:text-white transition-colors duration-300 pb-24 md:pb-0">
         <ThemeProvider>
           <LanguageProvider>
             <AuthProvider>

@@ -160,8 +160,8 @@ export function ContactContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-slate-50/70 border border-slate-200/80 rounded-[30px] p-4 sm:p-6 lg:p-8 shadow-sm">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
-              {/* Left Purple Booking Box */}
-              <div className="lg:col-span-4 bg-violet-600 text-white rounded-[30px] p-6 sm:p-7 shadow-xl flex flex-col justify-between">
+              {/* Left Green Booking Box */}
+              <div className="lg:col-span-4 bg-emerald-600 text-white rounded-[30px] p-6 sm:p-7 shadow-xl flex flex-col justify-between">
                 <div>
                   <h2 className="text-xl font-bold text-center text-white mb-5">
                     {language === "si" ? "ඔබගේ වාහනය වෙන්කරන්න" : "Book your car"}
@@ -179,7 +179,7 @@ export function ContactContent() {
                       ]}
                       value={carType}
                       onChange={setCarType}
-                      variant="purple"
+                      variant="green"
                     />
 
                     {/* Place of rental */}
@@ -194,7 +194,7 @@ export function ContactContent() {
                       ]}
                       value={pickupPlace}
                       onChange={setPickupPlace}
-                      variant="purple"
+                      variant="green"
                     />
 
                     {/* Place of return */}
@@ -207,7 +207,7 @@ export function ContactContent() {
                       ]}
                       value={returnPlace}
                       onChange={setReturnPlace}
-                      variant="purple"
+                      variant="green"
                       position="auto"
                     />
 
@@ -216,7 +216,7 @@ export function ContactContent() {
                       value={rentalDate}
                       onChange={setRentalDate}
                       placeholder="Rental Date"
-                      variant="purple"
+                      variant="green"
                       position="auto"
                     />
 
@@ -225,7 +225,7 @@ export function ContactContent() {
                       value={returnDate}
                       onChange={setReturnDate}
                       placeholder="Return Date"
-                      variant="purple"
+                      variant="green"
                       position="top"
                     />
 
@@ -378,7 +378,7 @@ export function ContactContent() {
 
                   {/* Content */}
                   <div className="space-y-3">
-                    <h3 className="title-hover-glow text-lg font-bold text-slate-900 leading-snug group-hover:text-violet-600 transition-colors">
+                    <h3 className="title-hover-glow text-lg font-bold text-slate-900 leading-snug group-hover:text-emerald-600 transition-colors">
                       {post.title}
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">

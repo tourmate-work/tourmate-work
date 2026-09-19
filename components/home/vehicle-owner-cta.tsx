@@ -27,9 +27,9 @@ export function VehicleOwnerSection() {
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
-      <div className="relative rounded-[28px] sm:rounded-[36px] bg-gradient-to-br from-slate-950 via-slate-900 to-violet-950 text-white p-5 sm:p-10 lg:p-16 shadow-2xl overflow-hidden border border-white/10">
+      <div className="relative rounded-[28px] sm:rounded-[36px] bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 text-white p-5 sm:p-10 lg:p-16 shadow-2xl overflow-hidden border border-white/10">
         {/* Subtle background glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-600/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-600/15 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
@@ -76,7 +76,7 @@ export function VehicleOwnerSection() {
                   key={idx}
                   className="flex items-center gap-4 p-5 rounded-2xl bg-white/[0.05] hover:bg-white/[0.08] border border-white/10 transition-all group"
                 >
-                  <div className="h-11 w-11 rounded-2xl bg-violet-500/20 border border-violet-500/30 text-violet-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                  <div className="h-11 w-11 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
                     <Icon className="h-5 w-5" />
                   </div>
                   <div>

@@ -116,7 +116,7 @@ export function AuthModal() {
         name: emailUserName.trim() || "Tourmate Member",
         avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
           emailUserName || "Google User"
-        )}&backgroundColor=7c3aed`,
+        )}&backgroundColor=059669`,
       });
 
       if (!res.success) {
@@ -147,7 +147,7 @@ export function AuthModal() {
         name: emailUserName.trim() || undefined,
         avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
           emailUserName || trimmedEmail
-        )}&backgroundColor=7c3aed`,
+        )}&backgroundColor=059669`,
       });
 
       if (res.success) {
@@ -196,7 +196,7 @@ export function AuthModal() {
     >
       <div className="relative w-full max-w-md bg-white dark:bg-[#111116] border border-slate-200/90 dark:border-white/10 rounded-[28px] sm:rounded-[32px] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
         {/* Top Gradient Accent */}
-        <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-violet-600 via-fuchsia-500 to-emerald-500" />
+        <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-emerald-600 via-fuchsia-500 to-emerald-500" />
 
         {/* Modal Close Button */}
         <button
@@ -210,7 +210,7 @@ export function AuthModal() {
         <div className="p-6 sm:p-7">
           {/* Header */}
           <div className="flex items-center gap-2.5 mb-1">
-            <div className="h-9 w-9 rounded-xl bg-violet-600/10 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-xl bg-emerald-600/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
               <Sparkles className="h-5 w-5" />
             </div>
             <div>
@@ -237,7 +237,7 @@ export function AuthModal() {
                   : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               }`}
             >
-              <Phone className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
+              <Phone className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Phone</span>
             </button>
 
@@ -315,7 +315,7 @@ export function AuthModal() {
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                   Mobile Phone Number
                 </label>
-                <div className="flex rounded-2xl border border-slate-200 dark:border-white/15 overflow-hidden focus-within:ring-2 focus-within:ring-violet-600 bg-slate-50 dark:bg-white/5 transition-all">
+                <div className="flex rounded-2xl border border-slate-200 dark:border-white/15 overflow-hidden focus-within:ring-2 focus-within:ring-emerald-600 bg-slate-50 dark:bg-white/5 transition-all">
                   {/* Country code selector */}
                   <select
                     value={selectedCountry.code}
@@ -355,7 +355,7 @@ export function AuthModal() {
                     value={phoneUserName}
                     onChange={(e) => setPhoneUserName(e.target.value)}
                     placeholder="e.g. Kasun Perera"
-                    className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-violet-600"
+                    className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-emerald-600"
                   />
                 </div>
               </div>
@@ -363,7 +363,7 @@ export function AuthModal() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full mt-2 flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 disabled:opacity-60 text-white font-bold text-sm py-3.5 rounded-2xl shadow-lg shadow-violet-500/25 transition-all active:scale-[0.98] cursor-pointer"
+                className="w-full mt-2 flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white font-bold text-sm py-3.5 rounded-2xl shadow-lg shadow-emerald-500/25 transition-all active:scale-[0.98] cursor-pointer"
               >
                 {loading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -436,7 +436,7 @@ export function AuthModal() {
                       value={emailAddress}
                       onChange={(e) => setEmailAddress(e.target.value)}
                       placeholder="yourname@gmail.com"
-                      className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-violet-600"
+                      className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-emerald-600"
                       required
                     />
                   </div>
@@ -453,7 +453,7 @@ export function AuthModal() {
                       value={emailUserName}
                       onChange={(e) => setEmailUserName(e.target.value)}
                       placeholder="e.g. Dilshan Perera"
-                      className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-violet-600"
+                      className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-emerald-600"
                     />
                   </div>
                 </div>
@@ -493,7 +493,7 @@ export function AuthModal() {
                       value={passwordName}
                       onChange={(e) => setPasswordName(e.target.value)}
                       placeholder="Your full name"
-                      className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-violet-600"
+                      className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-emerald-600"
                       required
                     />
                   </div>
@@ -511,7 +511,7 @@ export function AuthModal() {
                     value={passwordEmail}
                     onChange={(e) => setPasswordEmail(e.target.value)}
                     placeholder="name@example.com"
-                    className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-violet-600"
+                    className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-emerald-600"
                     required
                   />
                 </div>
@@ -528,7 +528,7 @@ export function AuthModal() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-violet-600"
+                    className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-2xl pl-10 pr-3.5 py-3 text-sm font-semibold text-slate-950 dark:text-white placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-emerald-600"
                     required
                   />
                 </div>
@@ -537,7 +537,7 @@ export function AuthModal() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full mt-2 flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 disabled:opacity-60 text-white font-bold text-sm py-3.5 rounded-2xl shadow-lg shadow-violet-500/25 transition-all active:scale-[0.98] cursor-pointer"
+                className="w-full mt-2 flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white font-bold text-sm py-3.5 rounded-2xl shadow-lg shadow-emerald-500/25 transition-all active:scale-[0.98] cursor-pointer"
               >
                 {loading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -557,11 +557,11 @@ export function AuthModal() {
                 >
                   {emailMode === "login" ? (
                     <>
-                      Don&apos;t have an account? <span className="font-bold text-violet-600">Register</span>
+                      Don&apos;t have an account? <span className="font-bold text-emerald-600">Register</span>
                     </>
                   ) : (
                     <>
-                      Already have an account? <span className="font-bold text-violet-600">Sign In</span>
+                      Already have an account? <span className="font-bold text-emerald-600">Sign In</span>
                     </>
                   )}
                 </button>
@@ -576,7 +576,7 @@ export function AuthModal() {
               <Link
                 href="/terms"
                 onClick={closeAuthModal}
-                className="text-violet-600 dark:text-violet-400 font-semibold hover:underline"
+                className="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline"
               >
                 Terms & Conditions
               </Link>{" "}

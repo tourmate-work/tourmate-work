@@ -53,7 +53,7 @@ export function HeroSection() {
   return (
     <section className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-8 sm:pb-10">
       {/* Hero Container with Rounded corners */}
-      <div className="relative rounded-[28px] sm:rounded-[30px] bg-gradient-to-r from-violet-950 via-purple-900 to-indigo-950 text-white min-h-[540px] sm:min-h-[580px] lg:min-h-[620px] flex items-center shadow-2xl overflow-visible">
+      <div className="relative rounded-[28px] sm:rounded-[30px] bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-950 text-white min-h-[540px] sm:min-h-[580px] lg:min-h-[620px] flex items-center shadow-2xl overflow-visible">
         {/* Background Image with Sri Lanka landmarks & cars */}
         <div className="absolute inset-0 rounded-[28px] sm:rounded-[30px] overflow-hidden z-0 pointer-events-none">
           <Image
@@ -63,7 +63,7 @@ export function HeroSection() {
             priority
             className="object-cover object-center opacity-85 mix-blend-screen"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-violet-950/95 via-purple-900/65 to-transparent lg:w-3/5" />
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-teal-950/65 to-transparent lg:w-3/5" />
           <div className="absolute inset-0 bg-black/25" />
         </div>
 
@@ -130,7 +130,7 @@ export function HeroSection() {
                   <KeyRound
                     className={`h-3.5 w-3.5 transition-all duration-300 ${
                       rentalMode === "self"
-                        ? "text-violet-600 scale-110 -rotate-12"
+                        ? "text-emerald-600 scale-110 -rotate-12"
                         : "text-slate-400 group-hover:text-slate-600 scale-100 rotate-0"
                     }`}
                   />
@@ -149,7 +149,7 @@ export function HeroSection() {
                   <UserCheck
                     className={`h-3.5 w-3.5 transition-all duration-300 ${
                       rentalMode === "driver"
-                        ? "text-violet-600 scale-110"
+                        ? "text-emerald-600 scale-110"
                         : "text-slate-400 group-hover:text-slate-600 scale-100"
                     }`}
                   />

@@ -12,15 +12,7 @@ const fallbackCategoryImg: { [cat: string]: string } = {
   Luxury: "/images/mock/mercedes-amg.jpg",
 };
 
-const defaultGallery = [
-  "/images/mock/premio-sedan.jpg",
-  "/images/mock/axio-sedan.jpg",
-  "/images/car-side.jpg",
-  "/images/mock/prado-4x4.jpg",
-  "/images/mock/mercedes-amg.jpg",
-  "/images/mock/cockpit.jpg",
-  "/images/mock/rear-cabin.jpg",
-];
+
 
 export async function GET(req: NextRequest) {
   try {
@@ -159,13 +151,9 @@ export async function GET(req: NextRequest) {
         cleanImageUrl = fallbackCategoryImg[v.category] || "/images/mock/premio-sedan.jpg";
       }
 
-      // Sanitize galleryImages (replace dead blob URLs with stable gallery images)
-      const cleanGallery = (parsedGallery.length > 0 ? parsedGallery : defaultGallery).map((img, idx) => {
-        if (typeof img === "string" && !img.startsWith("blob:") && img.trim() !== "") {
-          return img;
-        }
-        return defaultGallery[idx % defaultGallery.length];
-      });
+      // Sanitize galleryImages (remove dead blob URLs, do NOT inject fallbacks)
+      const cleanGallery = (parsedGallery.length > 0 ? parsedGallery : [])
+        .filter((img) => typeof img === "string" && !img.startsWith("blob:") && img.trim() !== "");
 
       return {
         ...v,
@@ -246,16 +234,10 @@ export async function POST(req: NextRequest) {
       cleanHeroImage = fallbackCategoryImg[category] || "/images/mock/axio-sedan.jpg";
     }
 
-    const cleanGalleryList = (Array.isArray(galleryImages) ? galleryImages : []).map(
-      (img: string, idx: number) => {
-        if (typeof img === "string" && !img.startsWith("blob:") && img.trim() !== "") {
-          return img;
-        }
-        return defaultGallery[idx % defaultGallery.length];
-      }
-    );
+    const cleanGalleryList = (Array.isArray(galleryImages) ? galleryImages : [])
+      .filter((img: string) => typeof img === "string" && !img.startsWith("blob:") && img.trim() !== "");
 
-    const finalGallery = cleanGalleryList.length > 0 ? cleanGalleryList : [cleanHeroImage];
+    const finalGallery = cleanGalleryList.length > 0 ? cleanGalleryList : (cleanHeroImage ? [cleanHeroImage] : []);
 
     const vehicle = await prisma.vehicle.create({
       data: {

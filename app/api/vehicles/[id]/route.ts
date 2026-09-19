@@ -56,27 +56,15 @@ export async function GET(
       Luxury: "/images/mock/mercedes-amg.jpg",
     };
 
-    const defaultGallery = [
-      "/images/mock/premio-sedan.jpg",
-      "/images/mock/axio-sedan.jpg",
-      "/images/car-side.jpg",
-      "/images/mock/prado-4x4.jpg",
-      "/images/mock/mercedes-amg.jpg",
-      "/images/mock/cockpit.jpg",
-      "/images/mock/rear-cabin.jpg",
-    ];
+
 
     let cleanImageUrl = vehicle.imageUrl;
     if (!cleanImageUrl || cleanImageUrl.startsWith("blob:")) {
       cleanImageUrl = fallbackCategoryImg[vehicle.category] || "/images/mock/premio-sedan.jpg";
     }
 
-    const cleanGallery = (parsedGallery.length > 0 ? parsedGallery : defaultGallery).map((img, idx) => {
-      if (typeof img === "string" && !img.startsWith("blob:") && img.trim() !== "") {
-        return img;
-      }
-      return defaultGallery[idx % defaultGallery.length];
-    });
+    const cleanGallery = (parsedGallery.length > 0 ? parsedGallery : [])
+      .filter((img) => typeof img === "string" && !img.startsWith("blob:") && img.trim() !== "");
 
     return NextResponse.json({
       success: true,

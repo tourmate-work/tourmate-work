@@ -355,22 +355,15 @@ function DetailsContentInner() {
           const mapped: VehicleDetail[] = (data.vehicles as ApiVehicleRaw[])
             .filter((v) => v.status?.toLowerCase() !== "maintenance")
             .map((v) => {
-            const fallbackImg =
-              v.category === "Van"
-                ? "/images/mock/kdh-van.jpg"
-                : v.category === "SUV" || v.category === "4x4"
-                ? "/images/mock/prado-4x4.jpg"
-                : "/images/mock/premio-sedan.jpg";
-
             const validHero =
-              v.imageUrl && !v.imageUrl.startsWith("blob:") ? v.imageUrl : fallbackImg;
+              v.imageUrl && !v.imageUrl.startsWith("blob:") ? v.imageUrl : "";
 
             const validGallery =
               Array.isArray(v.galleryImages) && v.galleryImages.length > 0
-                ? v.galleryImages.map((img: string) =>
-                    img && !img.startsWith("blob:") ? img : fallbackImg
+                ? v.galleryImages.filter((img: string) =>
+                    img && !img.startsWith("blob:")
                   )
-                : [validHero];
+                : (validHero ? [validHero] : []);
 
             return {
               id: v.id,
@@ -434,22 +427,15 @@ function DetailsContentInner() {
           .then((data) => {
             if (data.success && data.vehicle) {
               const v = data.vehicle;
-              const fallbackImg =
-                v.category === "Van"
-                  ? "/images/mock/kdh-van.jpg"
-                  : v.category === "SUV" || v.category === "4x4"
-                  ? "/images/mock/prado-4x4.jpg"
-                  : "/images/mock/premio-sedan.jpg";
-
               const validHero =
-                v.imageUrl && !v.imageUrl.startsWith("blob:") ? v.imageUrl : fallbackImg;
+                v.imageUrl && !v.imageUrl.startsWith("blob:") ? v.imageUrl : "";
 
               const validGallery =
                 Array.isArray(v.galleryImages) && v.galleryImages.length > 0
-                  ? v.galleryImages.map((img: string) =>
-                      img && !img.startsWith("blob:") ? img : fallbackImg
+                  ? v.galleryImages.filter((img: string) =>
+                      img && !img.startsWith("blob:")
                     )
-                  : [validHero];
+                  : (validHero ? [validHero] : []);
 
               setSelectedVehicle({
                 id: v.id,
@@ -531,14 +517,14 @@ function DetailsContentInner() {
           {/* Left Column: Title, Price, Silhouette, Thumbnails */}
           <div className="lg:col-span-6 space-y-6">
             <div>
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-500/10 px-3 py-1 rounded-full mb-3">
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full mb-3">
                 <span>{selectedVehicle.category} {t("details_category_suffix")}</span>
               </div>
               <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-950 dark:text-white tracking-tight">
                 {selectedVehicle.name}
               </h1>
               <div className="mt-1 flex items-baseline gap-1">
-                <span className="text-2xl sm:text-3xl font-bold text-violet-600 dark:text-violet-400">
+                <span className="text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400">
                   {selectedVehicle.price}
                 </span>
                 <span className="text-sm font-medium text-slate-400 ml-1">
@@ -566,30 +552,32 @@ function DetailsContentInner() {
               )}
             </div>
 
-            {/* Thumbnail Gallery Previews */}
-            <div className="flex items-center gap-3 sm:gap-4 overflow-x-auto pb-2 no-scrollbar">
-              {selectedVehicle.thumbnails.map((thumb, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveThumbnailIndex(idx)}
-                  className={`relative h-20 w-24 sm:h-24 sm:w-28 flex-shrink-0 rounded-[20px] overflow-hidden border-2 transition-all cursor-pointer ${
-                  activeThumbnailIndex === idx
-                    ? "border-violet-600 ring-2 ring-violet-600/30 scale-105 shadow-md"
-                    : "border-slate-200 dark:border-white/10 opacity-70 hover:opacity-100"
-                }`}
-                >
-                  <VehicleImage
-                    src={thumb}
-                    alt={`${selectedVehicle.name} preview ${idx + 1}`}
-                    fallbackName={selectedVehicle.name}
-                    showSpinner={false}
-                    quality={70}
-                    className="object-cover"
-                    sizes="(max-width: 640px) 96px, 112px"
-                  />
-                </button>
-              ))}
-            </div>
+            {/* Thumbnail Gallery Previews (only when multiple photos exist) */}
+            {selectedVehicle.thumbnails && selectedVehicle.thumbnails.length > 1 && (
+              <div className="flex items-center gap-3 sm:gap-4 overflow-x-auto pb-2 no-scrollbar">
+                {selectedVehicle.thumbnails.map((thumb, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveThumbnailIndex(idx)}
+                    className={`relative h-20 w-24 sm:h-24 sm:w-28 flex-shrink-0 rounded-[20px] overflow-hidden border-2 transition-all cursor-pointer ${
+                    activeThumbnailIndex === idx
+                      ? "border-emerald-600 ring-2 ring-emerald-600/30 scale-105 shadow-md"
+                      : "border-slate-200 dark:border-white/10 opacity-70 hover:opacity-100"
+                  }`}
+                  >
+                    <VehicleImage
+                      src={thumb}
+                      alt={`${selectedVehicle.name} preview ${idx + 1}`}
+                      fallbackName={selectedVehicle.name}
+                      showSpinner={false}
+                      quality={70}
+                      className="object-cover"
+                      sizes="(max-width: 640px) 96px, 112px"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Right Column: Technical Specification & Equipment */}
@@ -698,7 +686,7 @@ function DetailsContentInner() {
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#15151a] border border-slate-200/80 dark:border-white/10 space-y-2">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
-                  <MapPin className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
+                  <MapPin className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                   <span>{t("details_pickup_label")}</span>
                 </label>
                 <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">
@@ -734,7 +722,7 @@ function DetailsContentInner() {
                 className={`w-full sm:flex-1 ${
                   selectedVehicle.status?.toLowerCase() === "maintenance" || selectedVehicle.isAvailable === false
                     ? "bg-slate-300 dark:bg-white/10 text-slate-500 dark:text-slate-400 cursor-not-allowed"
-                    : "bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-500/25 active:scale-[0.98] cursor-pointer"
+                    : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/25 active:scale-[0.98] cursor-pointer"
                 } font-black text-sm sm:text-base py-3.5 sm:py-4 rounded-[30px] transition-all duration-200 flex items-center justify-center gap-2 min-h-[48px]`}
               >
                 <MessageCircle className="h-5 w-5" />
@@ -762,7 +750,7 @@ function DetailsContentInner() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 sm:gap-y-3.5 gap-x-4 sm:gap-x-6">
                 {selectedVehicle.equipment.map((item, idx) => (
                   <div key={idx} className="flex items-center gap-2.5">
-                    <CheckCircle2 className="h-4 w-4 text-violet-600 dark:text-violet-400 fill-violet-100 dark:fill-violet-900/30 flex-shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 fill-emerald-100 dark:fill-emerald-900/30 flex-shrink-0" />
                     <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">
                       {item}
                     </span>
@@ -782,7 +770,7 @@ function DetailsContentInner() {
             </h2>
             <Link
               href="/vehicles"
-              className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-950 dark:text-white hover:text-violet-600 dark:hover:text-violet-400 transition-colors group"
+              className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-950 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors group"
             >
               <span>{t("details_view_all")}</span>
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -815,7 +803,7 @@ function DetailsContentInner() {
                     {/* Name and Price */}
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-0.5 sm:gap-2">
                       <div className="min-w-0">
-                        <h3 className="title-hover-glow text-xs sm:text-base lg:text-lg font-bold text-slate-900 dark:text-white leading-snug group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors truncate">
+                        <h3 className="title-hover-glow text-xs sm:text-base lg:text-lg font-bold text-slate-900 dark:text-white leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate">
                           {car.name}
                         </h3>
                         <p className="text-[10px] sm:text-xs text-slate-400 font-medium truncate">
@@ -823,7 +811,7 @@ function DetailsContentInner() {
                         </p>
                       </div>
                       <div className="text-left sm:text-right flex-shrink-0 flex items-baseline sm:block gap-1 mt-0.5 sm:mt-0">
-                        <span className="text-xs sm:text-base lg:text-lg font-bold text-violet-600 dark:text-violet-400 block leading-tight">
+                        <span className="text-xs sm:text-base lg:text-lg font-bold text-emerald-600 dark:text-emerald-400 block leading-tight">
                           {car.price}
                         </span>
                         <span className="text-[9px] sm:text-xs text-slate-400">{language === "si" ? t("fleet_per_day") : car.period}</span>
@@ -849,7 +837,7 @@ function DetailsContentInner() {
                     {/* View Details Button */}
                     <button
                       onClick={() => handleSelectCar(car)}
-                      className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold text-[10px] sm:text-sm py-1.5 sm:py-3.5 rounded-[14px] sm:rounded-[30px] shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-center cursor-pointer"
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-[10px] sm:text-sm py-1.5 sm:py-3.5 rounded-[14px] sm:rounded-[30px] shadow-sm hover:shadow-md transition-all active:scale-[0.98] text-center cursor-pointer"
                     >
                       {t("details_view_details")}
                     </button>

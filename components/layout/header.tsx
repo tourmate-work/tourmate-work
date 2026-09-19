@@ -74,7 +74,7 @@ const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
         title: "Dashboard Overview",
         description: "Key performance metrics & live trips",
         href: "/admin?tab=overview",
-        icon: <LayoutDashboard className="h-4 w-4 text-violet-500" />,
+        icon: <LayoutDashboard className="h-4 w-4 text-emerald-500" />,
       },
       {
         title: "Fleet Health & Ratings",
@@ -88,9 +88,9 @@ const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
         title: "Add Vehicle Listing",
         description: "List a car with 7 photo blueprints",
         href: "/admin?tab=list-vehicle",
-        icon: <Sparkles className="h-4 w-4 text-violet-500" />,
+        icon: <Sparkles className="h-4 w-4 text-emerald-500" />,
         badge: "Admin",
-        badgeClass: "bg-violet-500/10 text-violet-700 dark:text-violet-400 border border-violet-500/20",
+        badgeClass: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20",
       },
     ],
   },
@@ -104,7 +104,7 @@ const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
         title: "All Vehicles",
         description: "Full vehicle inventory & management",
         href: "/admin?tab=fleet&filter=all",
-        icon: <Car className="h-4 w-4 text-violet-500" />,
+        icon: <Car className="h-4 w-4 text-emerald-500" />,
         badge: "All Cars",
         badgeClass: "bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300",
       },
@@ -120,9 +120,9 @@ const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
         title: "Currently on Road",
         description: "Active client trips in progress",
         href: "/admin?tab=fleet&filter=on rental",
-        icon: <Clock className="h-4 w-4 text-violet-500" />,
+        icon: <Clock className="h-4 w-4 text-emerald-500" />,
         badge: "On Trip",
-        badgeClass: "bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20",
+        badgeClass: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20",
       },
       {
         title: "Under Maintenance",
@@ -137,7 +137,7 @@ const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
       label: "List a New Vehicle",
       description: "Add a new car to the live fleet",
       href: "/admin?tab=list-vehicle",
-      icon: <Plus className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />,
+      icon: <Plus className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />,
     },
   },
   {
@@ -183,7 +183,7 @@ const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
       label: "Airport & Beach Handovers",
       description: "View today's vehicle pickup schedule",
       href: "/admin?tab=bookings",
-      icon: <MapPin className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />,
+      icon: <MapPin className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />,
     },
   },
   {
@@ -212,9 +212,9 @@ const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
         title: "Host Protection Guarantee",
         description: "Vehicle insurance and partner coverage",
         href: "/admin?tab=earnings",
-        icon: <ShieldCheck className="h-4 w-4 text-violet-500" />,
+        icon: <ShieldCheck className="h-4 w-4 text-emerald-500" />,
         badge: "Full Cover",
-        badgeClass: "bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20",
+        badgeClass: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20",
       },
       {
         title: "Download Tax & Invoice Reports",
@@ -399,7 +399,7 @@ export function Header() {
             </div>
           </Link>
           {isAdmin && (
-            <span className="inline-flex items-center gap-1 text-[9px] sm:text-[11px] font-extrabold uppercase tracking-wider bg-violet-500/20 text-violet-700 dark:text-violet-300 border border-violet-500/40 px-1.5 sm:px-2.5 py-0.5 rounded-full">
+            <span className="inline-flex items-center gap-1 text-[9px] sm:text-[11px] font-extrabold uppercase tracking-wider bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40 px-1.5 sm:px-2.5 py-0.5 rounded-full">
               Admin Portal
             </span>
           )}
@@ -430,7 +430,7 @@ export function Header() {
                       }}
                       className={`flex items-center gap-1.5 py-2 px-3.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
                         isCurrentActive || isOpen
-                          ? "bg-violet-600 text-white shadow-md shadow-violet-500/25"
+                          ? "bg-emerald-600 text-white shadow-md shadow-emerald-500/25"
                           : "text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/5"
                       }`}
                     >
@@ -451,7 +451,7 @@ export function Header() {
                       >
                         <div className="w-80 rounded-3xl bg-white dark:bg-[#0f0f13] border border-slate-200/90 dark:border-white/10 shadow-2xl p-3 space-y-2 backdrop-blur-xl">
                           <div className="px-3 py-1.5 border-b border-slate-100 dark:border-white/5">
-                            <span className="text-[10px] font-black uppercase tracking-wider text-violet-600 dark:text-violet-400">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
                               {section.badgeTitle}
                             </span>
                           </div>
@@ -472,11 +472,11 @@ export function Header() {
                                 className="flex items-center justify-between p-2.5 rounded-2xl hover:bg-slate-100/80 dark:hover:bg-white/5 transition-all group/sub cursor-pointer"
                               >
                                 <div className="flex items-center gap-3 truncate pr-2">
-                                  <div className="h-9 w-9 rounded-xl bg-slate-100 dark:bg-white/5 group-hover/sub:bg-violet-600/15 dark:group-hover/sub:bg-violet-500/20 text-slate-700 dark:text-slate-300 group-hover/sub:text-violet-600 dark:group-hover/sub:text-violet-400 transition-all flex items-center justify-center flex-shrink-0">
+                                  <div className="h-9 w-9 rounded-xl bg-slate-100 dark:bg-white/5 group-hover/sub:bg-emerald-600/15 dark:group-hover/sub:bg-emerald-500/20 text-slate-700 dark:text-slate-300 group-hover/sub:text-emerald-600 dark:group-hover/sub:text-emerald-400 transition-all flex items-center justify-center flex-shrink-0">
                                     {item.icon}
                                   </div>
                                   <div className="truncate">
-                                    <div className="text-xs font-bold text-slate-900 dark:text-white group-hover/sub:text-violet-600 dark:group-hover/sub:text-violet-400 transition-colors truncate">
+                                    <div className="text-xs font-bold text-slate-900 dark:text-white group-hover/sub:text-emerald-600 dark:group-hover/sub:text-emerald-400 transition-colors truncate">
                                       {item.title}
                                     </div>
                                     <div className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
@@ -491,7 +491,7 @@ export function Header() {
                                       {item.badge}
                                     </span>
                                   )}
-                                  <ChevronRight className="h-3.5 w-3.5 text-slate-300 dark:text-slate-600 group-hover/sub:text-violet-600 dark:group-hover/sub:text-violet-400 group-hover/sub:translate-x-0.5 transition-transform" />
+                                  <ChevronRight className="h-3.5 w-3.5 text-slate-300 dark:text-slate-600 group-hover/sub:text-emerald-600 dark:group-hover/sub:text-emerald-400 group-hover/sub:translate-x-0.5 transition-transform" />
                                 </div>
                               </Link>
                             ))}
@@ -509,13 +509,13 @@ export function Header() {
                                     if (match) setActiveAdminTab(match[1]);
                                   }
                                 }}
-                                className="flex items-center justify-between p-2.5 rounded-2xl bg-violet-50/70 dark:bg-violet-950/30 hover:bg-violet-100/70 dark:hover:bg-violet-900/40 text-violet-950 dark:text-violet-200 transition-all group/foot cursor-pointer"
+                                className="flex items-center justify-between p-2.5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 hover:bg-emerald-100/70 dark:hover:bg-emerald-900/40 text-emerald-950 dark:text-emerald-200 transition-all group/foot cursor-pointer"
                               >
                                 <div className="flex items-center gap-2 text-xs font-bold">
                                   {section.footerAction.icon}
                                   <span>{section.footerAction.label}</span>
                                 </div>
-                                <span className="text-[10px] font-extrabold uppercase tracking-wider text-violet-600 dark:text-violet-400 flex items-center gap-1">
+                                <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                                   Open <ArrowRight className="h-3 w-3 group-hover/foot:translate-x-0.5 transition-transform" />
                                 </span>
                               </Link>
@@ -581,7 +581,7 @@ export function Header() {
                 className="flex items-center gap-1.5 sm:gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-900 dark:text-white border border-slate-200/80 dark:border-white/10 h-8 w-8 sm:h-auto sm:w-auto p-0 sm:pl-1.5 sm:pr-3 sm:py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95 justify-center flex-shrink-0"
                 title={user.name}
               >
-                <div className="h-6 w-6 rounded-full bg-violet-600 text-white flex items-center justify-center text-[10px] sm:text-[11px] font-black overflow-hidden flex-shrink-0">
+                <div className="h-6 w-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] sm:text-[11px] font-black overflow-hidden flex-shrink-0">
                   {user.avatarUrl ? (
                     <img src={user.avatarUrl} alt={user.name} className="h-full w-full object-cover" />
                   ) : (
@@ -606,7 +606,7 @@ export function Header() {
                       {user.phone || user.email}
                     </div>
                     <div className="mt-1">
-                      <span className="text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-500/20">
+                      <span className="text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
                         {user.role}
                       </span>
                     </div>
@@ -643,7 +643,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => openAuthModal("phone")}
-              className="inline-flex items-center justify-center h-8 w-8 sm:h-auto sm:w-auto sm:gap-1.5 bg-violet-600 hover:bg-violet-700 text-white sm:px-3.5 sm:py-2 rounded-full text-xs font-bold transition-all shadow-sm shadow-violet-500/25 active:scale-95 cursor-pointer flex-shrink-0"
+              className="inline-flex items-center justify-center h-8 w-8 sm:h-auto sm:w-auto sm:gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white sm:px-3.5 sm:py-2 rounded-full text-xs font-bold transition-all shadow-sm shadow-emerald-500/25 active:scale-95 cursor-pointer flex-shrink-0"
               title={t("nav_sign_in")}
             >
               <UserIcon className="h-3.5 w-3.5" />
@@ -686,7 +686,7 @@ export function Header() {
             href={`tel:${SITE_CONTACT.phone}`}
             className="hidden lg:flex items-center gap-3 bg-slate-50 dark:bg-[#16161a] hover:bg-slate-100 dark:hover:bg-[#202026] border border-slate-200/80 dark:border-white/15 px-3.5 py-2 rounded-full transition-all group shadow-sm active:scale-95 flex-shrink-0"
           >
-            <div className="h-8 w-8 rounded-full bg-violet-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+            <div className="h-8 w-8 rounded-full bg-emerald-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
               <Phone className="h-4 w-4" />
             </div>
             <div className="flex flex-col text-left pr-2">
@@ -720,9 +720,9 @@ export function Header() {
 
             {/* Mobile Auth User Status Card */}
             {isAuthenticated && user ? (
-              <div className="p-3.5 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-between">
+              <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between">
                 <div className="flex items-center gap-3 truncate">
-                  <div className="h-10 w-10 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 overflow-hidden">
+                  <div className="h-10 w-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 overflow-hidden">
                     {user.avatarUrl ? (
                       <img src={user.avatarUrl} alt={user.name} className="h-full w-full object-cover" />
                     ) : (
@@ -757,7 +757,7 @@ export function Header() {
                   setMobileMenuOpen(false);
                   openAuthModal("phone");
                 }}
-                className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold text-xs shadow-md shadow-violet-500/20 active:scale-95 transition-all cursor-pointer"
+                className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs shadow-md shadow-emerald-500/20 active:scale-95 transition-all cursor-pointer"
               >
                 <div className="flex items-center gap-2.5">
                   <UserIcon className="h-4 w-4" />
@@ -791,12 +791,12 @@ export function Header() {
                           className="w-full flex items-center justify-between p-3.5 text-left text-sm font-bold text-slate-900 dark:text-white"
                         >
                           <div className="flex items-center gap-2.5">
-                            <span className="h-2 w-2 rounded-full bg-violet-600" />
+                            <span className="h-2 w-2 rounded-full bg-emerald-600" />
                             <span>{sec.label}</span>
                           </div>
                           <ChevronDown
                             className={`h-4 w-4 transition-transform duration-200 ${
-                              isExpanded ? "rotate-180 text-violet-600" : "text-slate-400"
+                              isExpanded ? "rotate-180 text-emerald-600" : "text-slate-400"
                             }`}
                           />
                         </button>
@@ -811,7 +811,7 @@ export function Header() {
                                 className="flex items-center justify-between p-2.5 rounded-xl text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
                               >
                                 <div className="flex items-center gap-2.5 truncate pr-2">
-                                  <span className="text-violet-600 dark:text-violet-400 flex-shrink-0">
+                                  <span className="text-emerald-600 dark:text-emerald-400 flex-shrink-0">
                                     {sub.icon}
                                   </span>
                                   <span className="truncate">{sub.title}</span>
@@ -829,7 +829,7 @@ export function Header() {
                               <Link
                                 href={sec.footerAction.href}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="flex items-center justify-between p-2.5 rounded-xl text-xs font-bold text-violet-700 dark:text-violet-300 bg-violet-50 dark:bg-violet-950/30 mt-1"
+                                className="flex items-center justify-between p-2.5 rounded-xl text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/30 mt-1"
                               >
                                 <div className="flex items-center gap-2">
                                   {sec.footerAction.icon}
@@ -861,7 +861,7 @@ export function Header() {
                         onClick={() => setMobileMenuOpen(false)}
                         className={`flex items-center justify-between p-3 rounded-2xl text-sm font-bold transition-all ${
                           item.active
-                            ? "bg-violet-600 text-white shadow-md shadow-violet-500/20"
+                            ? "bg-emerald-600 text-white shadow-md shadow-emerald-500/20"
                             : "text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5"
                         }`}
                       >
@@ -905,7 +905,7 @@ export function Header() {
                   href={`tel:${SITE_CONTACT.phone}`}
                   className="flex items-center justify-center gap-2 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 text-slate-900 dark:text-white p-3 rounded-2xl text-xs font-bold transition-colors"
                 >
-                  <Phone className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+                  <Phone className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                   <span>{language === "si" ? "ඇමතුම් සහය" : "Call Support"}</span>
                 </a>
 

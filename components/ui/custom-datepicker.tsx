@@ -7,7 +7,7 @@ interface CustomDatePickerProps {
   value: string; // "YYYY-MM-DD"
   onChange: (value: string) => void;
   placeholder?: string;
-  variant?: "light" | "purple";
+  variant?: "light" | "purple" | "green" | "default";
   position?: "top" | "bottom" | "auto";
   className?: string;
 }
@@ -179,7 +179,7 @@ export function CustomDatePicker({
     );
   };
 
-  const isPurple = variant === "purple";
+  const isGreen = variant === "purple" || variant === "green";
 
   return (
     <div ref={containerRef} className={`relative w-full ${className}`}>
@@ -188,15 +188,15 @@ export function CustomDatePicker({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={`w-full flex items-center justify-between text-left text-xs sm:text-sm font-medium rounded-[20px] px-4 py-3 transition-all duration-200 border ${
-          isPurple
-            ? "bg-violet-700/80 hover:bg-violet-700 border-violet-500/60 text-white focus:ring-2 focus:ring-white/40"
-            : "bg-slate-100/90 hover:bg-slate-100 border-slate-200 text-slate-700 focus:ring-2 focus:ring-violet-500"
-        } ${isOpen ? (isPurple ? "ring-2 ring-white/40" : "ring-2 ring-violet-500") : ""}`}
+          isGreen
+            ? "bg-emerald-700/80 hover:bg-emerald-700 border-emerald-500/60 text-white focus:ring-2 focus:ring-white/40"
+            : "bg-slate-100/90 hover:bg-slate-100 border-slate-200 text-slate-700 focus:ring-2 focus:ring-emerald-500"
+        } ${isOpen ? (isGreen ? "ring-2 ring-white/40" : "ring-2 ring-emerald-500") : ""}`}
       >
         <span className="truncate pr-2">{formatDisplayValue(value)}</span>
         <CalendarIcon
           className={`h-4 w-4 flex-shrink-0 ${
-            isPurple ? "text-violet-200" : "text-slate-400"
+            isGreen ? "text-emerald-200" : "text-slate-400"
           }`}
         />
       </button>
@@ -269,7 +269,7 @@ export function CustomDatePicker({
                   onClick={() => handleSelectDay(day, 0)}
                   className={`h-8 w-8 mx-auto text-xs font-semibold rounded-xl flex items-center justify-center transition-all ${
                     active
-                      ? "bg-violet-600 text-white shadow-md shadow-violet-600/30 scale-105"
+                      ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/30 scale-105"
                       : "text-slate-800 hover:bg-slate-100"
                   }`}
                 >
@@ -303,7 +303,7 @@ export function CustomDatePicker({
             <button
               type="button"
               onClick={handleSelectToday}
-              className="text-violet-600 hover:text-violet-700 transition-colors px-1 py-0.5"
+              className="text-emerald-600 hover:text-emerald-700 transition-colors px-1 py-0.5"
             >
               Today
             </button>

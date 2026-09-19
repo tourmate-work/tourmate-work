@@ -67,7 +67,7 @@ export function WhyChooseUs() {
         {/* Right: How It Works 3 Steps */}
         <div className="lg:col-span-6 space-y-6 text-left">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-500/10 px-3 py-1 rounded-full mb-3">
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full mb-3">
               <span>{t("how_badge")}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-slate-950 dark:text-white leading-tight">
@@ -84,10 +84,10 @@ export function WhyChooseUs() {
               return (
                 <div
                   key={step.num}
-                  className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50/80 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 hover:border-violet-500/30 transition-all group"
+                  className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50/80 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 hover:border-emerald-500/30 transition-all group"
                 >
                   {/* Step Number Badge */}
-                  <div className="flex-shrink-0 h-11 w-11 rounded-2xl bg-violet-600 text-white font-black text-sm flex items-center justify-center shadow-md shadow-violet-500/20 group-hover:scale-110 group-hover:bg-violet-700 transition-all mt-0.5">
+                  <div className="flex-shrink-0 h-11 w-11 rounded-2xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center shadow-md shadow-emerald-500/20 group-hover:scale-110 group-hover:bg-emerald-700 transition-all mt-0.5">
                     <Icon className="h-5 w-5" />
                   </div>
 
@@ -107,7 +107,7 @@ export function WhyChooseUs() {
           <div className="pt-2">
             <Link
               href="/vehicles"
-              className="inline-flex items-center gap-2 bg-slate-950 hover:bg-violet-700 dark:bg-white dark:text-slate-950 dark:hover:bg-violet-400 dark:hover:text-white text-white font-extrabold text-xs sm:text-sm px-6 py-3.5 rounded-full shadow-md transition-all active:scale-95"
+              className="inline-flex items-center gap-2 bg-slate-950 hover:bg-emerald-700 dark:bg-white dark:text-slate-950 dark:hover:bg-emerald-400 dark:hover:text-white text-white font-extrabold text-xs sm:text-sm px-6 py-3.5 rounded-full shadow-md transition-all active:scale-95"
             >
               <span>{t("how_btn_browse")}</span>
               <ArrowRight className="h-4 w-4" />

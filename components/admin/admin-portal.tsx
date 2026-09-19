@@ -444,12 +444,12 @@ export function AdminPortalContent() {
     return (
       <div className="min-h-[80vh] flex items-center justify-center p-4 sm:p-6">
         <div className="w-full max-w-md bg-white dark:bg-[#0b0b0e] border border-slate-200/90 dark:border-white/10 rounded-[32px] p-6 sm:p-8 shadow-2xl space-y-6 text-center animate-in zoom-in-95 duration-200">
-          <div className="h-16 w-16 mx-auto rounded-3xl bg-violet-600/10 text-violet-600 dark:text-violet-400 flex items-center justify-center shadow-inner">
+          <div className="h-16 w-16 mx-auto rounded-3xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-inner">
             <ShieldCheck className="h-8 w-8" />
           </div>
 
           <div className="space-y-2">
-            <span className="inline-block text-[10px] font-extrabold uppercase tracking-widest text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/30 px-3 py-1 rounded-full">
+            <span className="inline-block text-[10px] font-extrabold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 px-3 py-1 rounded-full">
               Restricted Area
             </span>
             <h1 className="text-2xl font-black tracking-tight text-slate-950 dark:text-white">
@@ -516,7 +516,7 @@ export function AdminPortalContent() {
       {/* 1. ADMIN HERO BANNER */}
       <section className="relative pt-6 pb-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-[30px] overflow-hidden bg-gradient-to-r from-violet-950 via-purple-900 to-indigo-950 text-white p-6 sm:p-10 shadow-2xl border border-white/10">
+          <div className="relative rounded-[30px] overflow-hidden bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-950 text-white p-6 sm:p-10 shadow-2xl border border-white/10">
             <div className="absolute inset-0 z-0 opacity-25">
               <Image
                 src="/images/hero-sri-lanka.jpg"
@@ -615,7 +615,7 @@ export function AdminPortalContent() {
                   onClick={() => handleTabChange(tab.id)}
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                     isActive
-                      ? "bg-violet-600 text-white shadow-md shadow-violet-500/20"
+                      ? "bg-emerald-600 text-white shadow-md shadow-emerald-500/20"
                       : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5"
                   }`}
                 >
@@ -650,7 +650,7 @@ export function AdminPortalContent() {
             <div className="bg-white dark:bg-[#0b0b0e] rounded-[32px] p-6 sm:p-10 border border-slate-200/80 dark:border-white/10 shadow-sm">
               <div className="mb-8 pb-6 border-b border-slate-100 dark:border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <div className="inline-flex items-center gap-1.5 text-xs font-bold text-violet-600 dark:text-violet-400 mb-1">
+                  <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1">
                     <Sparkles className="h-4 w-4" />
                     <span>Admin Master Listing Blueprint</span>
                   </div>
@@ -692,7 +692,7 @@ export function AdminPortalContent() {
                     placeholder="Search fleet by model, category, or location..."
                     value={fleetSearch}
                     onChange={(e) => setFleetSearch(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full text-xs font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-600"
+                    className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full text-xs font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-600"
                   />
                 </div>
 
@@ -704,7 +704,7 @@ export function AdminPortalContent() {
                       onClick={() => setFleetFilter(filter)}
                       className={`px-3 py-1.5 rounded-full text-xs font-bold capitalize transition-all whitespace-nowrap cursor-pointer ${
                         fleetFilter === filter
-                          ? "bg-violet-600 text-white shadow-sm"
+                          ? "bg-emerald-600 text-white shadow-sm"
                           : "bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10"
                       }`}
                     >
@@ -714,7 +714,7 @@ export function AdminPortalContent() {
 
                   <button
                     onClick={() => handleTabChange("list-vehicle")}
-                    className="ml-2 inline-flex items-center gap-1.5 bg-violet-600 hover:bg-violet-700 text-white px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm active:scale-95 cursor-pointer"
+                    className="ml-2 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm active:scale-95 cursor-pointer"
                   >
                     <Plus className="h-3.5 w-3.5" />
                     <span>Add Car</span>
@@ -729,7 +729,7 @@ export function AdminPortalContent() {
                 </div>
               ) : filteredFleet.length === 0 ? (
                 <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-12 border border-slate-200/80 dark:border-white/10 text-center space-y-4">
-                  <div className="h-16 w-16 mx-auto rounded-3xl bg-violet-600/10 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+                  <div className="h-16 w-16 mx-auto rounded-3xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                     <Car className="h-8 w-8" />
                   </div>
                   <div className="space-y-1">
@@ -746,7 +746,7 @@ export function AdminPortalContent() {
                     <button
                       type="button"
                       onClick={() => handleTabChange("list-vehicle")}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold transition-all cursor-pointer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all cursor-pointer"
                     >
                       <Plus className="h-4 w-4" />
                       <span>List Vehicle Now</span>
@@ -772,7 +772,7 @@ export function AdminPortalContent() {
                                 car.status === "Available"
                                   ? "bg-emerald-500 text-white"
                                   : car.status === "On Rental"
-                                  ? "bg-violet-600 text-white"
+                                  ? "bg-emerald-600 text-white"
                                   : "bg-amber-500 text-white"
                               }`}
                             >
@@ -832,7 +832,7 @@ export function AdminPortalContent() {
 
                           <Link
                             href={`/details?car=${encodeURIComponent(car.id)}`}
-                            className="py-2 px-3.5 rounded-full bg-violet-600/10 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 text-xs font-bold hover:bg-violet-600 hover:text-white transition-all text-center cursor-pointer"
+                            className="py-2 px-3.5 rounded-full bg-emerald-600/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold hover:bg-emerald-600 hover:text-white transition-all text-center cursor-pointer"
                           >
                             View
                           </Link>
@@ -879,7 +879,7 @@ export function AdminPortalContent() {
                         onClick={() => setBookingStatusFilter(status)}
                         className={`px-3 py-1 rounded-full text-xs font-semibold capitalize transition-all cursor-pointer ${
                           bookingStatusFilter === status
-                            ? "bg-violet-600 text-white shadow-sm"
+                            ? "bg-emerald-600 text-white shadow-sm"
                             : "bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10"
                         }`}
                       >
@@ -918,13 +918,13 @@ export function AdminPortalContent() {
                       >
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-violet-600 dark:text-violet-400 font-mono">
+                            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 font-mono">
                               {item.id}
                             </span>
                             <span
                               className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide ${
                                 item.status === "Active"
-                                  ? "bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20"
+                                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
                                   : item.status === "Completed"
                                   ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
                                   : item.status === "Upcoming"
@@ -976,7 +976,7 @@ export function AdminPortalContent() {
               {/* Inquiries Header & Controls */}
               <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-6 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                  <div className="inline-flex items-center gap-1.5 text-xs font-bold text-violet-600 dark:text-violet-400 mb-1">
+                  <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1">
                     <MessageSquare className="h-4 w-4" />
                     <span>Customer Inquiries & Leads</span>
                   </div>
@@ -996,7 +996,7 @@ export function AdminPortalContent() {
                       value={inquirySearch}
                       onChange={(e) => setInquirySearch(e.target.value)}
                       placeholder="Search customer, vehicle, or phone..."
-                      className="w-full sm:w-64 pl-10 pr-4 py-2.5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+                      className="w-full sm:w-64 pl-10 pr-4 py-2.5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                     />
                   </div>
 
@@ -1012,7 +1012,7 @@ export function AdminPortalContent() {
                         onClick={() => setInquiryStatusFilter(f.id)}
                         className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                           inquiryStatusFilter === f.id
-                            ? "bg-violet-600 text-white shadow-sm"
+                            ? "bg-emerald-600 text-white shadow-sm"
                             : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                         }`}
                       >
@@ -1088,7 +1088,7 @@ export function AdminPortalContent() {
                           {/* Row 1: Header (Customer & Status) */}
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                             <div className="flex items-center gap-3">
-                              <div className="h-10 w-10 rounded-2xl bg-violet-600/10 text-violet-600 dark:text-violet-400 font-black flex items-center justify-center text-sm flex-shrink-0">
+                              <div className="h-10 w-10 rounded-2xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 font-black flex items-center justify-center text-sm flex-shrink-0">
                                 {inq.name ? inq.name.charAt(0).toUpperCase() : "U"}
                               </div>
                               <div>
@@ -1124,7 +1124,7 @@ export function AdminPortalContent() {
                                     </span>
                                   )}
                                   <span className="flex items-center gap-1">
-                                    <Mail className="h-3 w-3 text-violet-500" />
+                                    <Mail className="h-3 w-3 text-emerald-500" />
                                     <span>{inq.email}</span>
                                   </span>
                                   <span>•</span>
@@ -1176,7 +1176,7 @@ export function AdminPortalContent() {
                           {/* Row 2: Inquired Vehicle Banner */}
                           <div className="flex flex-wrap items-center gap-3 p-3 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 text-xs">
                             <div className="flex items-center gap-2">
-                              <div className="p-1.5 rounded-xl bg-violet-600/10 text-violet-600 dark:text-violet-400">
+                              <div className="p-1.5 rounded-xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
                                 <Car className="h-4 w-4" />
                               </div>
                               <span className="font-black text-slate-900 dark:text-white text-sm">
@@ -1186,7 +1186,7 @@ export function AdminPortalContent() {
 
                             {inq.date && (
                               <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
-                                <CalendarCheck className="h-3.5 w-3.5 text-violet-500" />
+                                <CalendarCheck className="h-3.5 w-3.5 text-emerald-500" />
                                 <span>{inq.date}</span>
                               </div>
                             )}
@@ -1237,7 +1237,7 @@ export function AdminPortalContent() {
                 <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-5 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Customer Inquiries</span>
-                    <div className="h-9 w-9 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+                    <div className="h-9 w-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                       <MessageSquare className="h-4 w-4" />
                     </div>
                   </div>
@@ -1307,7 +1307,7 @@ export function AdminPortalContent() {
               <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-6 border border-slate-200/80 dark:border-white/10 shadow-sm space-y-4">
                 <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-white/10">
                   <div className="flex items-center gap-2.5">
-                    <div className="p-2 rounded-xl bg-violet-600/10 text-violet-600 dark:text-violet-400">
+                    <div className="p-2 rounded-xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400">
                       <MessageSquare className="h-4 w-4" />
                     </div>
                     <div>
@@ -1322,7 +1322,7 @@ export function AdminPortalContent() {
                   <button
                     type="button"
                     onClick={() => handleTabChange("inquiries")}
-                    className="text-xs font-bold text-violet-600 dark:text-violet-400 hover:underline cursor-pointer"
+                    className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline cursor-pointer"
                   >
                     View All ({inquiries.length})
                   </button>
@@ -1393,7 +1393,7 @@ export function AdminPortalContent() {
               </div>
 
               {/* Quick Actions Panel */}
-              <div className="bg-gradient-to-r from-violet-900/10 via-purple-900/5 to-transparent rounded-[32px] p-6 sm:p-8 border border-violet-500/20 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="bg-gradient-to-r from-emerald-900/10 via-teal-900/5 to-transparent rounded-[32px] p-6 sm:p-8 border border-emerald-500/20 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div>
                   <h3 className="text-lg font-bold text-slate-950 dark:text-white mb-1">
                     Expand the Tourmate Fleet
@@ -1405,7 +1405,7 @@ export function AdminPortalContent() {
                 <button
                   type="button"
                   onClick={() => handleTabChange("list-vehicle")}
-                  className="px-6 py-3 rounded-full bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs shadow-md transition-all whitespace-nowrap cursor-pointer"
+                  className="px-6 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all whitespace-nowrap cursor-pointer"
                 >
                   Open Listing Tool
                 </button>

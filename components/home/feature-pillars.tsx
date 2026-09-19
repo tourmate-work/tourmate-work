@@ -32,7 +32,7 @@ export function FeaturePillars() {
               key={index}
               className="flex flex-col items-center p-2 sm:p-4 md:p-6 rounded-2xl transition-all duration-200 hover:bg-slate-50 group"
             >
-              <div className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 rounded-xl sm:rounded-2xl bg-slate-100 flex items-center justify-center text-slate-800 mb-2 sm:mb-3 md:mb-4 group-hover:scale-110 group-hover:bg-violet-100 group-hover:text-violet-700 transition-all shadow-sm flex-shrink-0">
+              <div className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 rounded-xl sm:rounded-2xl bg-slate-100 flex items-center justify-center text-slate-800 mb-2 sm:mb-3 md:mb-4 group-hover:scale-110 group-hover:bg-emerald-100 group-hover:text-emerald-700 transition-all shadow-sm flex-shrink-0">
                 <Icon className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" strokeWidth={1.75} />
               </div>
               <h3 className="text-xs sm:text-base md:text-lg font-bold text-slate-900 mb-1 sm:mb-2">

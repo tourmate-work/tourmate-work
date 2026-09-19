@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function AdminPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50/50 dark:bg-black text-slate-900 dark:text-white font-sans selection:bg-violet-600 selection:text-white transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-slate-50/50 dark:bg-black text-slate-900 dark:text-white font-sans selection:bg-emerald-600 selection:text-white transition-colors duration-300">
       <Header />
       <main className="flex-1">
         <Suspense

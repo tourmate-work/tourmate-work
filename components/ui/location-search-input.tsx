@@ -571,7 +571,7 @@ function HighlightMatch({ text, query }: { text: string; query: string }) {
   return (
     <span>
       {before}
-      <span className="font-extrabold text-violet-600 dark:text-violet-400 bg-violet-500/10 px-0.5 rounded">
+      <span className="font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-0.5 rounded">
         {match}
       </span>
       <span>{after}</span>
@@ -786,7 +786,7 @@ export function LocationSearchInput({
       <div className="relative flex items-center">
         <MapPin
           className={`absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none transition-colors ${
-            query ? "text-violet-600 dark:text-violet-400" : "text-slate-400"
+            query ? "text-emerald-600 dark:text-emerald-400" : "text-slate-400"
           }`}
         />
 
@@ -801,15 +801,15 @@ export function LocationSearchInput({
           required={required}
           className={`w-full pl-10 pr-9 py-2.5 text-xs font-semibold rounded-2xl transition-all focus:outline-none focus:ring-2 ${
             isLightVariant
-              ? "bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:ring-violet-600/30 focus:border-violet-600"
+              ? "bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:ring-emerald-600/30 focus:border-emerald-600"
               : isCatalogVariant
-              ? "bg-slate-50 dark:bg-white/5 border border-slate-200/90 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-violet-600/30 focus:border-violet-600"
+              ? "bg-slate-50 dark:bg-white/5 border border-slate-200/90 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-emerald-600/30 focus:border-emerald-600"
               : "bg-white/10 border border-white/15 text-white placeholder:text-slate-300 focus:bg-white/15 focus:ring-amber-400"
           }`}
         />
 
         {isLoadingLive ? (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-violet-600 dark:text-violet-400 pointer-events-none">
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-emerald-600 dark:text-emerald-400 pointer-events-none">
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
           </div>
         ) : query ? (
@@ -838,16 +838,16 @@ export function LocationSearchInput({
               <button
                 type="button"
                 onClick={() => handleSelectLocation(query.trim())}
-                className="w-full min-h-[44px] flex items-start gap-2.5 p-2 rounded-xl text-left bg-violet-50/80 dark:bg-violet-950/30 hover:bg-violet-100 dark:hover:bg-violet-950/50 transition-colors cursor-pointer"
+                className="w-full min-h-[44px] flex items-start gap-2.5 p-2 rounded-xl text-left bg-emerald-50/80 dark:bg-emerald-950/30 hover:bg-emerald-100 dark:hover:bg-emerald-950/50 transition-colors cursor-pointer"
               >
-                <div className="p-1.5 rounded-lg bg-violet-600 text-white flex-shrink-0 mt-0.5 shadow-sm">
+                <div className="p-1.5 rounded-lg bg-emerald-600 text-white flex-shrink-0 mt-0.5 shadow-sm">
                   <Navigation className="h-3.5 w-3.5" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="text-xs font-bold text-violet-950 dark:text-violet-200 block truncate">
+                  <span className="text-xs font-bold text-emerald-950 dark:text-emerald-200 block truncate">
                     &quot;{query.trim()}&quot;
                   </span>
-                  <span className="text-[10px] text-violet-600 dark:text-violet-400 block">
+                  <span className="text-[10px] text-emerald-600 dark:text-emerald-400 block">
                     Use this custom address or place in Sri Lanka
                   </span>
                 </div>
@@ -861,7 +861,7 @@ export function LocationSearchInput({
               <span className="flex items-center gap-1.5">
                 {query.trim() ? (
                   <>
-                    <Search className="h-3 w-3 text-violet-600 dark:text-violet-400" />
+                    <Search className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
                     <span>Suggestions for &quot;{query.trim()}&quot;</span>
                   </>
                 ) : (
@@ -890,7 +890,7 @@ export function LocationSearchInput({
                     onClick={() => handleSelectLocation(loc.name)}
                     className={`w-full min-h-[44px] flex items-center justify-between p-2 sm:p-2.5 rounded-xl text-left transition-colors cursor-pointer group ${
                       isSelected
-                        ? "bg-violet-600 text-white"
+                        ? "bg-emerald-600 text-white"
                         : "hover:bg-slate-100 dark:hover:bg-white/5 text-slate-800 dark:text-slate-200"
                     }`}
                   >
@@ -899,7 +899,7 @@ export function LocationSearchInput({
                         className={`p-1.5 rounded-lg mt-0.5 flex-shrink-0 transition-colors ${
                           isSelected
                             ? "bg-white/20 text-white"
-                            : "bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400 group-hover:text-violet-600 group-hover:bg-violet-50 dark:group-hover:bg-violet-950/40"
+                            : "bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400 group-hover:text-emerald-600 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-950/40"
                         }`}
                       >
                         {query.trim() ? (
@@ -915,7 +915,7 @@ export function LocationSearchInput({
                         {loc.subtext && (
                           <span
                             className={`text-[10px] block truncate mt-0.5 ${
-                              isSelected ? "text-violet-200" : "text-slate-400"
+                              isSelected ? "text-emerald-200" : "text-slate-400"
                             }`}
                           >
                             <HighlightMatch text={loc.subtext} query={query} />
@@ -927,7 +927,7 @@ export function LocationSearchInput({
                       {isSelected ? (
                         <Check className="h-4 w-4 text-white" />
                       ) : (
-                        <ArrowUpLeft className="h-3.5 w-3.5 text-slate-300 dark:text-slate-600 group-hover:text-violet-500 transition-colors opacity-70 group-hover:opacity-100" />
+                        <ArrowUpLeft className="h-3.5 w-3.5 text-slate-300 dark:text-slate-600 group-hover:text-emerald-500 transition-colors opacity-70 group-hover:opacity-100" />
                       )}
                     </div>
                   </button>
@@ -960,7 +960,7 @@ export function LocationSearchInput({
                     onClick={() => handleSelectLiveLocation(item)}
                     className={`w-full min-h-[44px] flex items-center justify-between p-2 rounded-xl text-left transition-colors cursor-pointer ${
                       isSelected
-                        ? "bg-violet-600 text-white"
+                        ? "bg-emerald-600 text-white"
                         : "hover:bg-slate-100 dark:hover:bg-white/5 text-slate-800 dark:text-slate-200"
                     }`}
                   >
@@ -976,7 +976,7 @@ export function LocationSearchInput({
                         </span>
                         <span
                           className={`text-[10px] block truncate ${
-                            isSelected ? "text-violet-200" : "text-slate-400"
+                            isSelected ? "text-emerald-200" : "text-slate-400"
                           }`}
                         >
                           <HighlightMatch text={item.subtext} query={query} />

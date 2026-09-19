@@ -192,7 +192,7 @@ export function AboutContent() {
               <button
                 onClick={() => setIsPlayingVideo(!isPlayingVideo)}
                 aria-label="Play promotional video"
-                className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-violet-600 hover:bg-violet-700 text-white flex items-center justify-center shadow-xl shadow-violet-600/50 transform hover:scale-110 active:scale-95 transition-all duration-300"
+                className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shadow-xl shadow-emerald-600/50 transform hover:scale-110 active:scale-95 transition-all duration-300"
               >
                 <Play className="h-7 w-7 sm:h-8 sm:w-8 fill-white translate-x-0.5" />
               </button>
@@ -207,7 +207,7 @@ export function AboutContent() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
             {/* Stat 1 */}
             <div className="space-y-2">
-              <span className="text-4xl sm:text-5xl lg:text-6xl font-black text-violet-600 block tracking-tight">
+              <span className="text-4xl sm:text-5xl lg:text-6xl font-black text-emerald-600 block tracking-tight">
                 20k+
               </span>
               <span className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider block">
@@ -217,7 +217,7 @@ export function AboutContent() {
 
             {/* Stat 2 */}
             <div className="space-y-2">
-              <span className="text-4xl sm:text-5xl lg:text-6xl font-black text-violet-600 block tracking-tight">
+              <span className="text-4xl sm:text-5xl lg:text-6xl font-black text-emerald-600 block tracking-tight">
                 540+
               </span>
               <span className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider block">
@@ -227,7 +227,7 @@ export function AboutContent() {
 
             {/* Stat 3 */}
             <div className="space-y-2">
-              <span className="text-4xl sm:text-5xl lg:text-6xl font-black text-violet-600 block tracking-tight">
+              <span className="text-4xl sm:text-5xl lg:text-6xl font-black text-emerald-600 block tracking-tight">
                 25+
               </span>
               <span className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider block">
@@ -255,25 +255,25 @@ export function AboutContent() {
               {/* 4 Checkmark Points in 2 Columns */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-violet-600 fill-violet-100 flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="h-5 w-5 text-emerald-600 fill-emerald-100 flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm font-medium text-slate-700">
                     Well-maintained and sanitized vehicles
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-violet-600 fill-violet-100 flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="h-5 w-5 text-emerald-600 fill-emerald-100 flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm font-medium text-slate-700">
                     Free GPS & baby seat options on request
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-violet-600 fill-violet-100 flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="h-5 w-5 text-emerald-600 fill-emerald-100 flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm font-medium text-slate-700">
                     24/7 Roadside breakdown assistance
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-violet-600 fill-violet-100 flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="h-5 w-5 text-emerald-600 fill-emerald-100 flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm font-medium text-slate-700">
                     Flexible instant booking & cancellations
                   </span>
@@ -299,14 +299,14 @@ export function AboutContent() {
       {/* 6. DOWNLOAD OUR APP BANNER */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-[30px] overflow-hidden bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-700 text-white p-8 sm:p-12 lg:p-16 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-10">
+          <div className="relative rounded-[30px] overflow-hidden bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white p-8 sm:p-12 lg:p-16 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-10">
             {/* Left Phone Mockup Illustration */}
             <div className="flex-shrink-0 flex justify-center animate-float">
               <div className="relative w-48 h-80 sm:w-56 sm:h-96 rounded-[30px] border-4 border-slate-900 bg-white shadow-2xl overflow-hidden p-2 flex flex-col justify-between">
                 {/* Dynamic Island Notch */}
                 <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mt-1" />
                 <div className="flex-1 flex flex-col items-center justify-center p-4 text-center">
-                  <div className="h-12 w-12 rounded-2xl bg-violet-600 text-white flex items-center justify-center mb-3 shadow-md">
+                  <div className="h-12 w-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center mb-3 shadow-md">
                     <span className="font-extrabold text-sm">TM</span>
                   </div>
                   <span className="text-xs font-bold text-slate-900 block">
@@ -322,13 +322,13 @@ export function AboutContent() {
 
             {/* Right App Text & Store Buttons */}
             <div className="space-y-6 max-w-xl text-center lg:text-left">
-              <span className="inline-block uppercase tracking-widest text-[11px] font-bold text-violet-200 bg-white/15 px-3.5 py-1 rounded-full backdrop-blur-sm">
+              <span className="inline-block uppercase tracking-widest text-[11px] font-bold text-emerald-200 bg-white/15 px-3.5 py-1 rounded-full backdrop-blur-sm">
                 Download Our App
               </span>
               <h2 className="title-hover-glow text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
                 Download our app
               </h2>
-              <p className="text-sm sm:text-base text-violet-100/90 leading-relaxed font-normal">
+              <p className="text-sm sm:text-base text-emerald-100/90 leading-relaxed font-normal">
                 Book your rental car in seconds, unlock exclusive discounts, track your driver, and manage your trips on the go with the Tourmate mobile app.
               </p>
 
@@ -389,19 +389,19 @@ export function AboutContent() {
                 <div className="card-hover-lift bg-slate-50 rounded-[30px] overflow-hidden border border-slate-100 shadow-sm hover:border-slate-200 transition-all duration-300 flex flex-col justify-between h-full">
                   {/* Top Quote Content */}
                   <div className="p-8 space-y-4">
-                    <Quote className="h-8 w-8 text-violet-600 fill-violet-600/10" />
+                    <Quote className="h-8 w-8 text-emerald-600 fill-emerald-600/10" />
                     <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
                       &ldquo;{item.quote}&rdquo;
                     </p>
                   </div>
 
-                  {/* Bottom Purple Ribbon with Author */}
-                  <div className="bg-violet-600 text-white p-4 px-6 flex items-center justify-center gap-3 text-center">
+                  {/* Bottom Green Ribbon with Author */}
+                  <div className="bg-emerald-600 text-white p-4 px-6 flex items-center justify-center gap-3 text-center">
                     <div>
                       <span className="text-sm font-bold block leading-tight">
                         {item.author}
                       </span>
-                      <span className="text-[11px] text-violet-200 block">
+                      <span className="text-[11px] text-emerald-200 block">
                         {item.role}
                       </span>
                     </div>
@@ -437,7 +437,7 @@ export function AboutContent() {
                     <span>{faq.question}</span>
                     <ChevronDown
                       className={`h-4 w-4 text-slate-500 transition-transform duration-200 ${
-                        isOpen ? "rotate-180 text-violet-600" : ""
+                        isOpen ? "rotate-180 text-emerald-600" : ""
                       }`}
                     />
                   </button>
@@ -457,7 +457,7 @@ export function AboutContent() {
       {/* 9. LOOKING FOR A CAR CTA BANNER */}
       <section className="pt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-[30px] overflow-hidden bg-gradient-to-r from-violet-700 via-purple-700 to-indigo-800 text-white p-8 sm:p-12 lg:p-16 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="relative rounded-[30px] overflow-hidden bg-gradient-to-r from-emerald-700 via-teal-700 to-emerald-800 text-white p-8 sm:p-12 lg:p-16 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
             {/* Left Phone / CTA Details */}
             <div className="space-y-4 max-w-xl text-center md:text-left z-10">
               <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
@@ -470,7 +470,7 @@ export function AboutContent() {
                 <Phone className="h-6 w-6" />
                 <span>{SITE_CONTACT.phoneDisplay}</span>
               </a>
-              <p className="text-xs sm:text-sm text-violet-100/90 leading-relaxed font-normal">
+              <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-normal">
                 {language === "si"
                   ? "කොළඹ, ගුවන් තොටුපළ, නුවර, ගාල්ල හෝ ශ්‍රී ලංකාවේ ඕනෑම තැනකදී ක්ෂණික WhatsApp තහවුරු කිරීම සමඟින් ඔබේ සිහින වාහනය අදම වෙන්කරවා ගන්න."
                   : "Reserve your dream car today in Colombo, CMB Airport, Kandy, Galle, or anywhere across Sri Lanka with instant WhatsApp confirmation."}

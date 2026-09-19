@@ -150,7 +150,7 @@ function GithubCallbackContent() {
     <div className="w-full max-w-md bg-white dark:bg-[#0b0b0e] border border-slate-200/90 dark:border-white/10 rounded-[32px] p-6 sm:p-8 shadow-2xl text-center space-y-6 animate-in zoom-in-95 duration-200">
       {/* Visual Identity / Brand */}
       <div className="flex items-center justify-center gap-3 mb-2">
-        <div className="h-14 w-14 rounded-2xl bg-violet-600/10 dark:bg-violet-600/20 text-violet-600 dark:text-violet-400 flex items-center justify-center shadow-inner">
+        <div className="h-14 w-14 rounded-2xl bg-emerald-600/10 dark:bg-emerald-600/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-inner">
           <ShieldCheck className="h-7 w-7" />
         </div>
         <div className="h-10 w-px bg-slate-200 dark:bg-white/10" />
@@ -167,7 +167,7 @@ function GithubCallbackContent() {
       </div>
 
       <div className="space-y-1.5">
-        <span className="inline-block text-[10px] font-extrabold uppercase tracking-widest text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/30 px-3 py-1 rounded-full">
+        <span className="inline-block text-[10px] font-extrabold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 px-3 py-1 rounded-full">
           Supabase GitHub OAuth
         </span>
         <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-950 dark:text-white">
@@ -178,7 +178,7 @@ function GithubCallbackContent() {
       {status === "processing" && (
         <div className="py-6 space-y-4">
           <div className="relative mx-auto w-12 h-12 flex items-center justify-center">
-            <RefreshCw className="h-8 w-8 text-violet-600 dark:text-violet-400 animate-spin" />
+            <RefreshCw className="h-8 w-8 text-emerald-600 dark:text-emerald-400 animate-spin" />
           </div>
           <p className="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300">
             {message}
@@ -222,7 +222,7 @@ function GithubCallbackContent() {
           <div className="pt-2 space-y-2">
             <Link
               href="/admin"
-              className="inline-flex items-center justify-center w-full py-3 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold shadow-md transition-all active:scale-95"
+              className="inline-flex items-center justify-center w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md transition-all active:scale-95"
             >
               Return to Admin Portal & Try Again
             </Link>

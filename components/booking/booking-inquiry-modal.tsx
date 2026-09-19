@@ -480,7 +480,7 @@ export function BookingInquiryModal({
         {/* Modal Header */}
         <div className="p-4 sm:p-6 border-b border-slate-100 dark:border-white/10 flex items-center justify-between bg-slate-50/70 dark:bg-white/[0.02]">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-2xl bg-violet-600/10 text-violet-600 dark:text-violet-400 flex items-center justify-center flex-shrink-0">
+            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-2xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
               <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
             <div>
@@ -520,7 +520,7 @@ export function BookingInquiryModal({
             )}
             <div className="flex-1 text-center sm:text-left">
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-violet-600 dark:text-violet-400 bg-violet-500/10 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">
                   {vehicle.category}
                 </span>
                 {vehicle.transmission && (
@@ -604,7 +604,7 @@ export function BookingInquiryModal({
               <div className="space-y-3">
                 <div className="flex items-center justify-between pb-1 border-b border-slate-100 dark:border-white/10">
                   <div className="flex items-center gap-2">
-                    <User className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+                    <User className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                     <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                       {t("modal_sec_customer")}
                     </h4>
@@ -647,7 +647,7 @@ export function BookingInquiryModal({
                           ? "border-emerald-500/60 focus:ring-emerald-500 bg-emerald-500/[0.02]"
                           : nameTouched && fullName.trim()
                           ? "border-rose-400 focus:ring-rose-500 bg-rose-500/[0.02]"
-                          : "border-slate-200 dark:border-white/10 focus:ring-violet-600"
+                          : "border-slate-200 dark:border-white/10 focus:ring-emerald-600"
                       }`}
                     />
                   </div>
@@ -752,7 +752,7 @@ export function BookingInquiryModal({
                             ? "border-emerald-500/60 focus:ring-emerald-500 bg-emerald-500/[0.02]"
                             : emailTouched && email.trim()
                             ? "border-rose-400 focus:ring-rose-500 bg-rose-500/[0.02]"
-                            : "border-slate-200 dark:border-white/10 focus:ring-violet-600"
+                            : "border-slate-200 dark:border-white/10 focus:ring-emerald-600"
                         }`}
                       />
                     </div>
@@ -797,7 +797,7 @@ export function BookingInquiryModal({
               <div className="space-y-3 pt-2">
                 <div className="flex items-center justify-between pb-1 border-b border-slate-100 dark:border-white/10">
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+                    <Calendar className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                     <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                       {t("modal_sec_rental")}
                     </h4>
@@ -847,7 +847,7 @@ export function BookingInquiryModal({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Pickup Date & Time */}
                   <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 space-y-2">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-violet-600 dark:text-violet-400 block">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block">
                       {t("modal_pickup_schedule")}
                     </span>
                     <div className="grid grid-cols-2 gap-2">
@@ -874,7 +874,7 @@ export function BookingInquiryModal({
 
                   {/* Return Date & Time */}
                   <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 space-y-2">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-violet-600 dark:text-violet-400 block">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block">
                       {t("modal_return_schedule")}
                     </span>
                     <div className="grid grid-cols-2 gap-2">
@@ -924,7 +924,7 @@ export function BookingInquiryModal({
                   value={additionalMessage}
                   onChange={(e) => setAdditionalMessage(e.target.value)}
                   placeholder={t("modal_additional_placeholder")}
-                  className="w-full px-3.5 py-2.5 text-xs font-semibold rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-600 resize-none"
+                  className="w-full px-3.5 py-2.5 text-xs font-semibold rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-600 resize-none"
                 />
               </div>
 

@@ -26,14 +26,14 @@ export function MobileBottomBar() {
           href="/"
           className={`flex flex-col items-center gap-1 py-1 px-2.5 rounded-2xl transition-all active:scale-90 ${
             isHome
-              ? "text-violet-600 dark:text-violet-400 font-bold"
+              ? "text-emerald-600 dark:text-emerald-400 font-bold"
               : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
           <div className="relative">
             <Home className={`h-5 w-5 ${isHome ? "stroke-[2.5]" : "stroke-2"}`} />
             {isHome && (
-              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-violet-600 dark:bg-violet-400" />
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-emerald-600 dark:bg-emerald-400" />
             )}
           </div>
           <span className="text-[10px] tracking-tight">{language === "si" ? "මුල් පිටුව" : "Home"}</span>
@@ -44,14 +44,14 @@ export function MobileBottomBar() {
           href="/vehicles"
           className={`flex flex-col items-center gap-1 py-1 px-2.5 rounded-2xl transition-all active:scale-90 ${
             isVehicles
-              ? "text-violet-600 dark:text-violet-400 font-bold"
+              ? "text-emerald-600 dark:text-emerald-400 font-bold"
               : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
           <div className="relative">
             <Car className={`h-5 w-5 ${isVehicles ? "stroke-[2.5]" : "stroke-2"}`} />
             {isVehicles && (
-              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-violet-600 dark:bg-violet-400" />
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-emerald-600 dark:bg-emerald-400" />
             )}
           </div>
           <span className="text-[10px] tracking-tight">{language === "si" ? "වාහන" : "Vehicles"}</span>
@@ -62,7 +62,7 @@ export function MobileBottomBar() {
           href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=I%20want%20to%20list%20a%20vehicle`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-col items-center gap-1 py-1 px-2.5 text-violet-600 dark:text-violet-400 transition-all active:scale-90"
+          className="flex flex-col items-center gap-1 py-1 px-2.5 text-emerald-600 dark:text-emerald-400 transition-all active:scale-90"
         >
           <div className="relative">
             <LayoutDashboard className="h-5 w-5 stroke-2" />
@@ -88,11 +88,11 @@ export function MobileBottomBar() {
         <button
           type="button"
           onClick={() => openAuthModal("phone")}
-          className="flex flex-col items-center gap-1 py-1 px-2.5 text-slate-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-all active:scale-90 cursor-pointer"
+          className="flex flex-col items-center gap-1 py-1 px-2.5 text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all active:scale-90 cursor-pointer"
         >
           <div className="relative">
             {isAuthenticated && user ? (
-              <div className="h-5 w-5 rounded-full bg-violet-600 text-white flex items-center justify-center text-[9px] font-bold overflow-hidden">
+              <div className="h-5 w-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[9px] font-bold overflow-hidden">
                 {user.avatarUrl ? (
                   <img src={user.avatarUrl} alt={user.name} className="h-full w-full object-cover" />
                 ) : (
