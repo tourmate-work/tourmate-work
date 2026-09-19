@@ -15,21 +15,6 @@ import { useLanguage } from "@/lib/i18n/language-context";
 import { useSiteAssets } from "@/lib/site-assets-context";
 import { SITE_CONTACT } from "@/lib/constants";
 
-function AppleLogoIcon({ className = "h-5 w-5" }: { className?: string }) {
-  return (
-    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
-      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.63 1.35-.57.65-1.07 1.72-.94 2.74 1.01.08 2.03-.49 2.64-1.24z" />
-    </svg>
-  );
-}
-
-function GooglePlayIcon({ className = "h-5 w-5" }: { className?: string }) {
-  return (
-    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
-      <path d="M3.609 1.814L13.792 12 3.61 22.186c-.365-.366-.61-.884-.61-1.464V3.278c0-.58.245-1.098.61-1.464zm11.235 11.238l2.586 2.586-12.012 6.95 9.426-9.536zm0-2.104L5.418 1.412l12.012 6.95-2.586 2.586zm1.485 1.052l4.062 2.35c1.17.677 1.17 1.782 0 2.458l-4.062 2.35-2.67-2.67 2.67-2.488z" />
-    </svg>
-  );
-}
 
 const FAQS = [
   {
@@ -303,78 +288,6 @@ export function AboutContent() {
         </div>
       </section>
 
-      {/* 6. DOWNLOAD OUR APP BANNER */}
-      <section className="py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-[30px] overflow-hidden bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white p-8 sm:p-12 lg:p-16 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-10">
-            {/* Left Phone Mockup Illustration */}
-            <div className="flex-shrink-0 flex justify-center animate-float">
-              <div className="relative w-48 h-80 sm:w-56 sm:h-96 rounded-[30px] border-4 border-slate-900 bg-white shadow-2xl overflow-hidden p-2 flex flex-col justify-between">
-                {/* Dynamic Island Notch */}
-                <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mt-1" />
-                <div className="flex-1 flex flex-col items-center justify-center p-4 text-center">
-                  <div className="h-12 w-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center mb-3 shadow-md">
-                    <span className="font-extrabold text-sm">TM</span>
-                  </div>
-                  <span className="text-xs font-bold text-slate-900 block">
-                    Tourmate App
-                  </span>
-                  <span className="text-[10px] text-slate-400 mt-1 block">
-                    Instant Car Hire in Sri Lanka
-                  </span>
-                </div>
-                <div className="w-24 h-1 bg-slate-300 rounded-full mx-auto mb-1" />
-              </div>
-            </div>
-
-            {/* Right App Text & Store Buttons */}
-            <div className="space-y-6 max-w-xl text-center lg:text-left">
-              <span className="inline-block uppercase tracking-widest text-[11px] font-bold text-emerald-200 bg-white/15 px-3.5 py-1 rounded-full backdrop-blur-sm">
-                Download Our App
-              </span>
-              <h2 className="title-hover-glow text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
-                Download our app
-              </h2>
-              <p className="text-sm sm:text-base text-emerald-100/90 leading-relaxed font-normal">
-                Book your rental car in seconds, unlock exclusive discounts, track your driver, and manage your trips on the go with the Tourmate mobile app.
-              </p>
-
-              {/* Download Badges */}
-              <div className="flex items-center justify-center lg:justify-start gap-4 pt-2">
-                <a
-                  href="#"
-                  className="flex items-center gap-3 bg-slate-950 hover:bg-slate-900 border border-white/20 px-4 py-2.5 rounded-2xl transition-all shadow-lg hover:scale-105"
-                >
-                  <AppleLogoIcon className="h-6 w-6 text-white" />
-                  <div className="text-left">
-                    <span className="text-[10px] text-slate-400 block leading-tight">
-                      Download on the
-                    </span>
-                    <span className="text-xs font-bold text-white block leading-tight">
-                      App Store
-                    </span>
-                  </div>
-                </a>
-
-                <a
-                  href="#"
-                  className="flex items-center gap-3 bg-slate-950 hover:bg-slate-900 border border-white/20 px-4 py-2.5 rounded-2xl transition-all shadow-lg hover:scale-105"
-                >
-                  <GooglePlayIcon className="h-6 w-6 text-white" />
-                  <div className="text-left">
-                    <span className="text-[10px] text-slate-400 block leading-tight">
-                      GET IT ON
-                    </span>
-                    <span className="text-xs font-bold text-white block leading-tight">
-                      Google Play
-                    </span>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 7. REVIEWS FROM OUR CUSTOMERS */}
       <section className="py-16">
