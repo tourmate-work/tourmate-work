@@ -26,6 +26,7 @@ model User {
 
 model Vehicle {
   id               String    @id @default(cuid())
+  vehicleCode      String?   @unique
   name             String
   brand            String
   model            String
@@ -97,16 +98,18 @@ model Review {
 }
 
 model Inquiry {
-  id        String   @id @default(cuid())
-  name      String
-  email     String
-  phone     String?
-  subject   String?
-  message   String
-  date      String?
-  carModel  String?
-  status    String   @default("PENDING") // "PENDING", "REPLIED"
-  createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  subject     String?
+  message     String
+  date        String?
+  carModel    String?
+  carId       String?
+  vehicleCode String?
+  status      String   @default("PENDING") // "PENDING", "REPLIED"
+  createdAt   DateTime @default(now())
 }
 
 model Policy {

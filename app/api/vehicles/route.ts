@@ -164,8 +164,12 @@ export async function GET(req: NextRequest) {
       const cleanGallery = (parsedGallery.length > 0 ? parsedGallery : [])
         .filter((img) => !isInvalidOrMockImage(img));
 
+      // Exclude vehicleCode from public catalog (only visible to admin)
+      const publicData = { ...v };
+      delete (publicData as { vehicleCode?: string | null }).vehicleCode;
+
       return {
-        ...v,
+        ...publicData,
         imageUrl: cleanImageUrl,
         galleryImages: cleanGallery,
         features: parsedFeatures,
@@ -195,6 +199,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     const {
+      vehicleCode,
       name,
       brand,
       model,
@@ -248,8 +253,26 @@ export async function POST(req: NextRequest) {
 
     const finalGallery = cleanGalleryList.length > 0 ? cleanGalleryList : (cleanHeroImage ? [cleanHeroImage] : []);
 
+    // Resolve unique vehicleCode
+    let finalVehicleCode = vehicleCode ? vehicleCode.trim().toUpperCase() : null;
+    if (finalVehicleCode) {
+      const codeExists = await prisma.vehicle.findUnique({
+        where: { vehicleCode: finalVehicleCode },
+      });
+      if (codeExists) {
+        return NextResponse.json(
+          { success: false, error: `Vehicle ID "${finalVehicleCode}" is already in use by another vehicle` },
+          { status: 400 }
+        );
+      }
+    } else {
+      const { getNextVehicleCode } = await import("@/lib/vehicle-code");
+      finalVehicleCode = await getNextVehicleCode();
+    }
+
     const vehicle = await prisma.vehicle.create({
       data: {
+        vehicleCode: finalVehicleCode,
         name: name.trim(),
         brand: brand ? brand.trim() : (name.split(" ")[0] || "Toyota"),
         model: model ? model.trim() : name.trim(),

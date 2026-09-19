@@ -19,10 +19,49 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: "desc" },
     });
 
+    // Populate or backfill vehicleCode for inquiries if missing
+    let enrichedInquiries = inquiries;
+    try {
+      const vehiclesWithCodes = await prisma.vehicle.findMany({
+        select: { id: true, vehicleCode: true, name: true, model: true },
+      });
+      const vehicleMap: Record<string, string> = {};
+      const nameMap: Record<string, string> = {};
+      for (const v of vehiclesWithCodes) {
+        if (v.vehicleCode) {
+          vehicleMap[v.id] = v.vehicleCode;
+          nameMap[v.name.toLowerCase().trim()] = v.vehicleCode;
+          nameMap[v.model.toLowerCase().trim()] = v.vehicleCode;
+        }
+      }
+
+      enrichedInquiries = inquiries.map((inq) => {
+        let code = inq.vehicleCode;
+        if (!code && inq.carId && vehicleMap[inq.carId]) {
+          code = vehicleMap[inq.carId] || null;
+        }
+        if (!code && inq.carModel) {
+          const key = inq.carModel.toLowerCase().trim();
+          for (const name of Object.keys(nameMap)) {
+            if (key.includes(name) || name.includes(key)) {
+              code = nameMap[name];
+              break;
+            }
+          }
+        }
+        return {
+          ...inq,
+          vehicleCode: code,
+        };
+      });
+    } catch {
+      // Non-blocking fallback to raw inquiries
+    }
+
     return NextResponse.json({
       success: true,
-      count: inquiries.length,
-      inquiries,
+      count: enrichedInquiries.length,
+      inquiries: enrichedInquiries,
     });
   } catch (error) {
     console.error("Fetch inquiries error:", error);
@@ -83,6 +122,34 @@ export async function POST(req: NextRequest) {
     const inquirySubject =
       subject || (carModel ? `Vehicle Inquiry: ${carModel}` : "General Vehicle Inquiry");
 
+    // Look up vehicleCode if carId or carModel is provided
+    let matchedVehicleCode: string | null = null;
+    let matchedCarId: string | null = carId && carId !== "manual-inquiry" ? carId : null;
+
+    if (matchedCarId) {
+      const v = await prisma.vehicle.findUnique({
+        where: { id: matchedCarId },
+        select: { id: true, vehicleCode: true },
+      });
+      if (v) {
+        matchedVehicleCode = v.vehicleCode;
+      }
+    } else if (carModel) {
+      const v = await prisma.vehicle.findFirst({
+        where: {
+          OR: [
+            { name: { equals: carModel.trim(), mode: "insensitive" } },
+            { model: { equals: carModel.trim(), mode: "insensitive" } },
+          ],
+        },
+        select: { id: true, vehicleCode: true },
+      });
+      if (v) {
+        matchedCarId = v.id;
+        matchedVehicleCode = v.vehicleCode;
+      }
+    }
+
     const inquiry = await prisma.inquiry.create({
       data: {
         name: name.trim(),
@@ -90,6 +157,8 @@ export async function POST(req: NextRequest) {
         phone: phone ? phone.trim() : null,
         subject: inquirySubject,
         carModel: carModel ? carModel.trim() : null,
+        carId: matchedCarId,
+        vehicleCode: matchedVehicleCode,
         date: date || (pickupDate && returnDate ? `${pickupDate} to ${returnDate}` : null),
         message: fullMessage || "Vehicle inquiry from customer",
         status: "PENDING",

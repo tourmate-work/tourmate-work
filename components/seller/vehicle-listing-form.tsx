@@ -404,6 +404,7 @@ export function VehicleListingForm({
   onCancel,
 }: VehicleListingFormProps) {
   // 1. Basic Info
+  const [vehicleCode, setVehicleCode] = useState("");
   const [vehicleName, setVehicleName] = useState("");
   const [category, setCategory] = useState("Sedan");
   const [vehicleType, setVehicleType] = useState<"sedan" | "sport" | "suv" | "van">("sedan");
@@ -609,6 +610,7 @@ export function VehicleListingForm({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          vehicleCode: vehicleCode.trim() || undefined,
           name: vehicleName.trim(),
           brand: vehicleName.trim().split(" ")[0] || "Toyota",
           model: vehicleName.trim(),
@@ -637,6 +639,7 @@ export function VehicleListingForm({
 
       const createdVehicle: SellerVehicle = {
         id: data.vehicle?.id || `sv-${Date.now()}`,
+        vehicleCode: data.vehicle?.vehicleCode || vehicleCode.trim() || undefined,
         name: vehicleName.trim(),
         category,
         year: Number(modelYear) || 2023,
@@ -1228,7 +1231,27 @@ export function VehicleListingForm({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Vehicle Unique ID (Admin Only) */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                  Vehicle ID
+                </label>
+                <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                  Admin Only
+                </span>
+              </div>
+              <input
+                type="text"
+                placeholder="e.g. TM-008 (Auto if blank)"
+                value={vehicleCode}
+                onChange={(e) => setVehicleCode(e.target.value.toUpperCase())}
+                className="w-full bg-slate-50 dark:bg-[#15151a] border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-3 text-sm text-slate-900 dark:text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase tracking-wider placeholder:font-sans placeholder:font-normal placeholder:text-slate-400"
+              />
+              <p className="text-[11px] text-slate-400 mt-1">Sequential code (Auto-generated if empty)</p>
+            </div>
+
             {/* Date of Registration */}
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">

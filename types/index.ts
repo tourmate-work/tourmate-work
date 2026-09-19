@@ -20,6 +20,7 @@ export interface CarLocation {
 
 export interface Vehicle {
   id: string;
+  vehicleCode?: string | null;
   name: string;
   brand: string;
   model: string;

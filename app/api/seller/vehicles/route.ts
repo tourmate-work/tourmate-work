@@ -57,6 +57,7 @@ export async function GET(req: NextRequest) {
 
       return {
         id: v.id,
+        vehicleCode: v.vehicleCode || undefined,
         name: v.name,
         brand: v.brand,
         model: v.model,

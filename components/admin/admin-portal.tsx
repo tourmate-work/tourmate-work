@@ -24,6 +24,7 @@ import {
   Phone,
   Clock,
   RefreshCw,
+  ArrowUpDown,
 } from "lucide-react";
 import { AddVehicleModal, SellerVehicle } from "@/components/seller/add-vehicle-modal";
 import { VehicleListingForm } from "@/components/seller/vehicle-listing-form";
@@ -41,6 +42,8 @@ export interface InquiryRecord {
   phone: string | null;
   subject: string | null;
   carModel: string | null;
+  carId?: string | null;
+  vehicleCode?: string | null;
   date: string | null;
   message: string;
   status: "PENDING" | "REPLIED";
@@ -81,6 +84,8 @@ export function AdminPortalContent() {
   const [bookingSearch, setBookingSearch] = useState("");
   const [inquirySearch, setInquirySearch] = useState("");
   const [fleetSearch, setFleetSearch] = useState("");
+  const [fleetSort, setFleetSort] = useState<string>("id_asc");
+  const [inquirySort, setInquirySort] = useState<string>("date_desc");
   const [updatingInquiryId, setUpdatingInquiryId] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -337,12 +342,35 @@ export function AdminPortalContent() {
     if (fleetSearch.trim()) {
       const q = fleetSearch.toLowerCase();
       return (
+        (v.vehicleCode && v.vehicleCode.toLowerCase().includes(q)) ||
         v.name.toLowerCase().includes(q) ||
         v.category.toLowerCase().includes(q) ||
         v.location.toLowerCase().includes(q)
       );
     }
     return true;
+  });
+
+  const sortedFleet = [...filteredFleet].sort((a, b) => {
+    if (fleetSort === "id_asc") {
+      return (a.vehicleCode || a.id).localeCompare(b.vehicleCode || b.id, undefined, { numeric: true });
+    }
+    if (fleetSort === "id_desc") {
+      return (b.vehicleCode || b.id).localeCompare(a.vehicleCode || a.id, undefined, { numeric: true });
+    }
+    if (fleetSort === "name_asc") {
+      return a.name.localeCompare(b.name);
+    }
+    if (fleetSort === "rate_asc") {
+      return a.dailyRate - b.dailyRate;
+    }
+    if (fleetSort === "rate_desc") {
+      return b.dailyRate - a.dailyRate;
+    }
+    if (fleetSort === "year_desc") {
+      return (b.year || 0) - (a.year || 0);
+    }
+    return 0;
   });
 
   const filteredBookings = bookings.filter((b) => {
@@ -416,6 +444,7 @@ export function AdminPortalContent() {
     if (!inquirySearch.trim()) return true;
     const q = inquirySearch.toLowerCase();
     return (
+      (inq.vehicleCode && inq.vehicleCode.toLowerCase().includes(q)) ||
       inq.name.toLowerCase().includes(q) ||
       inq.email.toLowerCase().includes(q) ||
       (inq.phone && inq.phone.toLowerCase().includes(q)) ||
@@ -423,6 +452,25 @@ export function AdminPortalContent() {
       inq.message.toLowerCase().includes(q) ||
       (inq.subject && inq.subject.toLowerCase().includes(q))
     );
+  });
+
+  const sortedInquiries = [...filteredInquiries].sort((a, b) => {
+    if (inquirySort === "id_asc") {
+      return (a.vehicleCode || "").localeCompare(b.vehicleCode || "", undefined, { numeric: true });
+    }
+    if (inquirySort === "id_desc") {
+      return (b.vehicleCode || "").localeCompare(a.vehicleCode || "", undefined, { numeric: true });
+    }
+    if (inquirySort === "date_desc") {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    }
+    if (inquirySort === "date_asc") {
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    }
+    if (inquirySort === "name_asc") {
+      return a.name.localeCompare(b.name);
+    }
+    return 0;
   });
 
   const pendingInquiriesCount = inquiries.filter(
@@ -689,32 +737,51 @@ export function AdminPortalContent() {
                   <Search className="absolute left-3.5 top-3 h-4 w-4 text-slate-400" />
                   <input
                     type="text"
-                    placeholder="Search fleet by model, category, or location..."
+                    placeholder="Search by ID (e.g. TM-001), model, category, or location..."
                     value={fleetSearch}
                     onChange={(e) => setFleetSearch(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full text-xs font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-600"
                   />
                 </div>
 
-                {/* Status Filter Tabs */}
-                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-                  {["all", "available", "on rental", "maintenance"].map((filter) => (
-                    <button
-                      key={filter}
-                      onClick={() => setFleetFilter(filter)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-bold capitalize transition-all whitespace-nowrap cursor-pointer ${
-                        fleetFilter === filter
-                          ? "bg-emerald-600 text-white shadow-sm"
-                          : "bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10"
-                      }`}
+                {/* Sort & Status Filter Tabs */}
+                <div className="flex flex-wrap items-center gap-2">
+                  {/* Sort By ID / Attributes */}
+                  <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-white/5 px-3 py-1.5 rounded-full border border-slate-200 dark:border-white/10">
+                    <ArrowUpDown className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                    <select
+                      value={fleetSort}
+                      onChange={(e) => setFleetSort(e.target.value)}
+                      className="bg-transparent text-xs font-bold text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer"
                     >
-                      {filter}
-                    </button>
-                  ))}
+                      <option value="id_asc" className="dark:bg-[#0b0b0e]">ID: TM-001 First</option>
+                      <option value="id_desc" className="dark:bg-[#0b0b0e]">ID: Highest First</option>
+                      <option value="name_asc" className="dark:bg-[#0b0b0e]">Name (A-Z)</option>
+                      <option value="rate_asc" className="dark:bg-[#0b0b0e]">Rate: Low to High</option>
+                      <option value="rate_desc" className="dark:bg-[#0b0b0e]">Rate: High to Low</option>
+                      <option value="year_desc" className="dark:bg-[#0b0b0e]">Newest Year</option>
+                    </select>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                    {["all", "available", "on rental", "maintenance"].map((filter) => (
+                      <button
+                        key={filter}
+                        onClick={() => setFleetFilter(filter)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-bold capitalize transition-all whitespace-nowrap cursor-pointer ${
+                          fleetFilter === filter
+                            ? "bg-emerald-600 text-white shadow-sm"
+                            : "bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10"
+                        }`}
+                      >
+                        {filter}
+                      </button>
+                    ))}
+                  </div>
 
                   <button
                     onClick={() => handleTabChange("list-vehicle")}
-                    className="ml-2 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm active:scale-95 cursor-pointer"
+                    className="ml-1 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm active:scale-95 cursor-pointer"
                   >
                     <Plus className="h-3.5 w-3.5" />
                     <span>Add Car</span>
@@ -727,7 +794,7 @@ export function AdminPortalContent() {
                 <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-12 border border-slate-200/80 dark:border-white/10 text-center text-xs font-bold text-slate-400">
                   Loading live fleet data from database...
                 </div>
-              ) : filteredFleet.length === 0 ? (
+              ) : sortedFleet.length === 0 ? (
                 <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-12 border border-slate-200/80 dark:border-white/10 text-center space-y-4">
                   <div className="h-16 w-16 mx-auto rounded-3xl bg-emerald-600/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                     <Car className="h-8 w-8" />
@@ -755,7 +822,7 @@ export function AdminPortalContent() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredFleet.map((car, index) => (
+                  {sortedFleet.map((car, index) => (
                     <ScrollReveal key={car.id} delay={index * 50} direction="up">
                       <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] p-5 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between h-full group hover:shadow-xl transition-all">
                         <div>
@@ -767,6 +834,11 @@ export function AdminPortalContent() {
                               fallbackName={car.name}
                               className="object-cover group-hover:scale-105 transition-transform duration-300"
                             />
+                            {car.vehicleCode && (
+                              <span className="absolute top-3 left-3 z-20 text-[11px] font-mono font-black uppercase px-2.5 py-1 rounded-full shadow-md bg-slate-950/85 text-emerald-400 border border-emerald-500/30 backdrop-blur-md">
+                                {car.vehicleCode}
+                              </span>
+                            )}
                             <span
                               className={`absolute top-3 right-3 z-20 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-sm backdrop-blur-md ${
                                 car.status === "Available"
@@ -785,9 +857,16 @@ export function AdminPortalContent() {
 
                           {/* Details */}
                           <div className="space-y-1 mb-4">
-                            <h4 className="text-base font-extrabold text-slate-950 dark:text-white truncate">
-                              {car.name}
-                            </h4>
+                            <div className="flex items-center justify-between gap-2">
+                              <h4 className="text-base font-extrabold text-slate-950 dark:text-white truncate">
+                                {car.name}
+                              </h4>
+                              {car.vehicleCode && (
+                                <span className="text-[11px] font-mono font-black px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0">
+                                  {car.vehicleCode}
+                                </span>
+                              )}
+                            </div>
                             <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 truncate">
                               <MapPin className="h-3.5 w-3.5 text-slate-400" />
                               <span>{car.location}</span>
@@ -995,9 +1074,26 @@ export function AdminPortalContent() {
                       type="text"
                       value={inquirySearch}
                       onChange={(e) => setInquirySearch(e.target.value)}
-                      placeholder="Search customer, vehicle, or phone..."
-                      className="w-full sm:w-64 pl-10 pr-4 py-2.5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                      placeholder="Search by vehicle ID (e.g. TM-001), customer, or phone..."
+                      className="w-full sm:w-72 pl-10 pr-4 py-2.5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                     />
+                  </div>
+
+                  {/* Sort By ID / Date / Name */}
+                  <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-white/5 px-3 py-2 rounded-2xl border border-slate-200 dark:border-white/10">
+                    <ArrowUpDown className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                    <select
+                      value={inquirySort}
+                      onChange={(e) => setInquirySort(e.target.value)}
+                      aria-label="Sort inquiries"
+                      className="bg-transparent text-xs font-bold text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer"
+                    >
+                      <option value="date_desc" className="dark:bg-[#0b0b0e]">Newest Date</option>
+                      <option value="date_asc" className="dark:bg-[#0b0b0e]">Oldest Date</option>
+                      <option value="id_asc" className="dark:bg-[#0b0b0e]">Vehicle ID: Low to High</option>
+                      <option value="id_desc" className="dark:bg-[#0b0b0e]">Vehicle ID: High to Low</option>
+                      <option value="name_asc" className="dark:bg-[#0b0b0e]">Customer (A-Z)</option>
+                    </select>
                   </div>
 
                   <div className="flex items-center gap-1 bg-slate-100 dark:bg-white/5 p-1 rounded-2xl border border-slate-200 dark:border-white/10">
@@ -1027,7 +1123,7 @@ export function AdminPortalContent() {
               <div className="bg-white dark:bg-[#0b0b0e] rounded-[30px] border border-slate-200/80 dark:border-white/10 shadow-sm overflow-hidden">
                 <div className="p-6 border-b border-slate-100 dark:border-white/10 flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                    Showing {filteredInquiries.length} inquiries
+                    Showing {sortedInquiries.length} inquiries
                   </span>
                   {pendingInquiriesCount > 0 && (
                     <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center gap-1.5">
@@ -1042,7 +1138,7 @@ export function AdminPortalContent() {
                     <div className="p-12 text-center text-xs font-bold text-slate-400">
                       Loading vehicle inquiries...
                     </div>
-                  ) : filteredInquiries.length === 0 ? (
+                  ) : sortedInquiries.length === 0 ? (
                     <div className="p-12 text-center space-y-3">
                       <div className="h-14 w-14 mx-auto rounded-3xl bg-slate-100 dark:bg-white/5 text-slate-400 flex items-center justify-center">
                         <MessageSquare className="h-7 w-7" />
@@ -1059,7 +1155,7 @@ export function AdminPortalContent() {
                       </div>
                     </div>
                   ) : (
-                    filteredInquiries.map((inq) => {
+                    sortedInquiries.map((inq) => {
                       const isPending = (inq.status || "").toUpperCase() === "PENDING";
                       const cleanPhone = inq.phone ? inq.phone.replace(/[^0-9]/g, "") : "";
                       const waLink = cleanPhone
@@ -1183,6 +1279,13 @@ export function AdminPortalContent() {
                                 {inq.carModel || inq.subject || "Tourmate Vehicle"}
                               </span>
                             </div>
+
+                            {inq.vehicleCode && (
+                              <span className="px-2.5 py-1 rounded-xl bg-slate-950 text-emerald-400 dark:bg-emerald-950/90 dark:text-emerald-300 font-mono text-xs font-black border border-emerald-500/30 flex items-center gap-1 shadow-sm">
+                                <span className="text-[10px] text-emerald-500/80 uppercase font-extrabold tracking-wider">ID:</span>
+                                <span>{inq.vehicleCode}</span>
+                              </span>
+                            )}
 
                             {inq.date && (
                               <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">

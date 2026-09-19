@@ -73,10 +73,13 @@ export async function GET(
     const cleanGallery = (parsedGallery.length > 0 ? parsedGallery : [])
       .filter((img) => !isInvalidOrMockImage(img));
 
+    const publicVehicle = { ...vehicle };
+    delete (publicVehicle as { vehicleCode?: string | null }).vehicleCode;
+
     return NextResponse.json({
       success: true,
       vehicle: {
-        ...vehicle,
+        ...publicVehicle,
         imageUrl: cleanImageUrl,
         galleryImages: cleanGallery,
         features: parsedFeatures,
@@ -109,6 +112,24 @@ export async function PATCH(
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateData: any = {};
+    if (body.vehicleCode !== undefined) {
+      const trimmedCode = (body.vehicleCode || "").trim().toUpperCase();
+      if (trimmedCode) {
+        const existingWithCode = await prisma.vehicle.findFirst({
+          where: {
+            vehicleCode: trimmedCode,
+            id: { not: id },
+          },
+        });
+        if (existingWithCode) {
+          return NextResponse.json(
+            { success: false, error: `Vehicle ID "${trimmedCode}" is already in use by another vehicle` },
+            { status: 400 }
+          );
+        }
+        updateData.vehicleCode = trimmedCode;
+      }
+    }
     if (body.name !== undefined) updateData.name = body.name;
     if (body.brand !== undefined) updateData.brand = body.brand;
     if (body.model !== undefined) updateData.model = body.model;

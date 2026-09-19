@@ -57,14 +57,14 @@ export function HeroSection() {
         {/* Background Image with Sri Lanka landmarks & cars */}
         <div className="absolute inset-0 rounded-[28px] sm:rounded-[30px] overflow-hidden z-0 pointer-events-none">
           <Image
-            src="/images/hero-sri-lanka.jpg"
+            src="/images/hero-sri-lanka.png"
             alt="Sri Lanka scenic landmarks and Tourmate rental fleet"
             fill
             priority
-            className="object-cover object-center opacity-85 mix-blend-screen"
+            className="object-cover object-center opacity-90"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-teal-950/65 to-transparent lg:w-3/5" />
-          <div className="absolute inset-0 bg-black/25" />
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-950/40 to-transparent lg:w-3/5" />
+          <div className="absolute inset-0 bg-black/15" />
         </div>
 
         {/* Hero Content */}
