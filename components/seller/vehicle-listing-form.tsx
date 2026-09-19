@@ -574,11 +574,20 @@ export function VehicleListingForm({
 
     setUploadStatusText("Publishing vehicle listing...");
 
+    const isMockOrLocalSample = (url?: string | null) => {
+      if (!url || typeof url !== "string") return true;
+      const u = url.trim();
+      if (!u || u.startsWith("blob:")) return true;
+      if (u.includes("/images/mock/")) return true;
+      if (u.includes("car-side.jpg") || u.includes("car-fleet.jpg") || u.includes("hero-sri-lanka.jpg")) return true;
+      return false;
+    };
+
     const exteriorPhotosList = PHOTO_GUIDES.filter((g) => g.type === "exterior")
       .map((g) => {
         if (uploadedUrls[g.id]) return uploadedUrls[g.id];
         const current = uploadedPhotos[g.id];
-        if (current && !current.startsWith("blob:")) return current;
+        if (current && !isMockOrLocalSample(current)) return current;
         return null;
       })
       .filter((url): url is string => url !== null);
@@ -587,7 +596,7 @@ export function VehicleListingForm({
       .map((g) => {
         if (uploadedUrls[g.id]) return uploadedUrls[g.id];
         const current = uploadedPhotos[g.id];
-        if (current && !current.startsWith("blob:")) return current;
+        if (current && !isMockOrLocalSample(current)) return current;
         return null;
       })
       .filter((url): url is string => url !== null);

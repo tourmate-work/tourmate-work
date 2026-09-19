@@ -11,6 +11,21 @@ export interface VehicleImageProps extends Omit<ImageProps, "src" | "onLoad" | "
   showSpinner?: boolean;
 }
 
+export function isValidVehicleImage(src?: string | null): boolean {
+  if (!src || typeof src !== "string") return false;
+  const s = src.trim();
+  if (!s || s.startsWith("blob:")) return false;
+  if (s.includes("/images/mock/")) return false;
+  if (
+    s.includes("car-side.jpg") ||
+    s.includes("car-fleet.jpg") ||
+    s.includes("hero-sri-lanka.jpg")
+  ) {
+    return false;
+  }
+  return true;
+}
+
 export function VehicleImage({
   src,
   alt,
@@ -27,8 +42,8 @@ export function VehicleImage({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  // Clean and validate source string
-  const validSrc = typeof src === "string" ? src.trim() : null;
+  // Clean and validate source string - reject mock/fallback images
+  const validSrc = isValidVehicleImage(src) ? (src as string).trim() : null;
 
   // Whenever source URL changes (e.g. thumbnail clicked), re-engage loading state
   useEffect(() => {

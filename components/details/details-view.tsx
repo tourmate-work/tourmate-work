@@ -20,7 +20,7 @@ import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { BookingInquiryModal } from "@/components/booking/booking-inquiry-modal";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { SITE_CONTACT } from "@/lib/constants";
-import { VehicleImage } from "@/components/ui/vehicle-image";
+import { VehicleImage, isValidVehicleImage } from "@/components/ui/vehicle-image";
 import { LottieLoader } from "@/components/ui/lottie-loader";
 
 export interface VehicleDetail {
@@ -95,11 +95,7 @@ const VEHICLES: VehicleDetail[] = [
       "Blind Spot Assist",
       "Dual Zone Air Conditioning",
     ],
-    thumbnails: [
-      "/images/car-side.jpg",
-      "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
-    ],
+    thumbnails: [],
   },
   {
     id: "toyota-premio",
@@ -127,11 +123,7 @@ const VEHICLES: VehicleDetail[] = [
       "Reverse Camera & Park Assist",
       "Climate Control AC",
     ],
-    thumbnails: [
-      "/images/car-side.jpg",
-      "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
-    ],
+    thumbnails: [],
   },
   {
     id: "honda-vezel",
@@ -159,11 +151,7 @@ const VEHICLES: VehicleDetail[] = [
       "Roof Rails & Large Boot",
       "Dual Air Conditioning",
     ],
-    thumbnails: [
-      "/images/car-fleet.jpg",
-      "/images/car-side.jpg",
-      "/images/hero-sri-lanka.jpg",
-    ],
+    thumbnails: [],
   },
   {
     id: "toyota-kdh",
@@ -191,11 +179,7 @@ const VEHICLES: VehicleDetail[] = [
       "Driver Option Available",
       "High-Roof Comfort",
     ],
-    thumbnails: [
-      "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
-      "/images/car-side.jpg",
-    ],
+    thumbnails: [],
   },
   {
     id: "ford-mustang",
@@ -223,11 +207,7 @@ const VEHICLES: VehicleDetail[] = [
       "Wedding & Celebration Shoot Ready",
       "Air Conditioner",
     ],
-    thumbnails: [
-      "/images/car-side.jpg",
-      "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
-    ],
+    thumbnails: [],
   },
   {
     id: "toyota-hilux",
@@ -255,11 +235,7 @@ const VEHICLES: VehicleDetail[] = [
       "Islandwide Mountain Trail Ready",
       "Air Conditioner",
     ],
-    thumbnails: [
-      "/images/car-fleet.jpg",
-      "/images/car-side.jpg",
-      "/images/hero-sri-lanka.jpg",
-    ],
+    thumbnails: [],
   },
   {
     id: "bmw-3",
@@ -287,11 +263,7 @@ const VEHICLES: VehicleDetail[] = [
       "Wireless Apple CarPlay",
       "Air Conditioner",
     ],
-    thumbnails: [
-      "/images/car-side.jpg",
-      "/images/hero-sri-lanka.jpg",
-      "/images/car-fleet.jpg",
-    ],
+    thumbnails: [],
   },
   {
     id: "porsche-cayenne",
@@ -319,11 +291,7 @@ const VEHICLES: VehicleDetail[] = [
       "360 Degree Surround View",
       "Air Conditioner",
     ],
-    thumbnails: [
-      "/images/car-fleet.jpg",
-      "/images/hero-sri-lanka.jpg",
-      "/images/car-side.jpg",
-    ],
+    thumbnails: [],
   },
 ];
 
@@ -355,14 +323,11 @@ function DetailsContentInner() {
           const mapped: VehicleDetail[] = (data.vehicles as ApiVehicleRaw[])
             .filter((v) => v.status?.toLowerCase() !== "maintenance")
             .map((v) => {
-            const validHero =
-              v.imageUrl && !v.imageUrl.startsWith("blob:") ? v.imageUrl : "";
+            const validHero = isValidVehicleImage(v.imageUrl) ? v.imageUrl! : "";
 
             const validGallery =
               Array.isArray(v.galleryImages) && v.galleryImages.length > 0
-                ? v.galleryImages.filter((img: string) =>
-                    img && !img.startsWith("blob:")
-                  )
+                ? v.galleryImages.filter((img: string) => isValidVehicleImage(img))
                 : (validHero ? [validHero] : []);
 
             return {
@@ -427,14 +392,11 @@ function DetailsContentInner() {
           .then((data) => {
             if (data.success && data.vehicle) {
               const v = data.vehicle;
-              const validHero =
-                v.imageUrl && !v.imageUrl.startsWith("blob:") ? v.imageUrl : "";
+              const validHero = isValidVehicleImage(v.imageUrl) ? v.imageUrl! : "";
 
               const validGallery =
                 Array.isArray(v.galleryImages) && v.galleryImages.length > 0
-                  ? v.galleryImages.filter((img: string) =>
-                      img && !img.startsWith("blob:")
-                    )
+                  ? v.galleryImages.filter((img: string) => isValidVehicleImage(img))
                   : (validHero ? [validHero] : []);
 
               setSelectedVehicle({

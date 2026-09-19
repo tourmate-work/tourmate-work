@@ -4,6 +4,21 @@ import { getAuthUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
+function isInvalidOrMockImage(url?: string | null): boolean {
+  if (!url || typeof url !== "string") return true;
+  const s = url.trim();
+  if (!s || s.startsWith("blob:")) return true;
+  if (s.includes("/images/mock/")) return true;
+  if (
+    s.includes("car-side.jpg") ||
+    s.includes("car-fleet.jpg") ||
+    s.includes("hero-sri-lanka.jpg")
+  ) {
+    return true;
+  }
+  return false;
+}
+
 
 
 
@@ -139,15 +154,15 @@ export async function GET(req: NextRequest) {
         parsedFeatures = [];
       }
 
-      // Sanitize imageUrl (remove temporary/dead blob URLs)
+      // Sanitize imageUrl (remove temporary/dead blob and mock URLs)
       let cleanImageUrl = v.imageUrl;
-      if (!cleanImageUrl || cleanImageUrl.startsWith("blob:")) {
+      if (isInvalidOrMockImage(cleanImageUrl)) {
         cleanImageUrl = "";
       }
 
-      // Sanitize galleryImages (remove dead blob URLs, do NOT inject fallbacks)
+      // Sanitize galleryImages (remove dead blob and mock/fallback URLs)
       const cleanGallery = (parsedGallery.length > 0 ? parsedGallery : [])
-        .filter((img) => typeof img === "string" && !img.startsWith("blob:") && img.trim() !== "");
+        .filter((img) => !isInvalidOrMockImage(img));
 
       return {
         ...v,
@@ -222,14 +237,14 @@ export async function POST(req: NextRequest) {
       sellerId = defaultSeller?.id;
     }
 
-    // Clean imageUrl and galleryImages to guarantee no blob URLs enter database
+    // Clean imageUrl and galleryImages to guarantee no blob or mock URLs enter database
     let cleanHeroImage = imageUrl;
-    if (!cleanHeroImage || cleanHeroImage.startsWith("blob:")) {
+    if (isInvalidOrMockImage(cleanHeroImage)) {
       cleanHeroImage = "";
     }
 
     const cleanGalleryList = (Array.isArray(galleryImages) ? galleryImages : [])
-      .filter((img: string) => typeof img === "string" && !img.startsWith("blob:") && img.trim() !== "");
+      .filter((img: string) => !isInvalidOrMockImage(img));
 
     const finalGallery = cleanGalleryList.length > 0 ? cleanGalleryList : (cleanHeroImage ? [cleanHeroImage] : []);
 

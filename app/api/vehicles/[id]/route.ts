@@ -2,6 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAuthUser, forbiddenResponse } from "@/lib/auth";
 
+function isInvalidOrMockImage(url?: string | null): boolean {
+  if (!url || typeof url !== "string") return true;
+  const s = url.trim();
+  if (!s || s.startsWith("blob:")) return true;
+  if (s.includes("/images/mock/")) return true;
+  if (
+    s.includes("car-side.jpg") ||
+    s.includes("car-fleet.jpg") ||
+    s.includes("hero-sri-lanka.jpg")
+  ) {
+    return true;
+  }
+  return false;
+}
+
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -48,13 +63,15 @@ export async function GET(
       parsedFeatures = [];
     }
 
+
+
     let cleanImageUrl = vehicle.imageUrl;
-    if (!cleanImageUrl || cleanImageUrl.startsWith("blob:")) {
+    if (isInvalidOrMockImage(cleanImageUrl)) {
       cleanImageUrl = "";
     }
 
     const cleanGallery = (parsedGallery.length > 0 ? parsedGallery : [])
-      .filter((img) => typeof img === "string" && !img.startsWith("blob:") && img.trim() !== "");
+      .filter((img) => !isInvalidOrMockImage(img));
 
     return NextResponse.json({
       success: true,

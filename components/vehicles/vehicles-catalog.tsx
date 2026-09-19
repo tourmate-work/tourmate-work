@@ -27,7 +27,7 @@ import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { BookingInquiryModal, BookingVehicleInfo } from "@/components/booking/booking-inquiry-modal";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { SITE_CONTACT } from "@/lib/constants";
-import { VehicleImage } from "@/components/ui/vehicle-image";
+import { VehicleImage, isValidVehicleImage } from "@/components/ui/vehicle-image";
 import { LottieLoader } from "@/components/ui/lottie-loader";
 
 export interface VehicleDetail {
@@ -152,14 +152,11 @@ export function VehiclesCatalog() {
           const mapped: VehicleDetail[] = (data.vehicles as ApiVehicleRaw[])
             .filter((v) => v.status?.toLowerCase() !== "maintenance")
             .map((v) => {
-            const validHero =
-              v.imageUrl && !v.imageUrl.startsWith("blob:") ? v.imageUrl : "";
+            const validHero = isValidVehicleImage(v.imageUrl) ? v.imageUrl! : "";
 
             const validGallery =
               Array.isArray(v.galleryImages) && v.galleryImages.length > 0
-                ? v.galleryImages.filter((img: string) =>
-                    img && !img.startsWith("blob:")
-                  )
+                ? v.galleryImages.filter((img: string) => isValidVehicleImage(img))
                 : (validHero ? [validHero] : []);
 
             const isAvail =
