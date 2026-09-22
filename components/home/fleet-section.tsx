@@ -12,6 +12,7 @@ import { LottieLoader } from "@/components/ui/lottie-loader";
 
 interface CarItem {
   id: string;
+  slug?: string;
   name: string;
   category: string;
   pricePerDay: string;
@@ -28,6 +29,7 @@ interface CarItem {
 
 interface ApiVehicleRaw {
   id: string;
+  slug?: string;
   name: string;
   category: string;
   pricePerDay: number;
@@ -64,6 +66,7 @@ export function FleetSection() {
 
             return {
               id: v.id,
+              slug: v.slug || undefined,
               name: v.name,
               category: v.category,
               pricePerDay: `LKR ${Number(v.pricePerDay).toLocaleString()}`,
@@ -176,7 +179,10 @@ export function FleetSection() {
                 </div>
 
                 {/* Car Image Container */}
-                <div className="relative aspect-[16/10] w-full rounded-[14px] sm:rounded-2xl overflow-hidden bg-slate-50 dark:bg-white/[0.03] mb-2 sm:mb-4 flex items-center justify-center p-2 sm:p-4 border border-slate-100 dark:border-white/5">
+                <Link
+                  href={`/vehicles/${car.slug || car.id}`}
+                  className="block relative aspect-[16/10] w-full rounded-[14px] sm:rounded-2xl overflow-hidden bg-slate-50 dark:bg-white/[0.03] mb-2 sm:mb-4 flex items-center justify-center p-2 sm:p-4 border border-slate-100 dark:border-white/5"
+                >
                   <VehicleImage
                     src={car.image}
                     alt={`${car.name} ${car.category}`}
@@ -190,13 +196,18 @@ export function FleetSection() {
                     <MapPin className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-emerald-400 flex-shrink-0" />
                     <span className="truncate">{car.location}</span>
                   </div>
-                </div>
+                </Link>
 
                 {/* Name and Price Header */}
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-0.5 sm:gap-2 mb-1.5 sm:mb-3">
                   <div className="min-w-0">
                     <h3 className="text-xs sm:text-base lg:text-lg font-bold text-slate-900 dark:text-white leading-snug truncate">
-                      {car.name}
+                      <Link
+                        href={`/vehicles/${car.slug || car.id}`}
+                        className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                      >
+                        {car.name}
+                      </Link>
                     </h3>
                     <p className="text-[10px] sm:text-xs text-slate-400 font-medium mt-0.5 truncate">
                       {car.category} • {t("fleet_fully_insured")}
@@ -231,8 +242,8 @@ export function FleetSection() {
               {/* Action Buttons: View Vehicle + Request to Book */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2 pt-1">
                 <Link
-                  href={`/details?car=${car.id}`}
-                  className="w-full py-1.5 sm:py-3 rounded-[14px] sm:rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-[10px] sm:text-xs transition-colors text-center"
+                  href={`/vehicles/${car.slug || car.id}`}
+                  className="w-full py-1.5 sm:py-3 rounded-[14px] sm:rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-[10px] sm:text-xs transition-colors text-center inline-flex items-center justify-center"
                 >
                   {t("fleet_btn_details")}
                 </Link>

@@ -1,22 +1,32 @@
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { DetailsView } from "@/components/details/details-view";
-import type { Metadata } from "next";
+import { permanentRedirect, redirect } from "next/navigation";
+import { getVehicleBySlug } from "@/lib/vehicles";
 
-export const metadata: Metadata = {
-  title: "Vehicle Specifications & Details | Tourmate Rentals Sri Lanka",
-  description:
-    "Explore detailed vehicle specifications, features, equipment, and pricing for our premium rental fleet in Sri Lanka.",
-};
+interface DetailsPageProps {
+  searchParams?: {
+    car?: string;
+    id?: string;
+    location?: string;
+  };
+}
 
-export default function DetailsPage() {
-  return (
-    <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans selection:bg-slate-900 selection:text-white">
-      <Header />
-      <main className="flex-1">
-        <DetailsView />
-      </main>
-      <Footer />
-    </div>
-  );
+export const dynamic = "force-dynamic";
+
+/**
+ * 301 Permanent Redirect fallback from legacy /details?car=ID URLs
+ * to the new SEO-optimized /vehicles/[slug] routes.
+ */
+export default async function LegacyDetailsRedirectPage({
+  searchParams,
+}: DetailsPageProps) {
+  const carId = searchParams?.car || searchParams?.id;
+
+  if (carId) {
+    const vehicle = await getVehicleBySlug(carId);
+    if (vehicle?.slug) {
+      permanentRedirect(`/vehicles/${vehicle.slug}`);
+    }
+  }
+
+  // Fallback if no specific vehicle was found or specified
+  redirect("/vehicles");
 }

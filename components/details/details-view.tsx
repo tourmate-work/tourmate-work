@@ -25,8 +25,10 @@ import { LottieLoader } from "@/components/ui/lottie-loader";
 
 export interface VehicleDetail {
   id: string;
+  slug?: string;
   name: string;
   brand: string;
+  year?: number;
   category: string;
   price: string;
   priceNum: number;
@@ -36,6 +38,8 @@ export interface VehicleDetail {
   location?: string;
   status?: string;
   isAvailable?: boolean;
+  rating?: number;
+  reviewsCount?: number;
   specs: {
     gearBox: string;
     fuel: string;
@@ -46,6 +50,13 @@ export interface VehicleDetail {
   };
   equipment: string[];
   thumbnails: string[];
+  reviews?: Array<{
+    id: string;
+    userName: string;
+    rating: number;
+    comment: string;
+    createdAt?: string | Date;
+  }>;
 }
 
 interface ApiVehicleRaw {

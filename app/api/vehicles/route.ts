@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAuthUser } from "@/lib/auth";
+import { resolveUniqueVehicleSlug, getVehicleSlug } from "@/lib/slug";
 
 export const dynamic = "force-dynamic";
 
@@ -170,6 +171,7 @@ export async function GET(req: NextRequest) {
 
       return {
         ...publicData,
+        slug: v.slug || getVehicleSlug(v),
         imageUrl: cleanImageUrl,
         galleryImages: cleanGallery,
         features: parsedFeatures,
@@ -270,13 +272,27 @@ export async function POST(req: NextRequest) {
       finalVehicleCode = await getNextVehicleCode();
     }
 
+    const finalBrand = brand ? brand.trim() : (name.split(" ")[0] || "Toyota");
+    const finalModel = model ? model.trim() : name.trim();
+    const finalYear = year ? parseInt(year, 10) : new Date().getFullYear();
+    const finalLocation = location || "Colombo, Sri Lanka";
+
+    const vehicleSlug = await resolveUniqueVehicleSlug(prisma, {
+      brand: finalBrand,
+      model: finalModel,
+      name: name.trim(),
+      year: finalYear,
+      location: finalLocation,
+    });
+
     const vehicle = await prisma.vehicle.create({
       data: {
         vehicleCode: finalVehicleCode,
+        slug: vehicleSlug,
         name: name.trim(),
-        brand: brand ? brand.trim() : (name.split(" ")[0] || "Toyota"),
-        model: model ? model.trim() : name.trim(),
-        year: year ? parseInt(year, 10) : new Date().getFullYear(),
+        brand: finalBrand,
+        model: finalModel,
+        year: finalYear,
         category: category || "Sedan",
         transmission: transmission || "Automatic",
         fuelType: fuelType || "Petrol",

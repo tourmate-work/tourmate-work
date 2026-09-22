@@ -27,6 +27,7 @@ model User {
 model Vehicle {
   id               String    @id @default(cuid())
   vehicleCode      String?   @unique
+  slug             String?   @unique
   name             String
   brand            String
   model            String

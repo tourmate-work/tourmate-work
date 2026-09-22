@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   Fuel,
@@ -32,6 +33,7 @@ import { LottieLoader } from "@/components/ui/lottie-loader";
 
 export interface VehicleDetail {
   id: string;
+  slug?: string;
   name: string;
   brand: string;
   category: string;
@@ -41,9 +43,8 @@ export interface VehicleDetail {
   type: string;
   fuelCapacity: string;
   location?: string;
-  isAvailable?: boolean;
   status?: string;
-  rating?: number;
+  isAvailable?: boolean;
   specs: {
     gearBox: string;
     fuel: string;
@@ -58,6 +59,7 @@ export interface VehicleDetail {
 
 interface ApiVehicleRaw {
   id: string;
+  slug?: string;
   name: string;
   brand?: string;
   category: string;
@@ -166,6 +168,7 @@ export function VehiclesCatalog() {
 
             return {
               id: v.id,
+              slug: v.slug || undefined,
               name: v.name,
               brand: v.brand || v.name.split(" ")[0] || "Toyota",
               category: v.category,
@@ -330,12 +333,6 @@ export function VehiclesCatalog() {
       }
       return 0; // featured default
     });
-
-  const handleOpenDetails = (car: VehicleDetail) => {
-    setActiveModalCar(car);
-    setActiveThumbnailIndex(0);
-    setModalPickupLocation(locationQuery.trim() || car.location || "");
-  };
 
   const handleCloseModal = () => {
     setActiveModalCar(null);
@@ -660,7 +657,10 @@ export function VehiclesCatalog() {
                 <div className="stripe-card rounded-[18px] sm:rounded-[30px] p-2.5 sm:p-6 shadow-sm hover:shadow-2xl flex flex-col justify-between group h-full">
                   <div>
                     {/* Vehicle Photo Container */}
-                    <div className="relative aspect-[16/10] w-full rounded-[14px] sm:rounded-[24px] overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-100 dark:border-white/10 mb-2 sm:mb-5 group-hover:shadow-lg transition-all">
+                    <Link
+                      href={`/vehicles/${car.slug || car.id}`}
+                      className="block relative aspect-[16/10] w-full rounded-[14px] sm:rounded-[24px] overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-100 dark:border-white/10 mb-2 sm:mb-5 group-hover:shadow-lg transition-all"
+                    >
                       <VehicleImage
                         src={car.thumbnails?.[0] || ""}
                         alt={car.name}
@@ -684,7 +684,7 @@ export function VehiclesCatalog() {
                           {car.specs.gearBox}
                         </div>
                       </div>
-                    </div>
+                    </Link>
 
                     {/* Specs & Info */}
                     <div className="space-y-1 sm:space-y-3">
@@ -692,7 +692,12 @@ export function VehiclesCatalog() {
                       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-0.5 sm:gap-2">
                         <div className="min-w-0">
                           <h3 className="title-hover-glow text-xs sm:text-lg lg:text-xl font-bold text-slate-900 dark:text-white leading-snug group-hover:text-emerald-600 transition-colors truncate">
-                            {car.name}
+                            <Link
+                              href={`/vehicles/${car.slug || car.id}`}
+                              className="hover:underline"
+                            >
+                              {car.name}
+                            </Link>
                           </h3>
                           <p className="text-[10px] sm:text-xs text-slate-400 font-medium mt-0.5 truncate">
                             {car.category} • {t("fleet_fully_insured")}
@@ -726,12 +731,12 @@ export function VehiclesCatalog() {
 
                   {/* Action Buttons: View Details & Request to Book */}
                   <div className="pt-2 sm:pt-4 grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2">
-                    <button
-                      onClick={() => handleOpenDetails(car)}
-                      className="w-full py-1.5 sm:py-3 rounded-[14px] sm:rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-[10px] sm:text-xs transition-colors text-center cursor-pointer"
+                    <Link
+                      href={`/vehicles/${car.slug || car.id}`}
+                      className="w-full py-1.5 sm:py-3 rounded-[14px] sm:rounded-[30px] border border-slate-200 dark:border-white/15 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 font-bold text-[10px] sm:text-xs transition-colors text-center inline-flex items-center justify-center"
                     >
                       {t("catalog_btn_view_details")}
-                    </button>
+                    </Link>
                     <button
                       onClick={() =>
                         setInquiryVehicle({

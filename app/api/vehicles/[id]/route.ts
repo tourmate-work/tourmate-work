@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAuthUser, forbiddenResponse } from "@/lib/auth";
+import { getVehicleSlug } from "@/lib/slug";
 
 function isInvalidOrMockImage(url?: string | null): boolean {
   if (!url || typeof url !== "string") return true;
@@ -80,6 +81,7 @@ export async function GET(
       success: true,
       vehicle: {
         ...publicVehicle,
+        slug: vehicle.slug || getVehicleSlug(vehicle),
         imageUrl: cleanImageUrl,
         galleryImages: cleanGallery,
         features: parsedFeatures,
@@ -168,6 +170,29 @@ export async function PATCH(
       updateData.features = Array.isArray(body.features)
         ? JSON.stringify(body.features)
         : body.features;
+    }
+
+    if (
+      body.name !== undefined ||
+      body.brand !== undefined ||
+      body.model !== undefined ||
+      body.year !== undefined ||
+      body.location !== undefined ||
+      !existing.slug
+    ) {
+      const { resolveUniqueVehicleSlug } = await import("@/lib/slug");
+      updateData.slug = await resolveUniqueVehicleSlug(
+        prisma,
+        {
+          id,
+          brand: body.brand !== undefined ? body.brand : existing.brand,
+          model: body.model !== undefined ? body.model : existing.model,
+          name: body.name !== undefined ? body.name : existing.name,
+          year: body.year !== undefined ? parseInt(body.year, 10) : existing.year,
+          location: body.location !== undefined ? body.location : existing.location,
+        },
+        id
+      );
     }
 
     const updated = await prisma.vehicle.update({

@@ -16,6 +16,7 @@ const sansFont = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://tourmate.lk"),
   title: "Tourmate | Premium Car Rental & Travel Experience",
   description:
     "Rent premium vehicles, SUVs, and luxury cars with ease. Your trusted companion for unforgettable road trips and business travel.",

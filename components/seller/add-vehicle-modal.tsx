@@ -6,6 +6,7 @@ import { VehicleListingForm } from "./vehicle-listing-form";
 export interface SellerVehicle {
   id: string;
   vehicleCode?: string;
+  slug?: string;
   name: string;
   category: string;
   year: number;
