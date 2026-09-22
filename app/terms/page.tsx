@@ -15,6 +15,7 @@ import {
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPolicy } from "@/lib/policies";
+import { buildCanonical, buildOpenGraphMetadata } from "@/lib/seo-config";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +23,15 @@ export const metadata: Metadata = {
   title: "Terms & Conditions | TourMate Rentals Sri Lanka",
   description:
     "Review the official Terms & Conditions of TourMate Rentals Sri Lanka. Transparent guidelines covering bookings, payments, handovers, renter and owner responsibilities.",
+  alternates: {
+    canonical: buildCanonical("/terms"),
+  },
+  ...buildOpenGraphMetadata({
+    title: "Terms & Conditions | TourMate Rentals Sri Lanka",
+    description:
+      "Review the official Terms & Conditions of TourMate Rentals Sri Lanka. Transparent guidelines covering bookings, payments, handovers, renter and owner responsibilities.",
+    path: "/terms",
+  }),
 };
 
 const SECTION_ICONS = [

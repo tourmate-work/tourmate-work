@@ -10,6 +10,13 @@ import {
   cleanLocationName,
 } from "@/lib/vehicles";
 
+import {
+  SITE_URL,
+  SITE_NAME,
+  DEFAULT_OG_IMAGE,
+  buildCanonical,
+} from "@/lib/seo-config";
+
 interface VehiclePageProps {
   params: {
     slug: string;
@@ -45,12 +52,12 @@ export async function generateMetadata({
   const yearStr = vehicle.year ? `${vehicle.year} ` : "";
 
   const title = `Rent a ${yearStr}${fullName} in ${primaryLoc} | Tourmate Rentals`;
-  const description = `Rent a ${yearStr}${fullName} in ${primaryLoc}, Sri Lanka. Self drive or with driver, full comprehensive insurance, unlimited mileage & 24/7 delivery. Daily rate: ${vehicle.price} ${vehicle.period}.`;
-  const canonicalUrl = `https://tourmate.lk/vehicles/${vehicle.slug}`;
+  const description = `Rent a ${yearStr}${fullName} in ${primaryLoc}, Sri Lanka. Self-drive car rental with full comprehensive insurance, verified maintenance & 24/7 delivery. Daily rate: ${vehicle.price} ${vehicle.period}.`;
+  const canonicalUrl = buildCanonical(`/vehicles/${vehicle.slug}`);
   const mainImage =
     vehicle.thumbnails && vehicle.thumbnails.length > 0
       ? vehicle.thumbnails[0]
-      : "https://tourmate.lk/images/hero-sri-lanka.jpg";
+      : DEFAULT_OG_IMAGE;
 
   return {
     title,
@@ -62,7 +69,7 @@ export async function generateMetadata({
       title,
       description,
       url: canonicalUrl,
-      siteName: "Tourmate Rentals Sri Lanka",
+      siteName: SITE_NAME,
       type: "website",
       locale: "en_LK",
       images: [
@@ -103,29 +110,31 @@ export default async function VehicleDetailPage({ params }: VehiclePageProps) {
   const mainImageUrl =
     vehicle.thumbnails && vehicle.thumbnails.length > 0
       ? vehicle.thumbnails[0]
-      : "https://tourmate.lk/images/hero-sri-lanka.jpg";
+      : DEFAULT_OG_IMAGE;
 
-  // Schema.org JSON-LD Structured Data: Car and Product schemas
+  const vehicleDisplayName = `${vehicle.year ? `${vehicle.year} ` : ""}${vehicle.brand} ${vehicle.name}`;
+
+  // Schema.org JSON-LD Structured Data: Car, Product, and BreadcrumbList schemas
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Car",
-        "@id": `https://tourmate.lk/vehicles/${vehicle.slug}#car`,
-        name: `${vehicle.year || ""} ${vehicle.brand} ${vehicle.name}`,
+        "@id": `${SITE_URL}/vehicles/${vehicle.slug}#car`,
+        name: vehicleDisplayName,
         brand: {
           "@type": "Brand",
           name: vehicle.brand,
         },
         model: vehicle.name,
-        vehicleModelDate: vehicle.year ? String(vehicle.year) : "2022",
+        ...(vehicle.year ? { vehicleModelDate: String(vehicle.year) } : {}),
         bodyType: vehicle.category,
         numberOfDoors: vehicle.specs?.doors || 4,
         seatingCapacity: vehicle.specs?.seats || 5,
         vehicleTransmission: vehicle.specs?.gearBox || "Automatic",
         fuelType: vehicle.specs?.fuel || "Petrol",
         image: mainImageUrl,
-        description: `Rent a ${vehicle.brand} ${vehicle.name} in ${vehicle.location} with full insurance coverage.`,
+        description: `Rent a ${vehicle.brand} ${vehicle.name} in ${vehicle.location} with full comprehensive insurance.`,
         offers: {
           "@type": "Offer",
           price: vehicle.priceNum,
@@ -133,7 +142,7 @@ export default async function VehicleDetailPage({ params }: VehiclePageProps) {
           availability: vehicle.isAvailable
             ? "https://schema.org/InStock"
             : "https://schema.org/OutOfStock",
-          url: `https://tourmate.lk/vehicles/${vehicle.slug}`,
+          url: `${SITE_URL}/vehicles/${vehicle.slug}`,
           priceValidUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
             .toISOString()
             .split("T")[0],
@@ -152,8 +161,8 @@ export default async function VehicleDetailPage({ params }: VehiclePageProps) {
       },
       {
         "@type": "Product",
-        "@id": `https://tourmate.lk/vehicles/${vehicle.slug}#product`,
-        name: `${vehicle.year || ""} ${vehicle.brand} ${vehicle.name}`,
+        "@id": `${SITE_URL}/vehicles/${vehicle.slug}#product`,
+        name: vehicleDisplayName,
         image: mainImageUrl,
         description: `Rent a ${vehicle.name} in ${vehicle.location} from Tourmate Rentals Sri Lanka.`,
         brand: {
@@ -167,7 +176,7 @@ export default async function VehicleDetailPage({ params }: VehiclePageProps) {
           availability: vehicle.isAvailable
             ? "https://schema.org/InStock"
             : "https://schema.org/OutOfStock",
-          url: `https://tourmate.lk/vehicles/${vehicle.slug}`,
+          url: `${SITE_URL}/vehicles/${vehicle.slug}`,
         },
         ...(vehicle.reviewsCount && vehicle.reviewsCount > 0 && vehicle.rating
           ? {
@@ -178,6 +187,29 @@ export default async function VehicleDetailPage({ params }: VehiclePageProps) {
               },
             }
           : {}),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Vehicles",
+            item: `${SITE_URL}/vehicles`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: vehicleDisplayName,
+            item: `${SITE_URL}/vehicles/${vehicle.slug}`,
+          },
+        ],
       },
     ],
   };

@@ -13,6 +13,7 @@ import {
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { SITE_CONTACT } from "@/lib/constants";
+import { SITE_URL, SITE_NAME, buildCanonical, buildOpenGraphMetadata } from "@/lib/seo-config";
 
 export const metadata: Metadata = {
   title:
@@ -20,31 +21,16 @@ export const metadata: Metadata = {
   description:
     "Planning a trip to Sri Lanka? Compare self-drive car rental vs chauffeur-driven car hire. Discover pricing, international driving permit (IDP) requirements, fuel costs, and freedom.",
   alternates: {
-    canonical: "https://tourmate.lk/self-drive-vs-with-driver",
+    canonical: buildCanonical("/self-drive-vs-with-driver"),
   },
-  openGraph: {
+  ...buildOpenGraphMetadata({
     title: "Self Drive vs Car Rental With Driver Sri Lanka (2026 Guide)",
     description:
       "Comprehensive comparison between self-drive car rental and chauffeur-driven car hire in Sri Lanka. Costs, IDP permits, road conditions, and recommendations.",
-    url: "https://tourmate.lk/self-drive-vs-with-driver",
-    siteName: "Tourmate Rentals Sri Lanka",
+    path: "/self-drive-vs-with-driver",
+    imageAlt: "Self Drive vs Car Rental With Driver Sri Lanka - Tourmate",
     type: "article",
-    locale: "en_LK",
-    images: [
-      {
-        url: "https://tourmate.lk/images/hero-sri-lanka.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Self Drive vs Car Rental With Driver Sri Lanka - Tourmate",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Self Drive vs Car Rental With Driver in Sri Lanka",
-    description:
-      "Compare costs, licensing, freedom, and safety between self-drive and chauffeur car rentals in Sri Lanka.",
-  },
+  }),
 };
 
 const COMPARISON_POINTS = [
@@ -119,12 +105,43 @@ export default function SelfDriveVsWithDriverPage() {
     headline: "Self-Drive vs Chauffeur-Driven Car Rental in Sri Lanka",
     description:
       "A complete guide comparing self-drive car hire and chauffeur-driven car rental in Sri Lanka, covering costs, licensing, roads, and traveler recommendations.",
-    url: "https://tourmate.lk/self-drive-vs-with-driver",
+    url: `${SITE_URL}/self-drive-vs-with-driver`,
+    image: `${SITE_URL}/images/hero-sri-lanka.jpg`,
+    datePublished: "2026-01-15T08:00:00+05:30",
+    dateModified: "2026-09-01T12:00:00+05:30",
+    author: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
     publisher: {
       "@type": "Organization",
-      name: "Tourmate Rentals Sri Lanka",
-      url: "https://tourmate.lk",
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/images/logo.png`,
+      },
     },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Self-Drive vs Chauffeur Guide",
+        item: `${SITE_URL}/self-drive-vs-with-driver`,
+      },
+    ],
   };
 
   return (
@@ -136,6 +153,10 @@ export default function SelfDriveVsWithDriverPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       <Header />

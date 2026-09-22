@@ -1,9 +1,10 @@
 import { MetadataRoute } from "next";
 import { getAllActiveVehicleSlugs } from "@/lib/vehicles";
+import { SITE_URL } from "@/lib/seo-config";
 
 export const revalidate = 3600; // Regenerate sitemap at most every hour
 
-const BASE_URL = "https://tourmate.lk";
+const BASE_URL = SITE_URL;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const currentDate = new Date();

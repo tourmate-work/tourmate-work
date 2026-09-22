@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import { permanentRedirect, redirect } from "next/navigation";
 import { getVehicleBySlug } from "@/lib/vehicles";
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 interface DetailsPageProps {
   searchParams?: {

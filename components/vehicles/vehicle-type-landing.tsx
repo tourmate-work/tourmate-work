@@ -12,6 +12,8 @@ import { VehicleImage } from "@/components/ui/vehicle-image";
 import { SITE_CONTACT } from "@/lib/constants";
 import { getVehiclesByCategory } from "@/lib/vehicles";
 
+import { SITE_URL } from "@/lib/seo-config";
+
 export interface VehicleTypeConfig {
   typeKey: string;
   categoryLabel: string;
@@ -53,11 +55,11 @@ export async function VehicleTypeLandingView({
     "@type": "CollectionPage",
     name: config.h1,
     description: config.metaDesc,
-    url: `https://tourmate.lk/vehicles/${config.typeKey}`,
+    url: `${SITE_URL}/vehicles/${config.typeKey}`,
     provider: {
       "@type": "AutoRental",
       name: "Tourmate Rentals Sri Lanka",
-      url: "https://tourmate.lk",
+      url: SITE_URL,
       telephone: SITE_CONTACT.phone,
     },
   };
@@ -70,19 +72,19 @@ export async function VehicleTypeLandingView({
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://tourmate.lk",
+        item: SITE_URL,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Vehicles",
-        item: "https://tourmate.lk/vehicles",
+        item: `${SITE_URL}/vehicles`,
       },
       {
         "@type": "ListItem",
         position: 3,
         name: config.categoryLabel,
-        item: `https://tourmate.lk/vehicles/${config.typeKey}`,
+        item: `${SITE_URL}/vehicles/${config.typeKey}`,
       },
     ],
   };

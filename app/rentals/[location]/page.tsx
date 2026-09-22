@@ -16,6 +16,7 @@ import { Footer } from "@/components/layout/footer";
 import { VehicleImage } from "@/components/ui/vehicle-image";
 import { SITE_CONTACT } from "@/lib/constants";
 import { getVehiclesByLocation } from "@/lib/vehicles";
+import { SITE_URL, buildCanonical, buildOpenGraphMetadata } from "@/lib/seo-config";
 
 interface LocationPageProps {
   params: {
@@ -301,7 +302,7 @@ export async function generateMetadata({
     };
   }
 
-  const canonicalUrl = `https://tourmate.lk/rentals/${loc.slug}`;
+  const canonicalUrl = buildCanonical(`/rentals/${loc.slug}`);
 
   return {
     title: loc.title,
@@ -309,27 +310,12 @@ export async function generateMetadata({
     alternates: {
       canonical: canonicalUrl,
     },
-    openGraph: {
+    ...buildOpenGraphMetadata({
       title: loc.title,
       description: loc.metaDesc,
-      url: canonicalUrl,
-      siteName: "Tourmate Rentals Sri Lanka",
-      type: "website",
-      locale: "en_LK",
-      images: [
-        {
-          url: "https://tourmate.lk/images/hero-sri-lanka.jpg",
-          width: 1200,
-          height: 630,
-          alt: `${loc.h1} - Tourmate Rentals`,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: loc.title,
-      description: loc.metaDesc,
-    },
+      path: `/rentals/${loc.slug}`,
+      imageAlt: `${loc.h1} - Tourmate Rentals`,
+    }),
   };
 }
 
@@ -363,7 +349,7 @@ export default async function LocationRentalPage({ params }: LocationPageProps) 
     "@type": "AutoRental",
     name: `Tourmate Car Rental ${config.name}`,
     description: config.metaDesc,
-    url: `https://tourmate.lk/rentals/${config.slug}`,
+    url: `${SITE_URL}/rentals/${config.slug}`,
     telephone: SITE_CONTACT.phone,
     priceRange: "LKR 8,000 - 35,000 per day",
     paymentAccepted: "Cash, Credit Card, Bank Transfer",
@@ -389,19 +375,19 @@ export default async function LocationRentalPage({ params }: LocationPageProps) 
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://tourmate.lk",
+        item: SITE_URL,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Rentals",
-        item: "https://tourmate.lk/vehicles",
+        item: `${SITE_URL}/vehicles`,
       },
       {
         "@type": "ListItem",
         position: 3,
         name: config.name,
-        item: `https://tourmate.lk/rentals/${config.slug}`,
+        item: `${SITE_URL}/rentals/${config.slug}`,
       },
     ],
   };

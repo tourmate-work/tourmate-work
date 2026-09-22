@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { VehicleTypeLandingView } from "@/components/vehicles/vehicle-type-landing";
 import { CABRIOLET_CONFIG } from "@/lib/vehicle-types-config";
+import { buildCanonical, buildOpenGraphMetadata } from "@/lib/seo-config";
 
 export const revalidate = 60;
 
@@ -8,29 +9,14 @@ export const metadata: Metadata = {
   title: CABRIOLET_CONFIG.title,
   description: CABRIOLET_CONFIG.metaDesc,
   alternates: {
-    canonical: "https://tourmate.lk/vehicles/cabriolet",
+    canonical: buildCanonical("/vehicles/cabriolet"),
   },
-  openGraph: {
+  ...buildOpenGraphMetadata({
     title: CABRIOLET_CONFIG.title,
     description: CABRIOLET_CONFIG.metaDesc,
-    url: "https://tourmate.lk/vehicles/cabriolet",
-    siteName: "Tourmate Rentals Sri Lanka",
-    type: "website",
-    locale: "en_LK",
-    images: [
-      {
-        url: "https://tourmate.lk/images/hero-sri-lanka.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Cabriolet Rental Sri Lanka - Tourmate",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: CABRIOLET_CONFIG.title,
-    description: CABRIOLET_CONFIG.metaDesc,
-  },
+    path: "/vehicles/cabriolet",
+    imageAlt: "Cabriolet Rental Sri Lanka - Tourmate",
+  }),
 };
 
 export default function CabrioletLandingPage() {

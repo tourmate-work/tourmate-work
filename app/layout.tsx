@@ -9,6 +9,8 @@ import { AuthModal } from "@/components/auth/auth-modal";
 import { MobileBottomBar } from "@/components/layout/mobile-bottom-bar";
 import { FloatingWhatsAppButton } from "@/components/ui/floating-whatsapp-button";
 
+import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from "@/lib/seo-config";
+
 const sansFont = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-sans",
@@ -16,10 +18,30 @@ const sansFont = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://tourmate.lk"),
-  title: "Tourmate | Premium Car Rental & Travel Experience",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Tourmate | Premier Car Rental Sri Lanka",
+    template: "%s | Tourmate",
+  },
   description:
-    "Rent premium vehicles, SUVs, and luxury cars with ease. Your trusted companion for unforgettable road trips and business travel.",
+    "Rent verified vehicles, SUVs, and luxury cars in Sri Lanka. Free airport pickup at CMB, comprehensive insurance, unlimited mileage, and 24/7 customer support.",
+  openGraph: {
+    siteName: SITE_NAME,
+    locale: "en_LK",
+    type: "website",
+    images: [
+      {
+        url: DEFAULT_OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "Tourmate Car Rental Sri Lanka",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [DEFAULT_OG_IMAGE],
+  },
 };
 
 export const viewport: Viewport = {
