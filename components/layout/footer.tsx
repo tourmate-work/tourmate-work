@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Mail, Phone, MessageCircle } from "lucide-react";
+import { MapPin, Mail, Phone } from "lucide-react";
 import { PolicyModal, PolicyType } from "./policy-modal";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { useSiteAssets } from "@/lib/site-assets-context";
@@ -169,7 +169,7 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Useful Links */}
+          {/* Useful Links & Locations */}
           <div className="lg:col-span-4">
             <h4 className="text-white font-bold text-base mb-5">
               {t("footer_useful_links")}
@@ -181,15 +181,29 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a
-                  href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=I%20want%20to%20list%20a%20vehicle`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors flex items-center gap-1.5"
-                >
-                  <span>{t("nav_list_vehicle")}</span>
-                  <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-1.5 py-0.5 rounded-full">WhatsApp</span>
-                </a>
+                <Link href="/self-drive-vs-with-driver" className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors">
+                  Self-Drive vs Chauffeur Guide
+                </Link>
+              </li>
+              <li>
+                <Link href="/rentals/colombo" className="hover:text-amber-400 transition-colors">
+                  Car Rental Colombo
+                </Link>
+              </li>
+              <li>
+                <Link href="/rentals/airport" className="hover:text-amber-400 transition-colors">
+                  Airport Car Rental (CMB)
+                </Link>
+              </li>
+              <li>
+                <Link href="/rentals/negombo" className="hover:text-amber-400 transition-colors">
+                  Car Rental Negombo
+                </Link>
+              </li>
+              <li>
+                <Link href="/rentals/wennapuwa" className="hover:text-amber-400 transition-colors">
+                  Car Rental Wennapuwa
+                </Link>
               </li>
               <li>
                 <Link href="/about" className="hover:text-amber-400 transition-colors">
@@ -219,58 +233,38 @@ export function Footer() {
                   {t("footer_privacy")}
                 </button>
               </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => setActivePolicy("cancellation")}
-                  className="hover:text-amber-400 transition-colors text-left cursor-pointer"
-                >
-                  {t("footer_cancellation")}
-                </button>
-              </li>
-              <li>
-                <a
-                  href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=Hello%20Tourmate!%20I%20have%20an%20inquiry.`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-400 transition-colors flex items-center gap-1.5 text-emerald-400"
-                >
-                  <MessageCircle className="h-3.5 w-3.5" />
-                  <span>WhatsApp ({SITE_CONTACT.whatsappDisplay})</span>
-                </a>
-              </li>
             </ul>
           </div>
 
           {/* Vehicles */}
           <div className="lg:col-span-3">
             <h4 className="text-white font-bold text-base mb-5">
-              {language === "si" ? "වාහන" : "Vehicles"}
+              {language === "si" ? "වාහන" : "Vehicles by Category"}
             </h4>
             <ul className="space-y-3 text-sm text-neutral-300">
               <li>
-                <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
-                  {language === "si" ? "සෙඩාන් (Sedan)" : "Sedan"}
+                <Link href="/vehicles/sedan" className="hover:text-amber-400 transition-colors">
+                  {language === "si" ? "සෙඩාන් (Sedan)" : "Sedan & Compact"}
                 </Link>
               </li>
               <li>
-                <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
-                  {language === "si" ? "කැබ්රියෝලට් (Cabriolet)" : "Cabriolet"}
+                <Link href="/vehicles/suv" className="hover:text-amber-400 transition-colors">
+                  {language === "si" ? "SUV රථ (SUV)" : "SUV & 4x4"}
                 </Link>
               </li>
               <li>
-                <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
-                  {language === "si" ? "පිකප් (Pickup)" : "Pickup"}
+                <Link href="/vehicles/minivan" className="hover:text-amber-400 transition-colors">
+                  {language === "si" ? "මිනිවෑන් (Minivan)" : "Minivan & Passenger Van"}
                 </Link>
               </li>
               <li>
-                <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
-                  {language === "si" ? "මිනිවෑන් (Minivan)" : "Minivan"}
+                <Link href="/vehicles/pickup" className="hover:text-amber-400 transition-colors">
+                  {language === "si" ? "පිකප් (Pickup)" : "Pickup Truck 4x4"}
                 </Link>
               </li>
               <li>
-                <Link href="/vehicles" className="hover:text-amber-400 transition-colors">
-                  {language === "si" ? "SUV රථ (SUV)" : "SUV"}
+                <Link href="/vehicles/cabriolet" className="hover:text-amber-400 transition-colors">
+                  {language === "si" ? "කැබ්රියෝලට් (Cabriolet)" : "Cabriolet & Luxury"}
                 </Link>
               </li>
             </ul>

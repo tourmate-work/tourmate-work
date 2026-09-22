@@ -4,8 +4,10 @@ import { HeroSection } from "@/components/home/hero-section";
 import { FeaturePillars } from "@/components/home/feature-pillars";
 import { WhyChooseUs } from "@/components/home/why-choose-us";
 import { FleetSection } from "@/components/home/fleet-section";
+import { SelfDriveVsDriverSection } from "@/components/home/self-drive-vs-driver-section";
 import { StatsSection } from "@/components/home/stats-section";
 import { VehicleOwnerSection } from "@/components/home/vehicle-owner-cta";
+import { PopularSearches } from "@/components/home/popular-searches";
 
 export default function Home() {
   return (
@@ -27,11 +29,17 @@ export default function Home() {
         {/* 4. Car Selection Grid (Choose the car that suits you) */}
         <FleetSection />
 
-        {/* 5. Facts In Numbers Stats */}
+        {/* 5. Self-Drive vs Driver-Driven Choice */}
+        <SelfDriveVsDriverSection />
+
+        {/* 6. Facts In Numbers Stats */}
         <StatsSection />
 
-        {/* 6. Vehicle Owner Section (Have a Vehicle You Want to Rent Out?) */}
+        {/* 7. Vehicle Owner Section (Have a Vehicle You Want to Rent Out?) */}
         <VehicleOwnerSection />
+
+        {/* 8. Top Rental Locations & Vehicle Categories Internal Links */}
+        <PopularSearches />
       </main>
 
       {/* Footer */}

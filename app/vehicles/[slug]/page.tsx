@@ -7,6 +7,7 @@ import {
   getVehicleBySlug,
   getRelatedVehicles,
   getAllActiveVehicleSlugs,
+  cleanLocationName,
 } from "@/lib/vehicles";
 
 interface VehiclePageProps {
@@ -37,8 +38,14 @@ export async function generateMetadata({
     };
   }
 
-  const title = `Rent a ${vehicle.year || ""} ${vehicle.brand} ${vehicle.name} in ${vehicle.location} | Tourmate Rentals`;
-  const description = `Rent a ${vehicle.year || ""} ${vehicle.brand} ${vehicle.name} in ${vehicle.location} with Tourmate Rentals Sri Lanka. Comprehensive insurance, unlimited mileage, and verified condition. Daily rate: ${vehicle.price} ${vehicle.period}.`;
+  const primaryLoc = cleanLocationName(vehicle.location);
+  const fullName = vehicle.name.toLowerCase().startsWith(vehicle.brand.toLowerCase())
+    ? vehicle.name
+    : `${vehicle.brand} ${vehicle.name}`;
+  const yearStr = vehicle.year ? `${vehicle.year} ` : "";
+
+  const title = `Rent a ${yearStr}${fullName} in ${primaryLoc} | Tourmate Rentals`;
+  const description = `Rent a ${yearStr}${fullName} in ${primaryLoc}, Sri Lanka. Self drive or with driver, full comprehensive insurance, unlimited mileage & 24/7 delivery. Daily rate: ${vehicle.price} ${vehicle.period}.`;
   const canonicalUrl = `https://tourmate.lk/vehicles/${vehicle.slug}`;
   const mainImage =
     vehicle.thumbnails && vehicle.thumbnails.length > 0

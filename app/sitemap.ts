@@ -5,20 +5,6 @@ export const revalidate = 3600; // Regenerate sitemap at most every hour
 
 const BASE_URL = "https://tourmate.lk";
 
-// Top Sri Lanka rental destinations for dynamic discovery indexing
-const SRI_LANKA_LOCATIONS = [
-  "Colombo",
-  "Katunayake",
-  "Negombo",
-  "Kandy",
-  "Galle",
-  "Nuwara Eliya",
-  "Ella",
-  "Bentota",
-  "Mirissa",
-  "Sigiriya",
-];
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const currentDate = new Date();
 
@@ -54,17 +40,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "yearly",
       priority: 0.5,
     },
+    {
+      url: `${BASE_URL}/self-drive-vs-with-driver`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
   ];
 
-  // 2. Sri Lanka Location Landing URLs
-  const locationRoutes: MetadataRoute.Sitemap = SRI_LANKA_LOCATIONS.map((loc) => ({
-    url: `${BASE_URL}/vehicles?location=${encodeURIComponent(loc)}`,
+  // 2. Dedicated Location Landing Routes
+  const dedicatedLocationRoutes: MetadataRoute.Sitemap = [
+    "colombo",
+    "airport",
+    "negombo",
+    "wennapuwa",
+  ].map((loc) => ({
+    url: `${BASE_URL}/rentals/${loc}`,
     lastModified: currentDate,
     changeFrequency: "weekly",
-    priority: 0.8,
+    priority: 0.9,
   }));
 
-  // 3. Dynamic Active Vehicle Detail Pages from Database
+  // 3. Dedicated Vehicle Category Landing Routes
+  const categoryRoutes: MetadataRoute.Sitemap = [
+    "suv",
+    "sedan",
+    "minivan",
+    "van",
+    "pickup",
+    "cabriolet",
+  ].map((cat) => ({
+    url: `${BASE_URL}/vehicles/${cat}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly",
+    priority: 0.85,
+  }));
+
+  // 4. Dynamic Active Vehicle Detail Pages from Database
   let vehicleRoutes: MetadataRoute.Sitemap = [];
   try {
     const activeVehicles = await getAllActiveVehicleSlugs();
@@ -79,5 +91,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // Strictly excludes: /admin, /dashboard, /checkout, /account, /seller, /api
-  return [...staticRoutes, ...locationRoutes, ...vehicleRoutes];
+  return [
+    ...staticRoutes,
+    ...dedicatedLocationRoutes,
+    ...categoryRoutes,
+    ...vehicleRoutes,
+  ];
 }

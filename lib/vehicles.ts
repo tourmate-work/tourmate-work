@@ -245,3 +245,138 @@ export async function getAllActiveVehicleSlugs(): Promise<
     return [];
   }
 }
+
+/**
+ * Format a database location string into a clean, human-readable city/region name.
+ */
+export function cleanLocationName(rawLocation?: string | null): string {
+  if (!rawLocation) return "Colombo, Sri Lanka";
+  const lower = rawLocation.toLowerCase();
+  if (lower.includes("airport") || lower.includes("katunayake") || lower.includes("cmb")) {
+    return "Bandaranaike Airport (Katunayake)";
+  }
+  if (lower.includes("colombo") || lower.includes("colpetty") || lower.includes("fort")) {
+    return "Colombo";
+  }
+  if (lower.includes("negombo")) {
+    return "Negombo";
+  }
+  if (lower.includes("wennapuwa") || lower.includes("marawila")) {
+    return "Wennapuwa / Marawila";
+  }
+  if (lower.includes("kandy")) {
+    return "Kandy";
+  }
+  if (lower.includes("galle")) {
+    return "Galle";
+  }
+  if (lower.includes("bentota")) {
+    return "Bentota";
+  }
+  return rawLocation.split("/")[0].split("(")[0].trim() || "Sri Lanka";
+}
+
+/**
+ * Fetch vehicles that match or deliver to a specific location keyword.
+ */
+export async function getVehiclesByLocation(locationKeyword: string): Promise<VehicleDetail[]> {
+  try {
+    const kw = locationKeyword.toLowerCase().trim();
+    let searchTerms: string[] = [kw];
+
+    if (kw === "airport" || kw === "katunayake") {
+      searchTerms = ["airport", "katunayake", "cmb", "bandaranaike"];
+    } else if (kw === "colombo") {
+      searchTerms = ["colombo", "colpetty", "fort"];
+    } else if (kw === "negombo") {
+      searchTerms = ["negombo"];
+    } else if (kw === "wennapuwa" || kw === "marawila") {
+      searchTerms = ["wennapuwa", "marawila", "katuneriya"];
+    }
+
+    const matches = await prisma.vehicle.findMany({
+      where: {
+        status: { not: "Maintenance" },
+        isAvailable: true,
+        OR: searchTerms.map((term) => ({
+          location: { contains: term, mode: "insensitive" },
+        })),
+      },
+      orderBy: { isFeatured: "desc" },
+    });
+
+    let results = matches;
+    if (results.length < 4) {
+      const existingIds = results.map((r) => r.id);
+      const extra = await prisma.vehicle.findMany({
+        where: {
+          id: { notIn: existingIds },
+          status: { not: "Maintenance" },
+          isAvailable: true,
+        },
+        take: 6 - results.length,
+        orderBy: { isFeatured: "desc" },
+      });
+      results = [...results, ...extra];
+    }
+
+    return results.map(transformDbVehicleToDetail);
+  } catch (error) {
+    console.error("Error fetching vehicles by location:", error);
+    return [];
+  }
+}
+
+/**
+ * Fetch vehicles that belong to a specific category.
+ */
+export async function getVehiclesByCategory(category: string): Promise<VehicleDetail[]> {
+  try {
+    const cat = category.toLowerCase().trim();
+    let categoryFilters: string[] = [cat];
+
+    if (cat === "minivan" || cat === "van") {
+      categoryFilters = ["van", "minivan", "bus"];
+    } else if (cat === "suv") {
+      categoryFilters = ["suv", "jeep", "crossover"];
+    } else if (cat === "sedan") {
+      categoryFilters = ["sedan", "saloon", "hatchback", "compact"];
+    } else if (cat === "pickup") {
+      categoryFilters = ["pickup", "truck", "double cab"];
+    } else if (cat === "cabriolet") {
+      categoryFilters = ["cabriolet", "convertible"];
+    }
+
+    const matches = await prisma.vehicle.findMany({
+      where: {
+        status: { not: "Maintenance" },
+        isAvailable: true,
+        OR: categoryFilters.map((term) => ({
+          category: { contains: term, mode: "insensitive" },
+        })),
+      },
+      orderBy: { isFeatured: "desc" },
+    });
+
+    let results = matches;
+    if (results.length < 3) {
+      const existingIds = results.map((r) => r.id);
+      const extra = await prisma.vehicle.findMany({
+        where: {
+          id: { notIn: existingIds },
+          status: { not: "Maintenance" },
+          isAvailable: true,
+        },
+        take: 4 - results.length,
+        orderBy: { isFeatured: "desc" },
+      });
+      results = [...results, ...extra];
+    }
+
+    return results.map(transformDbVehicleToDetail);
+  } catch (error) {
+    console.error("Error fetching vehicles by category:", error);
+    return [];
+  }
+}
+

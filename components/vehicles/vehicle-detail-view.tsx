@@ -332,6 +332,31 @@ export function VehicleDetailView({
                 ))}
               </div>
             </div>
+
+            {/* Rental Highlights & SEO Trust Bar */}
+            <div className="pt-6 border-t border-slate-100 dark:border-white/5 space-y-3">
+              <h4 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px] text-slate-400">
+                Rental Highlights & Benefits
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600 dark:text-slate-300">
+                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-white/5">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-500 flex-shrink-0" />
+                  <span>Self-Drive or Chauffeur Driven</span>
+                </div>
+                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-white/5">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-500 flex-shrink-0" />
+                  <span>Bandaranaike Airport (CMB) & Colombo Delivery</span>
+                </div>
+                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-white/5">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-500 flex-shrink-0" />
+                  <span>Comprehensive Insurance Included</span>
+                </div>
+                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-white/5">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-500 flex-shrink-0" />
+                  <span>Monthly & Long-Term Hire Discounts</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
