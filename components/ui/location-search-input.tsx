@@ -653,9 +653,10 @@ function rankLocations(
 export interface LocationSearchInputProps {
   value: string;
   onChange: (location: string) => void;
+  onSelectDetails?: (details: { name: string; lat?: number; lon?: number; displayName?: string }) => void;
   placeholder?: string;
   label?: string;
-  variant?: "light" | "catalog" | "dark";
+  variant?: "light" | "catalog" | "dark" | "seller";
   className?: string;
   required?: boolean;
 }
@@ -663,6 +664,7 @@ export interface LocationSearchInputProps {
 export function LocationSearchInput({
   value,
   onChange,
+  onSelectDetails,
   placeholder = "Search city, place, or any address in Sri Lanka...",
   label,
   variant = "light",
@@ -734,6 +736,9 @@ export function LocationSearchInput({
   const handleSelectLocation = (locName: string) => {
     setQuery(locName);
     onChange(locName);
+    if (onSelectDetails) {
+      onSelectDetails({ name: locName });
+    }
     setIsOpen(false);
   };
 
@@ -743,6 +748,14 @@ export function LocationSearchInput({
       : item.displayName;
     setQuery(cleanName);
     onChange(cleanName);
+    if (onSelectDetails) {
+      onSelectDetails({
+        name: cleanName,
+        lat: item.lat ? parseFloat(item.lat) : undefined,
+        lon: item.lon ? parseFloat(item.lon) : undefined,
+        displayName: item.displayName,
+      });
+    }
     setIsOpen(false);
   };
 
@@ -774,6 +787,7 @@ export function LocationSearchInput({
 
   const isLightVariant = variant === "light";
   const isCatalogVariant = variant === "catalog";
+  const isSellerVariant = variant === "seller";
 
   return (
     <div ref={containerRef} className={`relative w-full ${className}`}>
@@ -799,12 +813,14 @@ export function LocationSearchInput({
           onFocus={() => setIsOpen(true)}
           placeholder={placeholder}
           required={required}
-          className={`w-full pl-10 pr-9 py-2.5 text-xs font-semibold rounded-2xl transition-all focus:outline-none focus:ring-2 ${
-            isLightVariant
-              ? "bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:ring-emerald-600/30 focus:border-emerald-600"
+          className={`w-full pl-10 pr-9 transition-all focus:outline-none focus:ring-2 ${
+            isSellerVariant
+              ? "bg-slate-50 dark:bg-[#15151a] border border-slate-200 dark:border-white/10 rounded-2xl py-3 text-sm text-slate-900 dark:text-white font-medium focus:ring-emerald-500 placeholder:text-slate-400"
+              : isLightVariant
+              ? "bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:ring-emerald-600/30 focus:border-emerald-600 py-2.5 text-xs font-semibold rounded-2xl"
               : isCatalogVariant
-              ? "bg-slate-50 dark:bg-white/5 border border-slate-200/90 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-emerald-600/30 focus:border-emerald-600"
-              : "bg-white/10 border border-white/15 text-white placeholder:text-slate-300 focus:bg-white/15 focus:ring-amber-400"
+              ? "bg-slate-50 dark:bg-white/5 border border-slate-200/90 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-emerald-600/30 focus:border-emerald-600 py-2.5 text-xs font-semibold rounded-2xl"
+              : "bg-white/10 border border-white/15 text-white placeholder:text-slate-300 focus:bg-white/15 focus:ring-amber-400 py-2.5 text-xs font-semibold rounded-2xl"
           }`}
         />
 

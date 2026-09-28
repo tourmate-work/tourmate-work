@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { SellerVehicle } from "./add-vehicle-modal";
 import { CustomDropdown, DropdownOption } from "@/components/ui/custom-dropdown";
+import { LocationSearchInput } from "@/components/ui/location-search-input";
 import { compressImageClient } from "@/lib/image-compress";
 
 export interface VehicleListingFormProps {
@@ -328,17 +329,7 @@ const MESSAGE_CATEGORIES = [
   },
 ];
 
-// Popular Sri Lanka Pickup Locations
-const POPULAR_LOCATIONS = [
-  "Bandaranaike Int'l Airport (CMB) / Katunayake",
-  "Colombo 03 / Colpetty & Fort",
-  "Wennapuwa / Marawila Coastal Hub",
-  "Negombo Beach Road",
-  "Kandy City Center / Peradeniya",
-  "Galle Fort & Unawatuna",
-  "Bentota / Beruwala",
-  "Mirissa / Weligama",
-];
+
 
 // Vehicle Categories with Silhouettes
 const VEHICLE_CATEGORIES = [
@@ -382,11 +373,7 @@ const DOORS_OPTIONS: DropdownOption[] = [
   { value: "5", label: "5 Doors", sublabel: "Hatchback or SUV with Tailgate" },
 ];
 
-const LOCATION_OPTIONS: DropdownOption[] = POPULAR_LOCATIONS.map((loc) => ({
-  value: loc,
-  label: loc,
-  icon: <span className="text-sm">📍</span>,
-}));
+
 
 const FUEL_POLICY_OPTIONS: DropdownOption[] = [
   { value: "Full-to-Full (Recommended)", label: "Full-to-Full", badge: "Recommended", sublabel: "Renter receives full tank, returns full tank" },
@@ -1367,17 +1354,17 @@ export function VehicleListingForm({
             </div>
           </div>
 
-          {/* Pickup Hub Selector */}
+          {/* Primary Handover Hub with OpenStreetMap Location Search */}
           <div>
             <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
               Primary Handover Hub *
             </label>
-            <CustomDropdown
-              options={LOCATION_OPTIONS}
+            <LocationSearchInput
               value={pickupLocation}
               onChange={setPickupLocation}
+              placeholder="Search airport, city, town, or any address in Sri Lanka..."
               variant="seller"
-              position="auto"
+              required
             />
           </div>
 
