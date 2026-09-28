@@ -1119,8 +1119,8 @@ export function VehicleListingForm({
               <div className="relative">
                 <input
                   type="number"
-                  min="1"
-                  step="500"
+                  min="0"
+                  step="any"
                   required
                   value={dailyRate}
                   onChange={(e) => setDailyRate(Number(e.target.value))}
@@ -1551,7 +1551,8 @@ export function VehicleListingForm({
               </label>
               <input
                 type="number"
-                step="5000"
+                min="0"
+                step="any"
                 value={securityDeposit}
                 onChange={(e) => setSecurityDeposit(Number(e.target.value))}
                 className="w-full bg-slate-50 dark:bg-[#15151a] border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-3 text-sm text-slate-900 dark:text-white font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500"
