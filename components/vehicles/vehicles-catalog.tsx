@@ -1001,12 +1001,12 @@ export function VehiclesCatalog() {
                     </div>
                   </div>
 
-                  {/* Adaptive Pickup Location in Modal */}
+                  {/* Adaptive Your Location in Modal */}
                   <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#15151a] border border-slate-200/80 dark:border-white/10 space-y-2">
                     <div className="flex items-center justify-between">
                       <label className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                         <MapPin className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                        <span>Pickup Location / Delivery Address:</span>
+                        <span>Your Location / Delivery Address:</span>
                       </label>
                       <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 px-2 py-0.5 rounded-full">
                         Adaptive
@@ -1015,7 +1015,7 @@ export function VehiclesCatalog() {
                     <LocationSearchInput
                       value={modalPickupLocation}
                       onChange={setModalPickupLocation}
-                      placeholder="Type hotel, airport terminal, or address in Sri Lanka..."
+                      placeholder="Type hotel, airport terminal, or your address in Sri Lanka..."
                       variant="catalog"
                     />
                     <p className="text-[11px] text-slate-500 dark:text-slate-400">

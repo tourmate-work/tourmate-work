@@ -257,13 +257,13 @@ export const translations = {
   details_seats: { en: "Seats", si: "ආසන" },
   details_distance: { en: "Distance", si: "ධාවන සීමාව" },
   details_pickup_label: {
-    en: "Pickup Location / Delivery Address:",
-    si: "රථය ලබාගන්නා ස්ථානය / බෙදාහැරීමේ ලිපිනය:",
+    en: "Your Location / Delivery Address:",
+    si: "ඔබගේ ස්ථානය / බෙදාහැරීමේ ලිපිනය:",
   },
   details_live_search: { en: "Live Map Search", si: "සජීවී සිතියම් සෙවීම" },
   details_pickup_placeholder: {
-    en: "Type or select pickup hotel, street address, or city in Sri Lanka...",
-    si: "ශ්‍රී ලංකාවේ හෝටලය, ලිපිනය හෝ නගරය ඇතුළත් කරන්න...",
+    en: "Type or select your hotel, street address, or city in Sri Lanka...",
+    si: "ශ්‍රී ලංකාවේ ඔබේ හෝටලය, ලිපිනය හෝ නගරය ඇතුළත් කරන්න...",
   },
   details_delivery_guarantee: {
     en: "Tourmate delivers directly to your location anywhere across Sri Lanka.",
