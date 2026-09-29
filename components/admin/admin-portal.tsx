@@ -91,18 +91,29 @@ export function AdminPortalContent() {
   const [updatingInquiryId, setUpdatingInquiryId] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
-  // Check persistent admin authentication on mount (Strict GitHub Supabase session)
+  const isCustomer = user?.role?.toUpperCase() === "CUSTOMER";
+
+  // Redirect customers away from admin area to home
+  useEffect(() => {
+    if (!checkingAuth && user && isCustomer) {
+      router.replace("/");
+    }
+  }, [checkingAuth, user, isCustomer, router]);
+
+  // Check persistent admin authentication on mount (Strict GitHub Supabase session or ADMIN role)
   useEffect(() => {
     async function checkAdminAuth() {
       if (typeof window !== "undefined") {
         // Clear any old legacy password authorization
         localStorage.removeItem("tourmate_admin_auth");
 
-        // Verify if user has an active Supabase GitHub session
+        // Verify if user has an active Supabase GitHub session or is ADMIN role
         const { data } = await supabase.auth.getSession();
         const hasGithubAdmin = localStorage.getItem("tourmate_admin_github_auth") === "true";
 
-        if (data.session?.user && (hasGithubAdmin || user?.role === "ADMIN")) {
+        if (data.session?.user && (hasGithubAdmin || user?.role?.toUpperCase() === "ADMIN")) {
+          setIsAuthenticated(true);
+        } else if (user?.role?.toUpperCase() === "ADMIN") {
           setIsAuthenticated(true);
         } else {
           setIsAuthenticated(false);
@@ -126,6 +137,8 @@ export function AdminPortalContent() {
         setFleetFilter(filter);
       } else if (tab === "bookings") {
         setBookingStatusFilter(filter);
+      } else if (tab === "inquiries") {
+        setInquiryStatusFilter(filter);
       }
     }
   }, [searchParams]);
@@ -491,6 +504,38 @@ export function AdminPortalContent() {
   // SECURITY GATE: ADMIN AUTHENTICATION SCREEN
   // ==========================================
   if (!isAuthenticated) {
+    if (user && isCustomer) {
+      return (
+        <div className="min-h-[80vh] flex items-center justify-center p-4 sm:p-6">
+          <div className="w-full max-w-md bg-white dark:bg-[#0b0b0e] border border-slate-200/90 dark:border-white/10 rounded-[32px] p-6 sm:p-8 shadow-2xl space-y-6 text-center animate-in zoom-in-95 duration-200">
+            <div className="h-16 w-16 mx-auto rounded-3xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shadow-inner">
+              <ShieldCheck className="h-8 w-8" />
+            </div>
+
+            <div className="space-y-2">
+              <span className="inline-block text-[10px] font-extrabold uppercase tracking-widest text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 px-3 py-1 rounded-full">
+                Customer Account
+              </span>
+              <h1 className="text-2xl font-black tracking-tight text-slate-950 dark:text-white">
+                Admin Area Restricted
+              </h1>
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                You are logged in as a Customer ({user.name}). Fleet management and administrative operations are reserved for Tourmate administrators.
+              </p>
+            </div>
+
+            <div className="pt-2">
+              <Link
+                href="/"
+                className="w-full py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all active:scale-95"
+              >
+                <span>Return to Public Website</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="min-h-[80vh] flex items-center justify-center p-4 sm:p-6">
         <div className="w-full max-w-md bg-white dark:bg-[#0b0b0e] border border-slate-200/90 dark:border-white/10 rounded-[32px] p-6 sm:p-8 shadow-2xl space-y-6 text-center animate-in zoom-in-95 duration-200">

@@ -18,12 +18,16 @@ const supabaseSecretKey =
 // Initialize Supabase client with secret key for full storage admin access
 const supabase = createClient(supabaseUrl, supabaseSecretKey);
 
-const BUCKET_NAME = "tourmate-vehicles";
+const DEFAULT_BUCKET =
+  process.env.SUPABASE_STORAGE_BUCKET ||
+  process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET ||
+  "pics";
 
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
+    const targetBucket = (formData.get("bucket") as string) || DEFAULT_BUCKET;
 
     if (!file) {
       return NextResponse.json(
@@ -67,8 +71,9 @@ export async function POST(req: NextRequest) {
     const fileName = `${Date.now()}_${uniqueId}.${ext}`;
 
     // Upload to Supabase Storage with 1-year immutable cache control
-    const { error: uploadError } = await supabase.storage
-      .from(BUCKET_NAME)
+    let activeBucket = targetBucket;
+    let { error: uploadError } = await supabase.storage
+      .from(activeBucket)
       .upload(fileName, uploadBuffer, {
         contentType: uploadContentType,
         cacheControl: "31536000, public, immutable",
@@ -76,50 +81,64 @@ export async function POST(req: NextRequest) {
       });
 
     if (uploadError) {
-      console.error("Supabase Storage upload error:", uploadError);
+      console.error(`Supabase Storage upload error in bucket "${activeBucket}":`, uploadError);
 
-      // Fallback: If bucket is missing, attempt to create it and re-upload
-      if (uploadError.message?.toLowerCase().includes("bucket not found") || (uploadError as { statusCode?: string }).statusCode === "404") {
-        await supabase.storage.createBucket(BUCKET_NAME, { public: true });
-        const { error: retryError } = await supabase.storage
-          .from(BUCKET_NAME)
-          .upload(fileName, uploadBuffer, {
-            contentType: uploadContentType,
-            cacheControl: "31536000, public, immutable",
-            upsert: true,
-          });
+      // Fallback 1: Try alternate bucket (e.g. tourmate-vehicles if pics failed, or pics if tourmate-vehicles failed)
+      const altBucket = activeBucket === "pics" ? "tourmate-vehicles" : "pics";
+      const { error: altError } = await supabase.storage
+        .from(altBucket)
+        .upload(fileName, uploadBuffer, {
+          contentType: uploadContentType,
+          cacheControl: "31536000, public, immutable",
+          upsert: true,
+        });
 
-        if (!retryError) {
-          const { data: publicUrlData } = supabase.storage
-            .from(BUCKET_NAME)
-            .getPublicUrl(fileName);
+      if (!altError) {
+        activeBucket = altBucket;
+        uploadError = null;
+      } else {
+        // Fallback 2: If bucket missing, attempt to create it and re-upload
+        if (
+          uploadError.message?.toLowerCase().includes("bucket not found") ||
+          (uploadError as { statusCode?: string }).statusCode === "404"
+        ) {
+          await supabase.storage.createBucket(activeBucket, { public: true });
+          const { error: retryError } = await supabase.storage
+            .from(activeBucket)
+            .upload(fileName, uploadBuffer, {
+              contentType: uploadContentType,
+              cacheControl: "31536000, public, immutable",
+              upsert: true,
+            });
 
-          return NextResponse.json({
-            success: true,
-            url: publicUrlData.publicUrl,
-          });
+          if (!retryError) {
+            uploadError = null;
+          }
         }
       }
 
-      // If Supabase upload fails completely, convert to data URL so the client image isn't lost
-      const base64 = uploadBuffer.toString("base64");
-      const dataUri = `data:${uploadContentType};base64,${base64}`;
-      return NextResponse.json({
-        success: true,
-        url: dataUri,
-        warning: "Saved as optimized data URI due to storage error",
-      });
+      if (uploadError) {
+        // If Supabase upload fails completely, convert to data URL so the client image isn't lost
+        const base64 = uploadBuffer.toString("base64");
+        const dataUri = `data:${uploadContentType};base64,${base64}`;
+        return NextResponse.json({
+          success: true,
+          url: dataUri,
+          warning: "Saved as optimized data URI due to storage error",
+        });
+      }
     }
 
-    // Retrieve public permanent URL
+    // Retrieve public permanent URL from the successful bucket
     const { data: publicUrlData } = supabase.storage
-      .from(BUCKET_NAME)
+      .from(activeBucket)
       .getPublicUrl(fileName);
 
     return NextResponse.json({
       success: true,
       url: publicUrlData.publicUrl,
       fileName,
+      bucket: activeBucket,
     });
   } catch (error) {
     console.error("File upload route error:", error);
