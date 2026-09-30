@@ -617,6 +617,7 @@ export function VehicleListingForm({
           licensePlate,
           fuelPolicy,
           mileageAllowance,
+          mileageLimit: mileageAllowance,
           isAvailable: true,
           status: "Available",
         }),

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getAuthUser, forbiddenResponse } from "@/lib/auth";
 import { getVehicleSlug } from "@/lib/slug";
@@ -142,6 +143,20 @@ export async function PATCH(
     if (body.seats !== undefined) updateData.seats = parseInt(body.seats, 10);
     if (body.doors !== undefined) updateData.doors = parseInt(body.doors, 10);
     if (body.luggageCapacity !== undefined) updateData.luggageCapacity = parseInt(body.luggageCapacity, 10);
+    if (body.mileageAllowance !== undefined) {
+      updateData.mileageAllowance = body.mileageAllowance;
+      if (body.mileageLimit === undefined) {
+        updateData.mileageLimit = body.mileageAllowance;
+      }
+    }
+    if (body.mileageLimit !== undefined) {
+      updateData.mileageLimit = body.mileageLimit;
+      if (body.mileageAllowance === undefined) {
+        updateData.mileageAllowance = body.mileageLimit;
+      }
+    }
+    if (body.fuelPolicy !== undefined) updateData.fuelPolicy = body.fuelPolicy;
+    if (body.licensePlate !== undefined) updateData.licensePlate = body.licensePlate;
     if (body.pricePerDay !== undefined) updateData.pricePerDay = parseFloat(body.pricePerDay);
     if (body.depositAmount !== undefined) updateData.depositAmount = parseFloat(body.depositAmount);
     if (body.imageUrl !== undefined) updateData.imageUrl = body.imageUrl;
@@ -199,6 +214,22 @@ export async function PATCH(
       where: { id },
       data: updateData,
     });
+
+    try {
+      revalidatePath("/vehicles");
+      if (existing.slug) revalidatePath(`/vehicles/${existing.slug}`);
+      if (updated.slug && updated.slug !== existing.slug) {
+        revalidatePath(`/vehicles/${updated.slug}`);
+      }
+      revalidatePath("/details");
+      revalidatePath("/");
+      revalidatePath("/vehicles/sedan");
+      revalidatePath("/vehicles/suv");
+      revalidatePath("/vehicles/van");
+      revalidatePath("/vehicles/hatchback");
+    } catch (revalErr) {
+      console.warn("Failed to revalidate Next.js cache paths:", revalErr);
+    }
 
     return NextResponse.json({
       success: true,

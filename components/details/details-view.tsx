@@ -61,6 +61,7 @@ export interface VehicleDetail {
 
 interface ApiVehicleRaw {
   id: string;
+  slug?: string;
   name: string;
   brand?: string;
   category: string;
@@ -74,6 +75,7 @@ interface ApiVehicleRaw {
   doors?: number;
   seats?: number;
   mileageLimit?: string;
+  mileageAllowance?: string;
   features?: string[];
   imageUrl?: string;
   galleryImages?: string[];
@@ -341,8 +343,18 @@ function DetailsContentInner() {
                 ? v.galleryImages.filter((img: string) => isValidVehicleImage(img))
                 : (validHero ? [validHero] : []);
 
+            const hasAc = Array.isArray(v.features) && v.features.length > 0
+              ? v.features.some((f: string) => /air\s*condition/i.test(f) || /\bac\b/i.test(f) || /climate/i.test(f))
+              : (v.features === undefined || v.features === null);
+
+            const distanceLimit =
+              (v.mileageAllowance && v.mileageAllowance !== "Unlimited")
+                ? v.mileageAllowance
+                : (v.mileageLimit || v.mileageAllowance || "Unlimited");
+
             return {
               id: v.id,
+              slug: v.slug,
               name: v.name,
               brand: v.brand || v.name.split(" ")[0] || "Toyota",
               category: v.category,
@@ -356,12 +368,12 @@ function DetailsContentInner() {
               fuelCapacity: "60 Ltr",
               location: v.location || "Bandaranaike Int'l Airport (CMB) / Katunayake",
               specs: {
-                gearBox: v.transmission,
-                fuel: v.fuelType,
+                gearBox: v.transmission || "Automatic",
+                fuel: v.fuelType || "Petrol",
                 doors: v.doors || 4,
-                ac: "Yes",
+                ac: hasAc ? "Yes" : "No",
                 seats: v.seats || 5,
-                distance: v.mileageLimit || "Unlimited",
+                distance: distanceLimit,
               },
               equipment:
                 Array.isArray(v.features) && v.features.length > 0
@@ -391,9 +403,10 @@ function DetailsContentInner() {
 
     const id = searchParams?.get("car") || searchParams?.get("id");
     if (id) {
-      const match = VEHICLES.find((v) => v.id === id) || liveVehicles.find((v) => v.id === id);
-      if (match) {
-        setSelectedVehicle(match);
+      // Prioritize live database vehicles first
+      const matchLive = liveVehicles.find((v) => v.id === id || v.slug === id);
+      if (matchLive) {
+        setSelectedVehicle(matchLive);
         setActiveThumbnailIndex(0);
         setIsLoadingDetails(false);
       } else {
@@ -410,8 +423,18 @@ function DetailsContentInner() {
                   ? v.galleryImages.filter((img: string) => isValidVehicleImage(img))
                   : (validHero ? [validHero] : []);
 
+              const hasAc = Array.isArray(v.features) && v.features.length > 0
+                ? v.features.some((f: string) => /air\s*condition/i.test(f) || /\bac\b/i.test(f) || /climate/i.test(f))
+                : (v.features === undefined || v.features === null);
+
+              const distanceLimit =
+                (v.mileageAllowance && v.mileageAllowance !== "Unlimited")
+                  ? v.mileageAllowance
+                  : (v.mileageLimit || v.mileageAllowance || "Unlimited");
+
               setSelectedVehicle({
                 id: v.id,
+                slug: v.slug,
                 name: v.name,
                 brand: v.brand || v.name.split(" ")[0] || "Toyota",
                 category: v.category,
@@ -427,12 +450,12 @@ function DetailsContentInner() {
                 status: v.status || "Available",
                 isAvailable: v.isAvailable !== false && v.status?.toLowerCase() !== "maintenance",
                 specs: {
-                  gearBox: v.transmission,
-                  fuel: v.fuelType,
+                  gearBox: v.transmission || "Automatic",
+                  fuel: v.fuelType || "Petrol",
                   doors: v.doors || 4,
-                  ac: "Yes",
+                  ac: hasAc ? "Yes" : "No",
                   seats: v.seats || 5,
-                  distance: v.mileageLimit || "Unlimited",
+                  distance: distanceLimit,
                 },
                 equipment:
                   Array.isArray(v.features) && v.features.length > 0
@@ -441,9 +464,21 @@ function DetailsContentInner() {
                 thumbnails: validGallery,
               });
               setActiveThumbnailIndex(0);
+            } else {
+              const matchStatic = VEHICLES.find((v) => v.id === id);
+              if (matchStatic) {
+                setSelectedVehicle(matchStatic);
+                setActiveThumbnailIndex(0);
+              }
             }
           })
-          .catch(() => {})
+          .catch(() => {
+            const matchStatic = VEHICLES.find((v) => v.id === id);
+            if (matchStatic) {
+              setSelectedVehicle(matchStatic);
+              setActiveThumbnailIndex(0);
+            }
+          })
           .finally(() => {
             setIsLoadingDetails(false);
           });

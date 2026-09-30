@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Fuel,
@@ -32,12 +32,19 @@ export function VehicleDetailView({
   otherVehicles = [],
 }: VehicleDetailViewProps) {
   const { t, language } = useLanguage();
-  const [selectedVehicle] = useState<VehicleDetail>(initialVehicle);
+  const [selectedVehicle, setSelectedVehicle] = useState<VehicleDetail>(initialVehicle);
   const [activeThumbnailIndex, setActiveThumbnailIndex] = useState(0);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [pickupLocation, setPickupLocation] = useState(
     initialVehicle.location || "Bandaranaike Int'l Airport (CMB) / Katunayake"
   );
+
+  useEffect(() => {
+    setSelectedVehicle(initialVehicle);
+    if (initialVehicle.location) {
+      setPickupLocation(initialVehicle.location);
+    }
+  }, [initialVehicle]);
 
   const handleBookNow = () => {
     const chosenLoc = pickupLocation.trim() || selectedVehicle.location || "Sri Lanka";

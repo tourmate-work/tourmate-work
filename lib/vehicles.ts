@@ -47,6 +47,20 @@ export function transformDbVehicleToDetail(v: any): VehicleDetail {
           "24/7 Roadside Assistance",
         ];
 
+  // Determine AC status: if user provided features and omitted AC, it's "No". If features include AC, it's "Yes".
+  // If no features specified at all (legacy), default "Yes".
+  const hasAc =
+    parsedFeatures.length > 0
+      ? parsedFeatures.some((f) => /air\s*condition/i.test(f) || /\bac\b/i.test(f) || /climate/i.test(f))
+      : v.features === undefined || v.features === null;
+
+  // Determine Distance / Mileage Allowance:
+  // If v.mileageAllowance is set (e.g. "100 km/day included (LKR 55/km excess)"), prioritize that over a default "Unlimited" mileageLimit
+  const distanceLimit =
+    (v.mileageAllowance && v.mileageAllowance !== "Unlimited")
+      ? v.mileageAllowance
+      : (v.mileageLimit || v.mileageAllowance || "Unlimited");
+
   return {
     id: v.id,
     slug: v.slug || getVehicleSlug(v),
@@ -68,10 +82,10 @@ export function transformDbVehicleToDetail(v: any): VehicleDetail {
     specs: {
       gearBox: v.transmission || "Automatic",
       fuel: v.fuelType || "Petrol",
-      doors: v.doors || 4,
-      ac: "Yes",
-      seats: v.seats || 5,
-      distance: v.mileageLimit || "Unlimited",
+      doors: typeof v.doors === "number" ? v.doors : (v.doors ? parseInt(v.doors, 10) : 4),
+      ac: hasAc ? "Yes" : "No",
+      seats: typeof v.seats === "number" ? v.seats : (v.seats ? parseInt(v.seats, 10) : 5),
+      distance: distanceLimit,
     },
     equipment,
     thumbnails,

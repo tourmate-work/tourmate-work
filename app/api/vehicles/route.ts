@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getAuthUser } from "@/lib/auth";
 import { resolveUniqueVehicleSlug, getVehicleSlug } from "@/lib/slug";
@@ -299,7 +300,7 @@ export async function POST(req: NextRequest) {
         seats: seats ? parseInt(seats, 10) : 5,
         doors: doors ? parseInt(doors, 10) : 4,
         luggageCapacity: luggageCapacity ? parseInt(luggageCapacity, 10) : 2,
-        mileageLimit: mileageLimit || "Unlimited",
+        mileageLimit: mileageLimit || mileageAllowance || "Unlimited",
         pricePerDay: parseFloat(pricePerDay),
         depositAmount: depositAmount ? parseFloat(depositAmount) : 0,
         imageUrl: cleanHeroImage,
@@ -308,13 +309,26 @@ export async function POST(req: NextRequest) {
         location: location || "Colombo, Sri Lanka",
         licensePlate: licensePlate || null,
         fuelPolicy: fuelPolicy || "Same to Same",
-        mileageAllowance: mileageAllowance || "Unlimited",
+        mileageAllowance: mileageAllowance || mileageLimit || "Unlimited",
         isFeatured: Boolean(isFeatured),
         isAvailable: isAvailable !== false,
         status: status || "Available",
         sellerId: sellerId || null,
       },
     });
+
+    try {
+      revalidatePath("/vehicles");
+      if (vehicleSlug) revalidatePath(`/vehicles/${vehicleSlug}`);
+      revalidatePath("/details");
+      revalidatePath("/");
+      revalidatePath("/vehicles/sedan");
+      revalidatePath("/vehicles/suv");
+      revalidatePath("/vehicles/van");
+      revalidatePath("/vehicles/hatchback");
+    } catch (revalErr) {
+      console.warn("Failed to revalidate Next.js cache paths:", revalErr);
+    }
 
     return NextResponse.json(
       {

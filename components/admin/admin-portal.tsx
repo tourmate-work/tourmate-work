@@ -26,8 +26,10 @@ import {
   RefreshCw,
   ArrowUpDown,
   ImageIcon,
+  Edit3,
 } from "lucide-react";
 import { AddVehicleModal, SellerVehicle } from "@/components/seller/add-vehicle-modal";
+import { EditVehicleModal } from "./edit-vehicle-modal";
 import { VehicleListingForm } from "@/components/seller/vehicle-listing-form";
 import { PolicyManager } from "@/components/admin/policy-manager";
 import { SiteMediaManager } from "@/components/admin/site-media-manager";
@@ -76,6 +78,8 @@ export function AdminPortalContent() {
 
   const [activeTab, setActiveTab] = useState<string>(initialTab);
   const [fleet, setFleet] = useState<SellerVehicle[]>([]);
+  const [editingVehicle, setEditingVehicle] = useState<SellerVehicle | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
   const [inquiries, setInquiries] = useState<InquiryRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -332,6 +336,14 @@ export function AdminPortalContent() {
     setNotice(`"${newVehicle.name}" successfully added to the live fleet!`);
     setTimeout(() => setNotice(null), 5000);
     handleTabChange("fleet");
+  };
+
+  const handleVehicleUpdated = (updatedVehicle: SellerVehicle) => {
+    setFleet((prev) =>
+      prev.map((v) => (v.id === updatedVehicle.id ? updatedVehicle : v))
+    );
+    setNotice(`"${updatedVehicle.name}" technical details updated & synced!`);
+    setTimeout(() => setNotice(null), 4000);
   };
 
   // Summary Metrics Calculation
@@ -946,6 +958,18 @@ export function AdminPortalContent() {
                             className="flex-1 py-2 px-3 rounded-full border border-slate-200 dark:border-white/15 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-all text-center cursor-pointer"
                           >
                             {car.status === "Maintenance" ? "Set Available" : "Set Maintenance"}
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingVehicle(car);
+                              setIsEditModalOpen(true);
+                            }}
+                            className="p-2 rounded-full border border-emerald-200 dark:border-emerald-900/40 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 transition-all cursor-pointer flex items-center justify-center"
+                            title="Edit Vehicle Specs & Details"
+                          >
+                            <Edit3 className="h-4 w-4" />
                           </button>
 
                           <button
@@ -1591,6 +1615,17 @@ export function AdminPortalContent() {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         onAddVehicle={handleAddVehicle}
+      />
+
+      {/* Edit Vehicle Modal */}
+      <EditVehicleModal
+        isOpen={isEditModalOpen}
+        vehicle={editingVehicle}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setEditingVehicle(null);
+        }}
+        onSuccess={handleVehicleUpdated}
       />
     </div>
   );

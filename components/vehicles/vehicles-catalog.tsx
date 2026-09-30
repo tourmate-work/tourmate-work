@@ -73,6 +73,7 @@ interface ApiVehicleRaw {
   doors?: number;
   seats?: number;
   mileageLimit?: string;
+  mileageAllowance?: string;
   features?: string[];
   imageUrl?: string;
   galleryImages?: string[];
@@ -166,6 +167,15 @@ export function VehiclesCatalog() {
               v.status !== "Rented" &&
               v.status !== "Maintenance";
 
+            const hasAc = Array.isArray(v.features) && v.features.length > 0
+              ? v.features.some((f: string) => /air\s*condition/i.test(f) || /\bac\b/i.test(f) || /climate/i.test(f))
+              : (v.features === undefined || v.features === null);
+
+            const distanceLimit =
+              (v.mileageAllowance && v.mileageAllowance !== "Unlimited")
+                ? v.mileageAllowance
+                : (v.mileageLimit || v.mileageAllowance || "Unlimited");
+
             return {
               id: v.id,
               slug: v.slug || undefined,
@@ -185,12 +195,12 @@ export function VehiclesCatalog() {
               status: v.status || (isAvail ? "Available" : "Reserved"),
               rating: v.rating || 4.9,
               specs: {
-                gearBox: v.transmission,
-                fuel: v.fuelType,
+                gearBox: v.transmission || "Automatic",
+                fuel: v.fuelType || "Petrol",
                 doors: v.doors || 4,
-                ac: "Yes",
+                ac: hasAc ? "Yes" : "No",
                 seats: v.seats || 5,
-                distance: v.mileageLimit || "Unlimited",
+                distance: distanceLimit,
               },
               equipment: Array.isArray(v.features)
                 ? v.features
